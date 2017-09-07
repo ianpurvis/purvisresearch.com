@@ -14,3 +14,13 @@ exports.files = {
 exports.plugins = {
   babel: {presets: ['latest']}
 };
+
+exports.npm = {
+  globals: {
+    PIXI: 'pixi.js'
+  },
+  static: [
+    'node_modules/pixi.js/dist/pixi.min.js',
+    'node_modules/pixi-particles/dist/pixi-particles.min.js'
+  ]
+};
