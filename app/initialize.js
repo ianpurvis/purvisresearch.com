@@ -1,10 +1,17 @@
 const emoji = '💾📀'
 
 document.addEventListener('DOMContentLoaded', () => {
-  // do your setup here
-  console.log('Initialized app');
-
   initializePIXI();
+});
+
+window.addEventListener('resize', () => {
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let app = document.app;
+
+  app.view.style.width = `${width}px`;
+  app.view.style.height = `${height}px`;
+  app.renderer.resize(width, height);
 });
 
 
@@ -13,7 +20,11 @@ function initializePIXI() {
   // The application will create a renderer using WebGL, if possible,
   // with a fallback to a canvas render. It will also setup the ticker
   // and the root stage PIXI.Container.
-  var app = new PIXI.Application();
+  var app = document.app = new PIXI.Application({
+    transparent: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   // The application will create a canvas element for you that you
   // can then insert into the DOM.
