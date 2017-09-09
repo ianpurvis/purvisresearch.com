@@ -31,7 +31,7 @@ function initializePIXI() {
   document.body.appendChild(app.view);
 
   // Create text objects and pre-render them for the emitter
-  var texts = Array.from(emoji).map(e => new PIXI.Text(e));
+  var texts = Array.from(emoji).map(e => new PIXI.Text(e, {fontSize: '48pt'}));
   texts.forEach(t => app.renderer.render(t));
 
   // The PIXI.Container to put the emitter in
@@ -62,30 +62,30 @@ function initializePIXI() {
       maxParticles: 1000,
       pos: {
         x: 0,
-        y: app.screen.height
+        y: 0
       },
       rotationSpeed: {
         min: 0.5,
         max: 2.0
       },
       scale: {
-        start: 0.5,
-        end: 2.0,
+        start: 0.25,
+        end: 0.75,
       },
       spawnType: "rect",
       spawnRect: {
         x: 0,
         y: 0,
-        w: app.screen.width,
-        h: 0
+        w: 0,
+        h: app.screen.height
       },
       speed: {
         start: 0.5,
         end: 1.5
       },
       startRotation: {
-        min: 265,
-        max: 275
+        min: -5,
+        max: 5
       }
     }
   );

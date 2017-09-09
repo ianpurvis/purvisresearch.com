@@ -10,6 +10,7 @@
     "build": "brunch build --production"
   },
   "dependencies": {
+    "bulma": "^0.5.1",
     "pixi-particles": "^2.1.5",
     "pixi.js": "^4.5.5"
   },
