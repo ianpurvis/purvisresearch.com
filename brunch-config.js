@@ -15,7 +15,16 @@ exports.files = {
 };
 
 exports.plugins = {
-  babel: {presets: ['latest']}
+  babel: {
+    presets: ['latest']
+  },
+  sass: {
+    options: {
+      includePaths: [
+        'node_modules/'
+      ]
+    }
+  }
 };
 
 exports.npm = {
@@ -25,8 +34,5 @@ exports.npm = {
   static: [
     'node_modules/pixi.js/dist/pixi.min.js',
     'node_modules/pixi-particles/dist/pixi-particles.min.js'
-  ],
-  styles: {
-    bulma: ['css/bulma.css']
-  }
+  ]
 };
