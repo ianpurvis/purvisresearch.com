@@ -7,10 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
   let {width, height} = fullSize();
   let app = document.app;
+  let emitter = document.emitter;
 
   app.view.style.width = `${width}px`;
   app.view.style.height = `${height}px`;
   app.renderer.resize(width, height);
+
+  emitter.spawnRect.height = height;
 });
 
 
@@ -41,7 +44,7 @@ function initializePIXI() {
   app.stage.addChild(emitterContainer);
 
   // Create a new emitter
-  var emitter = new PIXI.particles.Emitter(
+  var emitter = document.emitter = new PIXI.particles.Emitter(
 
     emitterContainer,
 
