@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', () => {
-  let width = window.innerWidth;
-  let height = window.innerHeight;
+  let {width, height} = fullSize();
   let app = document.app;
 
   app.view.style.width = `${width}px`;
@@ -16,14 +15,15 @@ window.addEventListener('resize', () => {
 
 
 function initializePIXI() {
+  let {width, height} = fullSize();
 
   // The application will create a renderer using WebGL, if possible,
   // with a fallback to a canvas render. It will also setup the ticker
   // and the root stage PIXI.Container.
   var app = document.app = new PIXI.Application({
     transparent: true,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: width,
+    height: height
   });
 
   // The application will create a canvas element for you that you
@@ -93,4 +93,12 @@ function initializePIXI() {
   app.ticker.add(function(elapsedSeconds) {
     emitter.update(elapsedSeconds);
   });
+}
+
+
+function fullSize() {
+  return {
+    height: Math.max(document.body.clientHeight, window.innerHeight),
+    width: Math.max(document.body.clientWidth, window.innerWidth)
+  };
 }
