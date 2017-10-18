@@ -1,9 +1,13 @@
-$family-sans-serif: "Libre Barcode 128 Text";
-$body-background-color: hsl(0, 0%, 96%);
-
 @import 'bulma/sass/utilities/all';
-@import 'bulma/sass/base/minireset';
-@import 'bulma/sass/base/generic';
+
+$body-background-color: $white-ter;
+$body-line-height: 1.125;
+$body-size: 112px;
+$family-primary: "Libre Barcode 128 Text";
+$link: $primary;
+$text: $grey-darker;
+
+@import 'bulma/sass/base/all';
 
 canvas {
   position: absolute;
@@ -13,9 +17,6 @@ canvas {
 }
 
 main {
-  color: $grey-darker;
-  font-size: 7rem;
-  line-height: 1.125;
   max-width: 600px;
   word-break: break-all;
 }
