@@ -1,101 +1,167 @@
-const emoji = '💾📀'
-
 document.addEventListener('DOMContentLoaded', () => {
-  initializePIXI();
-});
+  initializePIXI()
+})
 
 window.addEventListener('resize', () => {
-  let {width, height} = fullSize();
-  let app = document.app;
-  let emitter = document.emitter;
+  let {width, height} = fullSize()
+  let app = document.app
 
-  app.view.style.width = `${width}px`;
-  app.view.style.height = `${height}px`;
-  app.renderer.resize(width, height);
-
-  emitter.spawnRect.height = height;
-});
+  app.view.style.width = `${width}px`
+  app.view.style.height = `${height}px`
+  app.renderer.resize(width, height)
+})
 
 
 function initializePIXI() {
-  let {width, height} = fullSize();
+  let {width, height} = fullSize()
 
-  // The application will create a renderer using WebGL, if possible,
-  // with a fallback to a canvas render. It will also setup the ticker
-  // and the root stage PIXI.Container.
   var app = document.app = new PIXI.Application({
     transparent: true,
     width: width,
     height: height
-  });
+  })
 
-  // The application will create a canvas element for you that you
-  // can then insert into the DOM.
-  document.body.appendChild(app.view);
+  document.body.appendChild(app.view)
 
-  // Create text objects and pre-render them for the emitter
-  var texts = Array.from(emoji).map(e => new PIXI.Text(e, {fontSize: '48pt'}));
-  texts.forEach(t => app.renderer.render(t));
+  let textures = [
+    createBezierTexture('0xff0000', height, width),
+    createBezierTexture('0x00ff00', height, width),
+    createBezierTexture('0x0000ff', height, width)
+  ]
 
-  // The PIXI.Container to put the emitter in
-  // if using blend modes, it's important to put this
-  // on top of a bitmap, and not use the root stage Container
-  var emitterContainer = new PIXI.Container();
-  app.stage.addChild(emitterContainer);
+  textures
+    .sort(() => random({max: 1, min: -1}))
+    .forEach(texture => app.stage.addChild(texture))
 
-  // Create a new emitter
-  var emitter = document.emitter = new PIXI.particles.Emitter(
+  var time = 0
+  app.ticker.add(deltaTime => {
+    time += deltaTime
+    textures[1].x = oscillation({
+      time: time,
+      period: 10000
+    })
+    textures[2].x = oscillation({
+      time: time,
+      period: 5000
+    })
+  })
+}
 
-    emitterContainer,
 
-    // The collection of particle images to use
-    texts.map(t => t.texture),
+function createBezierTexture(color, height, width) {
 
-    // Emitter configuration, edit this to change the look of the emitter
-    {
-      color: {
-        start: "ffffff",
-        end: "ffffff"
-      },
-      frequency: 4,
-      lifetime: {
-        min: 2000.0,
-        max: 2000.0
-      },
-      maxParticles: 1000,
-      pos: {
-        x: 0,
-        y: 0
-      },
-      rotationSpeed: {
-        min: 0.5,
-        max: 2.0
-      },
-      scale: {
-        start: 0.25,
-        end: 0.75,
-      },
-      spawnType: "rect",
-      spawnRect: {
-        x: 0,
-        y: 0,
-        w: 0,
-        h: app.screen.height
-      },
-      speed: {
-        start: 0.5,
-        end: 1.5
-      },
-      startRotation: {
-        min: -5,
-        max: 5
-      }
-    }
-  );
+  let lineWidth = random({max: 25, min: 1}) // pixels
+  let lineSpace = random({max: 15}) // pixels
+  let lineCount = width / (lineWidth + lineSpace)
+  let lineAlpha = random({max: 0.4, min: 0.1})
 
-  app.ticker.add(function(elapsedSeconds) {
-    emitter.update(elapsedSeconds);
-  });
+  let bezier = new BezierCurve({
+    start: new Point({
+      x: random({max: 50, min: -50}),
+      y: -10
+    }),
+    controlOne: new Point({
+      x: random({max: 350, min: -350}),
+      y: random({max: height/2})
+    }),
+    controlTwo: new Point({
+      x: -random({max: 350, min: -350}),
+      y: random({max: height, min: height/2})
+    }),
+    end: new Point({
+      x: random({max: 50, min: -50}),
+      y: height + 10
+    })
+  })
+
+  let graphics = new PIXI.Graphics()
+  graphics.lineStyle(lineWidth, color, lineAlpha)
+
+  let offset, clone
+  for (var i = 0; i < lineCount; i++) {
+    offset = new Point({
+      x: i * (lineWidth + lineSpace)
+    })
+    clone = bezier.translate(offset)
+
+    graphics.moveTo(
+      clone.start.x,
+      clone.start.y
+    )
+    graphics.bezierCurveTo(
+      clone.controlOne.x,  clone.controlOne.y,
+      clone.controlTwo.x,  clone.controlTwo.y,
+      clone.end.x,         clone.end.y
+    )
+  }
+
+  return graphics
+}
+
+
+// https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
+function oscillation({
+  time = 0,       // milliseconds
+  amplitude = 50, // pixels
+  period = 10000  // milliseconds
+}) {
+  return amplitude * Math.sin((Math.PI*2) * time / period)
+}
+
+
+function random({
+  max = 1,
+  min = 0
+} = {
+  max: 1,
+  min: 0
+}) {
+  return Math.random() * (max - min) + min
+}
+
+
+class Point {
+  constructor({
+    x = 0,
+    y = 0
+  } = {
+    x: 0,
+    y: 0
+  }) {
+    this.x = x
+    this.y = y
+  }
+
+  add(other) {
+    return new Point({
+      x: this.x + other.x,
+      y: this.y + other.y
+    })
+  }
+}
+
+
+class BezierCurve {
+  constructor({
+    start = new Point(),
+    controlOne = new Point(),
+    controlTwo = new Point(),
+    end = new Point()
+  }) {
+    this.start = start
+    this.controlOne = controlOne
+    this.controlTwo = controlTwo
+    this.end = end
+  }
+
+  translate(point) {
+    return new BezierCurve({
+      start: this.start.add(point),
+      controlOne: this.controlOne.add(point),
+      controlTwo: this.controlTwo.add(point),
+      end: this.end.add(point)
+    })
+  }
 }
 
 
@@ -103,5 +169,5 @@ function fullSize() {
   return {
     height: Math.max(document.body.clientHeight, window.innerHeight),
     width: Math.max(document.body.clientWidth, window.innerWidth)
-  };
+  }
 }
