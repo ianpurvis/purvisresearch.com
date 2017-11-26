@@ -3,6 +3,11 @@
   <!-- Global Site Tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106821101-1"></script>
   <script>
+    // Disable analytics for development:
+    if (window.localStorage.getItem("pr/development") != null) {
+      console.info("PR: Disabling analytics...");
+      window['ga-disable-UA-106821101-1'] = true;
+    }
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
