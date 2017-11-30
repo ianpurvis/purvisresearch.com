@@ -1,6 +1,7 @@
 var THREE = require('three')
+var throttle = require('lodash.throttle')
 
-var renderer, scene, camera
+var renderer, scene, camera, start
 
 document.addEventListener('DOMContentLoaded', startGraphics)
 window.addEventListener('resize', maximizeGraphics)
@@ -53,8 +54,10 @@ function startGraphics() {
   animate()
 }
 
-
 function animate() {
-  window.requestAnimationFrame(animate)
+  window.requestAnimationFrame(throttledAnimate)
+  console.debug(`PR: Rendering...${new Date()}`)
   renderer.render(scene, camera)
 }
+
+let throttledAnimate = throttle(animate, 250)
