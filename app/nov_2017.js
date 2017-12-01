@@ -1,10 +1,18 @@
 var THREE = require('three')
 var throttle = require('lodash.throttle')
 
-var renderer, scene, camera, start
+let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
+let renderer, scene, camera
 
 document.addEventListener('DOMContentLoaded', startGraphics)
 window.addEventListener('resize', maximizeGraphics)
+
+
+function animate() {
+  window.requestAnimationFrame(throttledAnimate)
+  renderer.render(scene, camera)
+}
+let throttledAnimate = throttle(animate, 250)
 
 
 function fullSize() {
@@ -42,22 +50,50 @@ function startGraphics() {
   scene = new THREE.Scene()
 
   camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000)
-  camera.position.z = 100
+  camera.position.z = random({min: 1000, max: 2000})
   camera.lookAt(scene.position)
 
+
   // Add content
-  let geometry = new THREE.SphereBufferGeometry(5, 32, 32)
-  let material = new THREE.MeshBasicMaterial({color: 0xffff00})
-  let mesh = new THREE.Mesh(geometry, material)
-  scene.add(mesh)
+  var loader = new THREE.FontLoader()
+  loader.load("Inconsolata_Regular.json", font => {
+  
+    alphabet.forEach(character => {
+      let geometry = new THREE.TextBufferGeometry(character, {
+        font: font
+      })
+      
+      let material = new THREE.MeshNormalMaterial({
+        opacity: 0.7,
+        transparent: false,
+        wireframe: true,
+        wireframeLinewidth: 2.0,
+      })
+
+      let mesh = new THREE.Mesh(geometry, material)
+      mesh.position.x = random({min: -500, max: 500})
+      mesh.position.y = random({min: -500, max: 500})
+      mesh.position.z = random({min: -500, max: 500})
+      mesh.rotation.x = random({max: 2 * Math.PI})
+      mesh.rotation.y = random({max: 2 * Math.PI})
+      mesh.scale.x = mesh.scale.y = mesh.scale.z = random({max: 10})
+      mesh.matrixAutoUpdate = false
+      mesh.updateMatrix()
+
+      scene.add(mesh)
+    })
+  })
 
   animate()
 }
 
-function animate() {
-  window.requestAnimationFrame(throttledAnimate)
-  console.debug(`PR: Rendering...${new Date()}`)
-  renderer.render(scene, camera)
-}
 
-let throttledAnimate = throttle(animate, 250)
+function random({
+  max = 1,
+  min = 0
+} = {
+  max: 1,
+  min: 0
+}) {
+  return Math.random() * (max - min) + min
+}
