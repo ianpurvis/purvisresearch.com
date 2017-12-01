@@ -3,13 +3,19 @@ var throttle = require('lodash.throttle')
 
 let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
 let renderer, scene, camera
+let meshes = []
 
 document.addEventListener('DOMContentLoaded', startGraphics)
 window.addEventListener('resize', maximizeGraphics)
 
 
 function animate() {
-  window.requestAnimationFrame(throttledAnimate)
+  window.requestAnimationFrame(animate)
+
+  meshes.forEach(mesh => {
+    mesh.position.multiplyScalar(1.0001)
+  })
+
   renderer.render(scene, camera)
 }
 let throttledAnimate = throttle(animate, 250)
@@ -76,10 +82,9 @@ function startGraphics() {
       mesh.position.z = random({min: -500, max: 500})
       mesh.rotation.x = random({max: 2 * Math.PI})
       mesh.rotation.y = random({max: 2 * Math.PI})
-      mesh.scale.x = mesh.scale.y = mesh.scale.z = random({max: 10})
-      mesh.matrixAutoUpdate = false
-      mesh.updateMatrix()
+      mesh.scale.setScalar(random({max: 9.5}))
 
+      meshes.push(mesh)
       scene.add(mesh)
     })
   })
