@@ -1,12 +1,13 @@
-@import 'bulma/sass/utilities/all';
+@import "bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
 $body-line-height: 1.125;
-$body-size: 112px;
+$body-size: 96px;
 $family-primary: "Libre Barcode 128 Text";
-$link: $primary;
+$link: #0EFAB6;
 $text: $grey-darker;
 
+@import "bulma/sass/utilities/all";
 @import 'bulma/sass/base/all';
 
 canvas {
@@ -17,6 +18,20 @@ canvas {
 }
 
 main {
-  max-width: 600px;
+  letter-spacing: 4px;
+  max-width: 320px;
   word-break: break-all;
+
+  &:first-line {
+    letter-spacing: 10.5px;
+  }
+
+  @include from(568px) {
+    max-width: 568px;
+    letter-spacing: 1.8px;
+
+    &:first-line {
+      letter-spacing: 4px;
+    }
+  }
 }
