@@ -56,7 +56,7 @@ function startGraphics() {
   scene = new THREE.Scene()
 
   camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000)
-  camera.position.z = random({min: 1000, max: 2000})
+  camera.position.z = random({min: 100, max: 150})
   camera.lookAt(scene.position)
 
   // Add content
@@ -77,14 +77,15 @@ function startGraphics() {
         wireframeLinewidth: 2.0,
       })
 
+      let radius = 60
       let mesh = new THREE.Mesh(geometry, material)
-      mesh.position.x = random({min: -500, max: 500})
-      mesh.position.y = random({min: -500, max: 500})
-      mesh.position.z = random({min: -500, max: 500})
+      mesh.position.x = random({min: -radius, max: radius})
+      mesh.position.y = random({min: -radius, max: radius})
+      mesh.position.z = random({min: -radius, max: radius})
       mesh.rotation.x = random({max: 2 * Math.PI})
       mesh.rotation.y = random({max: 2 * Math.PI})
       mesh.rotation.z = random({max: 2 * Math.PI})
-      mesh.scale.setScalar(random({max: 9.5}))
+      mesh.scale.setScalar(random({max: 1}))
 
       meshes.push(mesh)
       scene.add(mesh)
