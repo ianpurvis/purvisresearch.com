@@ -1,5 +1,4 @@
 var THREE = require('three')
-var throttle = require('lodash.throttle')
 
 let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
 let renderer, scene, camera
@@ -18,7 +17,6 @@ function animate() {
 
   renderer.render(scene, camera)
 }
-let throttledAnimate = throttle(animate, 250)
 
 
 function fullSize() {
