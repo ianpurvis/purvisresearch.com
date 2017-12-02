@@ -68,6 +68,7 @@ function startGraphics() {
       })
       
       let material = new THREE.MeshNormalMaterial({
+        depthFunc: THREE.LessDepth,
         opacity: 0.7,
         transparent: false,
         wireframe: true,
