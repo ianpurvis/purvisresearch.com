@@ -13,6 +13,8 @@ function animate() {
 
   meshes.forEach(mesh => {
     mesh.position.multiplyScalar(1.0001)
+    mesh.rotation.x += 1.00002 * 2 * Math.PI
+      * Math.sign(mesh.position.z) // Spin backward if z < 0
   })
 
   renderer.render(scene, camera)
@@ -57,7 +59,6 @@ function startGraphics() {
   camera.position.z = random({min: 1000, max: 2000})
   camera.lookAt(scene.position)
 
-
   // Add content
   var loader = new THREE.FontLoader()
   loader.load("Inconsolata_Regular.json", font => {
@@ -66,6 +67,7 @@ function startGraphics() {
       let geometry = new THREE.TextBufferGeometry(character, {
         font: font
       })
+      geometry.center()
       
       let material = new THREE.MeshNormalMaterial({
         depthFunc: THREE.LessDepth,
@@ -81,6 +83,7 @@ function startGraphics() {
       mesh.position.z = random({min: -500, max: 500})
       mesh.rotation.x = random({max: 2 * Math.PI})
       mesh.rotation.y = random({max: 2 * Math.PI})
+      mesh.rotation.z = random({max: 2 * Math.PI})
       mesh.scale.setScalar(random({max: 9.5}))
 
       meshes.push(mesh)
