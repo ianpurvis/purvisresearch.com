@@ -1,3 +1,5 @@
+var PIXI = require('pixi.js')
+
 document.addEventListener('DOMContentLoaded', () => {
   initializePIXI()
 })

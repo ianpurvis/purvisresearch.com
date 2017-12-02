@@ -1,3 +1,6 @@
+var PIXI = require('pixi.js')
+require('pixi-particles')
+
 const emoji = '💾📀'
 
 document.addEventListener('DOMContentLoaded', () => {
