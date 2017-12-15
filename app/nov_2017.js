@@ -1,8 +1,9 @@
 var THREE = require('three')
 
 let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
-let renderer, scene, camera
-let meshes = []
+let renderer, scene, camera, clock
+let speedOfLife = 0.4 // Slow motion
+let particles = []
 
 document.addEventListener('DOMContentLoaded', startGraphics)
 window.addEventListener('resize', maximizeGraphics)
@@ -11,13 +12,20 @@ window.addEventListener('resize', maximizeGraphics)
 function animate() {
   window.requestAnimationFrame(animate)
 
-  meshes.forEach(mesh => {
-    mesh.position.multiplyScalar(1.0001)
-    mesh.rotation.x += 1.00002 * 2 * Math.PI
-      * Math.sign(mesh.position.z) // Spin backward if z < 0
-  })
+  let deltaTime = clock.getDelta() * speedOfLife
+  if (deltaTime > 0) {
+    particles.forEach(p => update(p, deltaTime))
+  }
 
   renderer.render(scene, camera)
+}
+
+
+function update(particle, deltaTime) {
+  particle.acceleration.multiplyScalar(1 / particle.mass)
+  particle.position.add(particle.velocity.clone().multiplyScalar(deltaTime))
+  particle.velocity.add(particle.acceleration.multiplyScalar(deltaTime))
+  particle.acceleration.setScalar(0)
 }
 
 
@@ -77,22 +85,38 @@ function startGraphics() {
         wireframeLinewidth: 2.0,
       })
 
-      let radius = 60
       let mesh = new THREE.Mesh(geometry, material)
-      mesh.position.x = random({min: -radius, max: radius})
-      mesh.position.y = random({min: -radius, max: radius})
-      mesh.position.z = random({min: -radius, max: radius})
-      mesh.rotation.x = random({max: 2 * Math.PI})
-      mesh.rotation.y = random({max: 2 * Math.PI})
-      mesh.rotation.z = random({max: 2 * Math.PI})
-      mesh.scale.setScalar(random({max: 1}))
+      let radius = 60
+      let acceleration = new THREE.Vector3(
+        random({min: -radius, max: radius}),
+        random({min: -radius, max: radius}),
+        random({min: -radius, max: radius})
+      )
+      let scale = random({min: 0.25, max: 1})
 
-      meshes.push(mesh)
+      // Give each particle a jump start:
+      mesh.position.copy(acceleration)
+
+      mesh.rotation.set(
+        random({max: 2 * Math.PI}),
+        random({max: 2 * Math.PI}),
+        random({max: 2 * Math.PI})
+      )
+      mesh.scale.setScalar(scale)
+
+      let particle = new Particle({
+        mesh: mesh,
+        acceleration: acceleration,
+        mass: scale
+      })
+
+      particles.push(particle)
       scene.add(mesh)
     })
-  })
 
-  animate()
+    clock = new THREE.Clock()
+    animate()
+  })
 }
 
 
@@ -104,4 +128,42 @@ function random({
   min: 0
 }) {
   return Math.random() * (max - min) + min
+}
+
+class Particle {
+  constructor({
+    acceleration = new THREE.Vector3(0, 0, 0),
+    mass = 1,
+    mesh = null,
+    velocity = new THREE.Vector3(0, 0, 0)
+  }) {
+    this.acceleration = acceleration
+    this.mass = mass
+    this.mesh = mesh
+    this.velocity = velocity
+  }
+
+  get position() {
+    return this.mesh.position
+  }
+
+  set position(p) {
+    this.mesh.position = p
+  }
+
+  get rotation() {
+    return this.mesh.rotation
+  }
+
+  set rotation(r) {
+    this.mesh.rotation = r
+  }
+
+  toString() {
+    return `m: ${this.mass}`
+      + `\ta: ${this.acceleration.toArray()}`
+      + `\tv: ${this.velocity.toArray()}`
+      + `\tp: ${this.position.toArray()}`
+      + `\tr: ${this.rotation.toArray()}`
+  }
 }
