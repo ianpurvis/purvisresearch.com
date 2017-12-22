@@ -12,7 +12,7 @@
   "dependencies": {
     "bulma": "^0.6.1",
     "pixi-particles": "^2.1.9",
-    "pixi.js": "^4.6.1",
+    "pixi.js": "^4.6.2",
     "three": "^0.88.0"
   },
   "devDependencies": {
