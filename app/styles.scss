@@ -4,7 +4,7 @@ $body-background-color: $white-ter;
 $body-line-height: 1.125;
 $body-size: 96px;
 $family-primary: "Libre Barcode 128 Text";
-$link: #0EFAB6;
+$link: $turquoise;
 $text: $grey-darker;
 
 @import "bulma/sass/utilities/all";
@@ -57,5 +57,11 @@ main {
         letter-spacing: 3px;
       }
     }
+  }
+}
+
+.nov {
+  a {
+    color: #0EFAB6;
   }
 }
