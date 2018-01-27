@@ -15,13 +15,5 @@
     "pixi.js": "^4.6.2",
     "three": "^0.89.0"
   },
-  "devDependencies": {
-    "auto-reload-brunch": "^2",
-    "babel-brunch": "^6.1.1",
-    "babel-preset-latest": "^6",
-    "brunch": "^2.10.12",
-    "clean-css-brunch": "^2",
-    "sass-brunch": "^2.10.4",
-    "uglify-js-brunch": "^2.10.0"
-  }
+  "devDependencies": {}
 }
