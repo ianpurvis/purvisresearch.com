@@ -15,5 +15,7 @@
     "pixi.js": "^4.6.2",
     "three": "^0.89.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "vue-cli": "^2.9.2"
+  }
 }
