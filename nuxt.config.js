@@ -47,4 +47,14 @@ module.exports = {
   css: [
     '@/assets/stylesheets/app.scss'
   ],
+
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'root',
+        path: '/',
+        component: resolve(__dirname, 'pages/nov_2017.vue')
+      })
+    }
+  }
 }
