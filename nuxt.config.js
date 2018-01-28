@@ -10,7 +10,11 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'P U R V I S _ R E S E A R C H _ O N L I N E' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel:"apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png" },
+      { rel:'icon', type:'image/x-icon', href:'/favicon.ico' },
+      { rel:"manifest",  href:"/manifest.json" },
+      { rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#f5f5f5" },
+      { rel:"stylesheet", href:"https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text" },
     ]
   },
   /*
@@ -33,6 +37,14 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
-  }
+    },
+    vendor: [
+      'pixi.js',
+      'pixi-particles'
+    ]
+  },
+
+  css: [
+    '@/assets/stylesheets/app.scss'
+  ],
 }

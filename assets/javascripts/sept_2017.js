@@ -1,26 +1,4 @@
-var PIXI = require('pixi.js')
-require('pixi-particles')
-
-const emoji = '💾📀'
-
-document.addEventListener('DOMContentLoaded', () => {
-  initializePIXI();
-});
-
-window.addEventListener('resize', () => {
-  let {width, height} = fullSize();
-  let app = document.app;
-  let emitter = document.emitter;
-
-  app.view.style.width = `${width}px`;
-  app.view.style.height = `${height}px`;
-  app.renderer.resize(width, height);
-
-  emitter.spawnRect.height = height;
-});
-
-
-function initializePIXI() {
+export function initializePIXI() {
   let {width, height} = fullSize();
 
   // The application will create a renderer using WebGL, if possible,
@@ -37,7 +15,7 @@ function initializePIXI() {
   document.body.appendChild(app.view);
 
   // Create text objects and pre-render them for the emitter
-  var texts = Array.from(emoji).map(e => new PIXI.Text(e, {fontSize: '48pt'}));
+  var texts = Array.from("💾📀").map(e => new PIXI.Text(e, {fontSize: '48pt'}));
   texts.forEach(t => app.renderer.render(t));
 
   // The PIXI.Container to put the emitter in
@@ -99,6 +77,19 @@ function initializePIXI() {
   app.ticker.add(function(elapsedSeconds) {
     emitter.update(elapsedSeconds);
   });
+}
+
+
+export function maximizeGraphics() {
+  let {width, height} = fullSize();
+  let app = document.app;
+  let emitter = document.emitter;
+
+  app.view.style.width = `${width}px`;
+  app.view.style.height = `${height}px`;
+  app.renderer.resize(width, height);
+
+  emitter.spawnRect.height = height;
 }
 
 

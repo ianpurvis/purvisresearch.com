@@ -1,4 +1,4 @@
-@import "bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
 $body-line-height: 1.125;
@@ -7,8 +7,8 @@ $family-primary: "Libre Barcode 128 Text";
 $link: $turquoise;
 $text: $grey-darker;
 
-@import "bulma/sass/utilities/all";
-@import 'bulma/sass/base/all';
+@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/base/all";
 
 canvas {
   position: absolute;

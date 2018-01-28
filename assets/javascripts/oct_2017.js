@@ -1,20 +1,4 @@
-var PIXI = require('pixi.js')
-
-document.addEventListener('DOMContentLoaded', () => {
-  initializePIXI()
-})
-
-window.addEventListener('resize', () => {
-  let {width, height} = fullSize()
-  let app = document.app
-
-  app.view.style.width = `${width}px`
-  app.view.style.height = `${height}px`
-  app.renderer.resize(width, height)
-})
-
-
-function initializePIXI() {
+export function initializePIXI() {
   let {width, height} = fullSize()
 
   var app = document.app = new PIXI.Application({
@@ -108,6 +92,16 @@ function oscillation({
   period = 10000  // milliseconds
 }) {
   return amplitude * Math.sin((Math.PI*2) * time / period)
+}
+
+
+export function maximizeGraphics() {
+  let {width, height} = fullSize()
+  let app = document.app
+
+  app.view.style.width = `${width}px`
+  app.view.style.height = `${height}px`
+  app.renderer.resize(width, height)
 }
 
 
