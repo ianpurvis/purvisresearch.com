@@ -53,7 +53,8 @@ module.exports = {
       '/nov_2017',
       '/oct_2017',
       '/sept_2017'
-    ]
+    ],
+    subFolders: false
   },
 
   modules: [
