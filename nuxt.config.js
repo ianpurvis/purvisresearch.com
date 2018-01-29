@@ -48,10 +48,17 @@ module.exports = {
     '@/assets/stylesheets/app.scss'
   ],
 
+  generate: {
+    routes: [
+      '/nov_2017',
+      '/oct_2017',
+      '/sept_2017'
+    ]
+  },
+
   router: {
     extendRoutes (routes, resolve) {
       routes.push({
-        name: 'root',
         path: '/',
         component: resolve(__dirname, 'pages/nov_2017.vue')
       })
