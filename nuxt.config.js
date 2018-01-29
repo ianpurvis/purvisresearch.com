@@ -64,6 +64,7 @@ module.exports = {
   router: {
     extendRoutes (routes, resolve) {
       routes.push({
+        name: 'root',
         path: '/',
         component: resolve(__dirname, 'pages/nov_2017.vue')
       })
