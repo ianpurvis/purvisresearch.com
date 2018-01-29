@@ -49,11 +49,6 @@ module.exports = {
   ],
 
   generate: {
-    routes: [
-      '/nov_2017',
-      '/oct_2017',
-      '/sept_2017'
-    ],
     subFolders: false
   },
 
@@ -63,11 +58,34 @@ module.exports = {
 
   router: {
     extendRoutes (routes, resolve) {
-      routes.push({
-        name: 'root',
-        path: '/',
-        component: resolve(__dirname, 'pages/nov_2017.vue')
-      })
+      // Return array to replace nuxt generated routes:
+      return [
+        {
+          name: 'root',
+          path: '/',
+          component: resolve(__dirname, 'pages/nov_2017.vue')
+        },
+        {
+          name: 'nov_2017',
+          path: '/nov_2017\.html',
+          component: resolve(__dirname, 'pages/nov_2017.vue')
+        },
+        {
+          name: 'oct_2017',
+          path: '/oct_2017\.html',
+          component: resolve(__dirname, 'pages/oct_2017.vue')
+        },
+        {
+          name: 'sept_2017',
+          path: '/sept_2017\.html',
+          component: resolve(__dirname, 'pages/sept_2017.vue')
+        },
+        {
+          name: '404',
+          path: '/404',
+          component: resolve(__dirname, 'pages/404.vue')
+        }
+      ]
     }
   }
 }
