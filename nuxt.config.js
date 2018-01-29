@@ -56,6 +56,10 @@ module.exports = {
     ]
   },
 
+  modules: [
+    [ '@nuxtjs/google-analytics', { id: 'UA-106821101-1' } ]
+  ],
+
   router: {
     extendRoutes (routes, resolve) {
       routes.push({
