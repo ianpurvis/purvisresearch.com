@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ -z "$S3_BUCKET" ]; then
+  echo 'push: Missing environment variable S3_BUCKET\n' >&2
+  exit 1
+fi
+
+aws s3 sync --delete dist "s3://$S3_BUCKET"
