@@ -1,27 +1,35 @@
 {
   "name": "prweb",
-  "description": "",
+  "version": "2.0.0",
+  "description": "PURVIS RESEARCH ONLINE",
+  "author": "Ian Purvis <ian@purvisresearch.com>",
   "private": true,
-  "author": "",
-  "version": "0.0.1",
-  "repository": "",
   "scripts": {
-    "start": "brunch watch --server",
-    "build": "brunch build --production"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate && bin/normalize_dist",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint",
+    "push": "dotenv bin/push"
   },
   "dependencies": {
+    "@nuxtjs/google-analytics": "^2.0.2",
     "bulma": "^0.6.1",
+    "nuxt": "^1.0.0",
     "pixi-particles": "^2.1.9",
     "pixi.js": "^4.6.2",
     "three": "^0.89.0"
   },
   "devDependencies": {
-    "auto-reload-brunch": "^2",
-    "babel-brunch": "^6.1.1",
-    "babel-preset-latest": "^6",
-    "brunch": "^2.10.12",
-    "clean-css-brunch": "^2",
-    "sass-brunch": "^2.10.4",
-    "uglify-js-brunch": "^2.10.0"
+    "babel-eslint": "^8.2.1",
+    "dotenv-cli": "^1.4.0",
+    "eslint": "^4.15.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
+    "vue-cli": "^2.9.2"
   }
 }

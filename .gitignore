@@ -1,26 +1,17 @@
-# Numerous always-ignore extensions
-*.diff
-*.err
-*.orig
-*.log
-*.rej
+.DS_Store
 *.swo
 *.swp
-*.vi
 *~
-*.sass-cache
+.env
 
-# OS or Editor folders
-.DS_Store
-.cache
-.project
-.settings
-.tmproj
-nbproject
-Thumbs.db
+# dependencies
+node_modules
 
-# NPM packages folder.
-node_modules/
+# logs
+npm-debug.log
 
-# Brunch output folder.
-public/
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
