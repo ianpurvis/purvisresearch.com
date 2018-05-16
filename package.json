@@ -16,7 +16,6 @@
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.0.2",
     "bulma": "^0.6.2",
-    "npm": "^5.8.0",
     "nuxt": "^1.4.0",
     "pixi-particles": "^3.0.0",
     "pixi.js": "^4.7.3",
