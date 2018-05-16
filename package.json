@@ -22,13 +22,13 @@
     "three": "^0.91.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^8.2.3",
     "dotenv-cli": "^1.4.0",
     "eslint": "^4.19.1",
-    "eslint-friendly-formatter": "^4.0.0",
+    "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.0.0",
-    "eslint-plugin-vue": "^4.4.0",
-    "node-sass": "^4.8.3",
+    "eslint-plugin-vue": "^4.5.0",
+    "node-sass": "^4.9.0",
     "sass-loader": "^6.0.7",
     "vue-cli": "^2.9.3"
   }
