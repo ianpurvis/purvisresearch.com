@@ -13,14 +13,14 @@
     "three": "^0.92.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.3",
+    "babel-eslint": "^8.2.6",
     "dotenv-cli": "^1.4.0",
     "eslint": "^4.19.1",
     "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-vue": "^4.5.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-vue": "^4.7.1",
     "node-sass": "^4.9.2",
-    "sass-loader": "^7.0.1",
-    "vue-cli": "^2.9.3"
+    "sass-loader": "^7.0.3",
+    "vue-cli": "^2.9.6"
   }
 }
