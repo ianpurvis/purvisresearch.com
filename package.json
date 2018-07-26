@@ -10,7 +10,7 @@
     "nuxt": "^1.4.1",
     "pixi-particles": "^3.0.0",
     "pixi.js": "^4.8.1",
-    "three": "^0.92.0"
+    "three": "^0.94.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
