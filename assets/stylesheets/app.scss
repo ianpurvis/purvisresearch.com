@@ -2,7 +2,6 @@
 
 $body-background-color: $white-ter;
 $body-line-height: 1.125;
-$body-size: 96px;
 $family-primary: "Libre Barcode 128 Text";
 $link: $turquoise;
 $text: $grey-darker;
@@ -18,6 +17,7 @@ canvas {
 }
 
 main {
+  font-size: 96px;
   word-break: break-all;
   max-width: 320px;
 
@@ -60,12 +60,9 @@ main {
   }
 }
 
-.error {
-  font-size: 3rem;
-}
-
 .nov {
   a {
     color: #0EFAB6;
   }
 }
+
