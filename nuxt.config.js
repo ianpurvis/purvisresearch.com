@@ -63,7 +63,12 @@ module.exports = {
         {
           name: 'root',
           path: '/',
-          component: resolve(__dirname, 'pages/nov_2017.vue')
+          component: resolve(__dirname, 'pages/aug_2018.vue')
+        },
+        {
+          name: 'aug_2018',
+          path: '/aug_2018\.html',
+          component: resolve(__dirname, 'pages/aug_2018.vue')
         },
         {
           name: 'nov_2017',
