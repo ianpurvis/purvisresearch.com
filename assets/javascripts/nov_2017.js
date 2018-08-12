@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import Random from '~/assets/javascripts/random.js'
 
 let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
 let renderer, scene, camera, clock
@@ -61,7 +62,7 @@ export function startGraphics() {
   scene = new THREE.Scene()
 
   camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000)
-  camera.position.z = random({min: 100, max: 150})
+  camera.position.z = Random.rand({min: 100, max: 150})
   camera.lookAt(scene.position)
 
   // Add content
@@ -84,19 +85,19 @@ export function startGraphics() {
     let mesh = new THREE.Mesh(geometry, material)
     let radius = 60
     let acceleration = new THREE.Vector3(
-      random({min: -radius, max: radius}),
-      random({min: -radius, max: radius}),
-      random({min: -radius, max: radius})
+      Random.rand({min: -radius, max: radius}),
+      Random.rand({min: -radius, max: radius}),
+      Random.rand({min: -radius, max: radius})
     )
-    let scale = random({min: 0.25, max: 1})
+    let scale = Random.rand({min: 0.25, max: 1})
 
     // Give each particle a jump start:
     mesh.position.copy(acceleration)
 
     mesh.rotation.set(
-      random({max: 2 * Math.PI}),
-      random({max: 2 * Math.PI}),
-      random({max: 2 * Math.PI})
+      Random.rand({max: 2 * Math.PI}),
+      Random.rand({max: 2 * Math.PI}),
+      Random.rand({max: 2 * Math.PI})
     )
     mesh.scale.setScalar(scale)
 
@@ -112,17 +113,6 @@ export function startGraphics() {
 
   clock = new THREE.Clock()
   animate()
-}
-
-
-function random({
-  max = 1,
-  min = 0
-} = {
-  max: 1,
-  min: 0
-}) {
-  return Math.random() * (max - min) + min
 }
 
 class Particle {

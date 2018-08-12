@@ -1,3 +1,5 @@
+import Random from '~/assets/javascripts/random.js'
+
 export function initializePIXI() {
   let {width, height} = fullSize()
 
@@ -16,7 +18,7 @@ export function initializePIXI() {
   ]
 
   textures
-    .sort(() => random({max: 1, min: -1}))
+    .sort(() => Random.rand({max: 1, min: -1}))
     .forEach(texture => app.stage.addChild(texture))
 
   var time = 0
@@ -36,26 +38,26 @@ export function initializePIXI() {
 
 function createBezierTexture(color, height, width) {
 
-  let lineWidth = random({max: 25, min: 1}) // pixels
-  let lineSpace = random({max: 15}) // pixels
+  let lineWidth = Random.rand({max: 25, min: 1}) // pixels
+  let lineSpace = Random.rand({max: 15}) // pixels
   let lineCount = width / (lineWidth + lineSpace)
-  let lineAlpha = random({max: 0.4, min: 0.1})
+  let lineAlpha = Random.rand({max: 0.4, min: 0.1})
 
   let bezier = new BezierCurve({
     start: new Point({
-      x: random({max: 50, min: -50}),
+      x: Random.rand({max: 50, min: -50}),
       y: -10
     }),
     controlOne: new Point({
-      x: random({max: 350, min: -350}),
-      y: random({max: height/2})
+      x: Random.rand({max: 350, min: -350}),
+      y: Random.rand({max: height/2})
     }),
     controlTwo: new Point({
-      x: -random({max: 350, min: -350}),
-      y: random({max: height, min: height/2})
+      x: -Random.rand({max: 350, min: -350}),
+      y: Random.rand({max: height, min: height/2})
     }),
     end: new Point({
-      x: random({max: 50, min: -50}),
+      x: Random.rand({max: 50, min: -50}),
       y: height + 10
     })
   })
@@ -103,18 +105,6 @@ export function maximizeGraphics() {
   app.view.style.height = `${height}px`
   app.renderer.resize(width, height)
 }
-
-
-function random({
-  max = 1,
-  min = 0
-} = {
-  max: 1,
-  min: 0
-}) {
-  return Math.random() * (max - min) + min
-}
-
 
 class Point {
   constructor({
