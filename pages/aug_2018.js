@@ -5,6 +5,7 @@ export default {
     window.removeEventListener('resize', this.maximizeFrame)
     this.stopAnimating()
     document.body.removeChild(this.demo.element)
+    this.demo.dispose()
     this.demo = null
   },
   data() {
