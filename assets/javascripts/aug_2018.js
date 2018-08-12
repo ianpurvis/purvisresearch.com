@@ -55,8 +55,8 @@ export class Demo {
           console.log(`${xhr.loaded / xhr.total * 100}% loaded`)
         },
         (exception) => {
-          console.log(`An error happened ${exception}`)
-          reject()
+          console.error(`An error happened ${exception}`)
+          reject(exception)
         }
       )
     })
