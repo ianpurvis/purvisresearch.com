@@ -1,4 +1,4 @@
-import * as Aug from '~/assets/javascripts/aug_2018.js'
+import Aug2018Demo from '~/assets/javascripts/aug_2018.js'
 
 export default {
   beforeDestroy() {
@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.demo = new Aug.Demo(this.frame(), window.devicePixelRatio)
+    this.demo = new Aug2018Demo(this.frame(), window.devicePixelRatio)
     document.body.appendChild(this.demo.element)
     this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)

@@ -1,119 +1,77 @@
 import * as THREE from 'three'
 import Random from '~/assets/javascripts/random.js'
+import Demo from '~/assets/javascripts/demo.js'
 
-let alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
-let renderer, scene, camera, clock
-let speedOfLife = 0.4 // Slow motion
-let particles = []
+export default class Nov2017Demo extends Demo {
 
-
-function animate() {
-  window.requestAnimationFrame(animate)
-
-  let deltaTime = clock.getDelta() * speedOfLife
-  if (deltaTime > 0) {
-    particles.forEach(p => update(p, deltaTime))
+  constructor(options) {
+    super(options)
+    this.alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
+    this.particles = []
+    this.camera.far = 10000
+    this.camera.position.z = Random.rand({min: 100, max: 150})
   }
 
-  renderer.render(scene, camera)
-}
+  load() {
+    let self = this
+    return super.load().then(new Promise((resolve, reject) => {
+      // Add content
+      let font = new THREE.Font(require("~/assets/fonts/Inconsolata_Regular.json"))
 
+      self.alphabet.forEach(character => {
+        let geometry = new THREE.TextBufferGeometry(character, {
+          font: font
+        })
+        geometry.center()
 
-function update(particle, deltaTime) {
-  particle.acceleration.multiplyScalar(1 / particle.mass)
-  particle.position.add(particle.velocity.clone().multiplyScalar(deltaTime))
-  particle.velocity.add(particle.acceleration.multiplyScalar(deltaTime))
-  particle.acceleration.setScalar(0)
-}
+        let material = new THREE.MeshNormalMaterial({
+          depthFunc: THREE.LessDepth,
+          opacity: 0.7,
+          transparent: false,
+          wireframe: true,
+          wireframeLinewidth: 2.0,
+        })
 
+        let mesh = new THREE.Mesh(geometry, material)
+        let radius = 60
+        let acceleration = new THREE.Vector3(
+          Random.rand({min: -radius, max: radius}),
+          Random.rand({min: -radius, max: radius}),
+          Random.rand({min: -radius, max: radius})
+        )
+        let scale = Random.rand({min: 0.25, max: 1})
 
-function fullSize() {
-  return {
-    height: Math.max(document.body.clientHeight, window.innerHeight),
-    width: Math.max(document.body.clientWidth, window.innerWidth)
+        // Give each particle a jump start:
+        mesh.position.copy(acceleration)
+
+        mesh.rotation.set(
+          Random.rand({max: 2 * Math.PI}),
+          Random.rand({max: 2 * Math.PI}),
+          Random.rand({max: 2 * Math.PI})
+        )
+        mesh.scale.setScalar(scale)
+
+        let particle = new Particle({
+          mesh: mesh,
+          acceleration: acceleration,
+          mass: scale
+        })
+
+        self.particles.push(particle)
+        self.scene.add(mesh)
+      })
+    }))
+  }
+
+  update() {
+    let deltaTime = this.clock.getDelta() * this.speedOfLife
+
+    if (deltaTime == 0) return
+
+    this.particles.forEach(p => p.update(deltaTime))
   }
 }
 
-
-export function maximizeGraphics() {
-  let {width, height} = fullSize()
-  console.debug(`PR: Resizing graphics to ${width}x${height}`)
-
-  renderer.setSize(width, height)
-  camera.aspect = width / height
-  camera.updateProjectionMatrix()
-}
-
-
-export function startGraphics() {
-  console.debug("PR: Starting graphics...")
-
-  let {width, height} = fullSize()
-
-  renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    antialias: false
-  })
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(width, height)
-  document.body.appendChild(renderer.domElement)
-
-  // Create scene
-  scene = new THREE.Scene()
-
-  camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000)
-  camera.position.z = Random.rand({min: 100, max: 150})
-  camera.lookAt(scene.position)
-
-  // Add content
-  let font = new THREE.Font(require("~/assets/fonts/Inconsolata_Regular.json"))
-  
-  alphabet.forEach(character => {
-    let geometry = new THREE.TextBufferGeometry(character, {
-      font: font
-    })
-    geometry.center()
-    
-    let material = new THREE.MeshNormalMaterial({
-      depthFunc: THREE.LessDepth,
-      opacity: 0.7,
-      transparent: false,
-      wireframe: true,
-      wireframeLinewidth: 2.0,
-    })
-
-    let mesh = new THREE.Mesh(geometry, material)
-    let radius = 60
-    let acceleration = new THREE.Vector3(
-      Random.rand({min: -radius, max: radius}),
-      Random.rand({min: -radius, max: radius}),
-      Random.rand({min: -radius, max: radius})
-    )
-    let scale = Random.rand({min: 0.25, max: 1})
-
-    // Give each particle a jump start:
-    mesh.position.copy(acceleration)
-
-    mesh.rotation.set(
-      Random.rand({max: 2 * Math.PI}),
-      Random.rand({max: 2 * Math.PI}),
-      Random.rand({max: 2 * Math.PI})
-    )
-    mesh.scale.setScalar(scale)
-
-    let particle = new Particle({
-      mesh: mesh,
-      acceleration: acceleration,
-      mass: scale
-    })
-
-    particles.push(particle)
-    scene.add(mesh)
-  })
-
-  clock = new THREE.Clock()
-  animate()
-}
 
 class Particle {
   constructor({
@@ -150,5 +108,13 @@ class Particle {
       + `\tv: ${this.velocity.toArray()}`
       + `\tp: ${this.position.toArray()}`
       + `\tr: ${this.rotation.toArray()}`
+  }
+
+
+  update(deltaTime) {
+    this.acceleration.multiplyScalar(1 / this.mass)
+    this.position.add(this.velocity.clone().multiplyScalar(deltaTime))
+    this.velocity.add(this.acceleration.multiplyScalar(deltaTime))
+    this.acceleration.setScalar(0)
   }
 }
