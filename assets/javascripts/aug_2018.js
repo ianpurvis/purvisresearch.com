@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import GLTFLoader from 'three-gltf-loader'
-import Demo from '~/assets/javascripts/demo.js'
+import ThreeDemo from '~/assets/javascripts/three_demo.js'
 
-export default class Aug2018Demo extends Demo {
+export default class Aug2018Demo extends ThreeDemo {
 
   load() {
     let self = this

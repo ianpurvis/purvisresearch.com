@@ -1,11 +1,17 @@
-import * as Oct from '~/assets/javascripts/oct_2017.js'
+import Oct2017Demo from '~/assets/javascripts/oct_2017.js'
 
 export default {
   beforeDestroy() {
-    window.removeEventListener('resize', Oct.maximizeGraphics)
+    window.removeEventListener('resize', this.maximizeFrame)
+    this.stopAnimating()
+    document.body.removeChild(this.demo.element)
+    this.demo.dispose()
+    this.demo = null
   },
   data () {
     return {
+      animationFrame: null,
+      demo: null,
       title: "oct 2017 - purvis research"
     }
   },
@@ -23,13 +29,38 @@ export default {
     }
   },
   methods: {
+    animate() {
+      this.animationFrame = window.requestAnimationFrame(this.animate)
+      this.demo.update()
+      this.demo.render()
+    },
+    frame() {
+      return {
+        height: Math.max(document.body.clientHeight, window.innerHeight),
+        width: Math.max(document.body.clientWidth, window.innerWidth)
+      }
+    },
+    maximizeFrame() {
+      this.demo.frame = this.frame()
+    },
+    startAnimating() {
+      this.animationFrame = window.requestAnimationFrame(this.animate)
+    },
+    stopAnimating() {
+      if (!this.animationFrame) return
+      window.cancelAnimationFrame(this.animationFrame)
+    },
     unobfuscate(event) {
       let link = event.currentTarget
       link.href = link.href.replace('@@','.')
     }
   },
   mounted() {
-    Oct.initializePIXI()
-    window.addEventListener('resize', Oct.maximizeGraphics)
+    this.demo = new Oct2017Demo(this.frame())
+    document.body.appendChild(this.demo.element)
+    this.startAnimating()
+    window.addEventListener('resize', this.maximizeFrame)
+
+    this.demo.load()
   }
 }
