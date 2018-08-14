@@ -74,7 +74,7 @@ export default class Sept2017Demo extends PixiDemo {
   }
 
   update() {
-    let deltaTime = this.app.ticker.deltaTime * this.speedOfLife
+    let deltaTime = this.app.ticker.elapsedMS * PIXI.settings.TARGET_FPMS * this.speedOfLife
 
     if (deltaTime == 0) return
 
