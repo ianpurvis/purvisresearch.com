@@ -30,9 +30,9 @@ export default {
   },
   methods: {
     animate() {
-      this.animationFrame = window.requestAnimationFrame(this.animate)
       this.demo.update()
       this.demo.render()
+      this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     frame() {
       return {
