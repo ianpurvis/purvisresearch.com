@@ -1,11 +1,11 @@
 import * as THREE from 'three'
+import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
-import Demo from '~/assets/javascripts/demo.js'
 
-export default class Nov2017Demo extends Demo {
+export default class Nov2017Demo extends ThreeDemo {
 
-  constructor(options) {
-    super(options)
+  constructor(frame, pixelRatio) {
+    super(frame, pixelRatio)
     this.alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
     this.particles = []
     this.camera.far = 10000
