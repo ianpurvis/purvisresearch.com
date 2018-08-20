@@ -31,10 +31,6 @@ export default class Sept2017Demo extends PixiDemo {
 
         // Emitter configuration, edit this to change the look of the emitter
         {
-          color: {
-            start: "ffffff",
-            end: "ffffff"
-          },
           frequency: 4,
           lifetime: {
             min: 2000.0,
@@ -50,8 +46,17 @@ export default class Sept2017Demo extends PixiDemo {
             max: 2.0
           },
           scale: {
-            start: 0.25,
-            end: 0.75,
+            list: [
+              {
+                value: 0.25,
+                time: 0
+              },
+              {
+                value: 0.75,
+                time: 1
+              }
+            ],
+            isStepped: false
           },
           spawnType: "rect",
           spawnRect: {
@@ -61,8 +66,17 @@ export default class Sept2017Demo extends PixiDemo {
             h: self.frame.height
           },
           speed: {
-            start: 0.5,
-            end: 1.5
+            list: [
+              {
+                value: 0.5,
+                time: 0
+              },
+              {
+                value: 1.5,
+                time: 1
+              }
+            ],
+            isStepped: false
           },
           startRotation: {
             min: -5,
