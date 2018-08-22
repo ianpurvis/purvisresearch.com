@@ -9,4 +9,8 @@ export default class Random {
   }) {
     return Math.random() * (max - min) + min
   }
+
+  static sample(array) {
+    return array[Math.floor(Math.random()*array.length)]
+  }
 }
