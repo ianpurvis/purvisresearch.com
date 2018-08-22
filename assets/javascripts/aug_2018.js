@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import GLTFLoader from 'three-gltf-loader'
+import DRACOLoader from '~/assets/javascripts/DRACOLoader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
 
@@ -24,10 +25,15 @@ export default class Aug2018Demo extends ThreeDemo {
 
 
   loadBasket() {
+    THREE.DRACOLoader.setDecoderPath('/javascripts/')
+    THREE.DRACOLoader.setDecoderConfig({type: 'js'})
+    let dracoLoader = new THREE.DRACOLoader()
+
     let loader = new GLTFLoader()
+    loader.setDRACOLoader(dracoLoader)
     return new Promise((resolve, reject) => {
       loader.load(
-        '/models/basket/asset.gltf',
+        '/models/basket.draco.glb',
         (gltf) => {
           let basket = gltf.scene.children[0]
           basket.geometry.center()
