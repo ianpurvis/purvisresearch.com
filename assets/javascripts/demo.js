@@ -12,7 +12,7 @@ export default class Demo {
 
   load() {
     console.debug("PR: Loading graphics...")
-    return Promise.resolve(self)
+    return Promise.resolve(this)
   }
 
   render() {

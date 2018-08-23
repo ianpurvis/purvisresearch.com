@@ -1,36 +1,46 @@
 import * as THREE from 'three'
-import GLTFLoader from 'three-gltf-loader'
+import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
 import DRACOLoader from '~/assets/javascripts/DRACOLoader.js'
+import GLTFLoader from 'three-gltf-loader'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
 
 export default class Aug2018Demo extends ThreeDemo {
 
-  load() {
-    let self = this
-    return super.load()
-      .then(self.loadBasket)
-      .then((basket) => {
-          basket.material = self.randomMaterial({color: 0xff00ff})
-          self.scene.add(basket)
+  layoutScene(basket) {
+    basket.material = this.randomMaterial({color: 0xff00ff})
+    this.scene.add(basket)
 
-          let clone = basket.clone()
-          clone.material = self.randomMaterial({color: 0xffff00})
-          clone.position.x += Random.rand({min: -10, max: 10})
-          self.scene.add(clone)
+    let clone = basket.clone()
+    clone.material = this.randomMaterial({color: 0xffff00})
+    clone.position.x += Random.rand({min: -10, max: 10})
+    this.scene.add(clone)
 
-          self.randomizePointOfView({subject: basket})
-      })
+    this.randomizePointOfView({subject: basket})
   }
 
+  load() {
+    return super.load()
+      .then(this.loadBasket.bind(this))
+      .then(this.layoutScene.bind(this))
+  }
+
+  loadDracoDecoder() {
+    return new Promise((resolve) => {
+      let config = {
+        onModuleLoaded: (decoder) => {
+          // Module is Promise-like. Wrap before resolving to avoid loop.
+          resolve({decoder: decoder})
+        }
+      }
+      DracoDecoderModule(config)
+    })
+  }
 
   loadBasket() {
-    THREE.DRACOLoader.setDecoderPath('/javascripts/')
-    THREE.DRACOLoader.setDecoderConfig({type: 'js'})
-    let dracoLoader = new THREE.DRACOLoader()
-
+    THREE.DRACOLoader.decoderModulePromise = this.loadDracoDecoder()
     let loader = new GLTFLoader()
-    loader.setDRACOLoader(dracoLoader)
+    loader.setDRACOLoader(new THREE.DRACOLoader())
     return new Promise((resolve, reject) => {
       loader.load(
         '/models/basket.draco.glb',
