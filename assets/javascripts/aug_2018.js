@@ -88,4 +88,19 @@ export default class Aug2018Demo extends ThreeDemo {
     this.camera.position.setFromSpherical(sphere)
     this.camera.lookAt(subject.position)
   }
+
+
+  update() {
+    let deltaTime = this.clock.getDelta() * this.speedOfLife
+
+    if (deltaTime == 0) return
+
+    this.scene.rotateZ(.05 * deltaTime)
+
+    let basket = this.scene.children[0]
+    let clone = this.scene.children[1]
+
+    basket.rotateX(.001 * deltaTime)
+    clone.rotateX(-.001 * deltaTime)
+  }
 }
