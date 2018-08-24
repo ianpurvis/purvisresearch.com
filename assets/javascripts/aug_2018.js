@@ -91,12 +91,12 @@ export default class Aug2018Demo extends ThreeDemo {
 
     if (deltaTime == 0) return
 
-    this.scene.rotateZ(.05 * deltaTime)
+    this.scene.rotateZ(0.004 * deltaTime)
 
     let basket = this.scene.children[0]
     let clone = this.scene.children[1]
 
-    basket.rotateX(.001 * deltaTime)
-    clone.rotateX(-.001 * deltaTime)
+    basket.rotateX(0.002 * deltaTime)
+    clone.rotateX(-0.002 * deltaTime)
   }
 }
