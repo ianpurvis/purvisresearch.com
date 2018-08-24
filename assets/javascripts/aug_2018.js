@@ -9,6 +9,7 @@ export default class Aug2018Demo extends ThreeDemo {
 
   layoutScene(basket) {
     basket.material = this.randomMaterial({color: 0xff00ff})
+    basket.geometry.center()
     this.scene.add(basket)
 
     let clone = basket.clone()
@@ -42,21 +43,20 @@ export default class Aug2018Demo extends ThreeDemo {
     let loader = new GLTFLoader()
     loader.setDRACOLoader(new THREE.DRACOLoader())
     return new Promise((resolve, reject) => {
-      loader.load(
-        '/models/basket.draco.glb',
-        (gltf) => {
-          let basket = gltf.scene.children[0]
-          basket.geometry.center()
-          resolve(basket)
-        },
-        (xhr) => {
-          console.log(`${xhr.loaded / xhr.total * 100}% loaded`)
-        },
-        (exception) => {
-          console.error(`An error happened ${exception}`)
-          reject(exception)
-        }
-      )
+      return import('~/assets/models/basket.draco.glb').then((buffer) => {
+        return loader.parse(
+          buffer,
+          '/',
+          (gltf) => {
+            let basket = gltf.scene.children[0]
+            resolve(basket)
+          },
+          (exception) => {
+            console.error(`An error happened ${exception}`)
+            reject(exception)
+          }
+        )
+      })
     })
   }
 

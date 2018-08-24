@@ -25,15 +25,20 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    /*
-    ** Run ESLint on save
-    */
     extend (config, { isDev, isClient }) {
       config.node = {
         fs: "empty"
       }
 
+      // Load glb models as arraybuffer
+      config.module.rules.push({
+        test: /\.glb$/,
+        loader: 'arraybuffer-loader',
+        exclude: /(node_modules)/
+      })
+
       if (isDev && isClient) {
+        // Run ESLint on save
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
