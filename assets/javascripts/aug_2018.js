@@ -25,6 +25,7 @@ export default class Aug2018Demo extends ThreeDemo {
 
   load() {
     return import('~/assets/models/basket.draco.glb')
+      .then(module => module.default)
       .then(this.parseGLTF.bind(this))
       .then(this.layoutScene.bind(this))
       .catch((error) => {
