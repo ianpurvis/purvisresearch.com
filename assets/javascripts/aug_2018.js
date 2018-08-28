@@ -91,6 +91,7 @@ export default class Aug2018Demo extends ThreeDemo {
     let deltaTime = this.clock.getDelta() * this.speedOfLife
 
     if (deltaTime == 0) return
+    if (this.scene.children.length < 1) return
 
     this.scene.rotateZ(0.004 * deltaTime)
 
