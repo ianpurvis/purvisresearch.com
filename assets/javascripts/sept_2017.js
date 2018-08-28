@@ -1,3 +1,6 @@
+if (process.browser) {
+  require('pixi-particles')
+}
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
 
 export default class Sept2017Demo extends PixiDemo {

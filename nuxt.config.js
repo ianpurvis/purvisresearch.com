@@ -47,10 +47,6 @@ module.exports = {
         })
       }
     },
-    vendor: [
-      'pixi.js',
-      'pixi-particles'
-    ]
   },
 
   css: [

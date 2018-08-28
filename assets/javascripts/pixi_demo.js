@@ -1,3 +1,6 @@
+if (process.browser) {
+  const PIXI = require('pixi.js')
+}
 import Demo from '~/assets/javascripts/demo.js'
 
 export default class PixiDemo extends Demo {
