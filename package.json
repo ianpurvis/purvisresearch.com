@@ -10,8 +10,7 @@
     "nuxt-edge": "^2.0.0-25586998.83d9dc4",
     "pixi-particles": "^3.0.1",
     "pixi.js": "^4.8.1",
-    "three": "^0.95.0",
-    "three-gltf-loader": "^1.95.0"
+    "three": "^0.95.0"
   },
   "devDependencies": {
     "arraybuffer-loader": "^1.0.6",
@@ -21,6 +20,7 @@
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.0",
     "eslint-plugin-vue": "^5.0.0-beta.3",
+    "imports-loader": "^0.8.0",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
     "vue-cli": "^2.9.6"

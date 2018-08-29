@@ -1,7 +1,7 @@
 import * as THREE from 'three'
+import 'imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
+import 'imports-loader?THREE=three!three/examples/js/loaders/GLTFLoader.js'
 import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
-import DRACOLoader from '~/assets/javascripts/DRACOLoader.js'
-import GLTFLoader from 'three-gltf-loader'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
 
@@ -50,7 +50,7 @@ export default class Aug2018Demo extends ThreeDemo {
   parseGLTF(buffer) {
     THREE.DRACOLoader.decoderModulePromise = this.loadDracoDecoder()
     return new Promise((resolve, reject) => {
-      let loader = new GLTFLoader()
+      let loader = new THREE.GLTFLoader()
       loader.setDRACOLoader(new THREE.DRACOLoader())
       loader.parse(buffer, '/', resolve, reject)
     })
