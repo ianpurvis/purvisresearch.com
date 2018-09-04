@@ -64,38 +64,17 @@ module.exports = {
   router: {
     extendRoutes (routes, resolve) {
       // Return array to replace nuxt generated routes:
-      return [
-        {
-          name: 'root',
-          path: '/',
-          component: resolve(__dirname, 'pages/2018/aug.vue')
-        },
-        {
-          name: 'aug_2018',
-          path: '/aug_2018\.html',
-          component: resolve(__dirname, 'pages/2018/aug.vue')
-        },
-        {
-          name: 'nov_2017',
-          path: '/nov_2017\.html',
-          component: resolve(__dirname, 'pages/2017/nov.vue')
-        },
-        {
-          name: 'oct_2017',
-          path: '/oct_2017\.html',
-          component: resolve(__dirname, 'pages/2017/oct.vue')
-        },
-        {
-          name: 'sept_2017',
-          path: '/sept_2017\.html',
-          component: resolve(__dirname, 'pages/2017/sept.vue')
-        },
-        {
-          name: '404',
-          path: '/404',
-          component: resolve(__dirname, 'pages/404.vue')
-        }
-      ]
+      return routes
+        .map(route => {
+          route.path += '\.html'
+          return route
+        })
+        .concat(
+          { path: '/', component: resolve(__dirname, 'pages/2018/aug.vue') },
+          { path: '/nov_2017\.html', redirect: '/2017/nov.html' },
+          { path: '/oct_2017\.html', redirect: '/2017/oct.html' },
+          { path: '/sept_2017\.html', redirect: '/2017/sept.html' },
+        )
     }
   }
 }
