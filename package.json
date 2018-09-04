@@ -9,7 +9,7 @@
     "bulma": "^0.7.1",
     "nuxt-edge": "^2.0.0-25598366.31ec2a2",
     "pixi-particles": "^3.1.0",
-    "pixi.js": "^4.8.1",
+    "pixi.js": "^4.8.2",
     "three": "^0.96.0"
   },
   "devDependencies": {
