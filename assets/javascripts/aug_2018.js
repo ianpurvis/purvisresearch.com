@@ -1,11 +1,14 @@
 import * as THREE from 'three'
-import 'imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
-import 'imports-loader?THREE=three!three/examples/js/loaders/GLTFLoader.js'
-import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
+import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
 
 export default class Aug2018Demo extends ThreeDemo {
+
+  constructor(frame, pixelRatio) {
+    super(frame, pixelRatio)
+    this.loader = new ModelLoader()
+  }
 
   layoutScene(gltf) {
     let basket = gltf.scene.children[0]
@@ -26,34 +29,11 @@ export default class Aug2018Demo extends ThreeDemo {
   load() {
     return import('~/assets/models/basket.draco.glb')
       .then(module => module.default)
-      .then(this.parseGLTF.bind(this))
+      .then(this.loader.parse.bind(this.loader))
       .then(this.layoutScene.bind(this))
       .catch((error) => {
         console.error(`An error happened ${error}`)
       })
-  }
-
-
-  loadDracoDecoder() {
-    return new Promise((resolve) => {
-      let config = {
-        onModuleLoaded: (decoder) => {
-          // Module is Promise-like. Wrap before resolving to avoid loop.
-          resolve({decoder: decoder})
-        }
-      }
-      DracoDecoderModule(config)
-    })
-  }
-
-
-  parseGLTF(buffer) {
-    THREE.DRACOLoader.decoderModulePromise = this.loadDracoDecoder()
-    return new Promise((resolve, reject) => {
-      let loader = new THREE.GLTFLoader()
-      loader.setDRACOLoader(new THREE.DRACOLoader())
-      loader.parse(buffer, '/', resolve, reject)
-    })
   }
 
 
