@@ -10,10 +10,10 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'P U R V I S _ R E S E A R C H _ O N L I N E' }
     ],
     link: [
-      { rel:"apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png" },
-      { rel:'icon', type:'image/x-icon', href:'/favicon.ico' },
+      { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
+      { rel:'icon', type:'image/x-icon', href:'/favicons/favicon.ico' },
       { rel:"manifest",  href:"/manifest.json" },
-      { rel:"mask-icon", href:"/safari-pinned-tab.svg", color:"#f5f5f5" },
+      { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
       { rel:"stylesheet", href:"https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text" },
     ]
   },
@@ -68,27 +68,27 @@ module.exports = {
         {
           name: 'root',
           path: '/',
-          component: resolve(__dirname, 'pages/aug_2018.vue')
+          component: resolve(__dirname, 'pages/2018/aug.vue')
         },
         {
           name: 'aug_2018',
           path: '/aug_2018\.html',
-          component: resolve(__dirname, 'pages/aug_2018.vue')
+          component: resolve(__dirname, 'pages/2018/aug.vue')
         },
         {
           name: 'nov_2017',
           path: '/nov_2017\.html',
-          component: resolve(__dirname, 'pages/nov_2017.vue')
+          component: resolve(__dirname, 'pages/2017/nov.vue')
         },
         {
           name: 'oct_2017',
           path: '/oct_2017\.html',
-          component: resolve(__dirname, 'pages/oct_2017.vue')
+          component: resolve(__dirname, 'pages/2017/oct.vue')
         },
         {
           name: 'sept_2017',
           path: '/sept_2017\.html',
-          component: resolve(__dirname, 'pages/sept_2017.vue')
+          component: resolve(__dirname, 'pages/2017/sept.vue')
         },
         {
           name: '404',

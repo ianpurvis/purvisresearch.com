@@ -4,4 +4,4 @@
   </main>
 </template>
 
-<script src="./aug_2018.js"></script>
+<script src="./aug.js"></script>

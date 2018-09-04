@@ -4,4 +4,4 @@
   </main>
 </template>
 
-<script src="./nov_2017.js"></script>
+<script src="./nov.js"></script>

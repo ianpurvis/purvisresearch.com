@@ -1,4 +1,4 @@
-import Sept2017Demo from '~/assets/javascripts/sept_2017.js'
+import Aug2018Demo from '~/assets/javascripts/2018/aug.js'
 
 export default {
   beforeDestroy() {
@@ -12,20 +12,20 @@ export default {
     return {
       animationFrame: null,
       demo: null,
-      title: "sept 2017 - purvis research"
+      title: "august 2018 - purvis research"
     }
   },
   head() {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"An emoji particle flow in WebGL." },
-        { property:"og:image", content:"http://purvisresearch.com/sept_2017.png" },
+        { property:"og:description", content:"" },
+        { property:"og:image", content:"http://purvisresearch.com/images/2018/aug.png" },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
-        { property:"og:title", content:"Sept 2017" },
+        { property:"og:title", content:"August 2018" },
         { name:"twitter:card", content:"summary_large_image" },
-      ],
+      ]
     }
   },
   methods: {
@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.demo = new Sept2017Demo(this.frame())
+    this.demo = new Aug2018Demo(this.frame(), window.devicePixelRatio)
     document.body.appendChild(this.demo.element)
     this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)
@@ -64,3 +64,4 @@ export default {
     this.demo.load()
   }
 }
+
