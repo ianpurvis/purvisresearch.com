@@ -17,7 +17,9 @@ export default class Aug2018Demo extends ThreeDemo {
     this.scene.add(basket)
 
     let clone = basket.clone()
-    clone.material = this.randomMaterial({color: 0xffff00})
+    while (clone.material.type == basket.material.type) {
+      clone.material = this.randomMaterial({color: 0xffff00})
+    }
     clone.position.x += Random.rand({min: -10, max: 10})
     this.scene.add(clone)
 
@@ -38,16 +40,18 @@ export default class Aug2018Demo extends ThreeDemo {
 
 
   randomMaterial({color}) {
-    let options = {
-      color: color,
-      opacity: Random.rand({min: 0.25, max: 0.95}),
-      transparent: true,
-      wireframe: true,
-    }
     let Material = Random.sample([
       THREE.MeshBasicMaterial,
       THREE.LineBasicMaterial
     ])
+    let options = {
+      color: color,
+      opacity: Random.rand({min: 0.25, max: 0.95}),
+      transparent: true
+    }
+    if (Material == THREE.MeshBasicMaterial) {
+      options.wireframe = true
+    }
     return new Material(options)
   }
 
