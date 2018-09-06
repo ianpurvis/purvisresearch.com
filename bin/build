@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-bin/nuxt generate && bin/normalize_dist
+bin/nuxt generate && echo && bin/normalize_dist
