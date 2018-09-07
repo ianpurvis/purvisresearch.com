@@ -20,7 +20,7 @@ export default class Aug2018Demo extends ThreeDemo {
     while (clone.material.type == basket.material.type) {
       clone.material = this.randomMaterial({color: 0xffff00})
     }
-    clone.position.x += Random.rand({min: -10, max: 10})
+    clone.position.x += Random.sample([0, 2, 4, 8]) * Random.sample([-1, 1])
     this.scene.add(clone)
 
     this.camera.position.copy(this.randomPointOfView({subject: basket}))
