@@ -23,7 +23,7 @@ export default class Aug2018Demo extends ThreeDemo {
     while (clone.material.type == basket.material.type) {
       clone.material = this.randomMaterial({color: 0xffff00})
     }
-    clone.position.x += Random.sample([0, 2, 4, 8]) * Random.sample([-1, 1])
+    clone.position.x += Random.sample([0, 1, 2, 4, 6, 8]) * Random.sample([-1, 1])
     this.scene.add(clone)
 
     this.camera.position.copy(this.randomPointOfView({subject: basket}))
@@ -61,10 +61,12 @@ export default class Aug2018Demo extends ThreeDemo {
     if (!subject.geometry.boundingSphere) {
       subject.geometry.computeBoundingSphere()
     }
+    let thetas = Array.from({length: 7}, (_, index) => 10 + index * 20)
+    let phis = Array.from({length: 18}, (_, index) => index * 20)
     let sphere = new THREE.Spherical(
       subject.geometry.boundingSphere.radius + Random.rand({max: 10}),
-      Random.rand({min: 5, max: 110}) * DEGREES_TO_RADIANS,
-      Random.rand({max: 360}) * DEGREES_TO_RADIANS,
+      Random.sample(thetas) * DEGREES_TO_RADIANS,
+      Random.sample(phis) * DEGREES_TO_RADIANS,
     ).makeSafe()
     let position = new THREE.Vector3()
     position.setFromSpherical(sphere)
