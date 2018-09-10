@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
+import * as basket from '~/assets/models/basket.draco.glb'
 
 export default class Aug2018Demo extends ThreeDemo {
 
@@ -29,9 +30,7 @@ export default class Aug2018Demo extends ThreeDemo {
 
 
   load() {
-    return import('~/assets/models/basket.draco.glb')
-      .then(module => module.default)
-      .then(this.loader.parse.bind(this.loader))
+    return this.loader.parse(basket)
       .then(this.layoutScene.bind(this))
       .catch((error) => {
         console.error(`An error happened ${error}`)
