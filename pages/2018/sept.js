@@ -56,7 +56,8 @@ export default {
     }
   },
   mounted() {
-    this.demo = new Demo(this.frame(), window.devicePixelRatio)
+    let pixelRatio = Math.max(window.devicePixelRatio, 2)
+    this.demo = new Demo(this.frame(), pixelRatio)
     document.body.appendChild(this.demo.element)
     this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)

@@ -13,7 +13,7 @@ export default class ThreeDemo extends Demo {
     })
 
     if (pixelRatio) {
-      this.renderer.setPixelRatio(devicePixelRatio)
+      this.renderer.setPixelRatio(pixelRatio)
     }
 
     // Initialize scene and camera:
