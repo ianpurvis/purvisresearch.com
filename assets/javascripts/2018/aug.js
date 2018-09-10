@@ -4,6 +4,8 @@ import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
 import * as basket from '~/assets/models/basket.draco.glb'
 
+const DEGREES_TO_RADIANS = (Math.PI / 180)
+
 export default class Aug2018Demo extends ThreeDemo {
 
   constructor(frame, pixelRatio) {
@@ -61,9 +63,9 @@ export default class Aug2018Demo extends ThreeDemo {
     }
     let sphere = new THREE.Spherical(
       subject.geometry.boundingSphere.radius + Random.rand({max: 10}),
-      Random.rand({min: -360, max: 360}),
-      Random.rand({min: -360, max: 360})
-    )
+      Random.rand({min: 5, max: 110}) * DEGREES_TO_RADIANS,
+      Random.rand({max: 360}) * DEGREES_TO_RADIANS,
+    ).makeSafe()
     let position = new THREE.Vector3()
     position.setFromSpherical(sphere)
     return position
