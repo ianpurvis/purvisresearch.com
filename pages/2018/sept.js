@@ -1,4 +1,4 @@
-import Aug2018Demo from '~/assets/javascripts/2018/aug.js'
+import Demo from '~/assets/javascripts/2018/sept.js'
 
 export default {
   beforeDestroy() {
@@ -12,7 +12,7 @@ export default {
     return {
       animationFrame: null,
       demo: null,
-      title: "august 2018 - purvis research"
+      title: "september 2018 - purvis research"
     }
   },
   head() {
@@ -20,10 +20,10 @@ export default {
       title: this.title,
       meta: [
         { property:"og:description", content:"" },
-        { property:"og:image", content:"http://purvisresearch.com/images/2018/aug.png" },
+        { property:"og:image", content:"http://purvisresearch.com/images/2018/sept.png" },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
-        { property:"og:title", content:"August 2018" },
+        { property:"og:title", content:"September 2018" },
         { name:"twitter:card", content:"summary_large_image" },
       ]
     }
@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.demo = new Aug2018Demo(this.frame(), window.devicePixelRatio)
+    this.demo = new Demo(this.frame(), window.devicePixelRatio)
     document.body.appendChild(this.demo.element)
     this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)
