@@ -20,7 +20,7 @@ export default {
       title: this.title,
       meta: [
         { property:"og:description", content:"A 3d character exploder in WebGL" },
-        { property:"og:image", content:"http://purvisresearch.com/images/2017/nov.png" },
+        { property:"og:image", content: require("~/assets/images/2017/nov.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Nov 2017" },

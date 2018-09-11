@@ -47,6 +47,7 @@ module.exports = {
         })
       }
     },
+    publicPath: 'http://purvisresearch.com/'
   },
 
   css: [
