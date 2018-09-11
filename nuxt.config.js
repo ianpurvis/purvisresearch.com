@@ -11,7 +11,7 @@ module.exports = {
     ],
     link: [
       { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
-      { rel:'icon', type:'image/x-icon', href:'/favicons/favicon.ico' },
+      { rel:'icon', type:'image/x-icon', href:'/favicons/favicon2.ico' },
       { rel:"manifest",  href:"/manifest.json" },
       { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
       { rel:"stylesheet", href:"https://fonts.googleapis.com/css?family=Libre+Barcode+128+Text" },
