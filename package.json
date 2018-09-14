@@ -7,7 +7,7 @@
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.0.2",
     "bulma": "^0.7.1",
-    "nuxt-edge": "^2.0.0-25609473.c77fa47",
+    "nuxt-edge": "^2.0.0-25614193.6fc78ea",
     "pixi-particles": "^3.1.0",
     "pixi.js": "^4.8.2",
     "three": "^0.96.0"
