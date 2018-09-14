@@ -11,6 +11,7 @@ export default class ThreeDemo extends Demo {
       alpha: true,
       antialias: false
     })
+    this.renderer.setSize(frame.width, frame.height)
 
     if (pixelRatio) {
       this.renderer.setPixelRatio(pixelRatio)
@@ -33,9 +34,15 @@ export default class ThreeDemo extends Demo {
 
   set frame(value) {
     console.debug(`PR: Resizing graphics to ${value.width}x${value.height}`)
-    this.renderer.setSize(value.width, value.height)
+    let oldValue = this.renderer.getSize()
+    let oldTanFOV = Math.tan(((Math.PI/180) * this.camera.fov/2))
+
     this.camera.aspect = value.width / value.height
+    this.camera.fov = (360/Math.PI) * Math.atan(oldTanFOV * (value.height/oldValue.height))
     this.camera.updateProjectionMatrix()
+
+    this.renderer.setSize(value.width, value.height)
+    this.render()
   }
 
   dispose() {
