@@ -1,7 +1,9 @@
 import Demo from '~/assets/javascripts/2018/sept.js'
+import Stats from 'stats.js'
 
 export default {
   beforeDestroy() {
+    window.removeEventListener('keyup', this.handleKeyup)
     window.removeEventListener('resize', this.maximizeFrame)
     this.stopAnimating()
     document.body.removeChild(this.demo.element)
@@ -12,6 +14,7 @@ export default {
     return {
       animationFrame: null,
       demo: null,
+      stats: null,
       title: "sept 2018 - purvis research"
     }
   },
@@ -30,9 +33,18 @@ export default {
   },
   methods: {
     animate() {
+      if (this.stats) this.stats.begin()
       this.demo.update()
       this.demo.render()
+      if (this.stats) this.stats.end()
       this.animationFrame = window.requestAnimationFrame(this.animate)
+    },
+    handleKeyup(event) {
+      if (event.defaultPrevented) return
+
+      switch (event.key) {
+        case "p": this.toggleProfiling()
+      }
     },
     frame() {
       return {
@@ -50,6 +62,20 @@ export default {
       if (!this.animationFrame) return
       window.cancelAnimationFrame(this.animationFrame)
     },
+    startProfiling() {
+      if (this.stats) return
+      this.stats = new Stats()
+      this.stats.showPanel(0)
+      document.body.appendChild(this.stats.dom)
+    },
+    stopProfiling() {
+      if (!this.stats) return
+      document.body.removeChild(this.stats.dom)
+      this.stats = null
+    },
+    toggleProfiling() {
+      (this.stats) ? this.stopProfiling() : this.startProfiling()
+    },
     unobfuscate(event) {
       let link = event.currentTarget
       link.href = link.href.replace('@@','.')
@@ -59,8 +85,10 @@ export default {
     let pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.demo = new Demo(this.frame(), pixelRatio)
     document.body.appendChild(this.demo.element)
+
     this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)
+    window.addEventListener('keyup', this.handleKeyup)
 
     this.demo.load()
   }

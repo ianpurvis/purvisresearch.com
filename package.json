@@ -10,6 +10,7 @@
     "nuxt-edge": "^2.0.0-25621471.65432e6",
     "pixi-particles": "^3.1.0",
     "pixi.js": "^4.8.2",
+    "stats.js": "^0.17.0",
     "three": "^0.96.0"
   },
   "devDependencies": {
