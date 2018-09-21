@@ -26,7 +26,7 @@ export default class Oct2017Demo extends PixiDemo {
       ]
 
       self.textures
-        .sort(() => Random.rand({max: 1, min: -1}))
+        .sort(Random.comparison)
         .forEach((texture) => self.app.stage.addChild(texture))
     }))
   }

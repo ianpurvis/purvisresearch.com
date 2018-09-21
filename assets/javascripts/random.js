@@ -13,4 +13,8 @@ export default class Random {
   static sample(array) {
     return array[Math.floor(Math.random()*array.length)]
   }
+
+  static comparison() {
+    return Random.rand({max: 1, min: -1})
+  }
 }
