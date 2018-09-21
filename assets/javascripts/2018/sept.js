@@ -14,17 +14,31 @@ export default class Aug2018Demo extends ThreeDemo {
   }
 
   layoutScene(gltf) {
-    let basket = gltf.scene.children[0]
-    basket.material = this.randomMaterial({color: 0xff00ff})
-    basket.geometry.center()
-    this.scene.add(basket)
+    let colors = [
+      new THREE.Color(0xff00ff),
+      new THREE.Color(0xffff00)
+    ].sort(Random.comparison)
 
-    let clone = basket.clone()
-    while (clone.material.type == basket.material.type) {
-      clone.material = this.randomMaterial({color: 0xffff00})
-    }
+    let basket = gltf.scene.children[0]
+    basket.material.color = colors[0]
+    basket.material.depthTest = Random.sample([true, false])
+    basket.material.opacity = Random.rand({min: 0.25, max: 0.95})
+    basket.material.transparent = true
+    basket.material.needsUpdate = true
+    basket.geometry.center()
+
+    let wireframe = new THREE.WireframeGeometry(basket.geometry)
+    let clone = new THREE.LineSegments(wireframe)
+    clone.rotation.copy(basket.rotation)
+    clone.material.color = colors[1]
+    clone.material.depthTest = Random.sample([true, false])
+    clone.material.opacity = Random.rand({min: 0.25, max: 0.95})
+    clone.material.transparent = true
+    clone.material.needsUpdate = true
     clone.position.x += Random.sample([0, 1, 2, 4, 6, 8]) * Random.sample([-1, 1])
-    this.scene.add(clone)
+
+    let objects = [basket, clone].sort(Random.comparison)
+    this.scene.add(...objects)
 
     this.camera.position.copy(this.randomPointOfView({subject: basket}))
     this.camera.lookAt(basket.position)
@@ -37,23 +51,6 @@ export default class Aug2018Demo extends ThreeDemo {
       .catch((error) => {
         console.error(`An error happened ${error}`)
       })
-  }
-
-
-  randomMaterial({color}) {
-    let Material = Random.sample([
-      THREE.MeshBasicMaterial,
-      THREE.LineBasicMaterial
-    ])
-    let options = {
-      color: color,
-      opacity: Random.rand({min: 0.25, max: 0.95}),
-      transparent: true
-    }
-    if (Material == THREE.MeshBasicMaterial) {
-      options.wireframe = true
-    }
-    return new Material(options)
   }
 
 
