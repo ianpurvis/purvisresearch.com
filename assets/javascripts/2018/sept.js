@@ -21,8 +21,9 @@ export default class Aug2018Demo extends ThreeDemo {
 
     let basket = gltf.scene.children[0]
     basket.material.color = colors[0]
-    basket.material.depthTest = Random.sample([true, false])
+    basket.material.depthTest = false
     basket.material.opacity = Random.rand({min: 0.25, max: 0.95})
+    basket.material.side = THREE.DoubleSide
     basket.material.transparent = true
     basket.material.needsUpdate = true
     basket.geometry.center()
@@ -31,8 +32,9 @@ export default class Aug2018Demo extends ThreeDemo {
     let clone = new THREE.LineSegments(wireframe)
     clone.rotation.copy(basket.rotation)
     clone.material.color = colors[1]
-    clone.material.depthTest = Random.sample([true, false])
+    clone.material.depthTest = false
     clone.material.opacity = Random.rand({min: 0.25, max: 0.95})
+    clone.material.side = THREE.DoubleSide
     clone.material.transparent = true
     clone.material.needsUpdate = true
     clone.position.x += Random.sample([0, 1, 2, 4, 6, 8]) * Random.sample([-1, 1])
