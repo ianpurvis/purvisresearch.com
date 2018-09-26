@@ -23,7 +23,6 @@ export default class Aug2018Demo extends ThreeDemo {
     basket.material.color = colors[0]
     basket.material.depthTest = false
     basket.material.opacity = Random.rand({min: 0.25, max: 0.95})
-    basket.material.side = THREE.DoubleSide
     basket.material.transparent = true
     basket.material.needsUpdate = true
     basket.geometry.center()
@@ -42,8 +41,13 @@ export default class Aug2018Demo extends ThreeDemo {
     let objects = [basket, clone].sort(Random.comparison)
     this.scene.add(...objects)
 
-    this.camera.position.copy(this.randomPointOfView({subject: basket}))
-    this.camera.lookAt(basket.position)
+    basket.geometry.computeBoundingSphere()
+    let boundingRadius = basket.geometry.boundingSphere.radius
+    let radiusOfPosition = boundingRadius * Random.sample([1, 1.20])
+    this.camera.position.copy(this.sampleSphere(radiusOfPosition))
+
+    let radiusOfLookAt = boundingRadius * Random.sample([0, 0.20, 0.40, 0.60])
+    this.camera.lookAt(this.sampleSphere(radiusOfLookAt))
   }
 
 
@@ -56,20 +60,16 @@ export default class Aug2018Demo extends ThreeDemo {
   }
 
 
-  randomPointOfView({subject}) {
-    if (!subject.geometry.boundingSphere) {
-      subject.geometry.computeBoundingSphere()
-    }
-    let thetas = Array.from({length: 7}, (_, index) => 10 + index * 20)
+  sampleSphere(radius) {
+    let thetas = Array.from({length: 5}, (_, index) => 45 + index * 18)
     let phis = Array.from({length: 18}, (_, index) => index * 20)
-    let sphere = new THREE.Spherical(
-      subject.geometry.boundingSphere.radius + Random.rand({max: 10}),
+    let spherical = new THREE.Spherical(
+      radius,
       Random.sample(thetas) * DEGREES_TO_RADIANS,
       Random.sample(phis) * DEGREES_TO_RADIANS,
     ).makeSafe()
-    let position = new THREE.Vector3()
-    position.setFromSpherical(sphere)
-    return position
+
+    return new THREE.Vector3().setFromSpherical(spherical)
   }
 
 
