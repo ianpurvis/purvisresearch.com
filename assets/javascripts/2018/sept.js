@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import 'imports-loader?THREE=three!three/examples/js/controls/OrbitControls.js'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
@@ -11,6 +12,12 @@ export default class Aug2018Demo extends ThreeDemo {
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
+    this.controls = new THREE.OrbitControls(this.camera)
+    this.controls.autoRotate = true
+    this.controls.autoRotateSpeed = 0.04
+    this.controls.enablePan = false
+    this.controls.enableZoom = false
+    this.controls.rotateSpeed = 0.06
   }
 
   layoutScene(gltf) {
@@ -42,14 +49,17 @@ export default class Aug2018Demo extends ThreeDemo {
     this.scene.add(...objects)
 
     basket.geometry.computeBoundingSphere()
-    let boundingRadius = basket.geometry.boundingSphere.radius
-    let radiusOfPosition = boundingRadius * Random.sample([1, 1.20])
-    this.camera.position.copy(this.sampleSphere(radiusOfPosition))
-
-    let radiusOfLookAt = boundingRadius * Random.sample([0, 0.20, 0.40, 0.60])
-    this.camera.lookAt(this.sampleSphere(radiusOfLookAt))
+    let basketRadius = basket.geometry.boundingSphere.radius
+    let orbitRadius = basketRadius * Random.sample([1, 1.20])
+    this.camera.position.copy(this.sampleSphere(orbitRadius))
+    let targetRadius = basketRadius * Random.sample([0, 0.20, 0.40])
+    this.controls.target = this.sampleSphere(targetRadius)
   }
 
+  dispose() {
+    this.controls.dispose()
+    super.dispose()
+  }
 
   load() {
     return this.loader.parse(basket)
@@ -75,16 +85,14 @@ export default class Aug2018Demo extends ThreeDemo {
 
   update() {
     let deltaTime = this.clock.getDelta() * this.speedOfLife
-
     if (deltaTime == 0) return
+
+    this.controls.update()
+
     if (this.scene.children.length < 1) return
-
-    this.scene.rotateZ(0.004 * deltaTime)
-
     let basket = this.scene.children[0]
-    let clone = this.scene.children[1]
-
     basket.rotateX(0.002 * deltaTime)
+    let clone = this.scene.children[1]
     clone.rotateX(-0.002 * deltaTime)
   }
 }
