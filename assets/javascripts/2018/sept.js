@@ -13,10 +13,10 @@ export default class Aug2018Demo extends ThreeDemo {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
     this.controls = new THREE.OrbitControls(this.camera)
-    this.controls.autoRotate = true
     this.controls.autoRotateSpeed = 0.04
     this.controls.enablePan = false
     this.controls.enableZoom = false
+    this.controls.enableRotate = false
     this.controls.rotateSpeed = 0.06
   }
 
@@ -53,6 +53,7 @@ export default class Aug2018Demo extends ThreeDemo {
     this.camera.position.copy(this.sampleSphere(orbitRadius))
     let targetRadius = basketRadius * Random.sample([0, 0.20, 0.40])
     this.controls.target = this.sampleSphere(targetRadius)
+    this.controls.update()
   }
 
   dispose() {
@@ -85,12 +86,13 @@ export default class Aug2018Demo extends ThreeDemo {
   update() {
     let deltaTime = this.clock.getDelta() * this.speedOfLife
     if (deltaTime == 0) return
-
-    this.controls.update()
-
     if (this.scene.children.length < 1) return
+
+    this.scene.rotateZ(0.004 * deltaTime)
+
     let basket = this.scene.children[0]
     basket.rotateX(0.002 * deltaTime)
+
     let clone = this.scene.children[1]
     clone.rotateX(-0.002 * deltaTime)
   }
