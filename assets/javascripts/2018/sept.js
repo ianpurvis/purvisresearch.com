@@ -48,8 +48,7 @@ export default class Aug2018Demo extends ThreeDemo {
     let objects = [basket, clone].sort(Random.comparison)
     this.scene.add(...objects)
 
-    basket.geometry.computeBoundingSphere()
-    let basketRadius = basket.geometry.boundingSphere.radius
+    let basketRadius = 64 // Pre-computed from basket.geometry.boundingSphere.radius
     let orbitRadius = basketRadius * Random.sample([1, 1.20])
     this.camera.position.copy(this.sampleSphere(orbitRadius))
     let targetRadius = basketRadius * Random.sample([0, 0.20, 0.40])
