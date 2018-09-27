@@ -11,7 +11,7 @@
     "pixi-particles": "^3.1.0",
     "pixi.js": "^4.8.2",
     "stats.js": "^0.17.0",
-    "three": "^0.96.0"
+    "three": "^0.97.0"
   },
   "devDependencies": {
     "ajv": "^6.5.4",
