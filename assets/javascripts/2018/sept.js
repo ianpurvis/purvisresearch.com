@@ -1,8 +1,8 @@
-import * as THREE from 'three'
+import { Color, WireframeGeometry, LineSegments, DoubleSide, Spherical, Vector3 } from 'three'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
-import * as basket from '~/assets/models/basket.draco.glb'
+import basket from '~/assets/models/basket.draco.glb'
 
 const DEGREES_TO_RADIANS = (Math.PI / 180)
 
@@ -15,8 +15,8 @@ export default class Aug2018Demo extends ThreeDemo {
 
   layoutScene(gltf) {
     let colors = [
-      new THREE.Color(0xff00ff),
-      new THREE.Color(0xffff00)
+      new Color(0xff00ff),
+      new Color(0xffff00)
     ].sort(Random.comparison)
 
     let basket = gltf.scene.children[0]
@@ -27,13 +27,13 @@ export default class Aug2018Demo extends ThreeDemo {
     basket.material.needsUpdate = true
     basket.geometry.center()
 
-    let wireframe = new THREE.WireframeGeometry(basket.geometry)
-    let clone = new THREE.LineSegments(wireframe)
+    let wireframe = new WireframeGeometry(basket.geometry)
+    let clone = new LineSegments(wireframe)
     clone.rotation.copy(basket.rotation)
     clone.material.color = colors[1]
     clone.material.depthTest = false
     clone.material.opacity = Random.rand({min: 0.25, max: 0.95})
-    clone.material.side = THREE.DoubleSide
+    clone.material.side = DoubleSide
     clone.material.transparent = true
     clone.material.needsUpdate = true
     clone.position.x += Random.sample([0, 1, 2, 4, 6, 8]) * Random.sample([-1, 1])
@@ -60,13 +60,13 @@ export default class Aug2018Demo extends ThreeDemo {
   sampleSphere(radius) {
     let thetas = Array.from({length: 5}, (_, index) => 45 + index * 18)
     let phis = Array.from({length: 18}, (_, index) => index * 20)
-    let spherical = new THREE.Spherical(
+    let spherical = new Spherical(
       radius,
       Random.sample(thetas) * DEGREES_TO_RADIANS,
       Random.sample(phis) * DEGREES_TO_RADIANS,
     ).makeSafe()
 
-    return new THREE.Vector3().setFromSpherical(spherical)
+    return new Vector3().setFromSpherical(spherical)
   }
 
 

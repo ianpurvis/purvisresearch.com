@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import { WebGLRenderer, Scene, Clock, PerspectiveCamera, Mesh, MeshFaceMaterial, MultiMaterial } from 'three'
 import Demo from '~/assets/javascripts/demo.js'
 
 export default class ThreeDemo extends Demo {
@@ -7,7 +7,7 @@ export default class ThreeDemo extends Demo {
     super()
 
     // Initialize renderer:
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       alpha: true,
       antialias: false
     })
@@ -18,12 +18,12 @@ export default class ThreeDemo extends Demo {
     }
 
     // Initialize scene and camera:
-    this.scene = new THREE.Scene()
-    this.camera = new THREE.PerspectiveCamera(60)
+    this.scene = new Scene()
+    this.camera = new PerspectiveCamera(60)
     this.camera.position.z = 100
     this.camera.lookAt(this.scene.position)
 
-    this.clock = new THREE.Clock()
+    this.clock = new Clock()
     this.speedOfLife = 0.4 // Slow motion
     this.frame = frame
   }
@@ -50,14 +50,14 @@ export default class ThreeDemo extends Demo {
     //    https://github.com/mrdoob/three.js/issues/5175
     //    https://stackoverflow.com/a/40178723
     this.scene.traverse((node) => {
-      if (!(node instanceof THREE.Mesh)) return
+      if (!(node instanceof Mesh)) return
 
       if (node.geometry) {
         node.geometry.dispose()
       }
 
       if (node.material) {
-        if (node.material instanceof THREE.MeshFaceMaterial || node.material instanceof THREE.MultiMaterial) {
+        if (node.material instanceof MeshFaceMaterial || node.material instanceof MultiMaterial) {
           node.material.materials.forEach((mtrl) => {
             if (mtrl.map)         mtrl.map.dispose()
             if (mtrl.lightMap)    mtrl.lightMap.dispose()

@@ -1,9 +1,8 @@
-import * as THREE from 'three'
-import 'imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
-import 'imports-loader?THREE=three!three/examples/js/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'exports-loader?DRACOLoader=THREE.DRACOLoader!imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
+import { GLTFLoader } from 'exports-loader?GLTFLoader=THREE.GLTFLoader!imports-loader?THREE=three!three/examples/js/loaders/GLTFLoader.js'
 import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
 
-export default class ModelLoader extends THREE.GLTFLoader {
+export default class ModelLoader extends GLTFLoader {
 
   static loadDracoDecoder() {
     return new Promise((resolve) => {
@@ -19,11 +18,11 @@ export default class ModelLoader extends THREE.GLTFLoader {
 
   constructor(manager) {
     super(manager)
-    this.dracoLoader = new THREE.DRACOLoader()
+    this.dracoLoader = new DRACOLoader()
 
     // Lazy-load DRACO decoder
-    if (THREE.DRACOLoader.decoderModulePromise) return
-    THREE.DRACOLoader.decoderModulePromise = ModelLoader.loadDracoDecoder()
+    if (DRACOLoader.decoderModulePromise) return
+    DRACOLoader.decoderModulePromise = ModelLoader.loadDracoDecoder()
   }
 
   parse(data, path = '/') {
