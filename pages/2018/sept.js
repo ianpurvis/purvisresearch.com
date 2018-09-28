@@ -22,7 +22,7 @@ export default {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"A scanned 3d model, randomly rendered in WebGL" },
+        { property:"og:description", content:"Screen printing with 3D scans and WebGL" },
         { property:"og:image", content: require("~/assets/images/2018/sept.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
