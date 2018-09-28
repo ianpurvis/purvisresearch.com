@@ -85,12 +85,9 @@ export default {
     let pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.demo = new Demo(this.frame(), pixelRatio)
     document.body.appendChild(this.demo.element)
-
-    this.startAnimating()
     window.addEventListener('resize', this.maximizeFrame)
     window.addEventListener('keyup', this.handleKeyup)
-
-    this.demo.load()
+    this.demo.load().then(this.demo.render.bind(this.demo))
   }
 }
 

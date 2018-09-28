@@ -36,10 +36,11 @@ export default class Aug2018Demo extends ThreeDemo {
     clone.material.side = DoubleSide
     clone.material.transparent = true
     clone.material.needsUpdate = true
-    clone.position.x += Random.sample([0, 1, 2, 4, 6, 8]) * Random.sample([-1, 1])
+    clone.position.copy(this.sampleSphere(Random.sample([0, 1, 2, 4, 6, 8])))
 
     let objects = [basket, clone].sort(Random.comparison)
     this.scene.add(...objects)
+    this.scene.rotateZ(Random.sample([0, 1, 2, 4, 6, 8]) * DEGREES_TO_RADIANS)
 
     let basketRadius = 64 // Pre-computed from basket.geometry.boundingSphere.radius
     let orbitRadius = basketRadius * Random.sample([1, 1.20])
@@ -67,20 +68,5 @@ export default class Aug2018Demo extends ThreeDemo {
     ).makeSafe()
 
     return new Vector3().setFromSpherical(spherical)
-  }
-
-
-  update() {
-    let deltaTime = this.clock.getDelta() * this.speedOfLife
-    if (deltaTime == 0) return
-    if (this.scene.children.length < 1) return
-
-    this.scene.rotateZ(0.004 * deltaTime)
-
-    let basket = this.scene.children[0]
-    basket.rotateX(0.002 * deltaTime)
-
-    let clone = this.scene.children[1]
-    clone.rotateX(-0.002 * deltaTime)
   }
 }
