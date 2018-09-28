@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import 'imports-loader?THREE=three!three/examples/js/controls/OrbitControls.js'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
@@ -12,12 +11,6 @@ export default class Aug2018Demo extends ThreeDemo {
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
-    this.controls = new THREE.OrbitControls(this.camera)
-    this.controls.autoRotateSpeed = 0.04
-    this.controls.enablePan = false
-    this.controls.enableZoom = false
-    this.controls.enableRotate = false
-    this.controls.rotateSpeed = 0.06
   }
 
   layoutScene(gltf) {
@@ -52,13 +45,7 @@ export default class Aug2018Demo extends ThreeDemo {
     let orbitRadius = basketRadius * Random.sample([1, 1.20])
     this.camera.position.copy(this.sampleSphere(orbitRadius))
     let targetRadius = basketRadius * Random.sample([0, 0.20, 0.40])
-    this.controls.target = this.sampleSphere(targetRadius)
-    this.controls.update()
-  }
-
-  dispose() {
-    this.controls.dispose()
-    super.dispose()
+    this.camera.lookAt(this.sampleSphere(targetRadius))
   }
 
   load() {
