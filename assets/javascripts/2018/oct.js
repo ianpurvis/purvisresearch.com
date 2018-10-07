@@ -6,7 +6,7 @@ import basket from '~/assets/models/basket.draco.glb'
 
 const DEGREES_TO_RADIANS = (Math.PI / 180)
 
-export default class Aug2018Demo extends ThreeDemo {
+export default class Oct2018Demo extends ThreeDemo {
 
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)

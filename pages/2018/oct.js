@@ -1,4 +1,4 @@
-import Demo from '~/assets/javascripts/2018/sept.js'
+import Demo from '~/assets/javascripts/2018/oct.js'
 import Stats from 'stats.js'
 
 export default {
@@ -15,7 +15,7 @@ export default {
       animationFrame: null,
       demo: null,
       stats: null,
-      title: "sept 2018 - purvis research"
+      title: "oct 2018 - purvis research"
     }
   },
   head() {
@@ -23,10 +23,10 @@ export default {
       title: this.title,
       meta: [
         { property:"og:description", content:"Screen printing with 3D scans and WebGL" },
-        { property:"og:image", content: require("~/assets/images/2018/sept.png") },
+        { property:"og:image", content: require("~/assets/images/2018/oct.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
-        { property:"og:title", content:"Sept 2018" },
+        { property:"og:title", content:"Oct 2018" },
         { name:"twitter:card", content:"summary_large_image" },
       ]
     }
