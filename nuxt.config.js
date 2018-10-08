@@ -24,10 +24,13 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    extend (config, { isDev, isClient }) {
+    extend (config, { isDev, isClient, loaders }) {
       config.node = {
         fs: "empty"
       }
+
+      // Inline fonts up to 10k
+      loaders.fontUrl.limit = 10000
 
       // Load glb models as arraybuffer
       config.module.rules.push({
