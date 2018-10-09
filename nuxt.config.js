@@ -49,7 +49,7 @@ module.exports = {
         })
       }
     },
-    publicPath: 'http://purvisresearch.com/'
+    publicPath: '/./'
   },
 
   css: [
