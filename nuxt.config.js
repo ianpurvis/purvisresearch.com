@@ -49,7 +49,12 @@ module.exports = {
         })
       }
     },
-    publicPath: '/./'
+    filenames: {
+      app: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
+      chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
+      css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css'
+    },
+    publicPath: '/_/'
   },
 
   css: [
