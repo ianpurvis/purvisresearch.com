@@ -36,17 +36,39 @@ export default class Oct2018Demo extends ThreeDemo {
     clone.material.side = DoubleSide
     clone.material.transparent = true
     clone.material.needsUpdate = true
-    clone.position.copy(this.sampleSphere(Random.sample([0, 1, 2, 4, 6, 8])))
 
     let objects = [basket, clone].sort(Random.comparison)
     this.scene.add(...objects)
-    this.scene.rotateZ(Random.sample([0, 1, 2, 4, 6, 8]) * DEGREES_TO_RADIANS)
+
+    let clonePosition = this.vectorFromSpherical({
+      radius: Random.rand({max: 8}),
+      theta:  Random.rand({max: 180}),
+      phi: Random.rand({max: 360})
+    })
+    clone.position.copy(clonePosition)
+
+    let sceneRotation = this.vectorFromSpherical({
+      radius: Random.rand({max: 8}),
+      theta:  Random.rand({max: 180}),
+      phi: Random.rand({max: 360})
+    })
+    this.scene.lookAt(sceneRotation)
 
     let basketRadius = 64 // Pre-computed from basket.geometry.boundingSphere.radius
-    let orbitRadius = basketRadius * Random.sample([1, 1.20])
-    this.camera.position.copy(this.sampleSphere(orbitRadius))
-    let targetRadius = basketRadius * Random.sample([0, 0.20, 0.40])
-    this.camera.lookAt(this.sampleSphere(targetRadius))
+
+    let orbitPosition = this.vectorFromSpherical({
+      radius: basketRadius * Random.rand({min: 0.90, max: 1.20}),
+      theta:  Random.rand({min: 50, max: 140}),
+      phi: Random.rand({max: 360})
+    })
+    this.camera.position.copy(orbitPosition)
+
+    let targetPosition = this.vectorFromSpherical({
+      radius: basketRadius * Random.rand({max: 0.50}),
+      theta:  Random.rand({max: 180}),
+      phi: Random.rand({max: 360})
+    })
+    this.camera.lookAt(targetPosition)
   }
 
   load() {
@@ -57,16 +79,9 @@ export default class Oct2018Demo extends ThreeDemo {
       })
   }
 
-
-  sampleSphere(radius) {
-    let thetas = Array.from({length: 5}, (_, index) => 45 + index * 18)
-    let phis = Array.from({length: 18}, (_, index) => index * 20)
-    let spherical = new Spherical(
-      radius,
-      Random.sample(thetas) * DEGREES_TO_RADIANS,
-      Random.sample(phis) * DEGREES_TO_RADIANS,
-    ).makeSafe()
-
-    return new Vector3().setFromSpherical(spherical)
+  vectorFromSpherical({radius, theta, phi}) {
+    let spherical = new Spherical(radius, theta * DEGREES_TO_RADIANS, phi * DEGREES_TO_RADIANS).makeSafe()
+    let vector = new Vector3().setFromSpherical(spherical)
+    return vector
   }
 }
