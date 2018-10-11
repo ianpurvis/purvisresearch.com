@@ -1,3 +1,5 @@
+const isProduction = (process.env.NODE_ENV === 'production')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -66,7 +68,13 @@ module.exports = {
   },
 
   modules: [
-    [ '@nuxtjs/google-analytics', { id: 'UA-106821101-1' } ]
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-106821101-1',
+      debug: {
+        enabled: !isProduction,
+        sendHitTask: isProduction
+      }
+    }]
   ],
 
   router: {
