@@ -22,7 +22,7 @@ export default class Oct2018Demo extends ThreeDemo {
     let basket = gltf.scene.children[0]
     basket.material.color = colors[0]
     basket.material.depthTest = false
-    basket.material.opacity = Random.rand({min: 0.25, max: 0.95})
+    basket.material.opacity = Random.rand({min: 0.25, max: 0.90})
     basket.material.transparent = true
     basket.material.needsUpdate = true
     basket.geometry.center()
