@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.0.2",
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.2",
     "nuxt": "^2.2.0",
     "pixi-particles": "^3.1.0",
     "pixi.js": "^4.8.2",
