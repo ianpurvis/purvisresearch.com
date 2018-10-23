@@ -11,6 +11,7 @@ export default class Oct2018Demo extends ThreeDemo {
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
+    this.speedOfLife = 0.05
   }
 
   layoutScene(gltf) {
@@ -83,5 +84,17 @@ export default class Oct2018Demo extends ThreeDemo {
     let spherical = new Spherical(radius, theta * DEGREES_TO_RADIANS, phi * DEGREES_TO_RADIANS).makeSafe()
     let vector = new Vector3().setFromSpherical(spherical)
     return vector
+  }
+
+  update() {
+    let deltaTime = this.clock.getDelta() * this.speedOfLife
+    if (deltaTime == 0) return
+    if (this.scene.children.length < 1) return
+
+    let basket = this.scene.children[0]
+    basket.material.opacity -= deltaTime
+
+    let clone = this.scene.children[1]
+    clone.material.opacity -= deltaTime
   }
 }
