@@ -57,8 +57,13 @@ export default class Oct2018Demo extends ThreeDemo {
 
     let basketRadius = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 
+    let orbitScale = Random.rand({min: 1.20, max: 2.0})
+    if (this.renderer.getSize().width >= 568) {
+      orbitScale = Random.rand({min: 0.90, max: 1.20})
+    }
+
     let orbitPosition = this.vectorFromSpherical({
-      radius: basketRadius * Random.rand({min: 0.90, max: 1.20}),
+      radius: basketRadius * orbitScale,
       theta:  Random.rand({min: 50, max: 140}),
       phi: Random.rand({max: 360})
     })
