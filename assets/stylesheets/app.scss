@@ -20,51 +20,29 @@ canvas {
 
 main {
   font-size: 96px;
-  word-break: break-all;
+  letter-spacing: 4px;
   max-width: 320px;
+  word-break: break-all;
 
   @include from(568px) {
+    letter-spacing: 1.8px;
     max-width: 568px;
   }
 
-
-  &.three-char {
-    letter-spacing: 4px;
-
-    &:first-line {
-      letter-spacing: 10.5px;
-    }
+  &:first-line {
+    letter-spacing: 10.5px;
 
     @include from(568px) {
-      letter-spacing: 1.8px;
-
-      &:first-line {
-        letter-spacing: 4px;
-      }
-    }
-  }
-
-
-  &.four-char {
-    letter-spacing: 8px;
-
-    &:first-line {
-      letter-spacing: 8px;
-    }
-
-    @include from(568px) {
-      letter-spacing: 2.6px;
-
-      &:first-line {
-        letter-spacing: 3px;
-      }
+      letter-spacing: 4px;
     }
   }
 }
 
-.nov {
-  a {
-    color: #0EFAB6;
+.Y2017 {
+  &.nov {
+    a {
+      color: #0EFAB6;
+    }
   }
 }
 
