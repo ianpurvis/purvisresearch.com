@@ -2,8 +2,9 @@ import { Color, WireframeGeometry, LineSegments, DoubleSide, Spherical, Vector3 
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import ThreeDemo from '~/assets/javascripts/three_demo.js'
 import Random from '~/assets/javascripts/random.js'
-import basket from '~/assets/models/basket.draco.glb'
+import Basket from '~/assets/models/basket.draco.glb'
 
+const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 const DEGREES_TO_RADIANS = (Math.PI / 180)
 
 export default class Oct2018Demo extends ThreeDemo {
@@ -14,72 +15,75 @@ export default class Oct2018Demo extends ThreeDemo {
     this.speedOfLife = 0.05
   }
 
-  layoutScene(gltf) {
+  layout() {
     let colors = [
       new Color(0xff00ff),
       new Color(0xffff00)
     ].sort(Random.comparison)
 
-    let basket = gltf.scene.children[0]
-    basket.material.color = colors[0]
-    basket.material.depthTest = false
-    basket.material.opacity = Random.rand({min: 0.25, max: 0.90})
-    basket.material.transparent = true
-    basket.material.needsUpdate = true
-    basket.geometry.center()
+    this.basket.material.color = colors[0]
+    this.basket.material.opacity = Random.rand({min: 0.25, max: 0.90})
 
-    let wireframe = new WireframeGeometry(basket.geometry)
-    let clone = new LineSegments(wireframe)
-    clone.rotation.copy(basket.rotation)
-    clone.material.color = colors[1]
-    clone.material.depthTest = false
-    clone.material.opacity = Random.rand({min: 0.25, max: 0.95})
-    clone.material.side = DoubleSide
-    clone.material.transparent = true
-    clone.material.needsUpdate = true
+    this.clone.material.color = colors[1]
+    this.clone.material.opacity = Random.rand({min: 0.25, max: 0.90})
 
-    let objects = [basket, clone].sort(Random.comparison)
-    this.scene.add(...objects)
+    this.clone.position.copy(
+      this.vectorFromSpherical({
+        radius: Random.rand({max: 8}),
+        theta:  Random.rand({max: 180}),
+        phi: Random.rand({max: 360})
+      })
+    )
 
-    let clonePosition = this.vectorFromSpherical({
-      radius: Random.rand({max: 8}),
-      theta:  Random.rand({max: 180}),
-      phi: Random.rand({max: 360})
-    })
-    clone.position.copy(clonePosition)
-
-    let sceneRotation = this.vectorFromSpherical({
-      radius: Random.rand({max: 8}),
-      theta:  Random.rand({max: 180}),
-      phi: Random.rand({max: 360})
-    })
-    this.scene.lookAt(sceneRotation)
-
-    let basketRadius = 64 // Pre-computed from basket.geometry.boundingSphere.radius
+    this.scene.lookAt(
+      this.vectorFromSpherical({
+        radius: Random.rand({max: 8}),
+        theta:  Random.rand({max: 180}),
+        phi: Random.rand({max: 360})
+      })
+    )
 
     let orbitScale = Random.rand({min: 1.20, max: 2.0})
     if (this.renderer.getSize().width >= 568) {
       orbitScale = Random.rand({min: 0.90, max: 1.20})
     }
 
-    let orbitPosition = this.vectorFromSpherical({
-      radius: basketRadius * orbitScale,
-      theta:  Random.rand({min: 50, max: 140}),
-      phi: Random.rand({max: 360})
-    })
-    this.camera.position.copy(orbitPosition)
+    this.camera.position.copy(
+      this.vectorFromSpherical({
+        radius: BASKET_RADIUS * orbitScale,
+        theta:  Random.rand({min: 50, max: 140}),
+        phi: Random.rand({max: 360})
+      })
+    )
 
-    let targetPosition = this.vectorFromSpherical({
-      radius: basketRadius * Random.rand({max: 0.50}),
-      theta:  Random.rand({max: 180}),
-      phi: Random.rand({max: 360})
-    })
-    this.camera.lookAt(targetPosition)
+    this.camera.lookAt(
+      this.vectorFromSpherical({
+        radius: BASKET_RADIUS * Random.rand({max: 0.50}),
+        theta:  Random.rand({max: 180}),
+        phi: Random.rand({max: 360})
+      })
+    )
   }
 
   load() {
-    return this.loader.parse(basket)
-      .then(this.layoutScene.bind(this))
+    return this.loader.parse(Basket)
+      .then(gltf => {
+        this.basket = gltf.scene.children[0]
+        this.basket.geometry.center()
+        this.basket.material.depthTest = false
+        this.basket.material.transparent = true
+        this.scene.add(this.basket)
+
+        let wireframe = new WireframeGeometry(this.basket.geometry)
+        this.clone = new LineSegments(wireframe)
+        this.clone.rotation.copy(this.basket.rotation)
+        this.clone.material.depthTest = false
+        this.clone.material.side = DoubleSide
+        this.clone.material.transparent = true
+        this.scene.add(this.clone)
+
+        this.layout()
+      })
       .catch((error) => {
         console.error(`An error happened ${error}`)
       })
@@ -94,12 +98,18 @@ export default class Oct2018Demo extends ThreeDemo {
   update() {
     let deltaTime = this.clock.getDelta() * this.speedOfLife
     if (deltaTime == 0) return
-    if (this.scene.children.length < 1) return
+    if (!this.basket || !this.clone) return
 
-    let basket = this.scene.children[0]
-    basket.material.opacity -= deltaTime
+    this.basket.material.opacity -= deltaTime
+    this.clone.material.opacity -= deltaTime
 
-    let clone = this.scene.children[1]
-    clone.material.opacity -= deltaTime
+    // This update loop will decrement opacity below zero,
+    // providing a hack to delay re-layout for a few ms:
+    let threshold = -0.1
+    if (this.basket.material.opacity < threshold
+      && this.clone.material.opacity < threshold
+    ) {
+      this.layout()
+    }
   }
 }
