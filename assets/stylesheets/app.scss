@@ -36,6 +36,20 @@ main {
       letter-spacing: 4px;
     }
   }
+
+  a {
+    display: block;
+    letter-spacing: 10px;
+
+    &:first-line {
+      letter-spacing: 4px;
+    }
+
+    @include from(568px) {
+      display: inline;
+      letter-spacing: 1.8px;
+    }
+  }
 }
 
 .Y2017 {
@@ -54,10 +68,6 @@ main {
   }
 }
 
-.error {
-  line-height: 1;
-}
-
 .aspect {
   &.fit-horizontal {
     font-size: 100vw;
@@ -71,3 +81,14 @@ main {
     width: auto;
   }
 }
+
+.error {
+  line-height: 1;
+}
+
+.nomobile {
+  @include until(568px) {
+    display: none !important;
+  }
+}
+

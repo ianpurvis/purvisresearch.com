@@ -1,6 +1,6 @@
 <template>
   <main class="Y2017 sep">
-    purvis_research_sep_2017_<a href="mailto:ian@purvisresearch@@com" v-on:mouseover="unobfuscate">ian@purvisresearch.c0m</a>
+    purvis_research<span class="nomobile">_</span>sep_2017<span class="nomobile">_</span><a href="mailto:ian@purvisresearch@@com" v-on:mouseover="unobfuscate">ian@purvisresearch.c0m</a>
   </main>
 </template>
 
