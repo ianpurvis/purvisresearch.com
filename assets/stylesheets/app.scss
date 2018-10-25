@@ -11,6 +11,8 @@ $text: $grey-darker;
 @import "~bulma/sass/utilities/all";
 @import "~bulma/sass/base/all";
 
+$mobile-width: 568px;
+
 canvas {
   position: absolute;
   pointer-events: none;
@@ -24,15 +26,15 @@ main {
   max-width: 320px;
   word-break: break-all;
 
-  @include from(568px) {
+  @include from($mobile-width) {
     letter-spacing: 1.8px;
-    max-width: 568px;
+    max-width: $mobile-width;
   }
 
   &:first-line {
     letter-spacing: 10.5px;
 
-    @include from(568px) {
+    @include from($mobile-width) {
       letter-spacing: 4px;
     }
   }
@@ -45,7 +47,7 @@ main {
       letter-spacing: 4px;
     }
 
-    @include from(568px) {
+    @include from($mobile-width) {
       display: inline;
       letter-spacing: 1.8px;
     }
@@ -87,7 +89,7 @@ main {
 }
 
 .nomobile {
-  @include until(568px) {
+  @include until($mobile-width) {
     display: none !important;
   }
 }
