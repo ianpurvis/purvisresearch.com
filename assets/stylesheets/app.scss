@@ -40,7 +40,7 @@ main {
 
 .Y2017 {
   &.nov {
-    a {
+    a:not(:hover) {
       color: #0EFAB6;
     }
   }
@@ -48,7 +48,7 @@ main {
 
 .Y2018 {
   &.oct {
-    a {
+    a:not(:hover) {
       color: #00FFFF;
     }
   }
