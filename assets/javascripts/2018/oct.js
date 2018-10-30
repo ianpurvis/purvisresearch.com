@@ -12,7 +12,7 @@ export default class Oct2018Demo extends ThreeDemo {
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
-    this.speedOfLife = 0.05
+    this.speedOfLife = 0.1
   }
 
   layout() {
@@ -30,36 +30,36 @@ export default class Oct2018Demo extends ThreeDemo {
     this.clone.position.copy(
       this.vectorFromSpherical({
         radius: Random.rand({max: 8}),
-        theta:  Random.rand({max: 180}),
+        theta: Random.rand({max: 180}),
         phi: Random.rand({max: 360})
       })
     )
 
-    this.scene.lookAt(
-      this.vectorFromSpherical({
-        radius: Random.rand({max: 8}),
-        theta:  Random.rand({max: 180}),
-        phi: Random.rand({max: 360})
-      })
-    )
-
-    let orbitScale = Random.rand({min: 1.20, max: 2.0})
+    let orbitScale = Random.rand({min: 1.20, max: 1.70})
     if (this.renderer.getSize().width >= 568) {
-      orbitScale = Random.rand({min: 0.90, max: 1.20})
+      orbitScale = Random.rand({min: 0.90, max: 1.40})
     }
 
     this.camera.position.copy(
       this.vectorFromSpherical({
         radius: BASKET_RADIUS * orbitScale,
-        theta:  Random.rand({min: 50, max: 140}),
+        theta: Random.rand({min: 30, max: 140}),
         phi: Random.rand({max: 360})
       })
     )
 
+    this.camera.up.copy(
+      this.vectorFromSpherical({
+        radius: Random.rand({max: 8}),
+        theta:  Random.rand({max: 180}),
+        phi: Random.rand({max: 360})
+      }).normalize()
+    )
+
     this.camera.lookAt(
       this.vectorFromSpherical({
-        radius: BASKET_RADIUS * Random.rand({max: 0.50}),
-        theta:  Random.rand({max: 180}),
+        kadius: BASKET_RADIUS * Random.rand({max: 0.25}),
+        theta: Random.rand({max: 180}),
         phi: Random.rand({max: 360})
       })
     )
