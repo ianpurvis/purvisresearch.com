@@ -22,10 +22,10 @@ export default {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"Screen printing with 3D scans and WebGL" },
+        { property:"og:description", content:"Screen printing a 3D scan with WebGL" },
         { property:"og:image", content: require("~/assets/images/2018/oct.png") },
-        { property:"og:image:height", content:"619" },
-        { property:"og:image:width", content:"1183" },
+        { property:"og:image:height", content:"859" },
+        { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Oct 2018" },
         { name:"twitter:card", content:"summary_large_image" },
       ]
