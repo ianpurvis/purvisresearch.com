@@ -31,7 +31,7 @@ main {
     max-width: $mobile-width;
   }
 
-  &:first-line {
+  &::first-line {
     letter-spacing: 10.5px;
 
     @include from($mobile-width) {
@@ -43,7 +43,7 @@ main {
     display: inline-block;
     letter-spacing: 10px;
 
-    &:first-line {
+    &::first-line {
       letter-spacing: 4px;
     }
 
