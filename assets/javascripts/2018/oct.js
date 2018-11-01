@@ -69,6 +69,7 @@ export default class Oct2018Demo extends ThreeDemo {
     return this.loader.parse(Basket)
       .then(gltf => {
         this.basket = gltf.scene.children[0]
+        this.basket.position.set(0,0,0)
         this.basket.geometry.center()
         this.basket.material.depthTest = false
         this.basket.material.transparent = true
