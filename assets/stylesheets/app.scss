@@ -54,6 +54,10 @@ main {
   }
 }
 
+video {
+  opacity: 0;
+}
+
 .Y2017 {
   &.nov {
     a:not(:hover) {
