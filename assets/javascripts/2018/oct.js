@@ -12,7 +12,7 @@ export default class Oct2018Demo extends ThreeDemo {
   constructor(frame, pixelRatio) {
     super(frame, pixelRatio)
     this.loader = new ModelLoader()
-    this.speedOfLife = 0.1
+    this.speedOfLife = 0.05
   }
 
   layout() {
