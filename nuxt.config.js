@@ -68,13 +68,8 @@ module.exports = {
   },
 
   modules: [
-    ['@nuxtjs/google-analytics', {
-      id: 'UA-106821101-1',
-      debug: {
-        enabled: !isProduction,
-        sendHitTask: isProduction
-      }
-    }]
+    '@nuxtjs/google-analytics',
+    '@nuxtjs/sitemap'
   ],
 
   router: {
@@ -92,5 +87,25 @@ module.exports = {
           { path: '/sept_2017\.html', redirect: '/2017/sept.html' },
         )
     }
+  },
+
+  'google-analytics': {
+    id: 'UA-106821101-1',
+    debug: {
+      enabled: !isProduction,
+      sendHitTask: isProduction
+    }
+  },
+
+  sitemap: {
+    hostname: 'https://purvisresearch.com',
+    generate: true,
+    routes: [
+      {
+        url: '/',
+        changefreq: 'monthly',
+        priority: 1
+      }
+    ]
   }
 }
