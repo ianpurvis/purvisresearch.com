@@ -98,6 +98,9 @@ module.exports = {
   },
 
   sitemap: {
+    exclude: [
+      '/*_2017.html'
+    ],
     hostname: 'https://purvisresearch.com',
     generate: true,
     routes: [
