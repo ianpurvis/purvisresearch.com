@@ -12,11 +12,10 @@ exports.handler = async (event) => {
 
   const { request, response } = event.Records[0].cf
 
-  // Can't use strict transport security without https...
-  //headers['strict-transport-security'] = [{
-    //key: 'Strict-Transport-Security',
-    //value: 'max-age=63072000; includeSubdomains; preload'
-  //}]
+  response.headers['strict-transport-security'] = [{
+    key: 'Strict-Transport-Security',
+    value: 'max-age=31536000; includeSubdomains; preload'
+  }]
 
   response.headers['content-security-policy'] = [{
     key: 'Content-Security-Policy',
