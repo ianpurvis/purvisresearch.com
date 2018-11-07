@@ -28,7 +28,7 @@ exports.handler = async (event) => {
       "form-action 'none'",
       "img-src 'self' https://www.google-analytics.com",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-inline' https://www.google-analytics.com",
+      "script-src 'self' 'unsafe-eval' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline'",
     ].join('; ')
   }]
