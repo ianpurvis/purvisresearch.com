@@ -1,7 +1,7 @@
 export default {
   methods: {
-    unobfuscate(event) {
-      let link = event.currentTarget
+    unobfuscate() {
+      let link = this.$refs.mailto
       link.href = link.href.replace('@@','.')
     }
   },
