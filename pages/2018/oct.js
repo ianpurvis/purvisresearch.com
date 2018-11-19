@@ -1,3 +1,4 @@
+import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import Demo from '~/assets/javascripts/2018/oct.js'
 import Stats from 'stats.js'
 
@@ -9,6 +10,9 @@ export default {
     document.body.removeChild(this.demo.element)
     this.demo.dispose()
     this.demo = null
+  },
+  components: {
+    'obfuscated-mailto': ObfuscatedMailto
   },
   data() {
     return {
@@ -76,10 +80,6 @@ export default {
     toggleProfiling() {
       (this.stats) ? this.stopProfiling() : this.startProfiling()
     },
-    unobfuscate(event) {
-      let link = event.currentTarget
-      link.href = link.href.replace('@@','.')
-    }
   },
   mounted() {
     let pixelRatio = Math.max(window.devicePixelRatio, 2)

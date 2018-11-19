@@ -1,3 +1,4 @@
+import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import Oct2017Demo from '~/assets/javascripts/2017/oct.js'
 
 export default {
@@ -7,6 +8,9 @@ export default {
     document.body.removeChild(this.demo.element)
     this.demo.dispose()
     this.demo = null
+  },
+  components: {
+    'obfuscated-mailto': ObfuscatedMailto
   },
   data () {
     return {
@@ -50,10 +54,6 @@ export default {
       if (!this.animationFrame) return
       window.cancelAnimationFrame(this.animationFrame)
     },
-    unobfuscate(event) {
-      let link = event.currentTarget
-      link.href = link.href.replace('@@','.')
-    }
   },
   mounted() {
     this.demo = new Oct2017Demo(this.frame())
