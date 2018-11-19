@@ -12,7 +12,7 @@ export default {
     this.demo = null
   },
   components: {
-    'obfuscated-mailto': ObfuscatedMailto
+    ObfuscatedMailto
   },
   data() {
     return {
