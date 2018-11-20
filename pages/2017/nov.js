@@ -1,21 +1,29 @@
+import {
+  Font,
+  LessDepth,
+  Mesh,
+  MeshNormalMaterial,
+  TextBufferGeometry,
+  Vector3
+} from 'three'
+import AlphabetParticle from '~/assets/javascripts/alphabet_particle.js'
+import Inconsolata from "~/assets/fonts/Inconsolata_Regular.json"
+import Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
-import Nov2017Demo from '~/assets/javascripts/2017/nov.js'
+import ThreeDemo from '~/mixins/three_demo.js'
 
 export default {
   beforeDestroy() {
-    window.removeEventListener('resize', this.maximizeFrame)
-    this.stopAnimating()
-    document.body.removeChild(this.demo.element)
-    this.demo.dispose()
-    this.demo = null
   },
   components: {
     ObfuscatedMailto
   },
   data () {
     return {
+      alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
-      demo: null,
+      font: new Font(Inconsolata),
+      particles: [],
       title: "nov 2017 - purvis research"
     }
   },
@@ -33,36 +41,68 @@ export default {
     }
   },
   methods: {
-    animate() {
-      this.demo.update()
-      this.demo.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+    layout() {
+      this.camera.far = 10000
+      this.camera.position.z = Random.rand({min: 100, max: 150})
     },
-    frame() {
-      return {
-        height: Math.max(document.body.clientHeight, window.innerHeight),
-        width: Math.max(document.body.clientWidth, window.innerWidth)
-      }
+    load() {
+      return new Promise(resolve => {
+        this.alphabet.forEach(character => {
+          let geometry = new TextBufferGeometry(character, {
+            font: this.font
+          })
+          geometry.center()
+
+          let material = new MeshNormalMaterial({
+            depthFunc: LessDepth,
+            opacity: 0.7,
+            transparent: false,
+            wireframe: true,
+            wireframeLinewidth: 2.0,
+          })
+
+          let mesh = new Mesh(geometry, material)
+          let radius = 60
+          let acceleration = new Vector3(
+            Random.rand({min: -radius, max: radius}),
+            Random.rand({min: -radius, max: radius}),
+            Random.rand({min: -radius, max: radius})
+          )
+          let scale = Random.rand({min: 0.25, max: 1})
+
+          // Give each particle a jump start:
+          mesh.position.copy(acceleration)
+
+          mesh.rotation.set(
+            Random.rand({max: 2 * Math.PI}),
+            Random.rand({max: 2 * Math.PI}),
+            Random.rand({max: 2 * Math.PI})
+          )
+          mesh.scale.setScalar(scale)
+
+          let particle = new AlphabetParticle({
+            mesh: mesh,
+            acceleration: acceleration,
+            mass: scale
+          })
+
+          this.particles.push(particle)
+          this.scene.add(mesh)
+        })
+        resolve()
+      })
     },
-    maximizeFrame() {
-      this.demo.frame = this.frame()
-    },
-    startAnimating() {
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
-    stopAnimating() {
-      if (!this.animationFrame) return
-      window.cancelAnimationFrame(this.animationFrame)
+    update() {
+      let deltaTime = this.deltaTime()
+      if (deltaTime == 0) return
+      this.particles.forEach(p => p.update(deltaTime))
     },
   },
+  mixins: [
+    ThreeDemo,
+  ],
   mounted() {
-    let pixelRatio = Math.max(window.devicePixelRatio, 2)
-    this.demo = new Nov2017Demo(this.frame(), pixelRatio)
-    document.body.appendChild(this.demo.element)
-    this.startAnimating()
-    window.addEventListener('resize', this.maximizeFrame)
-
-    this.demo.load()
+    this.load().then(this.layout)
   }
 }
 
