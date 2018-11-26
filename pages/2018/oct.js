@@ -8,6 +8,7 @@ import {
   Vector3,
   WireframeGeometry,
 } from 'three'
+import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import Random from '~/assets/javascripts/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
@@ -15,7 +16,6 @@ import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 
 const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
-const DEGREES_TO_RADIANS = (Math.PI / 180)
 
 export default {
   beforeDestroy() {
