@@ -3,7 +3,10 @@ import {
   LinearFilter,
   Mesh,
   MeshBasicMaterial,
-  VideoTexture
+  Sprite,
+  SpriteMaterial,
+  TextureLoader,
+  VideoTexture,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
@@ -35,9 +38,11 @@ export default {
   },
   methods: {
     layout() {
-      this.videoBox.rotateX(45 * DEGREES_TO_RADIANS)
+      this.videoBox.position.x = -1
+      this.videoBox.rotateX(15 * DEGREES_TO_RADIANS)
       this.videoBox.rotateY(45 * DEGREES_TO_RADIANS)
-      this.videoBox.rotateZ(90 * DEGREES_TO_RADIANS)
+
+      this.graphix.position.x = 1
 
       this.camera.position.set(0, 0, 5)
     },
@@ -59,6 +64,16 @@ export default {
 
         this.videoBox = new Mesh(geometry, material)
         this.scene.add(this.videoBox)
+      }).then(() =>
+        new TextureLoader().load(require('~/assets/images/2018/hankiti.png'))
+      ).then(texture =>
+        new SpriteMaterial({ map: texture })
+      ).then(material =>
+        new Sprite(material)
+      ).then(sprite => {
+        sprite.scale.setScalar(2)
+        this.graphix = sprite
+        this.scene.add(sprite)
       })
     },
     update() {
@@ -68,9 +83,7 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout).catch(err0r => {
-      console.log("Something went wrong!")
-    })
+    this.load().then(this.layout)
   }
 }
 
