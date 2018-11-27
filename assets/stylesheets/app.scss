@@ -54,10 +54,6 @@ main {
   }
 }
 
-video {
-  opacity: 0;
-}
-
 .Y2017 {
   &.nov {
     a:not(:hover) {
@@ -70,6 +66,16 @@ video {
   &.oct {
     a:not(:hover) {
       color: #00FFFF;
+    }
+  }
+
+  &.nov {
+    video {
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
     }
   }
 }
