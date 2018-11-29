@@ -70,16 +70,11 @@ export default {
           },
           uniforms: UniformsUtils.merge([
             UniformsLib.common,
-            {
-              map: {
-                type: "t",
-                value: texture
-              }
-            }
           ]),
           fragmentShader: halftone_shader,
           vertexShader: ShaderChunk.meshbasic_vert,
         })
+        material.uniforms.map.value = texture
 
         let geometry = new BoxGeometry(1,1,1)
 
