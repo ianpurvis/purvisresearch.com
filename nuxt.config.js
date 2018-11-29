@@ -41,6 +41,13 @@ module.exports = {
         exclude: /(node_modules)/
       })
 
+      // Load glsl models as string
+      config.module.rules.push({
+        test: /\.glsl$/,
+        loader: 'raw-loader',
+        exclude: /(node_modules)/
+      })
+
       if (isDev && isClient) {
         // Run ESLint on save
         config.module.rules.push({

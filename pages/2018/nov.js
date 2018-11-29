@@ -3,12 +3,17 @@ import {
   LinearFilter,
   Mesh,
   MeshBasicMaterial,
+  ShaderChunk,
+  ShaderMaterial,
   Sprite,
   SpriteMaterial,
   TextureLoader,
+  UniformsLib,
+  UniformsUtils,
   VideoTexture,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
+import halftone_shader from '~/assets/shaders/halftone_test.glsl'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 
@@ -56,8 +61,24 @@ export default {
         texture.minFilter = LinearFilter
         texture.magFilter = LinearFilter
 
-        let material = new MeshBasicMaterial({
-          map: texture
+        let material = new ShaderMaterial({
+          defines: {
+            USE_MAP: true,
+          },
+          extensions: {
+            derivatives: true,
+          },
+          uniforms: UniformsUtils.merge([
+            UniformsLib.common,
+            {
+              map: {
+                type: "t",
+                value: texture
+              }
+            }
+          ]),
+          fragmentShader: halftone_shader,
+          vertexShader: ShaderChunk.meshbasic_vert,
         })
 
         let geometry = new BoxGeometry(1,1,1)
