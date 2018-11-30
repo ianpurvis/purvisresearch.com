@@ -12,6 +12,9 @@ import {
   UniformsUtils,
   Vector3,
   VideoTexture,
+  OrthographicCamera,
+  GridHelper,
+  AxesHelper,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import halftone_shader from '~/assets/shaders/halftone_test.glsl'
@@ -27,16 +30,27 @@ export default {
   },
   data() {
     return {
+      camera: new OrthographicCamera(...Object.values({
+        left: -2,
+        right: 2,
+        top: 2,
+        bottom: -2,
+        near: 0,
+        far: 1000
+      })),
       illustration: Random.sample([
         {
           url: require('~/assets/images/2018/nov/neko-bw.png'),
-          position: new Vector3(-0.40, 0.1, 0),
+          position: new Vector3(0.55, 1, 1.14),
+          geometry: new PlaneGeometry(1.10, 0.88, 0),
         },{
           url: require('~/assets/images/2018/nov/monster-bw.png'),
-          position: new Vector3(-0.20, 0.1, 0),
+          position: new Vector3(0.70, 1.01, 1.05),
+          geometry: new PlaneGeometry(1.10, 0.90, 0),
         },{
           url: require('~/assets/images/2018/nov/kontrol-bw.png'),
-          position: new Vector3(-0.20, 0.25, 0),
+          position: new Vector3(0.68, 1.16, 1.05),
+          geometry: new PlaneGeometry(1.22, 0.92, 0),
         }
       ]),
       title: "nov 2018 - purvis research"
@@ -57,11 +71,11 @@ export default {
   },
   methods: {
     layout() {
-      this.videoBox.rotateX(35 * DEGREES_TO_RADIANS)
-      this.videoBox.rotateY(45 * DEGREES_TO_RADIANS)
+      this.videoBox.rotateY(90 * DEGREES_TO_RADIANS)
       this.videoBox.position.copy(this.illustration.position)
 
-      this.camera.position.set(0, 0, 3)
+      this.camera.position.setScalar(2)
+      this.camera.lookAt(this.scene.position)
     },
     load() {
       return navigator.mediaDevices.getUserMedia({
@@ -88,21 +102,22 @@ export default {
         })
         material.uniforms.map.value = texture
 
-        let geometry = new PlaneGeometry(1, 0.75, 0)
-
-        this.videoBox = new Mesh(geometry, material)
+        this.videoBox = new Mesh(this.illustration.geometry, material)
         this.scene.add(this.videoBox)
       }).then(() =>
         new TextureLoader().load(this.illustration.url)
-      ).then(texture =>
-        new SpriteMaterial({ map: texture })
-      ).then(material =>
-        new Sprite(material)
-      ).then(sprite => {
-        sprite.scale.setScalar(2)
-        sprite.material.depthTest = false
-        this.graphix = sprite
-        this.scene.add(sprite)
+      ).then(texture => {
+        let material = new SpriteMaterial({ map: texture })
+        this.sprite = new Sprite(material)
+        this.sprite.material.depthTest = false
+        this.sprite.scale.setScalar(2)
+        this.scene.add(this.sprite)
+
+        let gridHelper = new GridHelper()
+        this.scene.add(gridHelper)
+
+        let axesHelper = new AxesHelper(2)
+        this.scene.add(axesHelper)
       })
     },
     update() {
