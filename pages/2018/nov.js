@@ -3,21 +3,17 @@ import {
   LinearFilter,
   Mesh,
   MeshBasicMaterial,
-  ShaderChunk,
-  ShaderMaterial,
   Sprite,
   SpriteMaterial,
-  UniformsLib,
-  UniformsUtils,
   Vector3,
   VideoTexture,
   OrthographicCamera,
   RepeatWrapping,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
+import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import Random from '~/assets/javascripts/random.js'
-import halftone_shader from '~/assets/shaders/halftone_test.glsl'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2018/nov/tatami-bw.png'
@@ -109,22 +105,9 @@ export default {
         let texture = new VideoTexture(this.$refs.video)
         texture.minFilter = LinearFilter
         texture.magFilter = LinearFilter
-
-        let material = new ShaderMaterial({
-          defines: {
-            USE_MAP: true,
-          },
-          extensions: {
-            derivatives: true,
-          },
-          uniforms: UniformsUtils.merge([
-            UniformsLib.common,
-          ]),
-          fragmentShader: halftone_shader,
-          vertexShader: ShaderChunk.meshbasic_vert,
+        let material = new HalftoneMaterial({
+          map: texture
         })
-        material.uniforms.map.value = texture
-
         this.videoBox = new Mesh(this.illustration.geometry, material)
         this.scene.add(this.videoBox)
       })
