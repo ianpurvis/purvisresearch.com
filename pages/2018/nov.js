@@ -1,5 +1,5 @@
 import {
-  BoxGeometry,
+  PlaneGeometry,
   LinearFilter,
   Mesh,
   MeshBasicMaterial,
@@ -10,10 +10,12 @@ import {
   TextureLoader,
   UniformsLib,
   UniformsUtils,
+  Vector3,
   VideoTexture,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import halftone_shader from '~/assets/shaders/halftone_test.glsl'
+import Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 
@@ -25,6 +27,18 @@ export default {
   },
   data() {
     return {
+      illustration: Random.sample([
+        {
+          url: require('~/assets/images/2018/nov/neko-bw.png'),
+          position: new Vector3(-0.40, 0.1, 0),
+        },{
+          url: require('~/assets/images/2018/nov/monster-bw.png'),
+          position: new Vector3(-0.20, 0.1, 0),
+        },{
+          url: require('~/assets/images/2018/nov/kontrol-bw.png'),
+          position: new Vector3(-0.20, 0.25, 0),
+        }
+      ]),
       title: "nov 2018 - purvis research"
     }
   },
@@ -43,13 +57,11 @@ export default {
   },
   methods: {
     layout() {
-      this.videoBox.position.x = -1
-      this.videoBox.rotateX(15 * DEGREES_TO_RADIANS)
+      this.videoBox.rotateX(35 * DEGREES_TO_RADIANS)
       this.videoBox.rotateY(45 * DEGREES_TO_RADIANS)
+      this.videoBox.position.copy(this.illustration.position)
 
-      this.graphix.position.x = 1
-
-      this.camera.position.set(0, 0, 5)
+      this.camera.position.set(0, 0, 3)
     },
     load() {
       return navigator.mediaDevices.getUserMedia({
@@ -76,18 +88,19 @@ export default {
         })
         material.uniforms.map.value = texture
 
-        let geometry = new BoxGeometry(1,1,1)
+        let geometry = new PlaneGeometry(1, 0.75, 0)
 
         this.videoBox = new Mesh(geometry, material)
         this.scene.add(this.videoBox)
       }).then(() =>
-        new TextureLoader().load(require('~/assets/images/2018/hankiti.png'))
+        new TextureLoader().load(this.illustration.url)
       ).then(texture =>
         new SpriteMaterial({ map: texture })
       ).then(material =>
         new Sprite(material)
       ).then(sprite => {
         sprite.scale.setScalar(2)
+        sprite.material.depthTest = false
         this.graphix = sprite
         this.scene.add(sprite)
       })
