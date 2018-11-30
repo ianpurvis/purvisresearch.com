@@ -13,8 +13,6 @@ import {
   Vector3,
   VideoTexture,
   OrthographicCamera,
-  GridHelper,
-  AxesHelper,
   RepeatWrapping,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
@@ -43,15 +41,15 @@ export default {
         {
           url: require('~/assets/images/2018/nov/neko-bw.png'),
           position: new Vector3(0.55, 1, 1.14),
-          geometry: new PlaneGeometry(1.10, 0.88, 0),
+          geometry: new PlaneGeometry(1.10, 0.88),
         },{
           url: require('~/assets/images/2018/nov/monster-bw.png'),
           position: new Vector3(0.70, 1.01, 1.05),
-          geometry: new PlaneGeometry(1.10, 0.90, 0),
+          geometry: new PlaneGeometry(1.10, 0.90),
         },{
           url: require('~/assets/images/2018/nov/kontrol-bw.png'),
           position: new Vector3(0.68, 1.16, 1.05),
-          geometry: new PlaneGeometry(1.22, 0.92, 0),
+          geometry: new PlaneGeometry(1.22, 0.92),
         }
       ]),
       title: "nov 2018 - purvis research"
@@ -128,12 +126,6 @@ export default {
         let geometry = new PlaneGeometry(9, 9)
         this.floor = new Mesh(geometry, material)
         this.scene.add(this.floor)
-
-        let gridHelper = new GridHelper()
-        this.scene.add(gridHelper)
-
-        let axesHelper = new AxesHelper(2)
-        this.scene.add(axesHelper)
       })
     },
     update() {
