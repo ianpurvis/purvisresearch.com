@@ -7,7 +7,6 @@ import {
   ShaderMaterial,
   Sprite,
   SpriteMaterial,
-  TextureLoader,
   UniformsLib,
   UniformsUtils,
   Vector3,
@@ -16,10 +15,15 @@ import {
   RepeatWrapping,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
-import halftone_shader from '~/assets/shaders/halftone_test.glsl'
+import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import Random from '~/assets/javascripts/random.js'
+import halftone_shader from '~/assets/shaders/halftone_test.glsl'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
+import tatami from '~/assets/images/2018/nov/tatami-bw.png'
+import kontrol from '~/assets/images/2018/nov/kontrol-bw.png'
+import neko from '~/assets/images/2018/nov/neko-bw.png'
+import monster from '~/assets/images/2018/nov/monster-bw.png'
 
 export default {
   beforeDestroy() {
@@ -39,19 +43,20 @@ export default {
       })),
       illustration: Random.sample([
         {
-          url: require('~/assets/images/2018/nov/neko-bw.png'),
+          url: neko,
           position: new Vector3(0.55, 1, 1.14),
           geometry: new PlaneGeometry(1.10, 0.88),
         },{
-          url: require('~/assets/images/2018/nov/monster-bw.png'),
+          url: monster,
           position: new Vector3(0.70, 1.01, 1.05),
           geometry: new PlaneGeometry(1.10, 0.90),
         },{
-          url: require('~/assets/images/2018/nov/kontrol-bw.png'),
+          url: kontrol,
           position: new Vector3(0.68, 1.16, 1.05),
           geometry: new PlaneGeometry(1.22, 0.92),
         }
       ]),
+      textureLoader: new TextureLoader(),
       title: "nov 2018 - purvis research"
     }
   },
@@ -80,11 +85,27 @@ export default {
       this.camera.lookAt(this.scene.position)
     },
     load() {
-      return navigator.mediaDevices.getUserMedia({
-        video: true
-      }).then(stream => {
-        this.$refs.video.srcObject = stream
-
+      return Promise.resolve(
+        this.textureLoader.load(this.illustration.url)
+      ).then(texture => {
+        let material = new SpriteMaterial({ map: texture })
+        this.sprite = new Sprite(material)
+        this.sprite.material.depthTest = false
+        this.sprite.scale.setScalar(2)
+        this.scene.add(this.sprite)
+      }).then(() =>
+        this.textureLoader.load(tatami)
+      ).then(texture => {
+        texture.wrapS = RepeatWrapping
+        texture.wrapT = RepeatWrapping
+        texture.repeat.set(9, 9)
+        let material = new MeshBasicMaterial({
+          map: texture,
+        })
+        let geometry = new PlaneGeometry(9, 9)
+        this.floor = new Mesh(geometry, material)
+        this.scene.add(this.floor)
+      }).then(() => {
         let texture = new VideoTexture(this.$refs.video)
         texture.minFilter = LinearFilter
         texture.magFilter = LinearFilter
@@ -106,26 +127,6 @@ export default {
 
         this.videoBox = new Mesh(this.illustration.geometry, material)
         this.scene.add(this.videoBox)
-      }).then(() =>
-        new TextureLoader().load(this.illustration.url)
-      ).then(texture => {
-        let material = new SpriteMaterial({ map: texture })
-        this.sprite = new Sprite(material)
-        this.sprite.material.depthTest = false
-        this.sprite.scale.setScalar(2)
-        this.scene.add(this.sprite)
-      }).then(() =>
-        new TextureLoader().load(require('~/assets/images/2018/nov/tatami-bw.png'))
-      ).then(texture => {
-        texture.wrapS = RepeatWrapping
-        texture.wrapT = RepeatWrapping
-        texture.repeat.set(9, 9)
-        let material = new MeshBasicMaterial({
-          map: texture,
-        })
-        let geometry = new PlaneGeometry(9, 9)
-        this.floor = new Mesh(geometry, material)
-        this.scene.add(this.floor)
       })
     },
     update() {
@@ -135,7 +136,15 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout)
+    this.load()
+      .then(this.layout)
+      .then(() =>
+        navigator.mediaDevices.getUserMedia({
+          video: true
+        })
+      ).then(stream => {
+        this.$refs.video.srcObject = stream
+      })
   }
 }
 
