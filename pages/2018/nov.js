@@ -15,6 +15,7 @@ import {
   OrthographicCamera,
   GridHelper,
   AxesHelper,
+  RepeatWrapping,
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import halftone_shader from '~/assets/shaders/halftone_test.glsl'
@@ -74,6 +75,9 @@ export default {
       this.videoBox.rotateY(90 * DEGREES_TO_RADIANS)
       this.videoBox.position.copy(this.illustration.position)
 
+      this.floor.rotateX(-90 * DEGREES_TO_RADIANS)
+      this.floor.position.set(0.11, 0, 0)
+
       this.camera.position.setScalar(2)
       this.camera.lookAt(this.scene.position)
     },
@@ -112,6 +116,18 @@ export default {
         this.sprite.material.depthTest = false
         this.sprite.scale.setScalar(2)
         this.scene.add(this.sprite)
+      }).then(() =>
+        new TextureLoader().load(require('~/assets/images/2018/nov/tatami-bw.png'))
+      ).then(texture => {
+        texture.wrapS = RepeatWrapping
+        texture.wrapT = RepeatWrapping
+        texture.repeat.set(9, 9)
+        let material = new MeshBasicMaterial({
+          map: texture,
+        })
+        let geometry = new PlaneGeometry(9, 9)
+        this.floor = new Mesh(geometry, material)
+        this.scene.add(this.floor)
 
         let gridHelper = new GridHelper()
         this.scene.add(gridHelper)
