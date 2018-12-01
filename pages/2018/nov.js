@@ -23,6 +23,7 @@ import monster from '~/assets/images/2018/nov/monster-bw.png'
 
 export default {
   beforeDestroy() {
+    this.stopVideo()
   },
   components: {
     ObfuscatedMailto
@@ -112,6 +113,21 @@ export default {
         this.scene.add(this.videoBox)
       })
     },
+    startVideo() {
+      return navigator.mediaDevices.getUserMedia({
+        video: true
+      }).then(stream => {
+        if (this._isDestroyed || this._isBeingDestroyed) return
+        this.$refs.video.srcObject = stream
+      }).catch(error => {
+        if (error.name != 'NotAllowedError') throw error
+      })
+    },
+    stopVideo() {
+      let stream = this.$refs.video.srcObject
+      if (!stream) return
+      stream.getTracks().forEach(track => track.stop())
+    },
     update() {
     },
   },
@@ -119,15 +135,7 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load()
-      .then(this.layout)
-      .then(() =>
-        navigator.mediaDevices.getUserMedia({
-          video: true
-        })
-      ).then(stream => {
-        this.$refs.video.srcObject = stream
-      })
+    this.load().then(this.layout).then(this.startVideo)
   }
 }
 
