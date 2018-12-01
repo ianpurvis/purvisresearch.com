@@ -30,14 +30,6 @@ export default {
   },
   data() {
     return {
-      camera: new OrthographicCamera(...Object.values({
-        left: -2,
-        right: 2,
-        top: 2,
-        bottom: -2,
-        near: 0,
-        far: 1000
-      })),
       illustration: Random.sample([
         {
           url: neko,
@@ -78,7 +70,15 @@ export default {
       this.floor.rotateX(-90 * DEGREES_TO_RADIANS)
       this.floor.position.set(0.11, 0, 0)
 
-      this.camera.position.setScalar(2)
+      this.camera = new OrthographicCamera(...Object.values({
+        left: -2,
+        right: 2,
+        top: 2,
+        bottom: -2,
+        near: 0,
+        far: 1000
+      }))
+      this.camera.position.setScalar(3)
       this.camera.lookAt(this.scene.position)
     },
     load() {
