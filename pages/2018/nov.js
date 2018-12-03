@@ -1,6 +1,5 @@
 import {
   PlaneGeometry,
-  LinearFilter,
   Mesh,
   MeshBasicMaterial,
   Sprite,
@@ -104,8 +103,6 @@ export default {
         this.scene.add(this.floor)
       }).then(() => {
         let texture = new VideoTexture(this.$refs.video)
-        texture.minFilter = LinearFilter
-        texture.magFilter = LinearFilter
         let material = new HalftoneMaterial({
           map: texture
         })
