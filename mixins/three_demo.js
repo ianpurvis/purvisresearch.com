@@ -29,35 +29,23 @@ export default {
       this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     dispose() {
-      // Deallocates three memory:
-      //    https://github.com/mrdoob/three.js/issues/5175
-      //    https://stackoverflow.com/a/40178723
-      let isDisposable = (object) => {
-        return (typeof object.dispose === 'function')
+      const safeDispose = (object) => {
+        if (object != null && typeof object.dispose === 'function') {
+          object.dispose()
+        }
       }
-
       this.scene.traverse((node) => {
-        if (node.geometry) {
-          node.geometry.dispose()
-        }
-        if (node.material) {
-          [].concat(node.material).forEach(material => {
-            Object.values(material)
-              .filter(value => value)
-              .filter(value => isDisposable(value))
-              .forEach(value => value.dispose())
-            material.dispose()
-          })
-        }
-        if (isDisposable(node)) {
-          node.dispose()
-        }
+        [].concat(node.material).forEach(material => {
+          if (material == null) return
+          Object.values(material).forEach(safeDispose)
+          safeDispose(material.dispose())
+        })
+        safeDispose(node.geometry)
+        safeDispose(node)
       })
       let renderTarget = this.renderer.getRenderTarget()
-      if (renderTarget) {
-        renderTarget.dispose()
-      }
-      this.renderer.dispose()
+      safeDispose(renderTarget)
+      safeDispose(this.renderer)
     },
     deltaTime() {
       return this.clock.getDelta() * this.speedOfLife
