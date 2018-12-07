@@ -32,22 +32,31 @@ export default {
       // Deallocates three memory:
       //    https://github.com/mrdoob/three.js/issues/5175
       //    https://stackoverflow.com/a/40178723
+      let isDisposable = (object) => {
+        return (typeof object.dispose === 'function')
+      }
+
       this.scene.traverse((node) => {
         if (node.geometry) {
           node.geometry.dispose()
         }
         if (node.material) {
-          [].concat(node.material).forEach((material) => {
-            if (material.map)         material.map.dispose()
-            if (material.lightMap)    material.lightMap.dispose()
-            if (material.bumpMap)     material.bumpMap.dispose()
-            if (material.normalMap)   material.normalMap.dispose()
-            if (material.specularMap) material.specularMap.dispose()
-            if (material.envMap)      material.envMap.dispose()
+          [].concat(node.material).forEach(material => {
+            Object.values(material)
+              .filter(value => value)
+              .filter(value => isDisposable(value))
+              .forEach(value => value.dispose())
             material.dispose()
           })
         }
+        if (isDisposable(node)) {
+          node.dispose()
+        }
       })
+      let renderTarget = this.renderer.getRenderTarget()
+      if (renderTarget) {
+        renderTarget.dispose()
+      }
       this.renderer.dispose()
     },
     deltaTime() {
