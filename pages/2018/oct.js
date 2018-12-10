@@ -10,7 +10,7 @@ import {
 } from 'three'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
-import Random from '~/assets/javascripts/random.js'
+import * as Random from '~/assets/javascripts/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'

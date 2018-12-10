@@ -1,6 +1,6 @@
 import Oscillator from '~/assets/javascripts/oscillator.js'
-import Random from '~/assets/javascripts/random.js'
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
+import * as Random from '~/assets/javascripts/random.js'
 
 export default class Oct2017Demo extends PixiDemo {
 
