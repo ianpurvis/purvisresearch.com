@@ -12,7 +12,7 @@ import {
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
-import Random from '~/assets/javascripts/random.js'
+import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2018/nov/tatami-bw.png'
