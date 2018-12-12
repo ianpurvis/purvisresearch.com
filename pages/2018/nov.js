@@ -16,7 +16,6 @@ import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2018/nov/tatami-bw.png'
-import kontrol from '~/assets/images/2018/nov/kontrol-bw.png'
 import neko from '~/assets/images/2018/nov/neko-bw.png'
 import monster from '~/assets/images/2018/nov/monster-bw.png'
 
@@ -38,10 +37,6 @@ export default {
           url: monster,
           position: new Vector3(0.70, 1.01, 1.05),
           geometry: new PlaneGeometry(1.10, 0.90),
-        },{
-          url: kontrol,
-          position: new Vector3(0.68, 1.16, 1.05),
-          geometry: new PlaneGeometry(1.22, 0.92),
         }
       ]),
       textureLoader: new TextureLoader(),
