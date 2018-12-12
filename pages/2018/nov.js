@@ -31,11 +31,11 @@ export default {
       illustration: Random.sample([
         {
           url: neko,
-          position: new Vector3(0.55, 1, 1.14),
-          geometry: new PlaneGeometry(1.10, 0.88),
+          position: new Vector3(0.55, 1.05, 1.14),
+          geometry: new PlaneGeometry(1.10, 0.90),
         },{
           url: monster,
-          position: new Vector3(0.70, 1.01, 1.05),
+          position: new Vector3(0.70, 1.05, 1.08),
           geometry: new PlaneGeometry(1.10, 0.90),
         }
       ]),
