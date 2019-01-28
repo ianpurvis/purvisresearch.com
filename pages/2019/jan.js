@@ -18,6 +18,7 @@ import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2019/jan/tatami-bw.png'
 import neko from '~/assets/images/2019/jan/neko-bw.png'
 import monster from '~/assets/images/2019/jan/monster-bw.png'
+import logo from '~/assets/images/2019/jan/logo-bw.png'
 
 export default {
   beforeDestroy() {
@@ -64,6 +65,9 @@ export default {
       this.floor.rotateX(-90 * DEGREES_TO_RADIANS)
       this.floor.position.set(0.11, 0, 0)
 
+      this.logo.rotateX(-90 * DEGREES_TO_RADIANS)
+      this.logo.position.set(-3.0, 0, -1.0)
+
       this.camera = new OrthographicCamera(...Object.values({
         left: -2,
         right: 2,
@@ -96,6 +100,15 @@ export default {
         let geometry = new PlaneGeometry(9, 9)
         this.floor = new Mesh(geometry, material)
         this.scene.add(this.floor)
+      }).then(() =>
+        this.textureLoader.load(logo)
+      ).then(texture => {
+        let material = new MeshBasicMaterial({
+          map: texture,
+        })
+        let geometry = new PlaneGeometry(0.30, 0.30 * 1.39)
+        this.logo = new Mesh(geometry, material)
+        this.scene.add(this.logo)
       }).then(() => {
         let texture = new VideoTexture(this.$refs.video)
         let material = new HalftoneMaterial({
