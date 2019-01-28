@@ -14,7 +14,7 @@
     "three": "^0.100.0"
   },
   "devDependencies": {
-    "@nuxtjs/sitemap": "^0.1.2",
+    "@nuxtjs/sitemap": "^0.2.0",
     "ajv": "^6.6.1",
     "arraybuffer-loader": "^1.0.7",
     "babel-eslint": "^10.0.1",
