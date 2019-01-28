@@ -9,7 +9,7 @@
     "bulma": "^0.7.2",
     "nuxt": "^2.3.4",
     "pixi-particles": "^3.1.0",
-    "pixi.js": "^4.8.2",
+    "pixi.js": "^4.8.5",
     "stats.js": "^0.17.0",
     "three": "^0.100.0"
   },
