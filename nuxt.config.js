@@ -88,7 +88,7 @@ module.exports = {
           return route
         })
         .concat(
-          { path: '/', component: resolve(__dirname, 'pages/2018/dec.vue') },
+          { path: '/', component: resolve(__dirname, 'pages/2019/jan.vue') },
           { path: '/nov_2017\.html', redirect: '/2017/nov.html' },
           { path: '/oct_2017\.html', redirect: '/2017/oct.html' },
           { path: '/sept_2017\.html', redirect: '/2017/sept.html' },

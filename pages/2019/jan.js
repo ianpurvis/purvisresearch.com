@@ -15,9 +15,9 @@ import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
-import tatami from '~/assets/images/2018/dec/tatami-bw.png'
-import neko from '~/assets/images/2018/dec/neko-bw.png'
-import monster from '~/assets/images/2018/dec/monster-bw.png'
+import tatami from '~/assets/images/2019/jan/tatami-bw.png'
+import neko from '~/assets/images/2019/jan/neko-bw.png'
+import monster from '~/assets/images/2019/jan/monster-bw.png'
 
 export default {
   beforeDestroy() {
@@ -40,7 +40,7 @@ export default {
         }
       ]),
       textureLoader: new TextureLoader(),
-      title: "dec 2018 - purvis research"
+      title: "jan 2019 - purvis research"
     }
   },
   head() {
@@ -48,10 +48,10 @@ export default {
       title: this.title,
       meta: [
         { property:"og:description", content:"Screen printing a 3D scan with WebGL" },
-        //{ property:"og:image", content: require("~/assets/images/2018/dec.png") },
+        //{ property:"og:image", content: require("~/assets/images/2019/jan.png") },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Dec 2018" },
+        { property:"og:title", content:"Jan 2019" },
         { name:"twitter:card", content:"summary_large_image" },
       ]
     }
