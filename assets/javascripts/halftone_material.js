@@ -4,7 +4,7 @@ import {
   UniformsLib,
   UniformsUtils,
 } from 'three'
-import halftone_shader from '~/assets/shaders/halftone_test.glsl'
+import halftoneFilterFragmentShader from '~/assets/shaders/halftone_filter.frag.glsl'
 
 class HalftoneMaterial extends ShaderMaterial {
   constructor({map}) {
@@ -21,7 +21,7 @@ class HalftoneMaterial extends ShaderMaterial {
           map: { value: map }
         }
       ]),
-      fragmentShader: halftone_shader,
+      fragmentShader: halftoneFilterFragmentShader,
       vertexShader: ShaderChunk.meshbasic_vert,
     })
   }
