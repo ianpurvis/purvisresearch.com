@@ -38,11 +38,12 @@ export default {
         [].concat(node.material).forEach(material => {
           if (material == null) return
           Object.values(material).forEach(safeDispose)
-          safeDispose(material.dispose())
+          safeDispose(material)
         })
         safeDispose(node.geometry)
         safeDispose(node)
       })
+      safeDispose(this.scene)
       let renderTarget = this.renderer.getRenderTarget()
       safeDispose(renderTarget)
       safeDispose(this.renderer)
