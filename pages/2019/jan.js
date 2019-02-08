@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      camera: new OrthographicCamera(),
       illustration: Random.sample([
         {
           url: neko,
@@ -68,14 +69,6 @@ export default {
       this.logo.rotateX(-90 * DEGREES_TO_RADIANS)
       this.logo.position.set(-3.0, 0, -1.0)
 
-      this.camera = new OrthographicCamera(...Object.values({
-        left: -2,
-        right: 2,
-        top: 2,
-        bottom: -2,
-        near: 0,
-        far: 1000
-      }))
       this.camera.position.setScalar(3)
       this.camera.lookAt(this.scene.position)
     },
@@ -87,6 +80,7 @@ export default {
         this.sprite = new Sprite(material)
         this.sprite.material.depthTest = false
         this.sprite.scale.setScalar(2)
+        this.sprite.geometry.computeBoundingBox()
         this.scene.add(this.sprite)
       }).then(() =>
         this.textureLoader.load(tatami)
@@ -134,6 +128,22 @@ export default {
       stream.getTracks().forEach(track => track.stop())
     },
     update() {
+      if (!this.sprite) return
+
+      let {aspect} = this.frame()
+      let targetSize = new Vector3()
+      this.sprite.geometry.boundingBox.getSize(targetSize)
+      targetSize.multiplyScalar(2.25) // Add some margin
+
+      Object.assign(this.camera, {
+        left: targetSize.x * aspect / -2,
+        right: targetSize.x * aspect / 2,
+        top: targetSize.y / 2,
+        bottom: targetSize.y / -2,
+        near: 0,
+        far: 1000
+      })
+      this.camera.updateProjectionMatrix()
     },
   },
   mixins: [
