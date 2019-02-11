@@ -17,6 +17,7 @@ import {
 import { easeBackInOut } from 'd3-ease'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
+import { lerp } from '~/assets/javascripts/math.js'
 import { delay } from '~/assets/javascripts/promise_delay.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
@@ -26,7 +27,6 @@ import tatami from '~/assets/images/2019/jan/tatami-bw.png'
 import neko from '~/assets/images/2019/jan/neko-bw.png'
 import monster from '~/assets/images/2019/jan/monster-bw.png'
 import logo from '~/assets/images/2019/jan/logo-bw.png'
-const lerp = (a, b, f) => (a * (1.0 - f)) + (b * f)
 
 export default {
   beforeDestroy() {
