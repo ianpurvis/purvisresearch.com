@@ -14,6 +14,7 @@ import {
   Vector3,
   VideoTexture,
 } from 'three'
+import { easeBackInOut } from 'd3-ease'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import { delay } from '~/assets/javascripts/promise_delay.js'
@@ -25,7 +26,6 @@ import tatami from '~/assets/images/2019/jan/tatami-bw.png'
 import neko from '~/assets/images/2019/jan/neko-bw.png'
 import monster from '~/assets/images/2019/jan/monster-bw.png'
 import logo from '~/assets/images/2019/jan/logo-bw.png'
-
 const lerp = (a, b, f) => (a * (1.0 - f)) + (b * f)
 
 export default {
@@ -176,9 +176,9 @@ export default {
         let intensity = light.intensity
         this.animations.push({
           startTime: this.clock.elapsedTime,
-          duration: 5.0,
+          duration: 5,
           tick: (t, duration) => {
-            light.intensity = lerp(intensity, value, t / duration)
+            light.intensity = lerp(intensity, value, easeBackInOut(t/duration))
           },
           resolve: resolve,
           reject: reject
@@ -245,9 +245,9 @@ export default {
       .then(this.startVideo)
       .then(async () => {
         while (this.clock.running) {
-          await delay(10.0)
+          await delay(6.0)
           await this.transitionToNight()
-          await delay(10.0)
+          await delay(6.0)
           await this.transitionToDay()
         }
       })
