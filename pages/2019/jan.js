@@ -50,7 +50,6 @@ export default {
           geometry: new PlaneGeometry(1.10, 0.92),
         }
       ]),
-      textureLoader: new TextureLoader(),
       title: "jan 2019 - purvis research"
     }
   },
@@ -73,10 +72,10 @@ export default {
 
       this.logo.position.set(-3.0, 0, -1.0)
 
-      this.videoBox.rotateY(90 * DEGREES_TO_RADIANS)
-      this.videoBox.position.copy(this.illustration.position)
+      this.video.rotateY(90 * DEGREES_TO_RADIANS)
+      this.video.position.copy(this.illustration.position)
 
-      this.spotLight.position.copy(this.videoBox.position)
+      this.spotLight.position.copy(this.video.position)
       this.spotLight.target.position.set(3, 0, 0.95)
 
       this.ceilingLight.position.set(0, 3, 0)
@@ -85,31 +84,34 @@ export default {
       this.camera.lookAt(this.scene.position)
     },
     load() {
+      return Promise.all([
+        this.loadFloor(),
+        this.loadLogo(),
+        this.loadTV(),
+      ]).then(() => {
+        this.loadVideo()
+        this.loadLights()
+      })
+    },
+    loadFloor() {
       return Promise.resolve(
-        this.textureLoader.load(this.illustration.url)
-      ).then(texture => {
-        let material = new SpriteMaterial({ map: texture })
-        this.sprite = new Sprite(material)
-        this.sprite.material.depthTest = false
-        this.sprite.scale.setScalar(2)
-        this.sprite.geometry.computeBoundingBox()
-        this.scene.add(this.sprite)
-      }).then(() =>
-        this.textureLoader.load(tatami)
+        new TextureLoader().load(tatami)
       ).then(texture => {
         texture.wrapS = RepeatWrapping
         texture.wrapT = RepeatWrapping
         texture.repeat.set(9, 9)
         let material = new MeshPhongMaterial({
-          //color: 0xFBCEB1,
           map: texture,
         })
         let geometry = new PlaneGeometry(9, 9)
         geometry.rotateX(-90 * DEGREES_TO_RADIANS)
         this.floor = new Mesh(geometry, material)
         this.scene.add(this.floor)
-      }).then(() =>
-        this.textureLoader.load(logo)
+      })
+    },
+    loadLogo() {
+      return Promise.resolve(
+        new TextureLoader().load(logo)
       ).then(texture => {
         let material = new MeshBasicMaterial({
           map: texture,
@@ -118,42 +120,58 @@ export default {
         geometry.rotateX(-90 * DEGREES_TO_RADIANS)
         this.logo = new Mesh(geometry, material)
         this.scene.add(this.logo)
-      }).then(() => {
-        let texture = new VideoTexture(this.$refs.video)
-        let material = new HalftoneMaterial({
+      })
+    },
+    loadLights() {
+      this.ambientLight = new AmbientLight(...Object.values({
+        color: 0xFBCEB1,
+        intensity: 1.0,
+      }))
+      this.scene.add(this.ambientLight)
+
+      this.ceilingLight = new SpotLight(...Object.values({
+        color: 0xFBCEB1,
+        intensity: 0.0,
+        distance: 4.0,
+        angle: 0.5 * Math.PI/2,
+        penumbra: 1.0,
+        decay: 1.0,
+      }))
+      this.scene.add(this.ceilingLight)
+
+      this.spotLight = new SpotLight(...Object.values({
+        color: 0xFBCEB1,
+        intensity: 0.0,
+        distance: 2.5,
+        angle: 0.5 * Math.PI/2,
+        penumbra: 1.0,
+        decay: 1.0,
+      }))
+      this.scene.add(this.spotLight)
+
+      this.spotLight.target = new Object3D()
+      this.scene.add(this.spotLight.target)
+    },
+    loadVideo() {
+      let texture = new VideoTexture(this.$refs.video)
+      let material = new HalftoneMaterial({
+        map: texture
+      })
+      this.video = new Mesh(this.illustration.geometry, material)
+      this.scene.add(this.video)
+    },
+    loadTV() {
+      return Promise.resolve(
+        new TextureLoader().load(this.illustration.url)
+      ).then(texture => {
+        let material = new SpriteMaterial({
           map: texture
         })
-        this.videoBox = new Mesh(this.illustration.geometry, material)
-        this.scene.add(this.videoBox)
-
-        this.ambientLight = new AmbientLight(...Object.values({
-          color: 0xFBCEB1,
-          intensity: 1.0,
-        }))
-        this.scene.add(this.ambientLight)
-
-        this.ceilingLight = new SpotLight(...Object.values({
-          color: 0xFBCEB1,
-          intensity: 0.0,
-          distance: 4.0,
-          angle: 0.5 * Math.PI/2,
-          penumbra: 1.0,
-          decay: 1.0,
-        }))
-        this.scene.add(this.ceilingLight)
-
-        this.spotLight = new SpotLight(...Object.values({
-          color: 0xFBCEB1,
-          intensity: 0.0,
-          distance: 2.5,
-          angle: 0.5 * Math.PI/2,
-          penumbra: 1.0,
-          decay: 1.0,
-        }))
-        this.scene.add(this.spotLight)
-
-        this.spotLight.target = new Object3D()
-        this.scene.add(this.spotLight.target)
+        this.tv = new Sprite(material)
+        this.tv.material.depthTest = false
+        this.tv.scale.setScalar(2)
+        this.tv.geometry.computeBoundingBox()
+        this.scene.add(this.tv)
       })
     },
     startVideo() {
@@ -200,11 +218,11 @@ export default {
       ])
     },
     update() {
-      if (!this.sprite) return
+      if (!this.tv) return
 
       let {aspect} = this.frame()
       let targetSize = new Vector3()
-      this.sprite.geometry.boundingBox.getSize(targetSize)
+      this.tv.geometry.boundingBox.getSize(targetSize)
       targetSize.multiplyScalar(2.25) // Add some margin
 
       Object.assign(this.camera, {
