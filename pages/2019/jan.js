@@ -67,27 +67,13 @@ export default {
     }
   },
   methods: {
-    layout() {
-      this.floor.position.set(0.11, 0, 0)
-
-      this.logo.position.set(-3.0, 0, -1.0)
-
-      this.video.rotateY(90 * DEGREES_TO_RADIANS)
-      this.video.position.copy(this.illustration.position)
-
-      this.spotLight.position.copy(this.video.position)
-      this.spotLight.target.position.set(3, 0, 0.95)
-
-      this.ceilingLight.position.set(0, 3, 0)
-
-    },
     load() {
       this.loadCamera()
+      this.loadLights()
       return this.loadFloor()
         .then(this.loadLogo)
         .then(this.loadTV)
         .then(this.loadVideo)
-        .then(this.loadLights)
     },
     loadCamera() {
       this.camera.position.setScalar(3)
@@ -103,11 +89,14 @@ export default {
         texture.repeat.set(9, 9)
         let material = new MeshPhongMaterial({
           map: texture,
+          opacity: 0.0,
         })
         let geometry = new PlaneGeometry(9, 9)
         geometry.rotateX(-90 * DEGREES_TO_RADIANS)
         this.floor = new Mesh(geometry, material)
         this.scene.add(this.floor)
+        this.floor.position.set(0.11, 0, 0)
+        return this.transitionOpacity(this.floor, 1.0)
       })
     },
     loadLogo() {
@@ -121,6 +110,7 @@ export default {
         geometry.rotateX(-90 * DEGREES_TO_RADIANS)
         this.logo = new Mesh(geometry, material)
         this.scene.add(this.logo)
+        this.logo.position.set(-3.0, 0, -1.0)
       })
     },
     loadLights() {
@@ -139,6 +129,7 @@ export default {
         decay: 1.0,
       }))
       this.scene.add(this.ceilingLight)
+      this.ceilingLight.position.set(0, 3, 0)
 
       this.spotLight = new SpotLight(...Object.values({
         color: 0xFBCEB1,
@@ -149,9 +140,11 @@ export default {
         decay: 1.0,
       }))
       this.scene.add(this.spotLight)
+      this.spotLight.position.copy(this.illustration.position)
 
       this.spotLight.target = new Object3D()
       this.scene.add(this.spotLight.target)
+      this.spotLight.target.position.set(3, 0, 0.95)
     },
     loadVideo() {
       let texture = new VideoTexture(this.$refs.video)
@@ -160,19 +153,22 @@ export default {
       })
       this.video = new Mesh(this.illustration.geometry, material)
       this.scene.add(this.video)
+      this.video.rotateY(90 * DEGREES_TO_RADIANS)
+      this.video.position.copy(this.illustration.position)
     },
     loadTV() {
       return Promise.resolve(
         new TextureLoader().load(this.illustration.url)
       ).then(texture => {
         let material = new SpriteMaterial({
-          map: texture
+          depthTest: false,
+          map: texture,
+          opacity: 0.0,
         })
         this.tv = new Sprite(material)
-        this.tv.material.depthTest = false
         this.tv.scale.setScalar(2)
-        this.tv.geometry.computeBoundingBox()
         this.scene.add(this.tv)
+        return this.transitionOpacity(this.tv, 1.0)
       })
     },
     startVideo() {
@@ -190,6 +186,25 @@ export default {
       if (!stream) return
       stream.getTracks().forEach(track => track.stop())
     },
+    track() {
+      let targetSize = new Vector3(2.25, 2.25)
+      this.animations.push({
+        startTime: this.clock.elapsedTime,
+        duration: 60 * 60 * 24,
+        tick: (t, duration) => {
+          let {aspect} = this.frame()
+          Object.assign(this.camera, {
+            left: targetSize.x * aspect / -2,
+            right: targetSize.x * aspect / 2,
+            top: targetSize.y / 2,
+            bottom: targetSize.y / -2,
+            near: 0,
+            far: 1000
+          })
+          this.camera.updateProjectionMatrix()
+        },
+      })
+    },
     transitionIntensity(light, value) {
       return new Promise((resolve, reject) => {
         let intensity = light.intensity
@@ -204,28 +219,18 @@ export default {
         })
       })
     },
-    track() {
-      this.animations.push({
-        startTime: this.clock.elapsedTime,
-        duration: 60 * 60 * 24,
-        tick: (t, duration) => {
-          if (!this.tv) return
-
-          let {aspect} = this.frame()
-          let targetSize = new Vector3()
-          this.tv.geometry.boundingBox.getSize(targetSize)
-          targetSize.multiplyScalar(2.25) // Add some margin
-
-          Object.assign(this.camera, {
-            left: targetSize.x * aspect / -2,
-            right: targetSize.x * aspect / 2,
-            top: targetSize.y / 2,
-            bottom: targetSize.y / -2,
-            near: 0,
-            far: 1000
-          })
-          this.camera.updateProjectionMatrix()
-        },
+    transitionOpacity(object, value) {
+      return new Promise((resolve, reject) => {
+        let opacity = object.material.opacity
+        this.animations.push({
+          startTime: this.clock.elapsedTime,
+          duration: 1.0,
+          tick: (t, duration) => {
+            object.material.opacity = lerp(opacity, value, easeBackInOut(t/duration))
+          },
+          resolve: resolve,
+          reject: reject
+        })
       })
     },
     transitionToNight() {
@@ -244,6 +249,7 @@ export default {
     },
     update() {
       // Update animations
+      if (!this.clock.running) return
       let globalElapsedTime = this.clock.getElapsedTime()
       this.animations.forEach((animation, index) => {
         let {startTime, duration, tick, resolve, reject} = animation
@@ -267,7 +273,6 @@ export default {
   ],
   mounted() {
     this.load()
-      .then(this.layout)
       .then(this.startVideo)
       .then(async () => {
         while (this.clock.running) {
