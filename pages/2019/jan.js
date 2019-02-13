@@ -80,18 +80,19 @@ export default {
 
       this.ceilingLight.position.set(0, 3, 0)
 
-      this.camera.position.setScalar(3)
-      this.camera.lookAt(this.scene.position)
     },
     load() {
-      return Promise.all([
-        this.loadFloor(),
-        this.loadLogo(),
-        this.loadTV(),
-      ]).then(() => {
-        this.loadVideo()
-        this.loadLights()
-      })
+      this.loadCamera()
+      return this.loadFloor()
+        .then(this.loadLogo)
+        .then(this.loadTV)
+        .then(this.loadVideo)
+        .then(this.loadLights)
+    },
+    loadCamera() {
+      this.camera.position.setScalar(3)
+      this.camera.lookAt(this.scene.position)
+      this.track()
     },
     loadFloor() {
       return Promise.resolve(
@@ -203,6 +204,30 @@ export default {
         })
       })
     },
+    track() {
+      this.animations.push({
+        startTime: this.clock.elapsedTime,
+        duration: 60 * 60 * 24,
+        tick: (t, duration) => {
+          if (!this.tv) return
+
+          let {aspect} = this.frame()
+          let targetSize = new Vector3()
+          this.tv.geometry.boundingBox.getSize(targetSize)
+          targetSize.multiplyScalar(2.25) // Add some margin
+
+          Object.assign(this.camera, {
+            left: targetSize.x * aspect / -2,
+            right: targetSize.x * aspect / 2,
+            top: targetSize.y / 2,
+            bottom: targetSize.y / -2,
+            near: 0,
+            far: 1000
+          })
+          this.camera.updateProjectionMatrix()
+        },
+      })
+    },
     transitionToNight() {
       return Promise.all([
         this.transitionIntensity(this.ambientLight, 0.0),
@@ -218,23 +243,6 @@ export default {
       ])
     },
     update() {
-      if (!this.tv) return
-
-      let {aspect} = this.frame()
-      let targetSize = new Vector3()
-      this.tv.geometry.boundingBox.getSize(targetSize)
-      targetSize.multiplyScalar(2.25) // Add some margin
-
-      Object.assign(this.camera, {
-        left: targetSize.x * aspect / -2,
-        right: targetSize.x * aspect / 2,
-        top: targetSize.y / 2,
-        bottom: targetSize.y / -2,
-        near: 0,
-        far: 1000
-      })
-      this.camera.updateProjectionMatrix()
-
       // Update animations
       let globalElapsedTime = this.clock.getElapsedTime()
       this.animations.forEach((animation, index) => {
@@ -264,9 +272,9 @@ export default {
       .then(async () => {
         while (this.clock.running) {
           await delay(6.0)
-          await this.transitionToNight()
-          await delay(6.0)
-          await this.transitionToDay()
+          .then(this.transitionToNight)
+          .then(delay(6.0))
+          .then(this.transitionToDay)
         }
       })
   }
