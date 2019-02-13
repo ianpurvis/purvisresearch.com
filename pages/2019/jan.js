@@ -43,11 +43,11 @@ export default {
         {
           url: neko,
           position: new Vector3(0.55, 1.00, 1.14),
-          geometry: new PlaneGeometry(1.10, 0.90),
+          geometry: new PlaneGeometry(1.10, 0.90).rotateY(90 * DEGREES_TO_RADIANS),
         },{
           url: monster,
           position: new Vector3(0.70, 1.01, 1.05),
-          geometry: new PlaneGeometry(1.10, 0.92),
+          geometry: new PlaneGeometry(1.10, 0.92).rotateY(90 * DEGREES_TO_RADIANS),
         }
       ]),
       title: "jan 2019 - purvis research"
@@ -153,7 +153,6 @@ export default {
       })
       this.video = new Mesh(this.illustration.geometry, material)
       this.scene.add(this.video)
-      this.video.rotateY(90 * DEGREES_TO_RADIANS)
       this.video.position.copy(this.illustration.position)
     },
     loadTV() {
