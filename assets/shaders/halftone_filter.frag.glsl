@@ -2,6 +2,7 @@
 // Based on GLSL halftone shader demo for WebGL
 // by Stefan Gustavson 2012-02-16 (stefan.gustavson@liu.se)
 // http://weber.itn.liu.se/~stegu/webglshadertutorial/shadertutorial.html
+precision highp float;
 
 uniform sampler2D map;
 
