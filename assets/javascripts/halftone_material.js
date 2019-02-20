@@ -7,7 +7,7 @@ import {
 import halftoneFilterFragmentShader from '~/assets/shaders/halftone_filter.frag.glsl'
 
 class HalftoneMaterial extends ShaderMaterial {
-  constructor({map}) {
+  constructor({map, opacity=1.0, transparent=false}) {
     super({
       defines: {
         USE_MAP: true,
@@ -18,11 +18,14 @@ class HalftoneMaterial extends ShaderMaterial {
       uniforms: UniformsUtils.merge([
         UniformsLib.common,
         {
-          map: { value: map }
+          map: { value: map },
+          opacity: { value: opacity },
         }
       ]),
       fragmentShader: halftoneFilterFragmentShader,
       vertexShader: ShaderChunk.meshbasic_vert,
+      opacity: opacity,
+      transparent: transparent,
     })
   }
 }

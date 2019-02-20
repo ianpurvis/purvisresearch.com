@@ -5,6 +5,7 @@
 precision highp float;
 
 uniform sampler2D map;
+uniform float opacity;
 
 varying vec2 vUv;
 
@@ -24,13 +25,11 @@ vec4 toCMYK(vec3 rgb) {
 }
 
 
-vec4 toRGBA(vec4 cmyk) {
-  vec4 rgba;
-  rgba.rgb = 1.0 - cmyk.xyz;
-  rgba.rgb = mix(rgba.rgb, BLACK, cmyk.w);
-  rgba.a = 1.0;
+vec3 toRGB(vec4 cmyk) {
+  vec3 rgb = 1.0 - cmyk.xyz;
+  rgb = mix(rgb, BLACK, cmyk.w);
 
-  return rgba;
+  return rgb;
 }
 
 
@@ -68,5 +67,5 @@ void main() {
   vec2 Kuv = 2.0*fract(Kst)-1.0;
   cmyk.w = step(0.0, sqrt(cmyk.w)-length(Kuv));
 
-  gl_FragColor = toRGBA(cmyk);
+  gl_FragColor = vec4(toRGB(cmyk), opacity);
 }
