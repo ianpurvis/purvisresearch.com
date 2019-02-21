@@ -252,15 +252,14 @@ export default {
       let globalElapsedTime = this.clock.getElapsedTime()
       this.animations.forEach((animation, index) => {
         let {startTime, duration, tick, resolve, reject} = animation
-        let elapsedTime = globalElapsedTime - startTime
-        if (elapsedTime <= duration) {
-          try {
-            tick(elapsedTime, duration)
-          } catch (error) {
-            this.animations.splice(index, 1)
-            if (reject) reject(error)
-          }
-        } else {
+        let elapsedTime = Math.min(globalElapsedTime - startTime, duration)
+        try {
+          tick(elapsedTime, duration)
+        } catch (error) {
+          this.animations.splice(index, 1)
+          if (reject) reject(error)
+        }
+        if (elapsedTime >= duration) {
           this.animations.splice(index, 1)
           if (resolve) resolve()
         }
