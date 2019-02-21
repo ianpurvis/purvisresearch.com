@@ -14,11 +14,16 @@ import {
   Vector3,
   VideoTexture,
 } from 'three'
-import { easeBackInOut } from 'd3-ease'
+import {
+  easeBackInOut,
+  easeCubicInOut,
+  easeExpIn,
+} from 'd3-ease'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import { lerp } from '~/assets/javascripts/math.js'
 import { delay } from '~/assets/javascripts/promise_delay.js'
+import { sample } from '~/assets/javascripts/random.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
@@ -39,17 +44,6 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
-      illustration: Random.sample([
-        {
-          url: neko,
-          position: new Vector3(0.55, 1.00, 1.14),
-          geometry: new PlaneGeometry(1.10, 0.90).rotateY(90 * DEGREES_TO_RADIANS),
-        },{
-          url: monster,
-          position: new Vector3(0.70, 1.01, 1.05),
-          geometry: new PlaneGeometry(1.10, 0.92).rotateY(90 * DEGREES_TO_RADIANS),
-        }
-      ]),
       title: "jan 2019 - purvis research"
     }
   },
@@ -69,11 +63,12 @@ export default {
   methods: {
     load() {
       this.loadCamera()
-      this.loadLights()
+      this.loadAmbientLight()
       return this.loadFloor()
         .then(this.loadLogo)
-        .then(this.loadTV)
-        .then(this.loadVideo)
+        .then(this.loadNekoTV)
+        .then(this.loadMonsterTV)
+        .then(this.loadNightLights)
     },
     loadCamera() {
       this.camera.position.setScalar(3)
@@ -113,13 +108,14 @@ export default {
         this.logo.position.set(-3.0, 0, -1.0)
       })
     },
-    loadLights() {
+    loadAmbientLight() {
       this.ambientLight = new AmbientLight(...Object.values({
         color: 0xFBCEB1,
         intensity: 1.0,
       }))
       this.scene.add(this.ambientLight)
-
+    },
+    loadNightLights() {
       this.ceilingLight = new SpotLight(...Object.values({
         color: 0xFBCEB1,
         intensity: 0.0,
@@ -140,34 +136,74 @@ export default {
         decay: 1.0,
       }))
       this.scene.add(this.spotLight)
-      this.spotLight.position.copy(this.illustration.position)
+      this.spotLight.position.copy(this.nekoTV.screen.position)
 
       this.spotLight.target = new Object3D()
       this.scene.add(this.spotLight.target)
       this.spotLight.target.position.set(3, 0, 0.95)
     },
-    loadVideo() {
-      let texture = new VideoTexture(this.$refs.video)
-      let material = new HalftoneMaterial({
-        map: texture
-      })
-      this.video = new Mesh(this.illustration.geometry, material)
-      this.scene.add(this.video)
-      this.video.position.copy(this.illustration.position)
-    },
-    loadTV() {
+    loadMonsterTV() {
       return Promise.resolve(
-        new TextureLoader().load(this.illustration.url)
+        new TextureLoader().load(monster)
       ).then(texture => {
         let material = new SpriteMaterial({
           depthTest: false,
           map: texture,
           opacity: 0.0,
         })
-        this.tv = new Sprite(material)
-        this.tv.scale.setScalar(2)
-        this.scene.add(this.tv)
-        return this.transitionOpacity(this.tv, 1.0)
+        let tv = new Sprite(material)
+        tv.scale.setScalar(2)
+
+        texture = new VideoTexture(this.$refs.video)
+        material = new HalftoneMaterial({
+          map: texture,
+          opacity: 0.0,
+          transparent: true,
+        })
+        let geometry = new PlaneGeometry(1.10, 0.92)
+        geometry.rotateY(90 * DEGREES_TO_RADIANS)
+        let screen = new Mesh(geometry, material)
+        screen.scale.setScalar(0.5)
+        screen.position.set(0.70, 1.01, 1.05).multiplyScalar(0.5)
+        tv.add(screen)
+        tv.screen = screen
+
+        this.scene.add(tv)
+        this.monsterTV = tv
+      })
+    },
+    loadNekoTV() {
+      return Promise.resolve(
+        new TextureLoader().load(neko)
+      ).then(texture => {
+        let material = new SpriteMaterial({
+          depthTest: false,
+          map: texture,
+          opacity: 0.0,
+        })
+        let tv = new Sprite(material)
+        tv.scale.setScalar(2)
+
+        texture = new VideoTexture(this.$refs.video)
+        material = new HalftoneMaterial({
+          map: texture,
+          opacity: 0.0,
+          transparent: true,
+        })
+        let geometry = new PlaneGeometry(1.10, 0.90)
+        geometry.rotateY(90 * DEGREES_TO_RADIANS)
+        let screen = new Mesh(geometry, material)
+        screen.scale.setScalar(0.5)
+        screen.position.set(0.55, 1.00, 1.14).multiplyScalar(0.5)
+        tv.add(screen)
+        tv.screen = screen
+
+        this.scene.add(tv)
+        this.nekoTV = tv
+        return Promise.all([
+          this.transitionOpacity(tv, 1.0),
+          this.transitionOpacity(tv.screen, 1.0)
+        ])
       })
     },
     startVideo() {
@@ -209,9 +245,9 @@ export default {
         let intensity = light.intensity
         this.animations.push({
           startTime: this.clock.elapsedTime,
-          duration: 5,
+          duration: 10.0,
           tick: (t, duration) => {
-            light.intensity = lerp(intensity, value, easeBackInOut(t/duration))
+            light.intensity = lerp(intensity, value, easeCubicInOut(t/duration))
           },
           resolve: resolve,
           reject: reject
@@ -225,7 +261,11 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: 1.0,
           tick: (t, duration) => {
-            object.material.opacity = lerp(opacity, value, easeBackInOut(t/duration))
+            let tickOpacity = lerp(opacity, value, easeBackInOut(t/duration))
+            object.material.opacity = tickOpacity
+            if (object.material.uniforms) {
+              object.material.uniforms.opacity.value = tickOpacity
+            }
           },
           resolve: resolve,
           reject: reject
@@ -237,6 +277,7 @@ export default {
         this.transitionIntensity(this.ambientLight, 0.0),
         this.transitionIntensity(this.ceilingLight, 1.0),
         this.transitionIntensity(this.spotLight, 2.0),
+        delay(7.0).then(this.transitionTV),
       ])
     },
     transitionToDay() {
@@ -244,7 +285,35 @@ export default {
         this.transitionIntensity(this.ambientLight, 1.0),
         this.transitionIntensity(this.ceilingLight, 0.0),
         this.transitionIntensity(this.spotLight, 0.0),
+        delay(7.0).then(this.transitionTV),
       ])
+    },
+    transitionTV() {
+      return new Promise((resolve, reject) => {
+        let nekoOpacity = this.nekoTV.material.opacity
+        let monsterOpacity = this.monsterTV.material.opacity
+
+        this.animations.push({
+          startTime: this.clock.elapsedTime,
+          duration: 1.5,
+          tick: (t, duration) => {
+            let easeGlitch = (t) => t < 1.0 ? sample([t, t, 0.50, 0.75]) : t
+            let easeWithGlitch = easeGlitch(easeExpIn(t/duration))
+
+            let tickOpacityNeko = lerp(nekoOpacity, monsterOpacity, easeWithGlitch)
+            this.nekoTV.material.opacity = tickOpacityNeko
+            this.nekoTV.screen.material.opacity = tickOpacityNeko
+            this.nekoTV.screen.material.uniforms.opacity.value = tickOpacityNeko
+
+            let tickOpacityMonster = lerp(monsterOpacity, nekoOpacity, easeWithGlitch)
+            this.monsterTV.material.opacity = tickOpacityMonster
+            this.monsterTV.screen.material.opacity = tickOpacityMonster
+            this.monsterTV.screen.material.uniforms.opacity.value = tickOpacityMonster
+          },
+          resolve: resolve,
+          reject: reject
+        })
+      })
     },
     update() {
       // Update animations
