@@ -23,7 +23,7 @@
     "eslint": "^5.14.1",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.2",
-    "eslint-plugin-vue": "^5.1.0",
+    "eslint-plugin-vue": "^5.2.2",
     "exports-loader": "^0.7.0",
     "imports-loader": "^0.8.0",
     "node-sass": "^4.11.0",
