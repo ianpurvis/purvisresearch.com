@@ -5,7 +5,7 @@
   "author": "Ian Purvis <ian@purvisresearch.com>",
   "private": true,
   "dependencies": {
-    "@nuxtjs/google-analytics": "^2.0.3",
+    "@nuxtjs/google-analytics": "^2.1.0",
     "bulma": "^0.7.4",
     "d3-ease": "^1.0.5",
     "nuxt": "^2.4.3",
