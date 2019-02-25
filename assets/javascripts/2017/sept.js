@@ -1,6 +1,11 @@
-if (process.browser) {
-  require('pixi-particles')
-}
+import {
+  Text,
+  Container,
+  settings as Settings
+} from 'pixi.js'
+import {
+  Emitter as ParticleEmitter
+} from 'imports-loader?PIXI=pixi.js!pixi-particles'
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
 
 export default class Sept2017Demo extends PixiDemo {
@@ -15,17 +20,17 @@ export default class Sept2017Demo extends PixiDemo {
     return super.load().then(new Promise((resolve, reject) => {
 
       // Create text objects and pre-render them for the emitter
-      let texts = Array.from("💾📀").map(e => new PIXI.Text(e, {fontSize: '48pt'}))
+      let texts = Array.from("💾📀").map(e => new Text(e, {fontSize: '48pt'}))
       texts.forEach(t => self.app.renderer.render(t))
 
       // The PIXI.Container to put the emitter in
       // if using blend modes, it's important to put this
       // on top of a bitmap, and not use the root stage Container
-      let emitterContainer = new PIXI.Container()
+      let emitterContainer = new Container()
       self.app.stage.addChild(emitterContainer)
 
       // Create a new emitter
-      self.emitter = new PIXI.particles.Emitter(
+      self.emitter = new ParticleEmitter(
 
         emitterContainer,
 
@@ -91,7 +96,7 @@ export default class Sept2017Demo extends PixiDemo {
   }
 
   update() {
-    let deltaTime = this.app.ticker.elapsedMS * PIXI.settings.TARGET_FPMS * this.speedOfLife
+    let deltaTime = this.app.ticker.elapsedMS * Settings.TARGET_FPMS * this.speedOfLife
 
     if (deltaTime == 0) return
 

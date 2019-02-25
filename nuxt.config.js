@@ -79,6 +79,10 @@ module.exports = {
     '@nuxtjs/sitemap'
   ],
 
+  render: {
+    ssr: false
+  },
+
   router: {
     extendRoutes (routes, resolve) {
       // Return array to replace nuxt generated routes:

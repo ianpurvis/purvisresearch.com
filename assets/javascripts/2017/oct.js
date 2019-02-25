@@ -1,3 +1,7 @@
+import {
+  settings as Settings,
+  Graphics
+} from 'pixi.js'
 import Oscillator from '~/assets/javascripts/oscillator.js'
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
 import * as Random from '~/assets/javascripts/random.js'
@@ -32,7 +36,7 @@ export default class Oct2017Demo extends PixiDemo {
   }
 
   update() {
-    let deltaTime = this.app.ticker.elapsedMS * PIXI.settings.TARGET_FPMS * this.speedOfLife
+    let deltaTime = this.app.ticker.elapsedMS * Settings.TARGET_FPMS * this.speedOfLife
 
     if (deltaTime == 0) return
 
@@ -70,7 +74,7 @@ class BezierTexture {
       })
     })
 
-    let graphics = new PIXI.Graphics()
+    let graphics = new Graphics()
     graphics.lineStyle(lineWidth, color, lineAlpha)
 
     let offset, clone

@@ -1,6 +1,4 @@
-if (process.browser) {
-  const PIXI = require('pixi.js')
-}
+import { Application } from 'pixi.js'
 import Demo from '~/assets/javascripts/demo.js'
 
 export default class PixiDemo extends Demo {
@@ -8,7 +6,7 @@ export default class PixiDemo extends Demo {
   constructor(frame) {
     super()
 
-    this.app = new PIXI.Application({
+    this.app = new Application({
       transparent: true,
       width: frame.width,
       height: frame.height
