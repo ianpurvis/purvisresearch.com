@@ -12,7 +12,7 @@
     "pixi-particles": "^3.2.0",
     "pixi.js": "^4.8.6",
     "stats.js": "^0.17.0",
-    "three": "^0.101.1"
+    "three": "^0.102.0"
   },
   "devDependencies": {
     "@nuxtjs/sitemap": "^0.2.0",
