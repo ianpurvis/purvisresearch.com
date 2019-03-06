@@ -261,11 +261,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: 1.0,
           tick: (t, duration) => {
-            let tickOpacity = lerp(opacity, value, easeBackInOut(t/duration))
-            object.material.opacity = tickOpacity
-            if (object.material.uniforms) {
-              object.material.uniforms.opacity.value = tickOpacity
-            }
+            object.material.opacity = lerp(opacity, value, easeBackInOut(t/duration))
           },
           resolve: resolve,
           reject: reject
@@ -303,12 +299,10 @@ export default {
             let tickOpacityNeko = lerp(nekoOpacity, monsterOpacity, easeWithGlitch)
             this.nekoTV.material.opacity = tickOpacityNeko
             this.nekoTV.screen.material.opacity = tickOpacityNeko
-            this.nekoTV.screen.material.uniforms.opacity.value = tickOpacityNeko
 
             let tickOpacityMonster = lerp(monsterOpacity, nekoOpacity, easeWithGlitch)
             this.monsterTV.material.opacity = tickOpacityMonster
             this.monsterTV.screen.material.opacity = tickOpacityMonster
-            this.monsterTV.screen.material.uniforms.opacity.value = tickOpacityMonster
           },
           resolve: resolve,
           reject: reject
