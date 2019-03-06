@@ -48,6 +48,13 @@ module.exports = {
         exclude: /(node_modules)/
       })
 
+      // Load videos as files
+      config.module.rules.push({
+        test: /\.mov$/,
+        loader: 'file-loader',
+        exclude: /(node_modules)/
+      })
+
       if (isDev && isClient) {
         // Run ESLint on save
         config.module.rules.push({
