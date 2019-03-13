@@ -5,7 +5,7 @@ import {
 } from 'pixi.js'
 import {
   Emitter as ParticleEmitter
-} from 'imports-loader?PIXI=pixi.js!pixi-particles'
+} from 'pixi-particles'
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
 
 export default class Sept2017Demo extends PixiDemo {
