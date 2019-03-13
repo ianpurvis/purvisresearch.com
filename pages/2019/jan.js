@@ -33,6 +33,20 @@ import neko from '~/assets/images/2019/jan/neko-bw.png'
 import monster from '~/assets/images/2019/jan/monster-bw.png'
 import logo from '~/assets/images/2019/jan/logo-bw.png'
 
+const Videos = [
+  'anmitsu.mp4',
+  'awaodori.mp4',
+  'ayu.mp4',
+  'dude.mp4',
+  'dynamic.mp4',
+  'maruko.mp4',
+  'mochitsuki.mp4',
+  'rope.mp4',
+  'suica.mp4',
+  'sumo.mp4',
+  'tteokbokki.mp4',
+].map(file => require(`~/assets/videos/2019/jan/${file}`))
+
 export default {
   beforeDestroy() {
     this.stopVideo()
@@ -44,7 +58,23 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
-      title: "jan 2019 - purvis research"
+      title: "jan 2019 - purvis research",
+      video_url: Random.sample(Videos),
+    }
+  },
+  watch: {
+    video_url: function(newValue, oldValue) {
+      if (newValue == null) {
+        this.startVideo()
+      }
+      else if (oldValue == null) {
+        this.stopVideo()
+      }
+      // Wait a tick for the video element to be regenerated,
+      // then point the video texture at it.
+      this.$nextTick().then(() => {
+        this.nekoTV.screen.material.map.image = this.$refs.video
+      })
     }
   },
   head() {
@@ -61,6 +91,9 @@ export default {
     }
   },
   methods: {
+    changeChannel() {
+      this.video_url = Random.sample([null].concat(Videos))
+    },
     load() {
       this.loadCamera()
       this.loadAmbientLight()
@@ -333,15 +366,10 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load()
-      .then(this.startVideo)
-      .then(async () => {
-        while (this.clock.running) {
-          await delay(6.0)
-          .then(this.transitionToNight)
-          .then(delay(6.0))
-          .then(this.transitionToDay)
-        }
-      })
+    this.load().then(async () => {
+      while (this.clock.running) {
+        await delay(6.0).then(this.changeChannel)
+      }
+    })
   }
 }

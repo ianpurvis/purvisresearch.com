@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+ffmpeg \
+  -i $1 \
+  -an \
+  -vf scale=512:-1 \
+  -profile:v baseline \
+  -level 3.0 \
+  -pix_fmt yuv420p \
+  -crf $2 \
+  "${1%.*}.mp4"
