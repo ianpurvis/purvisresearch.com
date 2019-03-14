@@ -87,7 +87,8 @@ export default {
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Jan 2019" },
         { name:"twitter:card", content:"summary_large_image" },
-      ]
+      ],
+      link: Videos.map(video => ({ rel: "preload", href: video, as: "video" })),
     }
   },
   methods: {
