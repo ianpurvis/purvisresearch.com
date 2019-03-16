@@ -23,7 +23,6 @@ import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import { lerp } from '~/assets/javascripts/math.js'
 import { delay } from '~/assets/javascripts/promise_delay.js'
-import { sample } from '~/assets/javascripts/random.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
@@ -327,7 +326,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: 1.5,
           tick: (t, duration) => {
-            let easeGlitch = (t) => t < 1.0 ? sample([t, t, 0.50, 0.75]) : t
+            let easeGlitch = (t) => t < 1.0 ? Random.sample([t, t, 0.50, 0.75]) : t
             let easeWithGlitch = easeGlitch(easeExpIn(t/duration))
 
             let tickOpacityNeko = lerp(nekoOpacity, monsterOpacity, easeWithGlitch)
