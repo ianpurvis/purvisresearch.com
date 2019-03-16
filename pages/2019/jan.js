@@ -1,16 +1,12 @@
 import {
   AmbientLight,
-  LinearFilter,
   Mesh,
-  MeshBasicMaterial,
   MeshPhongMaterial,
   Object3D,
   OrthographicCamera,
   PlaneGeometry,
   RepeatWrapping,
   SpotLight,
-  Sprite,
-  SpriteMaterial,
   Vector3,
   VideoTexture,
 } from 'three'
@@ -72,7 +68,7 @@ export default {
       // Wait a tick for the video element to be regenerated,
       // then point the video texture at it.
       this.$nextTick().then(() => {
-        this.nekoTV.screen.material.map.image = this.$refs.video
+        this.screen.material.map.image = this.$refs.video
       })
     }
   },
@@ -101,6 +97,7 @@ export default {
         .then(this.loadLogo)
         .then(this.loadNekoTV)
         .then(this.loadMonsterTV)
+        .then(this.loadScreen)
         .then(this.loadNightLights)
     },
     loadCamera() {
@@ -131,7 +128,7 @@ export default {
       return Promise.resolve(
         new TextureLoader().load(logo)
       ).then(texture => {
-        let material = new MeshBasicMaterial({
+        let material = new MeshPhongMaterial({
           map: texture,
         })
         let geometry = new PlaneGeometry(0.30, 0.30 * 1.39)
@@ -169,7 +166,7 @@ export default {
         decay: 1.0,
       }))
       this.scene.add(this.spotLight)
-      this.spotLight.position.copy(this.nekoTV.screen.position)
+      this.spotLight.position.copy(this.screen.position)
 
       this.spotLight.target = new Object3D()
       this.scene.add(this.spotLight.target)
@@ -179,28 +176,18 @@ export default {
       return Promise.resolve(
         new TextureLoader().load(monster)
       ).then(texture => {
-        let material = new SpriteMaterial({
+        let material = new MeshPhongMaterial({
           depthTest: false,
           map: texture,
-          opacity: 0.0,
-        })
-        let tv = new Sprite(material)
-        tv.scale.setScalar(2)
-
-        texture = new VideoTexture(this.$refs.video)
-        material = new HalftoneMaterial({
-          map: texture,
-          opacity: 0.0,
+          shininess: 0.0,
           transparent: true,
+          opacity: 0.0,
         })
-        let geometry = new PlaneGeometry(1.10, 0.92)
-        geometry.rotateY(90 * DEGREES_TO_RADIANS)
-        let screen = new Mesh(geometry, material)
-        screen.scale.setScalar(0.5)
-        screen.position.set(0.70, 1.01, 1.05).multiplyScalar(0.5)
-        tv.add(screen)
-        tv.screen = screen
-
+        let geometry = new PlaneGeometry(2, 2)
+        let tv = new Mesh(geometry, material)
+        // Simulate sprite rendering:
+        tv.lookAt(this.camera.position)
+        tv.position.lerp(this.camera.position, 0.5)
         this.scene.add(tv)
         this.monsterTV = tv
       })
@@ -209,35 +196,39 @@ export default {
       return Promise.resolve(
         new TextureLoader().load(neko)
       ).then(texture => {
-        let material = new SpriteMaterial({
+        let material = new MeshPhongMaterial({
           depthTest: false,
           map: texture,
-          opacity: 0.0,
-        })
-        let tv = new Sprite(material)
-        tv.scale.setScalar(2)
-
-        texture = new VideoTexture(this.$refs.video)
-        material = new HalftoneMaterial({
-          map: texture,
-          opacity: 0.0,
+          shininess: 0.0,
           transparent: true,
+          opacity: 0.0,
         })
-        let geometry = new PlaneGeometry(1.10, 0.90)
-        geometry.rotateY(90 * DEGREES_TO_RADIANS)
-        let screen = new Mesh(geometry, material)
-        screen.scale.setScalar(0.5)
-        screen.position.set(0.55, 1.00, 1.14).multiplyScalar(0.5)
-        tv.add(screen)
-        tv.screen = screen
-
+        let geometry = new PlaneGeometry(2, 2)
+        let tv = new Mesh(geometry, material)
+        // Simulate sprite rendering:
+        tv.lookAt(this.camera.position)
+        tv.position.lerp(this.camera.position, 0.5)
         this.scene.add(tv)
         this.nekoTV = tv
-        return Promise.all([
-          this.transitionOpacity(tv, 1.0),
-          this.transitionOpacity(tv.screen, 1.0)
-        ])
+        return this.transitionOpacity(tv, 1.0)
       })
+    },
+    loadScreen() {
+      let texture = new VideoTexture(this.$refs.video)
+      let material = new HalftoneMaterial({
+        depthTest: false,
+        map: texture,
+        opacity: 0.0,
+        transparent: true,
+      })
+      let geometry = new PlaneGeometry(1.01, 0.84)
+      geometry.rotateY(90 * DEGREES_TO_RADIANS)
+      let screen = new Mesh(geometry, material)
+      screen.position.set(0.56, 0.91, 1.00)
+      this.scene.add(screen)
+      this.screen = screen
+
+      return this.transitionOpacity(this.screen, 1.0)
     },
     startVideo() {
       return navigator.mediaDevices.getUserMedia({
