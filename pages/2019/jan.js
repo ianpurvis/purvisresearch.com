@@ -42,6 +42,13 @@ const Videos = [
   'tteokbokki.mp4',
 ].map(file => require(`~/assets/videos/2019/jan/${file}`))
 
+const Colors = {
+  black: 0x000000,
+  ghostpink: 0xfbceb1,
+  white: 0xffffff,
+  whitesmoke: 0xf5f5f5,
+}
+
 export default {
   beforeDestroy() {
     this.stopVideo()
@@ -113,6 +120,8 @@ export default {
         texture.wrapT = RepeatWrapping
         texture.repeat.set(9, 9)
         let material = new MeshPhongMaterial({
+          color: Colors.whitesmoke,
+          emissive: Colors.black,
           map: texture,
           opacity: 0.0,
         })
@@ -140,14 +149,14 @@ export default {
     },
     loadAmbientLight() {
       this.ambientLight = new AmbientLight(...Object.values({
-        color: 0xFBCEB1,
+        color: Colors.white,
         intensity: 1.0,
       }))
       this.scene.add(this.ambientLight)
     },
     loadNightLights() {
       this.ceilingLight = new SpotLight(...Object.values({
-        color: 0xFBCEB1,
+        color: Colors.ghostpink,
         intensity: 0.0,
         distance: 4.0,
         angle: 0.5 * Math.PI/2,
@@ -158,7 +167,7 @@ export default {
       this.ceilingLight.position.set(0, 3, 0)
 
       this.spotLight = new SpotLight(...Object.values({
-        color: 0xFBCEB1,
+        color: Colors.ghostpink,
         intensity: 0.0,
         distance: 2.5,
         angle: 0.5 * Math.PI/2,
@@ -177,6 +186,8 @@ export default {
         new TextureLoader().load(monster)
       ).then(texture => {
         let material = new MeshPhongMaterial({
+          color: Colors.whitesmoke,
+          emissive: Colors.ghostpink,
           depthTest: false,
           map: texture,
           shininess: 0.0,
@@ -197,6 +208,8 @@ export default {
         new TextureLoader().load(neko)
       ).then(texture => {
         let material = new MeshPhongMaterial({
+          color: Colors.whitesmoke,
+          emissive: Colors.black,
           depthTest: false,
           map: texture,
           shininess: 0.0,
