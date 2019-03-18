@@ -23,10 +23,10 @@ import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
-import tatami from '~/assets/images/2019/jan/tatami-bw.png'
-import neko from '~/assets/images/2019/jan/neko-bw.png'
-import monster from '~/assets/images/2019/jan/monster-bw.png'
-import logo from '~/assets/images/2019/jan/logo-bw.png'
+import tatami from '~/assets/images/2019/mar/tatami-bw.png'
+import neko from '~/assets/images/2019/mar/neko-bw.png'
+import monster from '~/assets/images/2019/mar/monster-bw.png'
+import logo from '~/assets/images/2019/mar/logo-bw.png'
 
 const Videos = [
   'anmitsu.mp4',
@@ -40,7 +40,7 @@ const Videos = [
   'suica.mp4',
   'sumo.mp4',
   'tteokbokki.mp4',
-].map(file => require(`~/assets/videos/2019/jan/${file}`))
+].map(file => require(`~/assets/videos/2019/mar/${file}`))
 
 const Colors = {
   black: 0x000000,
@@ -61,7 +61,7 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
-      title: "jan 2019 - purvis research",
+      title: "mar 2019 - purvis research",
       video_url: Random.sample(Videos),
     }
   },
@@ -85,10 +85,10 @@ export default {
       title: this.title,
       meta: [
         { property:"og:description", content:"Screen printing a 3D scan with WebGL" },
-        //{ property:"og:image", content: require("~/assets/images/2019/jan.png") },
+        //{ property:"og:image", content: require("~/assets/images/2019/mar.png") },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Jan 2019" },
+        { property:"og:title", content:"Mar 2019" },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: Videos.map(video => ({ rel: "preload", href: video, as: "video" })),
