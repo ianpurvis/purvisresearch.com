@@ -14,6 +14,7 @@ import * as Random from '~/assets/javascripts/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
+import Config from '~/nuxt.config'
 
 const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 
@@ -44,7 +45,10 @@ export default {
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Oct 2018" },
         { name:"twitter:card", content:"summary_large_image" },
-      ]
+      ],
+      link: [
+        { rel: "canonical", href: `${Config.sitemap.hostname}/2018/oct.html` }
+      ],
     }
   },
   methods: {

@@ -11,6 +11,7 @@ import Inconsolata from "~/assets/fonts/Inconsolata_Regular.json"
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
+import Config from '~/nuxt.config'
 
 export default {
   beforeDestroy() {
@@ -37,7 +38,10 @@ export default {
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Nov 2017" },
         { name:"twitter:card", content:"summary_large_image" },
-      ]
+      ],
+      link: [
+        { rel: "canonical", href: `${Config.sitemap.hostname}/2017/nov.html` }
+      ],
     }
   },
   methods: {

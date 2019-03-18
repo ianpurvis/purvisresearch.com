@@ -1,5 +1,6 @@
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import Sept2017Demo from '~/assets/javascripts/2017/sept.js'
+import Config from '~/nuxt.config'
 
 export default {
   beforeDestroy() {
@@ -29,6 +30,9 @@ export default {
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Sept 2017" },
         { name:"twitter:card", content:"summary_large_image" },
+      ],
+      link: [
+        { rel: "canonical", href: `${Config.sitemap.hostname}/2017/sept.html` }
       ],
     }
   },
