@@ -91,7 +91,6 @@ export default {
         { property:"og:title", content:"Mar 2019" },
         { name:"twitter:card", content:"summary_large_image" },
       ],
-      link: Videos.map(video => ({ rel: "preload", href: video, as: "video" })),
     }
   },
   methods: {
