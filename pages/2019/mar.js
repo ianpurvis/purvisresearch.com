@@ -27,6 +27,7 @@ import tatami from '~/assets/images/2019/mar/tatami-bw.png'
 import neko from '~/assets/images/2019/mar/neko-bw.png'
 import monster from '~/assets/images/2019/mar/monster-bw.png'
 import logo from '~/assets/images/2019/mar/logo-bw.png'
+import Config from '~/nuxt.config'
 
 const Videos = [
   'anmitsu.mp4',
@@ -90,6 +91,9 @@ export default {
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Mar 2019" },
         { name:"twitter:card", content:"summary_large_image" },
+      ],
+      link: [
+        { rel: "canonical", href: `${Config.sitemap.hostname}/2019/mar.html` }
       ],
     }
   },
