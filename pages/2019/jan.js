@@ -12,7 +12,7 @@ import {
 } from 'three'
 import {
   easeBackInOut,
-  easeCubicInOut,
+  easeQuadIn,
   easeExpIn,
 } from 'd3-ease'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
@@ -44,7 +44,8 @@ const Videos = [
 
 const Colors = {
   black: 0x000000,
-  ghostpink: 0xfbceb1,
+  eggshell: 0xf0ead6,
+  ghostpink: 0xe2ffdc,
   white: 0xffffff,
   whitesmoke: 0xf5f5f5,
 }
@@ -105,7 +106,8 @@ export default {
         .then(this.loadNekoTV)
         .then(this.loadMonsterTV)
         .then(this.loadScreen)
-        .then(this.loadNightLights)
+        .then(this.loadScreenLight)
+        .then(this.loadMonsterLight)
     },
     loadCamera() {
       this.camera.position.setScalar(3)
@@ -154,32 +156,20 @@ export default {
       }))
       this.scene.add(this.ambientLight)
     },
-    loadNightLights() {
-      this.ceilingLight = new SpotLight(...Object.values({
+    loadMonsterLight() {
+      let light = new SpotLight(...Object.values({
         color: Colors.ghostpink,
         intensity: 0.0,
-        distance: 4.0,
-        angle: 0.5 * Math.PI/2,
+        distance: 30.0,
+        angle: 0.30 * Math.PI/2,
         penumbra: 1.0,
         decay: 1.0,
       }))
-      this.scene.add(this.ceilingLight)
-      this.ceilingLight.position.set(0, 3, 0)
-
-      this.spotLight = new SpotLight(...Object.values({
-        color: Colors.ghostpink,
-        intensity: 0.0,
-        distance: 2.5,
-        angle: 0.5 * Math.PI/2,
-        penumbra: 1.0,
-        decay: 1.0,
-      }))
-      this.scene.add(this.spotLight)
-      this.spotLight.position.copy(this.screen.position)
-
-      this.spotLight.target = new Object3D()
-      this.scene.add(this.spotLight.target)
-      this.spotLight.target.position.set(3, 0, 0.95)
+      light.position.copy(this.camera.position)
+      light.position.setY(0)
+      light.target = this.monsterTV
+      this.scene.add(light)
+      this.monsterLight = light
     },
     loadMonsterTV() {
       return Promise.resolve(
@@ -187,7 +177,7 @@ export default {
       ).then(texture => {
         let material = new MeshPhongMaterial({
           color: Colors.whitesmoke,
-          emissive: Colors.ghostpink,
+          emissive: Colors.black,
           depthTest: false,
           map: texture,
           shininess: 0.0,
@@ -243,6 +233,26 @@ export default {
 
       return this.transitionOpacity(this.screen, 1.0)
     },
+    loadScreenLight() {
+      let target = new Object3D()
+      target.position.set(3, 0, 0.95)
+      this.scene.add(target)
+
+      let light = new SpotLight(...Object.values({
+        color: Colors.eggshell,
+        intensity: 1.0,
+        distance: 4.0,
+        angle: 0.5 * Math.PI/2,
+        penumbra: 1.0,
+        decay: 1.0,
+      }))
+      light.position.copy(this.screen.position)
+      light.target = target
+      this.scene.add(light)
+      this.screenLight = light
+
+      this.animateScreenLight()
+    },
     startVideo() {
       return navigator.mediaDevices.getUserMedia({
         video: true
@@ -277,26 +287,26 @@ export default {
         },
       })
     },
-    transitionIntensity(light, value) {
+    transitionIntensity(light, value, duration=10.0) {
       return new Promise((resolve, reject) => {
         let intensity = light.intensity
         this.animations.push({
           startTime: this.clock.elapsedTime,
-          duration: 10.0,
+          duration: duration,
           tick: (t, duration) => {
-            light.intensity = lerp(intensity, value, easeCubicInOut(t/duration))
+            light.intensity = lerp(intensity, value, easeQuadIn(t/duration))
           },
           resolve: resolve,
           reject: reject
         })
       })
     },
-    transitionOpacity(object, value) {
+    transitionOpacity(object, value, duration=1.0) {
       return new Promise((resolve, reject) => {
         let opacity = object.material.opacity
         this.animations.push({
           startTime: this.clock.elapsedTime,
-          duration: 1.0,
+          duration: duration,
           tick: (t, duration) => {
             object.material.opacity = lerp(opacity, value, easeBackInOut(t/duration))
           },
@@ -305,46 +315,33 @@ export default {
         })
       })
     },
+    animateScreenLight() {
+      let noise = Array.from({length: 10}, () => Random.rand({min: 0.85, max: 1.00}))
+      this.animations.push({
+        startTime: this.clock.elapsedTime,
+        duration: 60 * 60 * 24, // 1 day
+        tick: (t, duration) => {
+          this.screenLight.intensity =
+            noise[Math.floor(t * noise.length) % noise.length]
+            * Math.max(0.0, 1.0 - this.ambientLight.intensity)
+        },
+      })
+    },
     transitionToNight() {
-      return Promise.all([
-        this.transitionIntensity(this.ambientLight, 0.0),
-        this.transitionIntensity(this.ceilingLight, 1.0),
-        this.transitionIntensity(this.spotLight, 2.0),
-        delay(7.0).then(this.transitionTV),
-      ])
+      return Promise.resolve(
+        this.transitionIntensity(this.ambientLight, 0.0, 8.0)
+      ).then(() => Promise.all([
+        this.transitionOpacity(this.nekoTV, 0.0, 3.0),
+        this.transitionOpacity(this.monsterTV, 1.0, 3.0),
+      ]))
     },
     transitionToDay() {
       return Promise.all([
-        this.transitionIntensity(this.ambientLight, 1.0),
-        this.transitionIntensity(this.ceilingLight, 0.0),
-        this.transitionIntensity(this.spotLight, 0.0),
-        delay(7.0).then(this.transitionTV),
-      ])
-    },
-    transitionTV() {
-      return new Promise((resolve, reject) => {
-        let nekoOpacity = this.nekoTV.material.opacity
-        let monsterOpacity = this.monsterTV.material.opacity
-
-        this.animations.push({
-          startTime: this.clock.elapsedTime,
-          duration: 1.5,
-          tick: (t, duration) => {
-            let easeGlitch = (t) => t < 1.0 ? Random.sample([t, t, 0.50, 0.75]) : t
-            let easeWithGlitch = easeGlitch(easeExpIn(t/duration))
-
-            let tickOpacityNeko = lerp(nekoOpacity, monsterOpacity, easeWithGlitch)
-            this.nekoTV.material.opacity = tickOpacityNeko
-            this.nekoTV.screen.material.opacity = tickOpacityNeko
-
-            let tickOpacityMonster = lerp(monsterOpacity, nekoOpacity, easeWithGlitch)
-            this.monsterTV.material.opacity = tickOpacityMonster
-            this.monsterTV.screen.material.opacity = tickOpacityMonster
-          },
-          resolve: resolve,
-          reject: reject
-        })
-      })
+        this.transitionOpacity(this.nekoTV, 1.0, 3.0),
+        this.transitionOpacity(this.monsterTV, 0.0, 3.0),
+      ]).then(() =>
+        this.transitionIntensity(this.ambientLight, 1.0, 8.0),
+      )
     },
     update() {
       // Update animations
@@ -370,10 +367,26 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(async () => {
+    let channelLoop = async () => {
       while (this.clock.running) {
-        await delay(6.0).then(this.changeChannel)
+        await delay(20.0).then(this.changeChannel)
       }
-    })
+    }
+
+    let lightLoop = async () => {
+      while (this.clock.running) {
+        await delay(3.0)
+          .then(this.transitionToNight)
+          .then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
+          .then(() => delay(1.0))
+          .then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
+          .then(this.transitionToDay)
+      }
+    }
+
+    this.load().then(() => Promise.all([
+      channelLoop(),
+      lightLoop(),
+    ]))
   }
 }
