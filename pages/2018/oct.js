@@ -30,6 +30,7 @@ export default {
         new Color(0xff00ff),
         new Color(0xffff00)
       ],
+      description: "Screen printing a 3D scan with WebGL",
       loader: new ModelLoader(),
       speedOfLife: 0.05,
       title: "oct 2018 - purvis research",
@@ -39,7 +40,8 @@ export default {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"Screen printing a 3D scan with WebGL" },
+        { name: 'description', content: this.description, hid: 'description' },
+        { property:"og:description", content: this.description },
         { property:"og:image", content: require("~/assets/images/2018/oct.png") },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },

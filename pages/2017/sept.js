@@ -17,14 +17,16 @@ export default {
     return {
       animationFrame: null,
       demo: null,
-      title: "sept 2017 - purvis research"
+      description: "An emoji particle flow in WebGL.",
+      title: "sept 2017 - purvis research",
     }
   },
   head() {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"An emoji particle flow in WebGL." },
+        { name: 'description', content: this.description, hid: 'description' },
+        { property:"og:description", content: this.description },
         { property:"og:image", content: require("~/assets/images/2017/sept.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },

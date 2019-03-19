@@ -17,14 +17,16 @@ export default {
     return {
       animationFrame: null,
       demo: null,
-      title: "oct 2017 - purvis research"
+      description: "A bézier moiré generator in WebGL.",
+      title: "oct 2017 - purvis research",
     }
   },
   head () {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"A bézier moiré generator in WebGL." },
+        { name: 'description', content: this.description, hid: 'description' },
+        { property:"og:description", content: this.description },
         { property:"og:image", content: require("~/assets/images/2017/oct.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },

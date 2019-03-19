@@ -23,16 +23,18 @@ export default {
     return {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
+      description: "A 3d character exploder in WebGL",
       font: new Font(Inconsolata),
       particles: [],
-      title: "nov 2017 - purvis research"
+      title: "nov 2017 - purvis research",
     }
   },
   head () {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"A 3d character exploder in WebGL" },
+        { name: 'description', content: this.description, hid: 'description' },
+        { property:"og:description", content: this.description },
         { property:"og:image", content: require("~/assets/images/2017/nov.png") },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
