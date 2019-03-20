@@ -214,7 +214,7 @@ export default {
 
       let light = new SpotLight(...Object.values({
         color: Colors.eggshell,
-        intensity: 1.0,
+        intensity: 0.0,
         distance: 4.0,
         angle: 0.5 * Math.PI/2,
         penumbra: 1.0,
@@ -224,8 +224,6 @@ export default {
       light.target = target
       this.scene.add(light)
       this.screenLight = light
-
-      this.animateScreenLight()
     },
     startVideo() {
       return navigator.mediaDevices.getUserMedia({
@@ -289,22 +287,11 @@ export default {
         })
       })
     },
-    animateScreenLight() {
-      let noise = Array.from({length: 10}, () => Random.rand({min: 0.85, max: 1.00}))
-      this.animations.push({
-        startTime: this.clock.elapsedTime,
-        duration: 60 * 60 * 24, // 1 day
-        tick: (t, duration) => {
-          this.screenLight.intensity =
-            noise[Math.floor(t * noise.length) % noise.length]
-            * Math.max(0.0, 1.0 - this.ambientLight.intensity)
-        },
-      })
-    },
     transitionToNight() {
-      return Promise.resolve(
-        this.transitionIntensity(this.ambientLight, 0.0, 8.0)
-      ).then(() => Promise.all([
+      return Promise.all([
+        this.transitionIntensity(this.ambientLight, 0.0, 8.0),
+        this.transitionIntensity(this.screenLight, 1.0, 8.0),
+      ]).then(() => Promise.all([
         this.transitionOpacity(this.nekoTV, 0.0, 3.0),
         this.transitionOpacity(this.monsterTV, 1.0, 3.0),
       ]))
@@ -313,9 +300,10 @@ export default {
       return Promise.all([
         this.transitionOpacity(this.nekoTV, 1.0, 3.0),
         this.transitionOpacity(this.monsterTV, 0.0, 3.0),
-      ]).then(() =>
+      ]).then(() => Promise.all([
         this.transitionIntensity(this.ambientLight, 1.0, 8.0),
-      )
+        this.transitionIntensity(this.screenLight, 0.0, 8.0),
+      ]))
     },
     update() {
       // Update animations
@@ -343,15 +331,15 @@ export default {
   mounted() {
     this.load()
       .then(this.startVideo)
-      //.then(async () => {
-        //while (this.clock.running) {
-          //await delay(3.0)
-            //.then(this.transitionToNight)
-            //.then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
-            //.then(() => delay(1.0))
-            //.then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
-            //.then(this.transitionToDay)
-        //}
-      //})
+      .then(async () => {
+        while (this.clock.running) {
+          await delay(3.0)
+            .then(this.transitionToNight)
+            .then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
+            .then(() => delay(1.0))
+            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
+            .then(this.transitionToDay)
+        }
+      })
   }
 }
