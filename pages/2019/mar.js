@@ -29,20 +29,6 @@ import monster from '~/assets/images/2019/mar/monster-bw.png'
 import logo from '~/assets/images/2019/mar/logo-bw.png'
 import Config from '~/nuxt.config'
 
-const Videos = [
-  'anmitsu.mp4',
-  'awaodori.mp4',
-  'ayu.mp4',
-  'dude.mp4',
-  'dynamic.mp4',
-  'maruko.mp4',
-  'mochitsuki.mp4',
-  'rope.mp4',
-  'suica.mp4',
-  'sumo.mp4',
-  'tteokbokki.mp4',
-].map(file => require(`~/assets/videos/2019/mar/${file}`))
-
 const Colors = {
   black: 0x000000,
   eggshell: 0xf0ead6,
@@ -64,22 +50,6 @@ export default {
       camera: new OrthographicCamera(),
       description: "A surreal video collage in WebGL",
       title: "mar 2019 - purvis research",
-      video_url: Random.sample(Videos),
-    }
-  },
-  watch: {
-    video_url: function(newValue, oldValue) {
-      if (newValue == null) {
-        this.startVideo()
-      }
-      else if (oldValue == null) {
-        this.stopVideo()
-      }
-      // Wait a tick for the video element to be regenerated,
-      // then point the video texture at it.
-      this.$nextTick().then(() => {
-        this.screen.material.map.image = this.$refs.video
-      })
     }
   },
   head() {
@@ -100,9 +70,6 @@ export default {
     }
   },
   methods: {
-    changeChannel() {
-      this.video_url = Random.sample([null].concat(Videos))
-    },
     load() {
       this.loadCamera()
       this.loadAmbientLight()
@@ -372,26 +339,17 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    let channelLoop = async () => {
-      while (this.clock.running) {
-        await delay(20.0).then(this.changeChannel)
-      }
-    }
-
-    let lightLoop = async () => {
-      while (this.clock.running) {
-        await delay(3.0)
-          .then(this.transitionToNight)
-          .then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
-          .then(() => delay(1.0))
-          .then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
-          .then(this.transitionToDay)
-      }
-    }
-
-    this.load().then(() => Promise.all([
-      channelLoop(),
-      lightLoop(),
-    ]))
+    this.load()
+      .then(this.startVideo)
+      //.then(async () => {
+        //while (this.clock.running) {
+          //await delay(3.0)
+            //.then(this.transitionToNight)
+            //.then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
+            //.then(() => delay(1.0))
+            //.then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
+            //.then(this.transitionToDay)
+        //}
+      //})
   }
 }
