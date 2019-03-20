@@ -5,10 +5,10 @@
       ref="video"
       :src="video_url || String()"
       :key="video_url"
-      autoplay=true
-      loop=true
-      muted=true
-      playsinline=true
+      autoplay
+      loop
+      muted
+      playsinline
       width=512
       height=512>
     </video>
