@@ -1,9 +1,12 @@
 'use strict'
 
 function cacheControlFor({uri}) {
-  let maxAge = 500
+  let maxAge = 0
   if (uri.startsWith('/_/')) {
-    maxAge = 31536000
+    maxAge = 31536000 // 365 days
+  }
+  else if (uri.startsWith('/favicons/')) {
+    maxAge = 86400 // 1 day
   }
   return `public, max-age=${maxAge}`
 }
