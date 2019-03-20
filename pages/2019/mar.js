@@ -232,7 +232,7 @@ export default {
         if (this._isDestroyed || this._isBeingDestroyed) return
         this.$refs.video.srcObject = stream
       }).catch(error => {
-        if (error.name != 'NotAllowedError') throw error
+        console.warn(`Could not acquire device camera (${error.message})`)
       })
     },
     stopVideo() {
