@@ -10,7 +10,7 @@ uniform float opacity;
 varying vec2 vUv;
 
 const vec3 BLACK = vec3(0.0, 0.0, 0.0);
-const float BRIGHTNESS = 0.25;
+const float BRIGHTNESS = 0.15;
 const float CONTRAST = 0.50;
 const float FREQUENCY = 60.0;
 
@@ -39,6 +39,7 @@ void main() {
   // Filter original texture color
   rgb = rgb + BRIGHTNESS;
   rgb = (rgb - 0.5) / (1.0 - CONTRAST) + 0.5;
+  rgb = clamp(rgb, 0.0, 1.0);
 
   // Given a halftone grid for each CMYK component color, calculate the
   // fragment's distance to the nearest grid point.  If the fragment falls
