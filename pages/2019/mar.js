@@ -13,7 +13,6 @@ import {
 import {
   easeBackInOut,
   easeQuadIn,
-  easeExpIn,
 } from 'd3-ease'
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
@@ -245,7 +244,7 @@ export default {
       this.animations.push({
         startTime: this.clock.elapsedTime,
         duration: 60 * 60 * 24,
-        tick: (t, duration) => {
+        tick: (t, d) => {
           let {aspect} = this.frame()
           Object.assign(this.camera, {
             left: targetSize.x * aspect / -2,
@@ -259,14 +258,14 @@ export default {
         },
       })
     },
-    transitionIntensity(light, value, duration=10.0) {
+    transitionIntensity(light, value, duration=1.0) {
       return new Promise((resolve, reject) => {
         let intensity = light.intensity
         this.animations.push({
           startTime: this.clock.elapsedTime,
           duration: duration,
-          tick: (t, duration) => {
-            light.intensity = lerp(intensity, value, easeQuadIn(t/duration))
+          tick: (t, d) => {
+            light.intensity = lerp(intensity, value, easeQuadIn(t/d))
           },
           resolve: resolve,
           reject: reject
@@ -279,8 +278,8 @@ export default {
         this.animations.push({
           startTime: this.clock.elapsedTime,
           duration: duration,
-          tick: (t, duration) => {
-            object.material.opacity = lerp(opacity, value, easeBackInOut(t/duration))
+          tick: (t, d) => {
+            object.material.opacity = lerp(opacity, value, easeBackInOut(t/d, 0.5))
           },
           resolve: resolve,
           reject: reject
@@ -288,22 +287,22 @@ export default {
       })
     },
     transitionToNight() {
-      return Promise.all([
-        this.transitionIntensity(this.ambientLight, 0.0, 8.0),
-        this.transitionIntensity(this.screenLight, 1.0, 8.0),
-      ]).then(() => Promise.all([
-        this.transitionOpacity(this.nekoTV, 0.0, 3.0),
-        this.transitionOpacity(this.monsterTV, 1.0, 3.0),
-      ]))
+      return this.transitionIntensity(this.ambientLight, 0.0, 8.0)
+        .then(() => Promise.all([
+          this.transitionIntensity(this.screenLight, 1.0, 4.0),
+          this.transitionOpacity(this.nekoTV, 0.0, 5.0),
+          this.transitionOpacity(this.monsterTV, 1.0, 5.0),
+        ]))
     },
     transitionToDay() {
       return Promise.all([
-        this.transitionOpacity(this.nekoTV, 1.0, 3.0),
-        this.transitionOpacity(this.monsterTV, 0.0, 3.0),
-      ]).then(() => Promise.all([
-        this.transitionIntensity(this.ambientLight, 1.0, 8.0),
-        this.transitionIntensity(this.screenLight, 0.0, 8.0),
-      ]))
+        this.transitionIntensity(this.screenLight, 0.0, 4.0),
+        this.transitionOpacity(this.nekoTV, 1.0, 5.0),
+        this.transitionOpacity(this.monsterTV, 0.0, 5.0),
+        delay(2).then(() =>
+          this.transitionIntensity(this.ambientLight, 1.0, 8.0)
+        ),
+      ])
     },
     update() {
       // Update animations
@@ -335,9 +334,11 @@ export default {
         while (this.clock.running) {
           await delay(3.0)
             .then(this.transitionToNight)
-            .then(() => this.transitionIntensity(this.monsterLight, Random.rand({min: 0.9, max: 1.1}), 5.0))
+            .then(() => delay(3.0))
+            .then(() => this.transitionIntensity(this.monsterLight, 0.9, 3.0))
             .then(() => delay(1.0))
-            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 5.0))
+            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 3.0))
+            .then(() => delay(3.0))
             .then(this.transitionToDay)
         }
       })
