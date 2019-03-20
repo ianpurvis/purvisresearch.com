@@ -74,10 +74,12 @@ export default {
       this.loadCamera()
       this.loadAmbientLight()
       return this.loadFloor()
-        .then(this.loadLogo)
-        .then(this.loadNekoTV)
+        .then(() => Promise.all([
+          this.loadLogo(),
+          this.loadNekoTV(),
+          this.loadScreen(),
+        ]))
         .then(this.loadMonsterTV)
-        .then(this.loadScreen)
         .then(this.loadScreenLight)
         .then(this.loadMonsterLight)
     },
