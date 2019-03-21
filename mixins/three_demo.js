@@ -2,6 +2,7 @@ import {
   Clock,
   PerspectiveCamera,
   Scene,
+  Vector2,
   WebGLRenderer,
 }  from 'three'
 
@@ -58,7 +59,7 @@ export default {
       let {height, width, aspect} = this.frame()
 
       if (this.camera.isPerspectiveCamera) {
-        let {height: oldHeight, width: oldWidth} = this.renderer.getSize()
+        let {height: oldHeight} = this.renderer.getSize(new Vector2())
         let oldTanFOV = Math.tan(((Math.PI/180) * this.camera.fov/2))
         let fov = (360/Math.PI) * Math.atan(oldTanFOV * (height/oldHeight))
         Object.assign(this.camera, {
