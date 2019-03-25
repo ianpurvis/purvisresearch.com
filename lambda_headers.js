@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       "img-src 'self' https://www.google-analytics.com",
       "media-src 'self'",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-eval' 'sha256-tempUn1btibnrWwQxEk37lMGV1Nf8FO/GXxNhLEsPdg=' https://www.google-analytics.com",
+      `script-src 'self' 'unsafe-eval' '${process.env.NUXT_ROOT_SCRIPT_HASH}' https://www.google-analytics.com`,
       "style-src 'self' 'unsafe-inline'",
     ].join('; ')
   }]
