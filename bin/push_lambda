@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const crypto = require('crypto')
+const { promises: fs } = require('fs')
+const JSZip = require('jszip')
+const Lambda = require('aws-sdk/clients/lambda')
+const { Readable } = require('stream')
+
+let createCodeSha256 = (buffer) => {
+  let hash = crypto.createHash('sha256')
+  hash.update(buffer)
+  return hash.digest('base64')
+}
+
+let createDeploymentPackage = async (path) => {
+  return Promise
+    .all([
+      fs.stat(path),
+      fs.readFile(path),
+    ])
+    .then(([stats, buffer]) => new JSZip()
+      .file("index.js", buffer, {
+        base64: true,
+        binary: true,
+        unixPermissions: stats.mode,
+        date: stats.mtime,
+      })
+      .generateAsync({
+        compression: "DEFLATE",
+        compressionOptions: {
+          level: 9,
+        },
+        platform: "UNIX",
+        type: "nodebuffer",
+      })
+    )
+}
+
+let getRemoteCodeSha256 = async (functionName) => {
+  return new Lambda()
+    .getFunctionConfiguration({
+      FunctionName: functionName,
+    })
+    .promise()
+    .then(result => result.CodeSha256)
+}
+
+let updateCode = async (functionName, buffer) => {
+  return new Lambda()
+    .updateFunctionCode({
+      FunctionName: functionName,
+      ZipFile: buffer,
+    })
+    .promise()
+}
+
+Promise
+  .all([
+    createDeploymentPackage("lambda/headers/index.js"),
+    getRemoteCodeSha256('headers'),
+  ])
+  .then(([buffer, remoteCodeSha]) => {
+    let localCodeSha = createCodeSha256(buffer)
+
+    console.log(`Comparing code sha values...`)
+    console.log(`local:   ${localCodeSha}`)
+    console.log(`remote:  ${remoteCodeSha}`)
+    if (localCodeSha == remoteCodeSha) {
+      console.log('Everything up-to-date')
+      process.exit()
+    }
+
+    console.log('Updating function code...')
+    return updateCode('headers', buffer)
+  })
+  .then(result =>
+    console.log(`Code updated successfully (Revision ID ${result.RevisionId})`)
+  )
+  .catch(error => {
+    console.error(error)
+  })
