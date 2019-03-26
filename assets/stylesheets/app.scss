@@ -74,6 +74,7 @@ main {
   &.mar {
     video {
       left: 0;
+      object-fit: cover;
       opacity: 0;
       pointer-events: none;
       position: absolute;

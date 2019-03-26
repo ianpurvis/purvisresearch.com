@@ -69,6 +69,10 @@ export default {
     }
   },
   methods: {
+    isDesktopSafari() {
+      let userAgent = window.navigator.userAgent
+      return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
+    },
     load() {
       this.loadCamera()
       this.loadAmbientLight()
@@ -225,9 +229,19 @@ export default {
       this.screenLight = light
     },
     startVideo() {
-      return navigator.mediaDevices.getUserMedia({
-        video: true
-      }).then(stream => {
+      let constraints = {
+        audio: false,
+        video: true,
+      }
+      if (this.isDesktopSafari()) {
+        constraints.video = {
+          aspectRatio: { ideal: 16/9 }
+        }
+      }
+      return Promise.resolve(
+        window.navigator.mediaDevices.getUserMedia(constraints)
+      ).then(stream => {
+        stream.getTracks().forEach(track => console.debug(track.getSettings()))
         if (this._isDestroyed || this._isBeingDestroyed) return
         this.$refs.video.srcObject = stream
       }).catch(error => {
