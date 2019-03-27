@@ -1,3 +1,5 @@
+import organization from './structured_data/organization.js'
+
 const isProduction = (process.env.NODE_ENV === 'production')
 
 export default {
@@ -18,17 +20,7 @@ export default {
       { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
     ],
     script: [
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Purvis Research, LLC",
-          "url": "https://purvisresearch.com",
-          "logo": "https://purvisresearch.com/favicons/android-chrome-256x256.png",
-          "description": "Startup Technology Research, Design, Development, Testing, DevOps, and Project Management",
-        })
-      }
+      { type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
     ],
      __dangerouslyDisableSanitizers: ['script'],
   },
