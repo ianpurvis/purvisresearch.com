@@ -120,16 +120,15 @@ export default {
 
   sitemap: {
     exclude: [
+      '/404.html',
       '/*_2017.html'
     ],
     hostname: 'https://purvisresearch.com',
     generate: true,
-    routes: [
-      {
-        url: '/',
-        changefreq: 'monthly',
-        priority: 1
-      }
-    ]
+    routes: [{
+      url: '/',
+      changefreq: 'monthly',
+      priority: 1
+    }]
   }
 }
