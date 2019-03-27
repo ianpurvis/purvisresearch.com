@@ -7,11 +7,11 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'p u r v i s _ r e s e a r c h',
+    title: 'purvis research',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'P U R V I S _ R E S E A R C H _ O N L I N E' }
+      { hid: 'description', name: 'description', content: organization.description }
     ],
     link: [
       { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
