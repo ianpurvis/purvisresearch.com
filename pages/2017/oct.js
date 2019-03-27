@@ -38,6 +38,23 @@ export default {
       ],
     }
   },
+  jsonld() {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": `${Config.sitemap.hostname}/`
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "oct 2017",
+        "item": `${Config.sitemap.hostname}/2017/oct.html`
+      }]
+    }
+  },
   methods: {
     animate() {
       this.demo.update()

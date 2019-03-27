@@ -68,6 +68,23 @@ export default {
       ],
     }
   },
+  jsonld() {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": `${Config.sitemap.hostname}/`
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "mar 2019",
+        "item": `${Config.sitemap.hostname}/2019/mar.html`
+      }]
+    }
+  },
   methods: {
     isDesktopSafari() {
       let userAgent = window.navigator.userAgent

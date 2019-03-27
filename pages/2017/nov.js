@@ -46,6 +46,23 @@ export default {
       ],
     }
   },
+  jsonld() {
+    return {
+      "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+          "@type": "ListItem",
+          "position": 1,
+          "name": "purvis research",
+          "item": `${Config.sitemap.hostname}/`
+        },{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "nov 2017",
+          "item": `${Config.sitemap.hostname}/2017/nov.html`
+        }]
+    }
+  },
   methods: {
     layout() {
       this.camera.far = 10000

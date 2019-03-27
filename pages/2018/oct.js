@@ -54,6 +54,23 @@ export default {
       ],
     }
   },
+  jsonld() {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": `${Config.sitemap.hostname}/`
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "oct 2018",
+        "item": `${Config.sitemap.hostname}/2018/oct.html`
+      }]
+    }
+  },
   methods: {
     layout() {
       this.colors.sort(Random.comparison)

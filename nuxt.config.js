@@ -20,9 +20,9 @@ export default {
       { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
     ],
     script: [
-      { type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
+      { hid: 'jsonld', type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
     ],
-     __dangerouslyDisableSanitizers: ['script'],
+    __dangerouslyDisableSanitizersByTagID: { 'jsonld': 'innerHTML' },
   },
   /*
   ** Customize the progress bar color
@@ -83,6 +83,10 @@ export default {
   modules: [
     '@nuxtjs/google-analytics',
     '@nuxtjs/sitemap'
+  ],
+
+  plugins: [
+    '~/plugins/nuxt-jsonld'
   ],
 
   render: {
