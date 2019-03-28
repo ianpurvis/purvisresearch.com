@@ -341,10 +341,12 @@ export default {
     transitionToDay() {
       return Promise.all([
         this.transitionIntensity(this.screenLight, 0.0, 4.0),
-        this.transitionOpacity(this.nekoTV, 1.0, 5.0),
-        this.transitionOpacity(this.monsterTV, 0.0, 5.0),
-        this.delay(2).then(() =>
-          this.transitionIntensity(this.ambientLight, 1.0, 8.0)
+        this.delay(2).then(() => Promise.all([
+          this.transitionOpacity(this.nekoTV, 1.0, 5.0),
+          this.transitionOpacity(this.monsterTV, 0.0, 5.0),
+        ])),
+        this.delay(3).then(() =>
+          this.transitionIntensity(this.ambientLight, 1.0, 5.0)
         ),
       ])
     },
@@ -378,11 +380,9 @@ export default {
         while (this.clock.running) {
           await this.delay(3.0)
             .then(this.transitionToNight)
+            .then(() => this.transitionIntensity(this.monsterLight, 0.9, 5.0))
             .then(() => this.delay(3.0))
-            .then(() => this.transitionIntensity(this.monsterLight, 0.9, 3.0))
-            .then(() => this.delay(1.0))
-            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 3.0))
-            .then(() => this.delay(3.0))
+            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 6.0))
             .then(this.transitionToDay)
         }
       })
