@@ -17,7 +17,6 @@ import {
 import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import { lerp } from '~/assets/javascripts/math.js'
-import { delay } from '~/assets/javascripts/promise_delay.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
@@ -86,6 +85,20 @@ export default {
     }
   },
   methods: {
+    delay(seconds) {
+      return new Promise(resolve => {
+        let clock = this.clock
+        let startTime = clock.elapsedTime
+        let tick = () => {
+          if (clock.elapsedTime - startTime >= seconds) {
+            resolve()
+          } else {
+            window.requestAnimationFrame(tick)
+          }
+        }
+        window.requestAnimationFrame(tick)
+      })
+    },
     isDesktopSafari() {
       let userAgent = window.navigator.userAgent
       return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
@@ -330,7 +343,7 @@ export default {
         this.transitionIntensity(this.screenLight, 0.0, 4.0),
         this.transitionOpacity(this.nekoTV, 1.0, 5.0),
         this.transitionOpacity(this.monsterTV, 0.0, 5.0),
-        delay(2).then(() =>
+        this.delay(2).then(() =>
           this.transitionIntensity(this.ambientLight, 1.0, 8.0)
         ),
       ])
@@ -363,13 +376,13 @@ export default {
       .then(this.startVideo)
       .then(async () => {
         while (this.clock.running) {
-          await delay(3.0)
+          await this.delay(3.0)
             .then(this.transitionToNight)
-            .then(() => delay(3.0))
+            .then(() => this.delay(3.0))
             .then(() => this.transitionIntensity(this.monsterLight, 0.9, 3.0))
-            .then(() => delay(1.0))
+            .then(() => this.delay(1.0))
             .then(() => this.transitionIntensity(this.monsterLight, 0.0, 3.0))
-            .then(() => delay(3.0))
+            .then(() => this.delay(3.0))
             .then(this.transitionToDay)
         }
       })
