@@ -1,4 +1,4 @@
-import { DRACOLoader } from 'exports-loader?DRACOLoader=THREE.DRACOLoader!imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
+import { DRACOLoader } from 'exports-loader?DRACOLoader=THREE.DRACOLoader!imports-loader?THREE=assets/javascripts/three_shim!three/examples/js/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
 
