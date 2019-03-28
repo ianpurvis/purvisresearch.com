@@ -1,5 +1,5 @@
 import { DRACOLoader } from 'exports-loader?DRACOLoader=THREE.DRACOLoader!imports-loader?THREE=three!three/examples/js/loaders/DRACOLoader.js'
-import { GLTFLoader } from 'exports-loader?GLTFLoader=THREE.GLTFLoader!imports-loader?THREE=three!three/examples/js/loaders/GLTFLoader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
 
 export default class ModelLoader extends GLTFLoader {
