@@ -22,9 +22,9 @@ import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2019/mar/tatami-bw.png'
+import tatamiAlpha from '~/assets/images/2019/mar/tatami-alpha.png'
 import neko from '~/assets/images/2019/mar/neko-bw.png'
 import monster from '~/assets/images/2019/mar/monster-bw.png'
-import logo from '~/assets/images/2019/mar/logo-bw.png'
 import Config from '~/nuxt.config'
 
 const Colors = {
@@ -106,9 +106,9 @@ export default {
     load() {
       this.loadCamera()
       this.loadAmbientLight()
+      this.loadSubfloor()
       return this.loadFloor()
         .then(() => Promise.all([
-          this.loadLogo(),
           this.loadNekoTV(),
           this.loadScreen(),
         ]))
@@ -122,17 +122,22 @@ export default {
       this.track()
     },
     loadFloor() {
-      return Promise.resolve(
-        new TextureLoader().load(tatami)
-      ).then(texture => {
-        texture.wrapS = RepeatWrapping
-        texture.wrapT = RepeatWrapping
-        texture.repeat.set(9, 9)
+      return Promise.all([
+        new TextureLoader().load(tatami),
+        new TextureLoader().load(tatamiAlpha)
+      ]).then(([map, alphaMap]) => {
+        [map, alphaMap].forEach(m => {
+          m.wrapS = RepeatWrapping
+          m.wrapT = RepeatWrapping
+          m.repeat.set(9, 9)
+        })
         let material = new MeshPhongMaterial({
+          alphaMap: alphaMap,
           color: Colors.whitesmoke,
           emissive: Colors.black,
-          map: texture,
+          map: map,
           opacity: 0.0,
+          transparent: true,
         })
         let geometry = new PlaneGeometry(9, 9)
         geometry.rotateX(-90 * DEGREES_TO_RADIANS)
@@ -142,19 +147,18 @@ export default {
         return this.transitionOpacity(this.floor, 1.0)
       })
     },
-    loadLogo() {
-      return Promise.resolve(
-        new TextureLoader().load(logo)
-      ).then(texture => {
-        let material = new MeshPhongMaterial({
-          map: texture,
-        })
-        let geometry = new PlaneGeometry(0.30, 0.30 * 1.39)
-        geometry.rotateX(-90 * DEGREES_TO_RADIANS)
-        this.logo = new Mesh(geometry, material)
-        this.scene.add(this.logo)
-        this.logo.position.set(-3.0, 0, -1.0)
+    loadSubfloor() {
+      let material = new MeshPhongMaterial({
+        color: Colors.whitesmoke,
+        emissive: Colors.black,
+        opacity: 0.0,
+        transparent: true,
       })
+      let geometry = new PlaneGeometry(9, 9)
+      geometry.rotateX(-90 * DEGREES_TO_RADIANS)
+      this.subfloor = new Mesh(geometry, material)
+      this.subfloor.position.set(0.11, -0.01, 0)
+      this.scene.add(this.subfloor)
     },
     loadAmbientLight() {
       this.ambientLight = new AmbientLight(...Object.values({
@@ -331,12 +335,14 @@ export default {
       })
     },
     transitionToNight() {
-      return this.transitionIntensity(this.ambientLight, 0.0, 8.0)
-        .then(() => Promise.all([
-          this.transitionIntensity(this.screenLight, 1.0, 4.0),
-          this.transitionOpacity(this.nekoTV, 0.0, 5.0),
-          this.transitionOpacity(this.monsterTV, 1.0, 5.0),
-        ]))
+      return Promise.all([
+        this.transitionOpacity(this.subfloor, 1.0, 8.0),
+        this.transitionIntensity(this.ambientLight, 0.0, 8.0)
+      ]).then(() => Promise.all([
+        this.transitionIntensity(this.screenLight, 1.0, 4.0),
+        this.transitionOpacity(this.nekoTV, 0.0, 5.0),
+        this.transitionOpacity(this.monsterTV, 1.0, 5.0),
+      ]))
     },
     transitionToDay() {
       return Promise.all([
@@ -345,9 +351,10 @@ export default {
           this.transitionOpacity(this.nekoTV, 1.0, 5.0),
           this.transitionOpacity(this.monsterTV, 0.0, 5.0),
         ])),
-        this.delay(3).then(() =>
-          this.transitionIntensity(this.ambientLight, 1.0, 5.0)
-        ),
+        this.delay(3).then(() => Promise.all([
+          this.transitionIntensity(this.ambientLight, 1.0, 5.0),
+          this.transitionOpacity(this.subfloor, 0.0, 5.0)
+        ])),
       ])
     },
     update() {

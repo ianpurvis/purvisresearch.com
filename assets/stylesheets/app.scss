@@ -72,6 +72,18 @@ main {
 
 .Y2019 {
   &.mar {
+    color: #FFFFFF;
+
+    a {
+      &:hover {
+        color: #d3d3d3;
+      }
+
+      &:not(:hover) {
+        color: #FFFFFF;
+      }
+    }
+
     video {
       left: 0;
       object-fit: cover;
