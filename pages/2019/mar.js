@@ -46,7 +46,7 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
-      description: "A surreal video collage in WebGL",
+      description: "A surrealistic video collage with WebRTC and WebGL",
       title: "mar 2019 - purvis research",
     }
   },
