@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       animationFrame: null,
+      canonicalUrl: `${organization.url}/2017/sept.html`,
       demo: null,
       description: "An emoji particle flow in WebGL.",
       title: "sept 2017 - purvis research",
@@ -31,10 +32,11 @@ export default {
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Sept 2017" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${organization.url}/2017/sept.html` }
+        { rel: "canonical", href: this.canonicalUrl }
       ],
     }
   },

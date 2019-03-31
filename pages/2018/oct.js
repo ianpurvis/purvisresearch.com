@@ -31,6 +31,7 @@ export default {
         new Color(0xff00ff),
         new Color(0xffff00)
       ],
+      canonicalUrl: `${organization.url}/2018/oct.html`,
       description: "Screen printing a 3D scan with WebGL",
       loader: new ModelLoader(),
       speedOfLife: 0.05,
@@ -47,10 +48,11 @@ export default {
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Oct 2018" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${organization.url}/2018/oct.html` }
+        { rel: "canonical", href: this.canonicalUrl }
       ],
     }
   },

@@ -23,6 +23,7 @@ export default {
     return {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
+      canonicalUrl: `${organization.url}/2017/nov.html`,
       description: "A 3d character exploder in WebGL",
       font: new Font(Inconsolata),
       particles: [],
@@ -39,10 +40,11 @@ export default {
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Nov 2017" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${organization.url}/2017/nov.html` }
+        { rel: "canonical", href: this.canonicalUrl }
       ],
     }
   },

@@ -46,6 +46,7 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
+      canonicalUrl: `${organization.url}/2019/mar.html`,
       description: "A surrealistic video collage with WebRTC and WebGL",
       title: "mar 2019 - purvis research",
     }
@@ -60,10 +61,11 @@ export default {
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Mar 2019" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${organization.url}/2019/mar.html` }
+        { rel: "canonical", href: this.canonicalUrl }
       ],
     }
   },

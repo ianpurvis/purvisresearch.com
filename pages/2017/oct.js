@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       animationFrame: null,
+      canonicalUrl: `${organization.url}/2017/oct.html`,
       demo: null,
       description: "A bézier moiré generator in WebGL.",
       title: "oct 2017 - purvis research",
@@ -31,10 +32,11 @@ export default {
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Oct 2017" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${organization.url}/2017/oct.html` }
+        { rel: "canonical", href: this.canonicalUrl }
       ],
     }
   },
