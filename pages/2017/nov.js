@@ -1,67 +1,133 @@
-import Nov2017Demo from '~/assets/javascripts/2017/nov.js'
+import {
+  Font,
+  LessDepth,
+  Mesh,
+  MeshNormalMaterial,
+  TextBufferGeometry,
+  Vector3
+} from 'three'
+import AlphabetParticle from '~/assets/javascripts/alphabet_particle.js'
+import Inconsolata from "~/assets/fonts/Inconsolata_Regular.json"
+import * as Random from '~/assets/javascripts/random.js'
+import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
+import ThreeDemo from '~/mixins/three_demo.js'
+import organization from '~/structured_data/organization.js'
 
 export default {
   beforeDestroy() {
-    window.removeEventListener('resize', this.maximizeFrame)
-    this.stopAnimating()
-    document.body.removeChild(this.demo.element)
-    this.demo.dispose()
-    this.demo = null
+  },
+  components: {
+    ObfuscatedMailto
   },
   data () {
     return {
+      alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
-      demo: null,
-      title: "nov 2017 - purvis research"
+      canonicalUrl: `${organization.url}/2017/nov.html`,
+      description: "A 3d character exploder in WebGL.",
+      font: new Font(Inconsolata),
+      particles: [],
+      title: "nov 2017 - purvis research",
     }
   },
   head () {
     return {
       title: this.title,
       meta: [
-        { property:"og:description", content:"A 3d character exploder in WebGL" },
-        { property:"og:image", content: require("~/assets/images/2017/nov.png") },
-        { property:"og:image:height", content:"619" },
-        { property:"og:image:width", content:"1183" },
+        { name: 'description', content: this.description, hid: 'description' },
+        { property:"og:description", content: this.description },
+        { property:"og:image", content: `${organization.url}${require("~/assets/images/2017/nov.png")}` },
+        { property:"og:image:height", content:"859" },
+        { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Nov 2017" },
+        { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
-      ]
+      ],
+      link: [
+        { rel: "canonical", href: this.canonicalUrl }
+      ],
+    }
+  },
+  jsonld() {
+    return {
+      "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+          "@type": "ListItem",
+          "position": 1,
+          "name": "purvis research",
+          "item": organization.url
+        },{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "nov 2017",
+          "item": `${organization.url}/2017/nov.html`
+        }]
     }
   },
   methods: {
-    animate() {
-      this.demo.update()
-      this.demo.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+    layout() {
+      this.camera.far = 10000
+      this.camera.position.z = Random.rand({min: 100, max: 150})
     },
-    frame() {
-      return {
-        height: Math.max(document.body.clientHeight, window.innerHeight),
-        width: Math.max(document.body.clientWidth, window.innerWidth)
-      }
-    },
-    maximizeFrame() {
-      this.demo.frame = this.frame()
-    },
-    startAnimating() {
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
-    stopAnimating() {
-      if (!this.animationFrame) return
-      window.cancelAnimationFrame(this.animationFrame)
-    },
-    unobfuscate(event) {
-      let link = event.currentTarget
-      link.href = link.href.replace('@@','.')
-    }
-  },
-  mounted() {
-    this.demo = new Nov2017Demo(this.frame(), window.devicePixelRatio)
-    document.body.appendChild(this.demo.element)
-    this.startAnimating()
-    window.addEventListener('resize', this.maximizeFrame)
+    load() {
+      return new Promise(resolve => {
+        this.alphabet.forEach(character => {
+          let geometry = new TextBufferGeometry(character, {
+            font: this.font
+          })
+          geometry.center()
 
-    this.demo.load()
+          let material = new MeshNormalMaterial({
+            depthFunc: LessDepth,
+            opacity: 0.7,
+            transparent: false,
+            wireframe: true,
+            wireframeLinewidth: 2.0,
+          })
+
+          let mesh = new Mesh(geometry, material)
+          let radius = 60
+          let acceleration = new Vector3(
+            Random.rand({min: -radius, max: radius}),
+            Random.rand({min: -radius, max: radius}),
+            Random.rand({min: -radius, max: radius})
+          )
+          let scale = Random.rand({min: 0.25, max: 1})
+
+          // Give each particle a jump start:
+          mesh.position.copy(acceleration)
+
+          mesh.rotation.set(
+            Random.rand({max: 2 * Math.PI}),
+            Random.rand({max: 2 * Math.PI}),
+            Random.rand({max: 2 * Math.PI})
+          )
+          mesh.scale.setScalar(scale)
+
+          let particle = new AlphabetParticle({
+            mesh: mesh,
+            acceleration: acceleration,
+            mass: scale
+          })
+
+          this.particles.push(particle)
+          this.scene.add(mesh)
+        })
+        resolve()
+      })
+    },
+    update() {
+      let deltaTime = this.deltaTime()
+      if (deltaTime == 0) return
+      this.particles.forEach(p => p.update(deltaTime))
+    },
+  },
+  mixins: [
+    ThreeDemo,
+  ],
+  mounted() {
+    this.load().then(this.layout)
   }
 }
 

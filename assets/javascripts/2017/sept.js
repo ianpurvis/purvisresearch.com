@@ -1,6 +1,3 @@
-if (process.browser) {
-  require('pixi-particles')
-}
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
 
 export default class Sept2017Demo extends PixiDemo {
@@ -11,21 +8,24 @@ export default class Sept2017Demo extends PixiDemo {
   }
 
   load() {
-    let self = this
-    return super.load().then(new Promise((resolve, reject) => {
+    return super.load().then(() => Promise.all([
+      import(/* webpackMode: "eager" */"@pixi/text"),
+      import(/* webpackMode: "eager" */"@pixi/display"),
+      import(/* webpackMode: "eager" */"pixi-particles")
+    ]).then(([{Text}, {Container}, {Emitter}]) => {
 
       // Create text objects and pre-render them for the emitter
-      let texts = Array.from("💾📀").map(e => new PIXI.Text(e, {fontSize: '48pt'}))
-      texts.forEach(t => self.app.renderer.render(t))
+      let texts = Array.from("💾📀").map(e => new Text(e, {fontSize: '48pt'}))
+      texts.forEach(t => this.app.renderer.render(t))
 
       // The PIXI.Container to put the emitter in
       // if using blend modes, it's important to put this
       // on top of a bitmap, and not use the root stage Container
-      let emitterContainer = new PIXI.Container()
-      self.app.stage.addChild(emitterContainer)
+      let emitterContainer = new Container()
+      this.app.stage.addChild(emitterContainer)
 
       // Create a new emitter
-      self.emitter = new PIXI.particles.Emitter(
+      this.emitter = new Emitter(
 
         emitterContainer,
 
@@ -66,7 +66,7 @@ export default class Sept2017Demo extends PixiDemo {
             x: 0,
             y: 0,
             w: 0,
-            h: self.frame.height
+            h: this.frame.height
           },
           speed: {
             list: [
@@ -91,7 +91,7 @@ export default class Sept2017Demo extends PixiDemo {
   }
 
   update() {
-    let deltaTime = this.app.ticker.elapsedMS * PIXI.settings.TARGET_FPMS * this.speedOfLife
+    let deltaTime = this.app.ticker.elapsedMS * this.settings.TARGET_FPMS * this.speedOfLife
 
     if (deltaTime == 0) return
 

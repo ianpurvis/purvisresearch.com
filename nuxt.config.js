@@ -1,22 +1,28 @@
+import organization from './structured_data/organization.js'
+
 const isProduction = (process.env.NODE_ENV === 'production')
 
-module.exports = {
+export default {
   /*
   ** Headers of the page
   */
   head: {
-    title: 'p u r v i s _ r e s e a r c h',
+    title: 'purvis research',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'P U R V I S _ R E S E A R C H _ O N L I N E' }
+      { hid: 'description', name: 'description', content: organization.description }
     ],
     link: [
       { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
       { rel:'icon', type:'image/x-icon', href:'/favicons/favicon2.ico' },
       { rel:"manifest",  href:"/manifest.json" },
       { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
-    ]
+    ],
+    script: [
+      { hid: 'jsonld', type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
+    ],
+    __dangerouslyDisableSanitizersByTagID: { 'jsonld': 'innerHTML' },
   },
   /*
   ** Customize the progress bar color
@@ -38,6 +44,13 @@ module.exports = {
       config.module.rules.push({
         test: /\.glb$/,
         loader: 'arraybuffer-loader',
+        exclude: /(node_modules)/
+      })
+
+      // Load glsl models as string
+      config.module.rules.push({
+        test: /\.glsl$/,
+        loader: 'raw-loader',
         exclude: /(node_modules)/
       })
 
@@ -68,13 +81,12 @@ module.exports = {
   },
 
   modules: [
-    ['@nuxtjs/google-analytics', {
-      id: 'UA-106821101-1',
-      debug: {
-        enabled: !isProduction,
-        sendHitTask: isProduction
-      }
-    }]
+    '@nuxtjs/google-analytics',
+    '@nuxtjs/sitemap'
+  ],
+
+  plugins: [
+    '~/plugins/nuxt-jsonld'
   ],
 
   router: {
@@ -86,11 +98,33 @@ module.exports = {
           return route
         })
         .concat(
-          { path: '/', component: resolve(__dirname, 'pages/2018/oct.vue') },
+          { path: '/', component: resolve(__dirname, 'pages/2019/apr.vue') },
           { path: '/nov_2017\.html', redirect: '/2017/nov.html' },
           { path: '/oct_2017\.html', redirect: '/2017/oct.html' },
           { path: '/sept_2017\.html', redirect: '/2017/sept.html' },
         )
     }
+  },
+
+  'google-analytics': {
+    id: 'UA-106821101-1',
+    debug: {
+      enabled: !isProduction,
+      sendHitTask: isProduction
+    }
+  },
+
+  sitemap: {
+    exclude: [
+      '/404.html',
+      '/*_2017.html'
+    ],
+    hostname: organization.url,
+    generate: true,
+    routes: [{
+      url: '/',
+      changefreq: 'monthly',
+      priority: 1
+    }]
   }
 }

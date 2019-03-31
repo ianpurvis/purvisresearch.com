@@ -1,20 +1,19 @@
-export default class Random {
+const SIGNS = [-1, 1]
 
-  static rand({
-    max = 1,
-    min = 0
-  } = {
-    max: 1,
-    min: 0
-  }) {
-    return Math.random() * (max - min) + min
-  }
-
-  static sample(array) {
-    return array[Math.floor(Math.random()*array.length)]
-  }
-
-  static comparison() {
-    return Random.rand({max: 1, min: -1})
-  }
+function comparison() {
+  return sign()
 }
+
+function rand({ max=1, min=0 } = {}) {
+  return Math.random() * (max - min) + min
+}
+
+function sample(array) {
+  return array[Math.floor(Math.random()*array.length)]
+}
+
+function sign() {
+  return sample(SIGNS)
+}
+
+export { comparison, rand, sample, sign }

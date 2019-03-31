@@ -70,6 +70,31 @@ main {
   }
 }
 
+.Y2019 {
+  &.apr {
+    color: #FFFFFF;
+
+    a {
+      &:hover {
+        color: #d3d3d3;
+      }
+
+      &:not(:hover) {
+        color: #FFFFFF;
+      }
+    }
+
+    video {
+      left: 0;
+      object-fit: cover;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
 .aspect {
   &.fit-horizontal {
     font-size: 100vw;

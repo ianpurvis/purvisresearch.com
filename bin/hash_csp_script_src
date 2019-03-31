@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sed -n 's/.*<script>\(.*\)<\/script>.*/\1/p' dist/index.html \
+  | tr -d '\n' \
+  | openssl dgst -sha256 -binary \
+  | openssl base64

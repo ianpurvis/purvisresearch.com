@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+ping_google() {
+  local url="https://www.google.com/ping?sitemap=$1"
+  curl --fail --output /dev/null --show-error --silent $url
+}
+
+sitemap_url="https://purvisresearch.com/sitemap.xml"
+echo "Requesting google indexing for $sitemap_url"
+ping_google $sitemap_url
+echo "Sitemap notification received"

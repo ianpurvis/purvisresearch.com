@@ -1,6 +1,6 @@
 import Oscillator from '~/assets/javascripts/oscillator.js'
-import Random from '~/assets/javascripts/random.js'
 import PixiDemo from '~/assets/javascripts/pixi_demo.js'
+import * as Random from '~/assets/javascripts/random.js'
 
 export default class Oct2017Demo extends PixiDemo {
 
@@ -14,25 +14,23 @@ export default class Oct2017Demo extends PixiDemo {
   }
 
   load() {
-    let self = this
-    return super.load().then(new Promise((resolve, reject) => {
-
-      let {height, width} = self.frame
-
-      self.textures = [
+    return super.load().then(() => {
+      let {height, width} = this.frame
+      return Promise.all([
         BezierTexture.create('0xff0000', height, width),
         BezierTexture.create('0x00ff00', height, width),
         BezierTexture.create('0x0000ff', height, width)
-      ]
-
-      self.textures
+      ])
+    }).then(textures => {
+      textures
         .sort(Random.comparison)
-        .forEach((texture) => self.app.stage.addChild(texture))
-    }))
+        .forEach((texture) => this.app.stage.addChild(texture))
+      this.textures = textures
+    })
   }
 
   update() {
-    let deltaTime = this.app.ticker.elapsedMS * PIXI.settings.TARGET_FPMS * this.speedOfLife
+    let deltaTime = this.app.ticker.elapsedMS * this.settings.TARGET_FPMS * this.speedOfLife
 
     if (deltaTime == 0) return
 
@@ -70,28 +68,33 @@ class BezierTexture {
       })
     })
 
-    let graphics = new PIXI.Graphics()
-    graphics.lineStyle(lineWidth, color, lineAlpha)
+    return Promise.resolve(
+      import(/* webpackMode: "eager" */"@pixi/graphics"),
+    ).then(({Graphics}) => {
 
-    let offset, clone
-    for (var i = 0; i < lineCount; i++) {
-      offset = new Point({
-        x: i * (lineWidth + lineSpace)
-      })
-      clone = bezier.translate(offset)
+      let graphics = new Graphics()
+      graphics.lineStyle(lineWidth, color, lineAlpha)
 
-      graphics.moveTo(
-        clone.start.x,
-        clone.start.y
-      )
-      graphics.bezierCurveTo(
-        clone.controlOne.x,  clone.controlOne.y,
-        clone.controlTwo.x,  clone.controlTwo.y,
-        clone.end.x,         clone.end.y
-      )
-    }
+      let offset, clone
+      for (var i = 0; i < lineCount; i++) {
+        offset = new Point({
+          x: i * (lineWidth + lineSpace)
+        })
+        clone = bezier.translate(offset)
 
-    return graphics
+        graphics.moveTo(
+          clone.start.x,
+          clone.start.y
+        )
+        graphics.bezierCurveTo(
+          clone.controlOne.x,  clone.controlOne.y,
+          clone.controlTwo.x,  clone.controlTwo.y,
+          clone.end.x,         clone.end.y
+        )
+      }
+
+      return graphics
+    })
   }
 }
 
