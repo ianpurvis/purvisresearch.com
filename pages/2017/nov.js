@@ -11,7 +11,7 @@ import Inconsolata from "~/assets/fonts/Inconsolata_Regular.json"
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
-import Config from '~/nuxt.config'
+import organization from '~/structured_data/organization.js'
 
 export default {
   beforeDestroy() {
@@ -42,7 +42,7 @@ export default {
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${Config.sitemap.hostname}/2017/nov.html` }
+        { rel: "canonical", href: `${organization.url}/2017/nov.html` }
       ],
     }
   },
@@ -54,12 +54,12 @@ export default {
           "@type": "ListItem",
           "position": 1,
           "name": "purvis research",
-          "item": `${Config.sitemap.hostname}/`
+          "item": organization.url
         },{
           "@type": "ListItem",
           "position": 2,
           "name": "nov 2017",
-          "item": `${Config.sitemap.hostname}/2017/nov.html`
+          "item": `${organization.url}/2017/nov.html`
         }]
     }
   },

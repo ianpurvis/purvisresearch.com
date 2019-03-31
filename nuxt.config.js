@@ -119,7 +119,7 @@ export default {
       '/404.html',
       '/*_2017.html'
     ],
-    hostname: 'https://purvisresearch.com',
+    hostname: organization.url,
     generate: true,
     routes: [{
       url: '/',

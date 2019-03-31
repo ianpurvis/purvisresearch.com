@@ -25,7 +25,7 @@ import tatami from '~/assets/images/2019/mar/tatami-bw.png'
 import tatamiAlpha from '~/assets/images/2019/mar/tatami-alpha.png'
 import neko from '~/assets/images/2019/mar/neko-bw.png'
 import monster from '~/assets/images/2019/mar/monster-bw.png'
-import Config from '~/nuxt.config'
+import organization from '~/structured_data/organization.js'
 
 const Colors = {
   black: 0x000000,
@@ -63,7 +63,7 @@ export default {
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${Config.sitemap.hostname}/2019/mar.html` }
+        { rel: "canonical", href: `${organization.url}/2019/mar.html` }
       ],
     }
   },
@@ -75,12 +75,12 @@ export default {
         "@type": "ListItem",
         "position": 1,
         "name": "purvis research",
-        "item": `${Config.sitemap.hostname}/`
+        "item": organization.url
       },{
         "@type": "ListItem",
         "position": 2,
         "name": "mar 2019",
-        "item": `${Config.sitemap.hostname}/2019/mar.html`
+        "item": `${organization.url}/2019/mar.html`
       }]
     }
   },

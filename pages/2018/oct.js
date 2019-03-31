@@ -15,7 +15,7 @@ import * as Random from '~/assets/javascripts/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
-import Config from '~/nuxt.config'
+import organization from '~/structured_data/organization.js'
 
 const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 
@@ -50,7 +50,7 @@ export default {
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${Config.sitemap.hostname}/2018/oct.html` }
+        { rel: "canonical", href: `${organization.url}/2018/oct.html` }
       ],
     }
   },
@@ -62,12 +62,12 @@ export default {
         "@type": "ListItem",
         "position": 1,
         "name": "purvis research",
-        "item": `${Config.sitemap.hostname}/`
+        "item": organization.url
       },{
         "@type": "ListItem",
         "position": 2,
         "name": "oct 2018",
-        "item": `${Config.sitemap.hostname}/2018/oct.html`
+        "item": `${organization.url}/2018/oct.html`
       }]
     }
   },

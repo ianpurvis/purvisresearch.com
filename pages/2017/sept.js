@@ -1,6 +1,6 @@
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import Sept2017Demo from '~/assets/javascripts/2017/sept.js'
-import Config from '~/nuxt.config'
+import organization from '~/structured_data/organization.js'
 
 export default {
   beforeDestroy() {
@@ -34,7 +34,7 @@ export default {
         { name:"twitter:card", content:"summary_large_image" },
       ],
       link: [
-        { rel: "canonical", href: `${Config.sitemap.hostname}/2017/sept.html` }
+        { rel: "canonical", href: `${organization.url}/2017/sept.html` }
       ],
     }
   },
@@ -46,12 +46,12 @@ export default {
         "@type": "ListItem",
         "position": 1,
         "name": "purvis research",
-        "item": `${Config.sitemap.hostname}/`
+        "item": organization.url
       },{
         "@type": "ListItem",
         "position": 2,
         "name": "sept 2017",
-        "item": `${Config.sitemap.hostname}/2017/sept.html`
+        "item": `${organization.url}/2017/sept.html`
       }]
     }
   },
