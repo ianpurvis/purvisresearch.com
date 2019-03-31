@@ -32,7 +32,7 @@ export default {
         new Color(0xffff00)
       ],
       canonicalUrl: `${organization.url}/2018/oct.html`,
-      description: "Screen printing a 3D scan with WebGL",
+      description: "Screen printing a 3D scan with WebGL.",
       loader: new ModelLoader(),
       speedOfLife: 0.05,
       title: "oct 2018 - purvis research",

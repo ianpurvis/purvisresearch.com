@@ -24,7 +24,7 @@ export default {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
       canonicalUrl: `${organization.url}/2017/nov.html`,
-      description: "A 3d character exploder in WebGL",
+      description: "A 3d character exploder in WebGL.",
       font: new Font(Inconsolata),
       particles: [],
       title: "nov 2017 - purvis research",
