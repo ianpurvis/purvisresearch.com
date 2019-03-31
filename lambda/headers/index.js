@@ -30,6 +30,7 @@ exports.handler = async (event) => {
       "font-src 'self' data:",
       "form-action 'none'",
       "img-src 'self' https://www.google-analytics.com",
+      "manifest-src 'self'",
       "media-src 'self'",
       "object-src 'none'",
       "script-src 'self' 'unsafe-eval' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com",
