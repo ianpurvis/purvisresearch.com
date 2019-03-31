@@ -47,7 +47,7 @@ export default {
       animations: [],
       camera: new OrthographicCamera(),
       canonicalUrl: `${organization.url}/2019/apr.html`,
-      description: "A surrealistic video collage with WebRTC and WebGL",
+      description: "Surreal television with WebRTC and WebGL.",
       title: "apr 2019 - purvis research",
     }
   },
