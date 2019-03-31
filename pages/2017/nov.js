@@ -35,7 +35,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:"og:description", content: this.description },
-        { property:"og:image", content: require("~/assets/images/2017/nov.png") },
+        { property:"og:image", content: `${organization.url}${require("~/assets/images/2017/nov.png")}` },
         { property:"og:image:height", content:"619" },
         { property:"og:image:width", content:"1183" },
         { property:"og:title", content:"Nov 2017" },
