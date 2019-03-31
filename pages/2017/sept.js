@@ -80,10 +80,10 @@ export default {
   },
   mounted() {
     this.demo = new Sept2017Demo(this.frame())
-    document.body.appendChild(this.demo.element)
-    this.startAnimating()
-    window.addEventListener('resize', this.maximizeFrame)
-
-    this.demo.load()
+    this.demo.load().then(() => {
+      document.body.appendChild(this.demo.element)
+      this.startAnimating()
+      window.addEventListener('resize', this.maximizeFrame)
+    })
   }
 }

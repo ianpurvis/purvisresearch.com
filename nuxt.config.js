@@ -89,10 +89,6 @@ export default {
     '~/plugins/nuxt-jsonld'
   ],
 
-  render: {
-    ssr: false
-  },
-
   router: {
     extendRoutes (routes, resolve) {
       // Return array to replace nuxt generated routes:
