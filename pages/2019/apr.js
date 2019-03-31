@@ -21,10 +21,10 @@ import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
-import tatami from '~/assets/images/2019/mar/tatami-bw.png'
-import tatamiAlpha from '~/assets/images/2019/mar/tatami-alpha.png'
-import neko from '~/assets/images/2019/mar/neko-bw.png'
-import monster from '~/assets/images/2019/mar/monster-bw.png'
+import tatami from '~/assets/images/2019/apr/tatami-bw.png'
+import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
+import neko from '~/assets/images/2019/apr/neko-bw.png'
+import monster from '~/assets/images/2019/apr/monster-bw.png'
 import organization from '~/structured_data/organization.js'
 
 const Colors = {
@@ -46,9 +46,9 @@ export default {
     return {
       animations: [],
       camera: new OrthographicCamera(),
-      canonicalUrl: `${organization.url}/2019/mar.html`,
+      canonicalUrl: `${organization.url}/2019/apr.html`,
       description: "A surrealistic video collage with WebRTC and WebGL",
-      title: "mar 2019 - purvis research",
+      title: "apr 2019 - purvis research",
     }
   },
   head() {
@@ -57,10 +57,10 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:"og:description", content: this.description },
-        { property:"og:image", content: `${organization.url}${require("~/assets/images/2019/mar.png")}` },
+        { property:"og:image", content: `${organization.url}${require("~/assets/images/2019/apr.png")}` },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Mar 2019" },
+        { property:"og:title", content:"Apr 2019" },
         { property:"og:url", content: this.canonicalUrl },
         { name:"twitter:card", content:"summary_large_image" },
       ],
@@ -81,8 +81,8 @@ export default {
       },{
         "@type": "ListItem",
         "position": 2,
-        "name": "mar 2019",
-        "item": `${organization.url}/2019/mar.html`
+        "name": "apr 2019",
+        "item": `${organization.url}/2019/apr.html`
       }]
     }
   },
