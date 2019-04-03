@@ -94,11 +94,12 @@ export default {
       // Return array to replace nuxt generated routes:
       return routes
         .map(route => {
-          route.path += '\.html'
+          if (!route.path.endsWith('/')) {
+            route.path += '\.html'
+          }
           return route
         })
         .concat(
-          { path: '/', component: resolve(__dirname, 'pages/2019/apr.vue') },
           { path: '/nov_2017\.html', redirect: '/2017/nov.html' },
           { path: '/oct_2017\.html', redirect: '/2017/oct.html' },
           { path: '/sept_2017\.html', redirect: '/2017/sept.html' },

@@ -1,5 +1,7 @@
 @charset "utf-8";
 @import "~assets/stylesheets/libre-barcode-128-text-regular";
+@import "~assets/stylesheets/courier-prime-code";
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500&subset=japanese');
 @import "~bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
@@ -20,7 +22,57 @@ canvas {
   left: 0;
 }
 
-main {
+$base-font-size: 2 * 14.666666984558105px; // 11pt
+$base-kerning: 2px;
+
+.en,
+.jp {
+  text-align: justify;
+  margin-bottom: 0.6rem;
+}
+
+h1.en,
+h1.jp {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.en {
+  font-family: "Courier Prime Code", sans-serif;
+  font-size: $base-font-size;
+  letter-spacing: $base-kerning;
+  line-height: 1.0;
+  max-width: calc(16ch + (16 * #{$base-kerning}));
+  word-break: break-all;
+}
+h1.en {
+  font-size: $base-font-size * 1.363636334080342;
+}
+
+.jp {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
+  letter-spacing: 0px;
+  line-height: 1.1;
+  max-width: 12.1ch;
+  word-break: break-word;
+
+  ._ {
+    font-size: $base-font-size;
+    margin: 0 4px;
+  }
+
+  div {
+    text-align: justify;
+  }
+}
+h1.jp {
+  font-size: $base-font-size * 1.181818181818182;
+}
+
+.Y2017,
+.Y2018,
+.Y2019 {
   font-size: 96px;
   letter-spacing: 4px;
   max-width: 320px;
