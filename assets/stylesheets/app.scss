@@ -11,12 +11,11 @@ $text: $grey-darker;
 
 @import "~bulma/bulma";
 
-$base-font-size: 2 * 14.666666984558105px; // 11pt
-$base-kerning: 2px;
 $mobile-width: 568px;
+$scale-jp: 0.85;
 
 body {
-  letter-spacing: 1px;
+  letter-spacing: 0.2ch;
 }
 
 canvas {
@@ -28,23 +27,23 @@ canvas {
 
 h1,
 h2 {
-  letter-spacing: $base-kerning;
+  letter-spacing: 0.1ch;
   line-height: 1.0;
 }
 
 h1 {
-  font-size: $base-font-size * 1.363636334080342;
+  font-size: $size-2;
   font-weight: 500;
   margin-bottom: 0.3rem;
 }
 
 h2 {
-  font-size: $base-font-size;
+  font-size: $size-3;
 }
 
 .boxx {
   padding: 0.75rem 0.75rem;
-  max-width: 21.1rem;
+  max-width: 23rem;
 }
 
 .image {
@@ -58,29 +57,29 @@ h2 {
 
 .jp {
   font-family: "Noto Sans JP", sans-serif;
-  letter-spacing: 0px;
-  line-height: 1.1;
+  letter-spacing: 0;
+  line-height: 1.2;
 
   @at-root
   h1#{&} {
-    font-size: $base-font-size * 1.181818181818182;
+    letter-spacing: -0.05ch;
     margin-bottom: 0.9rem;
   }
 
   @at-root
   h2#{&} {
-    font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
+    font-size: $size-3 * $scale-jp;
   }
 
   .romaji {
-    letter-spacing: $base-kerning;
-    line-height: 0.9;
+    letter-spacing: 0.2ch;
+    line-height: $scale-jp;
     font-family: $family-primary;
-    font-size: $base-font-size;
+    font-size: (1em / $scale-jp);
   }
 
   .stretch {
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.05ch;
   }
 }
 
