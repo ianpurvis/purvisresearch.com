@@ -30,12 +30,12 @@ h1,
 h2 {
   letter-spacing: $base-kerning;
   line-height: 1.0;
-  margin-bottom: 0.3rem;
 }
 
 h1 {
   font-size: $base-font-size * 1.363636334080342;
   font-weight: 500;
+  margin-bottom: 0.3rem;
 }
 
 h2 {
@@ -52,11 +52,14 @@ h2 {
   }
 }
 
+.image {
+  width: 50%;
+}
+
 .snake {
   text-align: justify;
   overflow-wrap: break-word;
 }
-
 
 .jp {
   font-family: "Noto Sans JP", sans-serif;
@@ -76,11 +79,11 @@ h2 {
   h2 {
     letter-spacing: 0px;
     line-height: 1.1;
-    margin-bottom: 0.9rem;
   }
 
   h1 {
     font-size: $base-font-size * 1.181818181818182;
+    margin-bottom: 0.9rem;
   }
 
   h2 {
