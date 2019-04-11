@@ -1,11 +1,33 @@
 <template>
-  <main class="top">
-    <!--purvis_research_llc_startup_technology_research_design_development_testing_devops_project_management_<obfuscated-mailto/><nuxt-link to="/2019-apr">apr_2019</nuxt-link>_<nuxt-link to="/2018-oct">oct_2018</nuxt-link>_<nuxt-link to="/2017-nov">nov_2017</nuxt-link>_<nuxt-link to="/2017-oct">oct_2017</nuxt-link>_<nuxt-link to="/2017-sept">sep_2017</nuxt-link>-->
-    <h1 class="en">IAN PURVIS</h1>
-    <div class="en">STARTUP_TECHNOLOGY_RESEARCH_DESIGN_DEVELOPMENT_TESTING_DEVOPS_PROJECT_MANAGEMENT</div>
-    <h1 class="jp">イアン　パービス</h1>
-    <div class="jp">
-      スタートアップ<span class="_">_</span>テクノロジー<span class="_">_</span>リサーチ<span class="_">_</span>デザインデベロップメント<span class="_">_</span>テスティング<span class="_">_</span><span class="en">DEVOPS</span><span class="_">_</span>プロジェクト<span class="_">_</span>マネジメント
+  <main>
+    <div class="boxx">
+      <h1>IAN PURVIS</h1>
+      <h2 class="snake">STARTUP_TECHNOLOGY_RESEARCH_DESIGN_DEVELOPMENT_TESTING_DEVOPS_PROJECT_MANAGEMENT</h2>
+    </div>
+    <div class="boxx jp">
+      <h1>イアン　パービス</h1>
+      <h2 class="snake">
+        <span>スタートアップ</span>
+        <span class="romaji">_</span>
+        <span>テクノロジー</span>
+        <span class="romaji">_</span>
+        <span>リサーチ</span>
+        <span class="romaji">_</span>
+        <span>デザインデベロップメント</span>
+        <span class="romaji">_</span>
+        <span>テスティング</span>
+        <span class="romaji">_</span>
+        <span class="romaji">DEVOPS</span>
+        <span class="romaji">_</span>
+        <span>プロジェクト</span>
+        <span class="romaji">_</span>
+        <span class="stretch">マネジメント</span>
+      </h2>
+    </div>
+    <div class="boxx">
+      <obfuscated-mailto></obfuscated-mailto>
+      <br/>
+      <nuxt-link to="/">https://purvisresearch.com</nuxt-link>
     </div>
   </main>
 </template>

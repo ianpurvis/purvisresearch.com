@@ -5,15 +5,19 @@
 @import "~bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
-$body-line-height: 1.125;
-$family-primary: "Libre Barcode 128 Text";
+$family-primary: "Courier Prime Code", sans-serif;
 $link: $turquoise;
 $text: $grey-darker;
 
-@import "~bulma/sass/utilities/all";
-@import "~bulma/sass/base/all";
+@import "~bulma/bulma";
 
+$base-font-size: 2 * 14.666666984558105px; // 11pt
+$base-kerning: 2px;
 $mobile-width: 568px;
+
+body {
+  letter-spacing: 1px;
+}
 
 canvas {
   position: absolute;
@@ -22,59 +26,75 @@ canvas {
   left: 0;
 }
 
-$base-font-size: 2 * 14.666666984558105px; // 11pt
-$base-kerning: 2px;
-
-.en,
-.jp {
-  text-align: justify;
-  margin-bottom: 0.6rem;
-}
-
-h1.en,
-h1.jp {
-  font-weight: 500;
+h1,
+h2 {
+  letter-spacing: $base-kerning;
+  line-height: 1.0;
   margin-bottom: 0.3rem;
 }
 
-.en {
-  font-family: "Courier Prime Code", sans-serif;
-  font-size: $base-font-size;
-  letter-spacing: $base-kerning;
-  line-height: 1.0;
-  max-width: calc(16ch + (16 * #{$base-kerning}));
-  word-break: break-all;
-}
-h1.en {
+h1 {
   font-size: $base-font-size * 1.363636334080342;
+  font-weight: 500;
 }
+
+h2 {
+  font-size: $base-font-size;
+}
+
+.boxx {
+  padding: 0.75rem 0.75rem;
+  //margin-bottom: 0.6rem;
+  max-width: 21.1rem;
+
+  &.jp {
+    padding-right: 0.75rem + 0.9rem;
+  }
+}
+
+.snake {
+  text-align: justify;
+  overflow-wrap: break-word;
+}
+
 
 .jp {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
-  letter-spacing: 0px;
-  line-height: 1.1;
-  max-width: 12.1ch;
-  word-break: break-word;
 
-  ._ {
+  .romaji {
+    letter-spacing: $base-kerning;
+    line-height: 0.9;
+    font-family: $family-primary;
     font-size: $base-font-size;
-    margin: 0 4px;
   }
 
-  div {
-    text-align: justify;
+  .stretch {
+    letter-spacing: 0.05rem;
   }
-}
-h1.jp {
-  font-size: $base-font-size * 1.181818181818182;
+
+  h1,
+  h2 {
+    letter-spacing: 0px;
+    line-height: 1.1;
+    margin-bottom: 0.9rem;
+  }
+
+  h1 {
+    font-size: $base-font-size * 1.181818181818182;
+  }
+
+  h2 {
+    font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
+  }
 }
 
 .Y2017,
 .Y2018,
 .Y2019 {
+  font-family: "Libre Barcode 128 Text", sans-serif;
   font-size: 96px;
   letter-spacing: 4px;
+  line-height: 1.125;
   max-width: 320px;
   word-break: break-all;
 
