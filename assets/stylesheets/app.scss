@@ -44,12 +44,7 @@ h2 {
 
 .boxx {
   padding: 0.75rem 0.75rem;
-  //margin-bottom: 0.6rem;
   max-width: 21.1rem;
-
-  &.jp {
-    padding-right: 0.75rem + 0.9rem;
-  }
 }
 
 .image {
@@ -63,6 +58,19 @@ h2 {
 
 .jp {
   font-family: "Noto Sans JP", sans-serif;
+  letter-spacing: 0px;
+  line-height: 1.1;
+
+  @at-root
+  h1#{&} {
+    font-size: $base-font-size * 1.181818181818182;
+    margin-bottom: 0.9rem;
+  }
+
+  @at-root
+  h2#{&} {
+    font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
+  }
 
   .romaji {
     letter-spacing: $base-kerning;
@@ -73,21 +81,6 @@ h2 {
 
   .stretch {
     letter-spacing: 0.05rem;
-  }
-
-  h1,
-  h2 {
-    letter-spacing: 0px;
-    line-height: 1.1;
-  }
-
-  h1 {
-    font-size: $base-font-size * 1.181818181818182;
-    margin-bottom: 0.9rem;
-  }
-
-  h2 {
-    font-size: $base-font-size * 0.818181818181818; // TODO figure out dynamic 25.5px
   }
 }
 

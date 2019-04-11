@@ -4,9 +4,9 @@
       <h1>IAN PURVIS</h1>
       <h2 class="snake">STARTUP_TECHNOLOGY_RESEARCH_DESIGN_DEVELOPMENT_TESTING_DEVOPS_PROJECT_MANAGEMENT</h2>
     </div>
-    <div class="boxx jp">
-      <h1>イアン　パービス</h1>
-      <h2 class="snake">
+    <div class="boxx">
+      <h1 class="jp">イアン　パービス</h1>
+      <h2 class="snake jp">
         <span>スタートアップ</span>
         <span class="romaji">_</span>
         <span>テクノロジー</span>
