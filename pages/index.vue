@@ -26,7 +26,7 @@
         </h2>
       </div>
       <div class="boxx">
-        <div class="snake">DIGITAL_ART_EXPERIMENTS_2019_APR_<nuxt-link to="2019/apr.html">SURREAL_TELEVISION_WITH_WEBRTC_AND_WEBGL</nuxt-link>_2018_OCT_<nuxt-link to="2018/oct.html">SCREEN_PRINTING_A_3D_SCAN_WITH_WEBGL</nuxt-link>_2017_NOV_<nuxt-link to="2017/nov.html">A_3D_CHARACTER_EXPLODER_IN_WEBGL</nuxt-link>_2017_OCT_<nuxt-link to="2017/oct.html">A_BÉZIER_MOIRÉ_GENERATOR_IN_WEBGL</nuxt-link>_2017_SEP_<nuxt-link to="2017/sept.html">AN_EMOJI_PARTICLE_FLOW_IN_WEBGL</nuxt-link></div>
+        <div class="snake experiments">DIGITAL_ART_EXPERIMENTS_2019_APR_<nuxt-link to="2019/apr.html">SURREAL_WEBRTC_TELEVISION</nuxt-link>_2018_OCT_<nuxt-link to="2018/oct.html">SCREEN_PRINTING_A_3D_SCAN</nuxt-link>_2017_NOV_<nuxt-link to="2017/nov.html">A_3D_CHARACTER_EXPLODER</nuxt-link>_2017_OCT_<nuxt-link to="2017/oct.html">A_BÉZIER_MOIRÉ_GENERATOR</nuxt-link>_2017_SEP_<nuxt-link to="2017/sept.html">AN_EMOJI_PARTICLE_FLOW</nuxt-link></div>
       </div>
       <div class="boxx">
         <nuxt-link to="/">
