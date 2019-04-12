@@ -1,7 +1,9 @@
 export default {
   computed: {
     contentScale() {
-      return this.contentWidth > 0 ? this.elementWidth / this.contentWidth : 0
+      if (this.contentWidth <= 0) return 0
+      let scale = this.elementWidth / this.contentWidth
+      return Math.min(scale, this.maxScale)
     },
     style() {
       return {
@@ -25,5 +27,11 @@ export default {
   },
   mounted() {
     this.$nextTick(this.watchDOM)
+  },
+  props: {
+    maxScale: {
+      type: Number,
+      default: Number.MAX_VALUE,
+    },
   },
 }
