@@ -1,0 +1,15 @@
+.autoscaled {
+  &-mask {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  &-container {
+    transform: scale(1);
+    transform-origin: top left;
+  }
+
+  &-content {
+    display: inline-block;
+  }
+}

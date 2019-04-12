@@ -1,9 +1,11 @@
+import AutoscaledDiv from '~/components/autoscaled-div.vue'
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import organization from '~/structured_data/organization.js'
 
 export default {
   components: {
-    ObfuscatedMailto
+    AutoscaledDiv,
+    ObfuscatedMailto,
   },
   data() {
     return {
