@@ -1,13 +1,17 @@
 /*
- * Libre Barcode 128 Text
+ * Courier Prime Code
+ * Courier Prime Code.ttf
+ * Copyright (c) 2015
+ * Quote-Unquote Apps (http://quoteunquoteapps.com)
+ * with Reserved Font Name Courier Prime Code.
  * SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
- * LibreBarcode128Text-Regular.ttf: Copyright 2017 The Libre Barcode Project Authors (lasse@graphicore.de)
  */
 @font-face {
   font-family: 'Courier Prime Code';
   font-style: normal;
   font-weight: 400;
   src: local('Courier Prime Code'),
-       url('~assets/fonts/courier-prime-code.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+       local('CourierPrimeCode-Regular'),
+       url('~assets/fonts/courier-prime-code.woff') format('woff');
 }
 
