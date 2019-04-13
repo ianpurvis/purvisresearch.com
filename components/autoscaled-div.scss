@@ -1,11 +1,7 @@
 .autoscaled {
-  &-mask {
-    height: 100vh;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
 
-  &-container {
+  &-transformer {
+    display: inline-block;
     transform: scale(1);
     transform-origin: top left;
   }
