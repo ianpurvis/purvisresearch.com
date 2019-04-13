@@ -1,0 +1,29 @@
+/*
+ * Noto Sans JP
+ * NotoSansJP-Regular.otf
+ * NotoSansJP-Medium.otf
+ * Copyright © 2014, 2015 Adobe Systems Incorporated (http://www.adobe.com/).
+ * SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
+ * google.com/get/noto
+ */
+
+//@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500&subset=japanese');
+//@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500&text=アィイェクグサザジスタチッテデトネノパビプベマメリロンー');
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Sans JP Regular'),
+       local('NotoSansJP-Regular'),
+       url('~assets/fonts/NotoSansJP-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Noto Sans JP Medium'),
+       local('NotoSansJP-Medium'),
+       url('~assets/fonts/NotoSansJP-Medium.otf') format('opentype');
+}

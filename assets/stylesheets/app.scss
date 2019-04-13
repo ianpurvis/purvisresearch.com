@@ -1,7 +1,7 @@
 @charset "utf-8";
 @import "~assets/stylesheets/libre-barcode-128-text-regular";
 @import "~assets/stylesheets/courier-prime-code";
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500&subset=japanese');
+@import "~assets/stylesheets/noto-sans-jp";
 @import "~bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
