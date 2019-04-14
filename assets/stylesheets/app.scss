@@ -12,7 +12,7 @@ $text: $grey-darker;
 @import "~bulma/bulma";
 
 $mobile-width: 568px;
-$scale-jp: 0.85;
+$scale-jp: 0.80;
 
 body {
   letter-spacing: 0.2ch;
@@ -39,7 +39,7 @@ h2 {
 h1 {
   font-size: $size-2;
   font-weight: 500;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 h2 {
@@ -65,8 +65,10 @@ p {
 }
 
 .experiments {
-  letter-spacing: 0.7ch;
-  font-size: 0.9rem;
+  // crossword puzzle spacing:
+  //letter-spacing: 1.2ch;
+  letter-spacing: 0.3ch;
+  font-size: 1.12rem;
 }
 
 .kaomoji {
@@ -76,13 +78,9 @@ p {
 .jp {
   font-family: "Noto Sans JP", sans-serif;
   letter-spacing: 0;
-  line-height: 1.2;
-
-  @at-root
-  h1#{&} {
-    letter-spacing: -0.05ch;
-    margin-bottom: 0.9rem;
-  }
+  line-height: 1.4;
+  transform-origin: top left;
+  transform: scaleX(0.96);
 
   @at-root
   h2#{&} {
@@ -97,7 +95,7 @@ p {
   }
 
   .stretch {
-    letter-spacing: 0.05ch;
+    letter-spacing: 0.13ch;
   }
 }
 
