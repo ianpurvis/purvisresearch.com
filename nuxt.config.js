@@ -121,7 +121,6 @@ export default {
       '/*_2017.html'
     ],
     hostname: organization.url,
-    generate: true,
     routes: [{
       url: '/',
       changefreq: 'monthly',
