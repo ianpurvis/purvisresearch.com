@@ -4,4 +4,5 @@
   </main>
 </template>
 
+<style src="./sept.scss" lang="scss"></style>
 <script src="./sept.js"></script>

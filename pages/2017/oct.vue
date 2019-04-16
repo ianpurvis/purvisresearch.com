@@ -4,4 +4,5 @@
   </main>
 </template>
 
+<style src="./oct.scss" lang="scss"></style>
 <script src="./oct.js"></script>

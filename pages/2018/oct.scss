@@ -1,0 +1,10 @@
+@charset "utf-8";
+@import "~assets/stylesheets/graphix";
+
+.Y2018 {
+  &.oct {
+    a:not(:hover) {
+      color: #00FFFF;
+    }
+  }
+}

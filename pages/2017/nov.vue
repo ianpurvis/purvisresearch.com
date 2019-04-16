@@ -4,4 +4,5 @@
   </main>
 </template>
 
+<style src="./nov.scss" lang="scss"></style>
 <script src="./nov.js"></script>

@@ -5,4 +5,5 @@
   </main>
 </template>
 
+<style src="./apr.scss" lang="scss"></style>
 <script src="./apr.js"></script>
