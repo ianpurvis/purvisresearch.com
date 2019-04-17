@@ -33,7 +33,7 @@ exports.handler = async (event) => {
       "manifest-src 'self'",
       "media-src 'self'",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-eval' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com",
+      "script-src 'self' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline'",
     ].join('; ')
   }]
