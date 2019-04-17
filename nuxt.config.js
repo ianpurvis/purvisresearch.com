@@ -91,19 +91,13 @@ export default {
 
   router: {
     extendRoutes (routes, resolve) {
+      routes.forEach(route => {
+        if (!route.path.endsWith('/')) {
+          route.path += '\.html'
+        }
+      })
       // Return array to replace nuxt generated routes:
       return routes
-        .map(route => {
-          if (!route.path.endsWith('/')) {
-            route.path += '\.html'
-          }
-          return route
-        })
-        .concat(
-          { path: '/nov_2017\.html', redirect: '/2017/nov.html' },
-          { path: '/oct_2017\.html', redirect: '/2017/oct.html' },
-          { path: '/sept_2017\.html', redirect: '/2017/sept.html' },
-        )
     }
   },
 
@@ -118,7 +112,6 @@ export default {
   sitemap: {
     exclude: [
       '/404.html',
-      '/*_2017.html'
     ],
     hostname: organization.url,
     routes: [{
