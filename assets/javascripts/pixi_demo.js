@@ -31,7 +31,9 @@ export default class PixiDemo extends Demo {
       import(/* webpackMode: "eager" */'@pixi/core'),
       import(/* webpackMode: "eager" */"@pixi/settings"),
       import(/* webpackMode: "eager" */"@pixi/ticker"),
-    ]).then(([{Application}, {Renderer, BatchRenderer}, {settings}, {TickerPlugin}]) => {
+      import(/* webpackMode: "eager" */"@pixi/unsafe-eval")
+    ]).then(([{Application}, {BatchRenderer, Renderer, systems}, {settings}, {TickerPlugin}, {install}]) => {
+      install({ systems: systems })
       Renderer.registerPlugin('batch', BatchRenderer)
       Application.registerPlugin(TickerPlugin)
       this.app = new Application({
