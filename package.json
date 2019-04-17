@@ -8,21 +8,21 @@
     "@nuxtjs/google-analytics": "^2.2.0",
     "bulma": "^0.7.4",
     "d3-ease": "^1.0.5",
-    "nuxt": "^2.5.0",
+    "nuxt": "^2.6.2",
     "nuxt-jsonld": "0.0.6",
-    "pixi-particles": "^4.0.1",
+    "pixi-particles": "^4.1.0",
     "pixi.js": "^5.0.0-rc.3",
     "stats.js": "^0.17.0",
     "three": "^0.103.0"
   },
   "devDependencies": {
-    "@nuxtjs/sitemap": "^0.2.2",
+    "@nuxtjs/sitemap": "^1.0.0",
     "ajv": "^6.10.0",
     "arraybuffer-loader": "^1.0.7",
-    "aws-sdk": "^2.432.0",
+    "aws-sdk": "^2.437.0",
     "babel-eslint": "^10.0.1",
     "dotenv-cli": "^2.0.0",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-vue": "^5.2.2",
@@ -31,6 +31,7 @@
     "jszip": "^3.2.1",
     "node-sass": "^4.11.0",
     "raw-loader": "^2.0.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "ttf2woff": "^2.0.1"
   }
 }

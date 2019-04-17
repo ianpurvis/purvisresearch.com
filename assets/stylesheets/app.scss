@@ -1,17 +1,22 @@
 @charset "utf-8";
 @import "~assets/stylesheets/libre-barcode-128-text-regular";
+@import "~assets/stylesheets/courier-prime-code";
+@import "~assets/stylesheets/noto-sans-jp";
 @import "~bulma/sass/utilities/initial-variables";
 
 $body-background-color: $white-ter;
-$body-line-height: 1.125;
-$family-primary: "Libre Barcode 128 Text";
+$family-primary: "Courier Prime Code", sans-serif;
 $link: $turquoise;
 $text: $grey-darker;
 
-@import "~bulma/sass/utilities/all";
-@import "~bulma/sass/base/all";
+@import "~bulma/bulma";
 
 $mobile-width: 568px;
+$scale-jp: 0.80;
+
+body {
+  letter-spacing: 0.2ch;
+}
 
 canvas {
   position: absolute;
@@ -20,9 +25,87 @@ canvas {
   left: 0;
 }
 
-main {
+em {
+  font-style: normal;
+  letter-spacing: 0.06ch;
+}
+
+h1,
+h2 {
+  letter-spacing: 0.1ch;
+  line-height: 1.0;
+}
+
+h1 {
+  font-size: $size-2;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: $size-3;
+}
+
+p {
+  margin-bottom: 0.3rem;
+}
+
+.boxx {
+  padding: 0.75rem 0.75rem;
+  max-width: 23rem;
+}
+
+.image {
+  width: 8rem;
+}
+
+.snake {
+  text-align: justify;
+  overflow-wrap: break-word;
+}
+
+.experiments {
+  // crossword puzzle spacing:
+  //letter-spacing: 1.2ch;
+  letter-spacing: 0.3ch;
+  font-size: 1.12rem;
+}
+
+.kaomoji {
+  font-size: 2.5rem;
+}
+
+.jp {
+  font-family: "Noto Sans JP", sans-serif;
+  letter-spacing: 0;
+  line-height: 1.4;
+  transform-origin: top left;
+  transform: scaleX(0.96);
+
+  @at-root
+  h2#{&} {
+    font-size: $size-3 * $scale-jp;
+  }
+
+  .romaji {
+    letter-spacing: 0.2ch;
+    line-height: $scale-jp;
+    font-family: $family-primary;
+    font-size: (1em / $scale-jp);
+  }
+
+  .stretch {
+    letter-spacing: 0.13ch;
+  }
+}
+
+.Y2017,
+.Y2018,
+.Y2019 {
+  font-family: "Libre Barcode 128 Text", sans-serif;
   font-size: 96px;
   letter-spacing: 4px;
+  line-height: 1.125;
   max-width: 320px;
   word-break: break-all;
 
