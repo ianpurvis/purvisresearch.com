@@ -47,5 +47,5 @@
   </main>
 </template>
 
-<style src="./index.scss" lang="scss"></style>
+<style src="./index.scss" lang="scss" scoped></style>
 <script src="./index.js"></script>

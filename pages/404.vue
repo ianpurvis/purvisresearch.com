@@ -2,5 +2,5 @@
   <div class="error aspect">404</div>
 </template>
 
-<style src="./404.scss" lang="scss"></style>
+<style src="./404.scss" lang="scss" scoped></style>
 <script src="./404.js"></script>

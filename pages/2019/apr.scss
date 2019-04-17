@@ -1,27 +1,25 @@
 @charset "utf-8";
 @import "~assets/stylesheets/graphix";
 
-.Y2019 {
-  &.apr {
-    color: #FFFFFF;
+main {
+  color: #FFFFFF;
+}
 
-    a {
-      &:hover {
-        color: #d3d3d3;
-      }
-
-      &:not(:hover) {
-        color: #FFFFFF;
-      }
-    }
-
-    video {
-      left: 0;
-      object-fit: cover;
-      opacity: 0;
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-    }
+a {
+  &:hover {
+    color: #d3d3d3;
   }
+
+  &:not(:hover) {
+    color: #FFFFFF;
+  }
+}
+
+video {
+  left: 0;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
 }

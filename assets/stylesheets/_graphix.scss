@@ -4,16 +4,7 @@
 
 $mobile-width: 568px;
 
-canvas {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-}
-
-.Y2017,
-.Y2018,
-.Y2019 {
+main {
   font-family: "Libre Barcode 128 Text", sans-serif;
   font-size: 96px;
   letter-spacing: 4px;
@@ -33,19 +24,19 @@ canvas {
       letter-spacing: 4px;
     }
   }
+}
 
-  a {
-    display: inline-block;
-    letter-spacing: 10px;
+a {
+  display: inline-block;
+  letter-spacing: 10px;
 
-    &::first-line {
-      letter-spacing: 4px;
-    }
+  &::first-line {
+    letter-spacing: 4px;
+  }
 
-    @include from($mobile-width) {
-      display: inline;
-      letter-spacing: 1.8px;
-    }
+  @include from($mobile-width) {
+    display: inline;
+    letter-spacing: 1.8px;
   }
 }
 
