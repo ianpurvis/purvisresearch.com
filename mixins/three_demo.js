@@ -12,7 +12,6 @@ export default {
     this.stopAnimating()
     if (!this.renderer) return
     this.dispose()
-    document.body.removeChild(this.renderer.domElement)
   },
   data() {
     return {
@@ -109,11 +108,11 @@ export default {
     this.renderer = new WebGLRenderer({
       alpha: true,
       antialias: false,
+      canvas: this.$refs.canvas,
     })
     let { height, width, pixelRatio } = this.frame()
     this.renderer.setSize(width, height)
     this.renderer.setPixelRatio(pixelRatio)
-    document.body.appendChild(this.renderer.domElement)
     this.startAnimating()
   }
 }

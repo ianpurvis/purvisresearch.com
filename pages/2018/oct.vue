@@ -1,6 +1,7 @@
 <template>
   <main>
     purvis_research<span class="nomobile">_</span>oct_2018<span class="nomobile">_</span><obfuscated-mailto/>
+    <canvas ref="canvas"></canvas>
   </main>
 </template>
 

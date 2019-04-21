@@ -2,6 +2,7 @@
   <main>
     purvis_research<span class="nomobile">_</span>apr_2019<span class="nomobile">_</span><obfuscated-mailto/>
     <video ref="video" autoplay muted playsinline />
+    <canvas ref="canvas"></canvas>
   </main>
 </template>
 
