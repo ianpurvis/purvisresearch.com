@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+$(npm bin)/lighthouse \
+  --config-path=.lighthouse.config.js \
+  --output-path=.lighthouse.report.html \
+  $@
