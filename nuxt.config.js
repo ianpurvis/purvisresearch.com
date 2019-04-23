@@ -32,6 +32,20 @@ export default {
   ** Build configuration
   */
   build: {
+    babel: {
+      presets({ isServer }) {
+        return [
+          [ '@nuxt/babel-preset-app', {
+            targets: isServer ? {
+              node: 'current'
+            } : {
+              chrome: '41',
+              ie: '9'
+            },
+          }]
+        ]
+      },
+    },
     extend (config, { isDev, isClient, loaders }) {
       config.node = {
         fs: "empty"
