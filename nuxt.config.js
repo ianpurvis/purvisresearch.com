@@ -45,6 +45,8 @@ export default {
           }]
         ]
       },
+      // Polyfill CommonJS modules using 'require' syntax:
+      sourceType: 'unambiguous',
     },
     extend (config, { isDev, isClient, loaders }) {
       config.node = {
@@ -83,7 +85,11 @@ export default {
       chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
       css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css'
     },
-    publicPath: '/_/'
+    publicPath: '/_/',
+    // Transpile npm packages lacking ES5 compatibility:
+    transpile: [
+      'nuxt-jsonld'
+    ],
   },
 
   css: [
