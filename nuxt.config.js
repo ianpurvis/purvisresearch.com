@@ -89,7 +89,8 @@ export default {
     publicPath: '/_/',
     // Transpile npm packages lacking ES5 compatibility:
     transpile: [
-      'nuxt-jsonld'
+      'nuxt-jsonld',
+      'vue-analytics',
     ],
   },
 
