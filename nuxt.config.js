@@ -36,6 +36,7 @@ export default {
       presets({ isServer }) {
         return [
           [ '@nuxt/babel-preset-app', {
+            corejs: 3,
             targets: isServer ? {
               node: 'current'
             } : {
