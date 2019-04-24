@@ -17,11 +17,13 @@
     "three": "^0.103.0"
   },
   "devDependencies": {
+    "@babel/runtime-corejs3": "^7.4.3",
     "@nuxtjs/sitemap": "^1.0.0",
     "ajv": "^6.10.0",
     "arraybuffer-loader": "^1.0.7",
-    "aws-sdk": "^2.437.0",
+    "aws-sdk": "^2.441.0",
     "babel-eslint": "^10.0.1",
+    "core-js": "^3.0.1",
     "dotenv-cli": "^2.0.0",
     "eslint": "^5.16.0",
     "eslint-friendly-formatter": "^4.0.1",

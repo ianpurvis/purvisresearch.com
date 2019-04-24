@@ -32,6 +32,23 @@ export default {
   ** Build configuration
   */
   build: {
+    babel: {
+      presets({ isServer }) {
+        return [
+          [ '@nuxt/babel-preset-app', {
+            corejs: 3,
+            targets: isServer ? {
+              node: 'current'
+            } : {
+              chrome: '41',
+              ie: '9'
+            },
+          }]
+        ]
+      },
+      // Polyfill CommonJS modules using 'require' syntax:
+      sourceType: 'unambiguous',
+    },
     extend (config, { isDev, isClient, loaders }) {
       config.node = {
         fs: "empty"
@@ -69,7 +86,12 @@ export default {
       chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
       css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css'
     },
-    publicPath: '/_/'
+    publicPath: '/_/',
+    // Transpile npm packages lacking ES5 compatibility:
+    transpile: [
+      'nuxt-jsonld',
+      'vue-analytics',
+    ],
   },
 
   css: [
