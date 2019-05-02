@@ -51,7 +51,7 @@ exports.handler = async (event) => {
   }]
   response.headers['referrer-policy'] = [{
     key: 'Referrer-Policy',
-    value: 'same-origin'
+    value: 'no-referrer-when-downgrade'
   }]
   response.headers['cache-control'] = [{
     key: 'Cache-Control',
