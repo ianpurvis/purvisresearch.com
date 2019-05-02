@@ -1,11 +1,13 @@
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import Sept2017Demo from '~/assets/javascripts/2017/sept.js'
 import organization from '~/structured_data/organization.js'
+import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.maximizeFrame)
     this.stopAnimating()
+    if (!this.demo) return
     document.body.removeChild(this.demo.element)
     this.demo.dispose()
     this.demo = null
@@ -81,6 +83,14 @@ export default {
     },
   },
   mounted() {
+    if (!isWebGLAvailable()) {
+      let message = [
+        'Your device does not seem to support WebGL.',
+        'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
+      ].join('\n')
+      console.warn(message)
+      return
+    }
     this.demo = new Sept2017Demo(this.frame())
     this.demo.load().then(() => {
       document.body.appendChild(this.demo.element)
