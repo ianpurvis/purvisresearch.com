@@ -10,6 +10,7 @@ import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.j
 export default {
   beforeDestroy() {
     this.stopAnimating()
+    if (!this.renderer) return
     this.dispose()
     document.body.removeChild(this.renderer.domElement)
   },
