@@ -5,10 +5,12 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
+import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
   beforeDestroy() {
     this.stopAnimating()
+    if (!this.renderer) return
     this.dispose()
     document.body.removeChild(this.renderer.domElement)
   },
@@ -96,6 +98,14 @@ export default {
     },
   },
   mounted() {
+    if (!isWebGLAvailable()) {
+      let message = [
+        'Your device does not seem to support WebGL.',
+        'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
+      ].join('\n')
+      console.warn(message)
+      return
+    }
     this.renderer = new WebGLRenderer({
       alpha: true,
       antialias: false,

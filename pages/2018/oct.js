@@ -92,7 +92,7 @@ export default {
       )
 
       let orbitScale = Random.rand({min: 1.20, max: 1.70})
-      if (this.renderer.getSize(new Vector2()).width >= 568) {
+      if (this.frame().width >= 568) {
         orbitScale = Random.rand({min: 0.90, max: 1.40})
       }
 
