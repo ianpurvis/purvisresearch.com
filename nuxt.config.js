@@ -77,6 +77,13 @@ export default {
         options: {
           plugins: [
             { removeViewBox: false },
+            {
+              addAttributesToSVGElement: {
+                attribute: {
+                  fill: '#363636'
+                }
+              }
+            }
           ]
         },
         exclude: /(node_modules)/
