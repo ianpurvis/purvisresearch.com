@@ -4,7 +4,7 @@
       <div class="boxx">
         <nuxt-link to="/">
           <figure class="image">
-            <img src="~/assets/images/qr-logo-200x280.svg"/>
+            <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research"/>
           </figure>
         </nuxt-link>
       </div>
