@@ -39,7 +39,7 @@
         <a href="https://github.com/ianpurvis">github.com/ianpurvis</a>
       </div>
       <div class="boxx">
-        <div class="kaomoji is-pulled-right">ヾ(⌐■_■)ノ</div>
+        <div class="kaomoji">ヾ(⌐■_■)ノ</div>
       </div>
     </autoscaled-div>
   </main>
