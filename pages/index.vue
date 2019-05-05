@@ -3,9 +3,7 @@
     <autoscaled-div :max-scale=2.8>
       <div class="boxx">
         <nuxt-link to="/">
-          <figure class="image">
-            <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research"/>
-          </figure>
+          <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
         </nuxt-link>
       </div>
       <div class="boxx">
