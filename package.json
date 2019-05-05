@@ -35,6 +35,8 @@
     "node-sass": "^4.11.0",
     "raw-loader": "^2.0.0",
     "sass-loader": "^7.1.0",
+    "svgo": "^1.2.2",
+    "svgo-loader": "^2.2.0",
     "ttf2woff": "^2.0.1"
   }
 }

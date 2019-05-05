@@ -71,6 +71,17 @@ export default {
         exclude: /(node_modules)/
       })
 
+      config.module.rules.push({
+        test: /\.svg$/,
+        loader: 'svgo-loader',
+        options: {
+          plugins: [
+            { removeViewBox: false },
+          ]
+        },
+        exclude: /(node_modules)/
+      })
+
       if (isDev && isClient) {
         // Run ESLint on save
         config.module.rules.push({
