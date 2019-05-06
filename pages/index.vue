@@ -35,8 +35,10 @@
       </div>
       <div class="boxx">
         <p class="snake">I love working with startups, <em>creative</em> people, and <em>interesting</em> tech. Hit me up!</p>
-        <obfuscated-mailto></obfuscated-mailto>
-        <a href="https://github.com/ianpurvis">github.com/ianpurvis</a>
+        <address>
+          <obfuscated-mailto></obfuscated-mailto>
+          <a href="https://github.com/ianpurvis">github.com/ianpurvis</a>
+        </address>
       </div>
       <div class="boxx">
         <div class="kaomoji">ヾ(⌐■_■)ノ</div>
