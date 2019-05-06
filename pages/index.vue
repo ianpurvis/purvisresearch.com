@@ -3,9 +3,7 @@
     <autoscaled-div :max-scale=2.8>
       <div class="boxx">
         <nuxt-link to="/">
-          <figure class="image">
-            <img src="~/assets/images/logo.png"/>
-          </figure>
+          <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
         </nuxt-link>
       </div>
       <div class="boxx">
@@ -41,7 +39,7 @@
         <a href="https://github.com/ianpurvis">github.com/ianpurvis</a>
       </div>
       <div class="boxx">
-        <div class="kaomoji is-pulled-right">ヾ(⌐■_■)ノ</div>
+        <div class="kaomoji">ヾ(⌐■_■)ノ</div>
       </div>
     </autoscaled-div>
   </main>
