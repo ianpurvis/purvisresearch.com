@@ -2,33 +2,35 @@
   <main>
     <autoscaled-div :max-scale=2.8>
       <div class="boxx">
-        <nuxt-link to="/">
-          <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
-        </nuxt-link>
+        <h1>
+          <nuxt-link to="/" class="inline-block">
+            <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
+          </nuxt-link>
+        </h1>
       </div>
       <div class="boxx">
-        <h1>IAN PURVIS</h1>
-        <h2 class="snake">STARTUP_TECHNOLOGY_RESEARCH_DESIGN_DEVELOPMENT_TESTING_DEVOPS_PROJECT_MANAGEMENT</h2>
+        <h2>IAN PURVIS</h2>
+        <ul class="snake-list">
+          <li>STARTUP<span class="underscore">&nbsp;</span>TECHNOLOGY</li>
+          <li>RESEARCH</li>
+          <li>DESIGN</li>
+          <li>DEVELOPMENT</li>
+          <li>TESTING</li>
+          <li>DEVOPS</li>
+          <li>PROJECT<span class="underscore">&nbsp;</span>MANAGEMENT</li>
+        </ul>
       </div>
-      <div class="boxx">
-        <h1 class="jp" lang="ja">イアン　パービス</h1>
-        <h2 class="snake jp" lang="ja">
-          <span>スタートアップ</span>
-          <span class="romaji">_</span>
-          <span>テクノロジー</span>
-          <span class="romaji">_</span>
-          <span>リサーチ</span>
-          <span class="romaji">_</span>
-          <span>デザインデベロップメント</span>
-          <span class="romaji">_</span>
-          <span>テスティング</span>
-          <span class="romaji">_</span>
-          <span class="romaji">DEVOPS</span>
-          <span class="romaji">_</span>
-          <span>プロジェクト</span>
-          <span class="romaji">_</span>
-          <span class="stretch">マネジメント</span>
-        </h2>
+      <div class="boxx" lang="ja">
+        <h2>イアン　パービス</h2>
+        <ul class="snake-list">
+          <li>スタートアップ<span class="underscore"></span>テクノロジー</li>
+          <li class="stretch">リサーチ</li>
+          <li>デザイン</li>
+          <li class="no-underscore">デベロップメント</li>
+          <li><span class="no-break">テス</span><wbr><span class="no-break">ティ</span>ング</li>
+          <li class="romaji">DEVOPS</li>
+          <li><span class="no-break">プロ</span><wbr><span class="stretch">ジェクト</span><span class="underscore"></span><span class="stretch">マネジメント</span></li>
+        </ul>
       </div>
       <div class="boxx">
         <div class="snake experiments">DIGITAL_ART_EXPERIMENTS_2019_APR_<nuxt-link to="2019/apr.html">SURREAL_WEBRTC_TELEVISION</nuxt-link>_2018_OCT_<nuxt-link to="2018/oct.html">SCREEN_PRINTING_A_3D_SCAN</nuxt-link>_2017_NOV_<nuxt-link to="2017/nov.html">A_3D_CHARACTER_EXPLODER</nuxt-link>_2017_OCT_<nuxt-link to="2017/oct.html">A_BÉZIER_MOIRÉ_GENERATOR</nuxt-link>_2017_SEP_<nuxt-link to="2017/sept.html">AN_EMOJI_PARTICLE_FLOW</nuxt-link></div>

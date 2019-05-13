@@ -1,14 +1,16 @@
 @charset "utf-8";
-@import "~bulma/sass/utilities/initial-variables";
 @import "~assets/stylesheets/courier-prime-code";
 @import "~assets/stylesheets/noto-sans-jp";
 
 $font-family-en: "Courier Prime Code", sans-serif;
 $font-family-jp: "Noto Sans JP", sans-serif;
-$scale-jp: 0.80;
 
 address {
   font-style: inherit;
+
+  a {
+    display: block;
+  }
 }
 
 main {
@@ -21,20 +23,12 @@ em {
   letter-spacing: 0.06ch;
 }
 
-h1,
 h2 {
-  letter-spacing: 0.1ch;
-  line-height: 1.0;
-}
-
-h1 {
-  font-size: $size-2;
+  font-size: 2.6rem;
   font-weight: 500;
+  letter-spacing: 0.15rem;
+  line-height: 1.0;
   margin-bottom: 0.5rem;
-}
-
-h2 {
-  font-size: $size-3;
 }
 
 p {
@@ -42,18 +36,8 @@ p {
 }
 
 .boxx {
-  padding: 0.75rem 0.75rem;
-  max-width: 23rem;
-}
-
-.qr-logo {
-  margin: 0.25rem;
-  width: 8rem;
-}
-
-.snake {
-  text-align: justify;
-  overflow-wrap: break-word;
+  width: 22rem;
+  margin: 1rem;
 }
 
 .experiments {
@@ -63,30 +47,108 @@ p {
   font-size: 1.12rem;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .kaomoji {
   font-size: 2.5rem;
 }
 
-.jp {
+.qr-logo {
+  margin: 0.25rem;
+  width: 8rem;
+}
+
+.romaji {
+  letter-spacing: 0.08rem;
+  font-family: $font-family-en;
+  font-size: 2rem;
+}
+
+.snake-list {
+  font-size: 2rem;
+  letter-spacing: 0.08rem;
+  line-height: 1.0;
+  list-style: none;
+  overflow-wrap: break-word;
+  padding-left: 0;
+  width: 21rem;
+  word-break: break-all;
+
+  li {
+    display: inline;
+
+    &:not(:first-child) {
+      margin-left: -1ch;
+
+      &:not(.no-underscore):before {
+        content: "_";
+        margin-right: -1px;
+      }
+    }
+  }
+
+  .no-break {
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+}
+
+.stretch {
+  letter-spacing: 0.26rem;
+}
+
+.underscore {
+  &:before {
+    content: "_";
+    margin-right: -1ch;
+  }
+}
+
+[lang="ja"] {
   font-family: $font-family-jp;
   letter-spacing: 0;
   line-height: 1.4;
-  transform-origin: top left;
-  transform: scaleX(0.96);
+  text-align: justify;
 
-  @at-root
-  h2#{&} {
-    font-size: $size-3 * $scale-jp;
+  h2 {
+    font-size: 2.5rem;
+    letter-spacing: -0.1rem;
+    margin-bottom: 1rem;
   }
 
-  .romaji {
-    letter-spacing: 0.2ch;
-    line-height: $scale-jp;
-    font-family: $font-family-en;
-    font-size: (1em / $scale-jp);
+  .snake-list {
+    font-size: 1.7rem;
+    letter-spacing: 0;
+    line-height: 1.1;
+
+    li {
+      &:not(:first-child) {
+        margin-left: unset;
+
+        &:not(.no-underscore):before {
+          content: "_ ";
+          font-family: $font-family-en;
+          font-size: 2rem;
+          letter-spacing: 0.08rem;
+          margin-left: -0.6ch;
+          margin-right: -1.2ch;
+          padding: 0 0.2ch;
+        }
+      }
+    }
   }
 
-  .stretch {
-    letter-spacing: 0.13ch;
+  .underscore {
+    &:before {
+      content: "_ ";
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08rem;
+      margin-left: -0.2ch;
+      margin-right: -1.2ch;
+      padding: 0 0.2ch;
+    }
   }
 }
