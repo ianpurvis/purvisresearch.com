@@ -1,0 +1,29 @@
+$debug-opacity: 0.6;
+
+html[debug=true] {
+  background-image: url('~assets/images/16x16.svg');
+
+  body {
+    outline: 1rem solid rgba(yellow, $debug-opacity);
+  }
+
+  li {
+    background-color: rgba(red, $debug-opacity);
+  }
+
+  :before {
+    background-color: rgba(cyan, $debug-opacity);
+  }
+
+  :after {
+    background-color: rgba(orange, $debug-opacity);
+  }
+
+  .snake-list {
+    outline: 1rem solid rgba(pink, $debug-opacity);
+  }
+
+  .underscore {
+    background-color: rgba(lawngreen, $debug-opacity);
+  }
+}

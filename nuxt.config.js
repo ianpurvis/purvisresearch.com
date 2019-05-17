@@ -1,6 +1,6 @@
 const isProduction = (process.env.NODE_ENV === 'production')
 
-export default {
+const config = {
   /*
   ** Headers of the page
   */
@@ -141,7 +141,7 @@ export default {
   },
 
   css: [
-    '@/assets/stylesheets/app.scss'
+    '~/assets/stylesheets/app.scss',
   ],
 
   generate: {
@@ -197,3 +197,12 @@ export default {
     }]
   }
 }
+
+if (!isProduction) {
+  config.head.htmlAttrs = {
+    debug: true
+  }
+  config.css.push('~/assets/stylesheets/dev.scss')
+}
+
+export default config
