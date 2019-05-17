@@ -26,9 +26,10 @@ em {
 h2 {
   font-size: 2.6rem;
   font-weight: 500;
-  letter-spacing: 0.15rem;
+  letter-spacing: 0.1ch;
   line-height: 1.0;
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
 p {
@@ -41,10 +42,34 @@ p {
 }
 
 .experiments {
-  // crossword puzzle spacing:
-  //letter-spacing: 1.2ch;
+  font-size: 1.1rem;
   letter-spacing: 0.3ch;
-  font-size: 1.12rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+
+  h2 {
+    display: inline;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    margin-bottom: 0;
+  }
+
+  .snake-list {
+    display: inline;
+
+    &:before {
+      content: '_';
+      // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+      margin-right: 0 * -(1ch + 0.3ch);
+    }
+  }
+
+  .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0.3ch);
+  }
 }
 
 .inline-block {
@@ -55,100 +80,112 @@ p {
   font-size: 2.5rem;
 }
 
+.no-break {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
 .qr-logo {
   margin: 0.25rem;
   width: 8rem;
 }
 
-.romaji {
-  letter-spacing: 0.08rem;
-  font-family: $font-family-en;
+.skills {
   font-size: 2rem;
+  letter-spacing: 0.08ch;
+  line-height: 1.0;
+  text-transform: uppercase;
+  width: 21rem;
 }
 
 .snake-list {
-  font-size: 2rem;
-  letter-spacing: 0.08rem;
-  line-height: 1.0;
   list-style: none;
   overflow-wrap: break-word;
   padding-left: 0;
-  width: 21rem;
   word-break: break-all;
 
   li {
     display: inline;
 
-    &:not(:first-child) {
-      margin-left: -1ch;
-
-      &:not(.no-underscore):before {
-        content: "_";
-        margin-right: -1px;
-      }
+    &:not(:first-child):before {
+      content: '_';
     }
-  }
 
-  .no-break {
-    white-space: nowrap;
-    word-break: keep-all;
+    &.no-underscore:before {
+      content: none;
+    }
   }
 }
 
 .stretch {
-  letter-spacing: 0.26rem;
+  letter-spacing: 0.15ch;
 }
 
 .underscore {
+  // Margin equals characters replaced * -(1ch + letter spacing)
+  margin-right: 1 * -(1ch + 0.08ch);
+
   &:before {
-    content: "_";
-    margin-right: -1ch;
+    content: '_';
+    // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+    margin-right: 0 * -(1ch + 0.08ch);
   }
 }
 
 [lang="ja"] {
   font-family: $font-family-jp;
   letter-spacing: 0;
-  line-height: 1.4;
+  line-height: 1.5;
   text-align: justify;
+
+  .skills {
+    font-size: 1.7rem;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
 
   h2 {
     font-size: 2.5rem;
-    letter-spacing: -0.1rem;
+    letter-spacing: -0.05ch;
     margin-bottom: 1rem;
   }
 
   .snake-list {
-    font-size: 1.7rem;
-    letter-spacing: 0;
-    line-height: 1.1;
-
     li {
-      &:not(:first-child) {
-        margin-left: unset;
+      &:not(:first-child):before {
+        // Prevent CJK character rendering issue
+        // by appending a trailing space:
+        content: '_ ';
+        font-family: $font-family-en;
+        font-size: 2rem;
+        letter-spacing: 0.08ch;
+        line-height: 0;
+        // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+        margin-right: 1 * -(1ch + 0.08ch);
+      }
 
-        &:not(.no-underscore):before {
-          content: "_ ";
-          font-family: $font-family-en;
-          font-size: 2rem;
-          letter-spacing: 0.08rem;
-          margin-left: -0.6ch;
-          margin-right: -1.2ch;
-          padding: 0 0.2ch;
-        }
+      &.no-underscore:before {
+        content: none;
       }
     }
   }
 
+  .romaji {
+    font-family: $font-family-en;
+    font-size: 2rem;
+    letter-spacing: 0.08ch;
+    line-height: 0;
+  }
+
   .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0ch);
+
     &:before {
-      content: "_ ";
       font-family: $font-family-en;
       font-size: 2rem;
-      letter-spacing: 0.08rem;
-      margin-left: -0.2ch;
-      margin-right: -1.2ch;
-      padding: 0 0.2ch;
+      letter-spacing: 0.08ch;
+      line-height: 0;
     }
   }
 }

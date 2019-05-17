@@ -9,31 +9,31 @@
         </h1>
       </div>
       <div class="boxx">
-        <h2>IAN PURVIS</h2>
-        <ul class="snake-list">
-          <li>STARTUP<span class="underscore">&nbsp;</span>TECHNOLOGY</li>
-          <li>RESEARCH</li>
-          <li>DESIGN</li>
-          <li>DEVELOPMENT</li>
-          <li>TESTING</li>
-          <li>DEVOPS</li>
-          <li>PROJECT<span class="underscore">&nbsp;</span>MANAGEMENT</li>
+        <h2>Ian Purvis</h2>
+        <ul class="snake-list skills">
+          <li v-for="(skill, index) in skills" :key="index" v-html="snake(skill)"></li>
         </ul>
       </div>
       <div class="boxx" lang="ja">
         <h2>イアン　パービス</h2>
-        <ul class="snake-list">
-          <li>スタートアップ<span class="underscore"></span>テクノロジー</li>
-          <li class="stretch">リサーチ</li>
-          <li>デザイン</li>
-          <li class="no-underscore">デベロップメント</li>
-          <li><span class="no-break">テス</span><wbr><span class="no-break">ティ</span>ング</li>
-          <li class="romaji">DEVOPS</li>
-          <li><span class="no-break">プロ</span><wbr><span class="stretch">ジェクト</span><span class="underscore"></span><span class="stretch">マネジメント</span></li>
+        <ul class="snake-list skills">
+          <li>スタートアップ<span class="underscore">&#x3000;</span>テクノロジー</li><!--
+          --><li>リサーチ</li><!--
+          --><li>デザイン</li><!--
+          --><li class="no-underscore">デベロップメント</li><!--
+          --><li><span class="no-break">テス</span><wbr><span class="no-break">ティ</span>ング</li><!--
+          --><li class="romaji">DevOps</li><!--
+          --><li><span class="no-break">プロ</span><wbr><span class="stretch">ジェクト</span><span class="underscore">&#x3000;</span><span class="stretch">マネジメント</span></li>
         </ul>
       </div>
       <div class="boxx">
-        <div class="snake experiments">DIGITAL_ART_EXPERIMENTS_2019_APR_<nuxt-link to="2019/apr.html">SURREAL_WEBRTC_TELEVISION</nuxt-link>_2018_OCT_<nuxt-link to="2018/oct.html">SCREEN_PRINTING_A_3D_SCAN</nuxt-link>_2017_NOV_<nuxt-link to="2017/nov.html">A_3D_CHARACTER_EXPLODER</nuxt-link>_2017_OCT_<nuxt-link to="2017/oct.html">A_BÉZIER_MOIRÉ_GENERATOR</nuxt-link>_2017_SEP_<nuxt-link to="2017/sept.html">AN_EMOJI_PARTICLE_FLOW</nuxt-link></div>
+        <nav class="experiments">
+          <h2 v-html="snake('Digital Art Experiments')" /><ul class="snake-list">
+            <li v-for="(experiment, index) in experiments" :key="index">
+              <span v-html="snake(experiment.title)"></span><span class="underscore">&nbsp;</span><nuxt-link :to="experiment.route" v-html="snake(experiment.description)"></nuxt-link>
+            </li>
+          </ul>
+        </nav>
       </div>
       <div class="boxx">
         <p class="snake">I love working with startups, <em>creative</em> people, and <em>interesting</em> tech. Hit me up!</p>
