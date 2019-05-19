@@ -1,4 +1,5 @@
 import organization from '~/structured_data/organization.js'
+import browserConfigUrl from '~/assets/browserconfig.xml'
 
 export default {
   head() {
@@ -15,7 +16,8 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: organization.description }
+        { hid: 'description', name: 'description', content: organization.description },
+        { name: 'msapplication-config', content: browserConfigUrl }
       ],
       title: 'purvis research',
     }

@@ -76,6 +76,16 @@ export default {
         exclude: /(node_modules)/
       })
 
+      // Load XML as file
+      config.module.rules.push({
+        test: /\.xml$/,
+        loader: 'file-loader',
+        query: {
+          name: '[name].[hash:7].[ext]'
+        },
+        exclude: /(node_modules)/
+      })
+
       if (isDev && isClient) {
         // Run ESLint on save
         config.module.rules.push({
