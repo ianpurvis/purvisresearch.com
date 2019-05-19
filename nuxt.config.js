@@ -7,26 +7,9 @@ export default {
   ** Headers of the page
   */
   head: {
-    htmlAttrs: {
-      lang: 'en'
-    },
-    title: 'purvis research',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: organization.description }
-    ],
     link: [
-      { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
-      { rel:'icon', type:'image/x-icon', href:'/favicons/favicon2.ico' },
-      { rel:"manifest",  href:"/manifest.json" },
-      { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
-      { rel:"preconnect", href:"https://www.google-analytics.com" }
-    ],
-    script: [
-      { hid: 'jsonld', type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
-    ],
-    __dangerouslyDisableSanitizersByTagID: { 'jsonld': 'innerHTML' },
+      { rel: 'preconnect', href: 'https://www.google-analytics.com' }
+    ]
   },
   /*
   ** Customize the progress bar color
