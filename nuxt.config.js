@@ -76,13 +76,24 @@ export default {
         exclude: /(node_modules)/
       })
 
-      // Load XML as file
       config.module.rules.push({
-        test: /\.xml$/,
-        loader: 'file-loader',
-        query: {
-          name: '[name].[hash:7].[ext]'
-        },
+        test: [
+          /manifest\.json$/,
+          /browserconfig\.xml$/,
+        ],
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash:7].[ext]'
+            }
+          },{
+            loader: 'extract-loader'
+          },{
+            loader: 'require-loader'
+          }
+        ],
         exclude: /(node_modules)/
       })
 
