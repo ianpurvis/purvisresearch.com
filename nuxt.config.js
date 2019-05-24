@@ -44,13 +44,24 @@ export default {
       // Inline fonts up to 10k
       loaders.fontUrl.limit = 10000
 
-      // Override image loader to match ico files
+      // Override image loader to:
+      // - match ico files
+      // - force loading via file loader through the as=file resource query
       config.module.rules = config.module.rules
         .reduce((memo, rule) => {
           if (String(rule.test) === String(/\.(png|jpe?g|gif|svg|webp)$/i)) {
             rule = {
               test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
-              use: rule.use
+              oneOf: [
+                {
+                  resourceQuery: /as=file/,
+                  loader: 'file-loader',
+                  options: {
+                    name: rule.use[0].options.name
+                  }
+                },
+                rule.use[0]
+              ]
             }
           }
           return memo.concat(rule)

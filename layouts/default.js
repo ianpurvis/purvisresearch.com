@@ -1,8 +1,8 @@
-import appleTouchIconUrl from '~/assets/favicons/apple-touch-icon.png'
+import appleTouchIconUrl from '~/assets/favicons/apple-touch-icon.png?as=file'
 import browserConfigUrl from '~/assets/browserconfig.xml'
-import faviconUrl from '~/assets/favicons/favicon2.ico'
+import faviconUrl from '~/assets/favicons/favicon2.ico?as=file'
 import manifestUrl from '~/assets/manifest.json'
-import maskIconUrl from '~/assets/favicons/safari-pinned-tab.svg'
+import maskIconUrl from '~/assets/favicons/safari-pinned-tab.svg?as=file'
 import organization from '~/structured_data/organization.js'
 
 export default {
