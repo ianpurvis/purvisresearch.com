@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     snake(value) {
-      return value.replace(/\s/g, '<span class="underscore" data-v-2a183b29>&nbsp;</span>')
+      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
     },
   }
 }
