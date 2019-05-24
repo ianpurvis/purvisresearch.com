@@ -1,6 +1,9 @@
-import organization from '~/structured_data/organization.js'
+import appleTouchIconUrl from '~/assets/favicons/apple-touch-icon.png'
 import browserConfigUrl from '~/assets/browserconfig.xml'
+import faviconUrl from '~/assets/favicons/favicon2.ico'
 import manifestUrl from '~/assets/manifest.json'
+import maskIconUrl from '~/assets/favicons/safari-pinned-tab.svg'
+import organization from '~/structured_data/organization.js'
 
 export default {
   head() {
@@ -9,10 +12,10 @@ export default {
         lang: 'en'
       },
       link: [
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon.png' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicons/favicon2.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: appleTouchIconUrl },
+        { rel: 'icon', type: 'image/x-icon', href: faviconUrl },
         { rel: 'manifest',  href: manifestUrl },
-        { rel: 'mask-icon', color: '#f5f5f5', href: '/favicons/safari-pinned-tab.svg' },
+        { rel: 'mask-icon', color: '#f5f5f5', href: maskIconUrl },
       ],
       meta: [
         { charset: 'utf-8' },

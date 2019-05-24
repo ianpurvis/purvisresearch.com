@@ -44,6 +44,18 @@ export default {
       // Inline fonts up to 10k
       loaders.fontUrl.limit = 10000
 
+      // Override image loader to match ico files
+      config.module.rules = config.module.rules
+        .reduce((memo, rule) => {
+          if (String(rule.test) === String(/\.(png|jpe?g|gif|svg|webp)$/i)) {
+            rule = {
+              test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
+              use: rule.use
+            }
+          }
+          return memo.concat(rule)
+        }, [])
+
       // Load glb models as arraybuffer
       config.module.rules.push({
         test: /\.glb$/,
@@ -58,6 +70,7 @@ export default {
         exclude: /(node_modules)/
       })
 
+      // Optimize svg files
       config.module.rules.push({
         test: /\.svg$/,
         loader: 'svgo-loader',
