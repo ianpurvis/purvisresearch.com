@@ -4,6 +4,14 @@
 
 $mobile-width: 568px;
 
+a {
+  font-style: normal;
+}
+
+address {
+  display: inline;
+}
+
 canvas {
   bottom: 0;
   height: 100%;
@@ -17,43 +25,38 @@ canvas {
   width: 100%;
 }
 
-main {
-  position: relative;
-}
-
-.snake {
-  font-family: "Libre Barcode 128 Text", sans-serif;
-  font-size: 96px;
-  letter-spacing: 4px;
-  line-height: 1.125;
-  max-width: 320px;
-  word-break: break-all;
+h1 {
+  display: inline;
 
   @include from($mobile-width) {
-    letter-spacing: 1.8px;
-    max-width: $mobile-width;
-  }
-
-  &::first-line {
-    letter-spacing: 10.5px;
-
-    @include from($mobile-width) {
-      letter-spacing: 4px;
+    &:before {
+      content: '_';
     }
   }
 }
 
-a {
-  display: inline-block;
-  letter-spacing: 10px;
+main {
+  position: relative;
+}
 
-  &::first-line {
-    letter-spacing: 4px;
+.inherit-color {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
   }
+}
+
+.label {
+  font-family: "Libre Barcode 128 Text", sans-serif;
+  font-size: 96px;
+  letter-spacing: 0.125ch;
+  line-height: 1.125;
+  max-width: 320px;
 
   @include from($mobile-width) {
-    display: inline;
-    letter-spacing: 1.8px;
+    letter-spacing: 0.06ch;
+    max-width: $mobile-width;
   }
 }
 
@@ -63,3 +66,56 @@ a {
   }
 }
 
+.snake {
+  overflow-wrap: break-word;
+  word-break: break-all;
+  text-transform: lowercase;
+}
+
+.stretch {
+  @include until($mobile-width) {
+    letter-spacing: 0.33ch;
+
+    .underscore {
+      // Margin equals characters replaced * -(1ch + letter spacing)
+      margin-right: 1 * -(1ch + 0.33ch);
+    }
+  }
+}
+
+.tighten {
+  @include from($mobile-width) {
+    letter-spacing: 0.125ch;
+
+    .underscore {
+      // Margin equals characters replaced * -(1ch + letter spacing)
+      margin-right: 1 * -(1ch + 0.125ch);
+    }
+  }
+}
+
+.underscore {
+  // Margin equals characters replaced * -(1ch + letter spacing)
+  margin-right: 1 * -(1ch + 0.125ch);
+  visibility: hidden;
+
+  &:before {
+    content: '_';
+    visibility: visible;
+  }
+
+  @include from($mobile-width) {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0.06ch);
+  }
+
+  &.replace-2 {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 2 * -(1ch + 0.125ch);
+
+    @include from($mobile-width) {
+      // Margin equals characters replaced * -(1ch + letter spacing)
+      margin-right: 2 * -(1ch + 0.06ch);
+    }
+  }
+}

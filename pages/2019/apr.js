@@ -260,6 +260,9 @@ export default {
       this.scene.add(light)
       this.screenLight = light
     },
+    snake(value) {
+      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
+    },
     startVideo() {
       let constraints = {
         audio: false,
