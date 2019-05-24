@@ -1,11 +1,17 @@
 @charset "utf-8";
-@import "~bulma/sass/utilities/initial-variables";
 @import "~assets/stylesheets/courier-prime-code";
 @import "~assets/stylesheets/noto-sans-jp";
 
 $font-family-en: "Courier Prime Code", sans-serif;
 $font-family-jp: "Noto Sans JP", sans-serif;
-$scale-jp: 0.80;
+
+address {
+  font-style: inherit;
+
+  a {
+    display: block;
+  }
+}
 
 main {
   font-family: $font-family-en;
@@ -17,20 +23,13 @@ em {
   letter-spacing: 0.06ch;
 }
 
-h1,
 h2 {
+  font-size: 2.6rem;
+  font-weight: 500;
   letter-spacing: 0.1ch;
   line-height: 1.0;
-}
-
-h1 {
-  font-size: $size-2;
-  font-weight: 500;
   margin-bottom: 0.5rem;
-}
-
-h2 {
-  font-size: $size-3;
+  text-transform: uppercase;
 }
 
 p {
@@ -38,8 +37,53 @@ p {
 }
 
 .boxx {
-  padding: 0.75rem 0.75rem;
-  max-width: 23rem;
+  width: 22rem;
+  margin: 1rem;
+}
+
+.experiments {
+  font-size: 1.1rem;
+  letter-spacing: 0.3ch;
+  line-height: 1.5;
+  text-transform: uppercase;
+  max-width: 21.1rem;
+
+  h2 {
+    display: inline;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    margin-bottom: 0;
+  }
+
+  .snake-list {
+    display: inline;
+
+    &:before {
+      content: '_';
+      // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+      margin-right: 0 * -(1ch + 0.3ch);
+    }
+  }
+
+  .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0.3ch);
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.kaomoji {
+  font-size: 2.5rem;
+}
+
+.no-break {
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .qr-logo {
@@ -47,42 +91,102 @@ p {
   width: 8rem;
 }
 
-.snake {
-  text-align: justify;
+.skills {
+  font-size: 2rem;
+  letter-spacing: 0.08ch;
+  line-height: 1.0;
+  text-transform: uppercase;
+  width: 21rem;
+}
+
+.snake-list {
+  list-style: none;
   overflow-wrap: break-word;
+  padding-left: 0;
+  word-break: break-all;
+
+  li {
+    display: inline;
+
+    &:not(:first-child):before {
+      content: '_';
+    }
+
+    &.no-underscore:before {
+      content: none;
+    }
+  }
 }
 
-.experiments {
-  // crossword puzzle spacing:
-  //letter-spacing: 1.2ch;
-  letter-spacing: 0.3ch;
-  font-size: 1.12rem;
+.stretch {
+  letter-spacing: 0.15ch;
 }
 
-.kaomoji {
-  font-size: 2.5rem;
+.underscore {
+  // Margin equals characters replaced * -(1ch + letter spacing)
+  margin-right: 1 * -(1ch + 0.08ch);
+
+  &:before {
+    content: '_';
+    // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+    margin-right: 0 * -(1ch + 0.08ch);
+  }
 }
 
-.jp {
+[lang="ja"] {
   font-family: $font-family-jp;
   letter-spacing: 0;
-  line-height: 1.4;
-  transform-origin: top left;
-  transform: scaleX(0.96);
+  line-height: 1.5;
+  text-align: justify;
 
-  @at-root
-  h2#{&} {
-    font-size: $size-3 * $scale-jp;
+  .skills {
+    font-size: 1.7rem;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    letter-spacing: -0.05ch;
+    margin-bottom: 1rem;
+  }
+
+  .snake-list {
+    li {
+      &:not(:first-child):before {
+        // Prevent CJK character rendering issue
+        // by appending a trailing space:
+        content: '_ ';
+        font-family: $font-family-en;
+        font-size: 2rem;
+        letter-spacing: 0.08ch;
+        line-height: 0;
+        // Margin equals characters of trailing space in content * -(1ch + letter spacing)
+        margin-right: 1 * -(1ch + 0.08ch);
+      }
+
+      &.no-underscore:before {
+        content: none;
+      }
+    }
   }
 
   .romaji {
-    letter-spacing: 0.2ch;
-    line-height: $scale-jp;
     font-family: $font-family-en;
-    font-size: (1em / $scale-jp);
+    font-size: 2rem;
+    letter-spacing: 0.08ch;
+    line-height: 0;
   }
 
-  .stretch {
-    letter-spacing: 0.13ch;
+  .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0ch);
+
+    &:before {
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08ch;
+      line-height: 0;
+    }
   }
 }

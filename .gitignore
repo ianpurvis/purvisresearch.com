@@ -3,6 +3,7 @@
 *.swp
 *~
 .env
+.lighthouse.report.html
 
 # dependencies
 node_modules

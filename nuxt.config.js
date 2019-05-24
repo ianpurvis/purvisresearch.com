@@ -7,6 +7,9 @@ export default {
   ** Headers of the page
   */
   head: {
+    htmlAttrs: {
+      lang: 'en'
+    },
     title: 'purvis research',
     meta: [
       { charset: 'utf-8' },
@@ -18,6 +21,7 @@ export default {
       { rel:'icon', type:'image/x-icon', href:'/favicons/favicon2.ico' },
       { rel:"manifest",  href:"/manifest.json" },
       { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
+      { rel:"preconnect", href:"https://www.google-analytics.com" }
     ],
     script: [
       { hid: 'jsonld', type: 'application/ld+json', innerHTML: JSON.stringify(organization) }

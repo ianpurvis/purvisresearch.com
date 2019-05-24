@@ -11,6 +11,36 @@ export default {
     return {
       canonicalUrl: organization.url,
       description: organization.description,
+      experiments: [{
+        title: '2019 Apr',
+        description: 'Surreal WebRTC Television',
+        route: '2019/apr.html'
+      }, {
+        title: '2018 Oct',
+        description: 'Screen Printing A 3D Scan',
+        route: '2018/oct.html'
+      }, {
+        title: '2017 Nov',
+        description: 'A 3D Character Exploder',
+        route: '2017/nov.html'
+      }, {
+        title: '2017 Oct',
+        description: 'A Bézier Moiré Generator',
+        route: '2017/oct.html'
+      }, {
+        title: '2017 Sep',
+        description: 'An Emoji Particle Flow',
+        route: '2017/sept.html'
+      }],
+      skills: [
+        'Startup Technology',
+        'Research',
+        'Design',
+        'Development',
+        'Testing',
+        'DevOps',
+        'Project Management'
+      ],
       title: "purvis research",
     }
   },
@@ -44,4 +74,9 @@ export default {
       }]
     }
   },
+  methods: {
+    snake(value) {
+      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
+    },
+  }
 }
