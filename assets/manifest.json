@@ -1,17 +1,11 @@
 {
-    "name": "",
-    "icons": [
-        {
-            "src": "~/assets/favicons/android-chrome-192x192.png?as=file",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "~/assets/favicons/android-chrome-256x256.png?as=file",
-            "sizes": "256x256",
-            "type": "image/png"
-        }
-    ],
+    "name": "purvisresearch.com",
+    "short_name": "[pr]",
+    "icons": [{
+      "src": "~/assets/images/logo-256x256.svg?as=file",
+      "sizes": "36x36 48x48 72x72 96x96 144x144 192x192 512x512",
+      "type": "image/svg"
+    }],
     "theme_color": "#f5f5f5",
     "background_color": "#f5f5f5",
     "display": "standalone"

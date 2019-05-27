@@ -1,8 +1,9 @@
-import appleTouchIconUrl from '~/assets/favicons/apple-touch-icon.png?as=file'
+import appleTouchIconUrl from '~/assets/images/logo-128x128.png?as=file'
 import browserConfigUrl from '~/assets/browserconfig.xml'
-import faviconUrl from '~/assets/favicons/favicon2.ico?as=file'
+import favicon16Url from '~/assets/images/logo-16x16.png?as=file'
+import favicon32Url from '~/assets/images/logo-32x32.png?as=file'
 import manifestUrl from '~/assets/manifest.json'
-import maskIconUrl from '~/assets/favicons/safari-pinned-tab.svg?as=file'
+import maskIconUrl from '~/assets/images/logo-bw-16x16.svg?as=file'
 import organization from '~/structured_data/organization.js'
 
 export default {
@@ -12,10 +13,11 @@ export default {
         lang: 'en'
       },
       link: [
-        { rel: 'apple-touch-icon', sizes: '180x180', href: appleTouchIconUrl },
-        { rel: 'icon', type: 'image/x-icon', href: faviconUrl },
+        { rel: 'apple-touch-icon', href: appleTouchIconUrl },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: favicon32Url },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: favicon16Url },
         { rel: 'manifest',  href: manifestUrl },
-        { rel: 'mask-icon', color: '#f5f5f5', href: maskIconUrl },
+        { rel: 'mask-icon', color: '#363636', href: maskIconUrl },
       ],
       meta: [
         { charset: 'utf-8' },
