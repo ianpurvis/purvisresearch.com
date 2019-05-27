@@ -1,5 +1,3 @@
-import organization from './structured_data/organization.js'
-
 const isProduction = (process.env.NODE_ENV === 'production')
 
 export default {
@@ -185,7 +183,7 @@ export default {
     exclude: [
       '/404.html',
     ],
-    hostname: organization.url,
+    hostname: 'https://purvisresearch.com',
     routes: [{
       url: '/',
       changefreq: 'monthly',
