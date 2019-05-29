@@ -1,5 +1,3 @@
-import organization from './structured_data/organization.js'
-
 const isProduction = (process.env.NODE_ENV === 'production')
 
 export default {
@@ -7,26 +5,9 @@ export default {
   ** Headers of the page
   */
   head: {
-    htmlAttrs: {
-      lang: 'en'
-    },
-    title: 'purvis research',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: organization.description }
-    ],
     link: [
-      { rel:"apple-touch-icon", sizes:"180x180", href:"/favicons/apple-touch-icon.png" },
-      { rel:'icon', type:'image/x-icon', href:'/favicons/favicon2.ico' },
-      { rel:"manifest",  href:"/manifest.json" },
-      { rel:"mask-icon", href:"/favicons/safari-pinned-tab.svg", color:"#f5f5f5" },
-      { rel:"preconnect", href:"https://www.google-analytics.com" }
-    ],
-    script: [
-      { hid: 'jsonld', type: 'application/ld+json', innerHTML: JSON.stringify(organization) }
-    ],
-    __dangerouslyDisableSanitizersByTagID: { 'jsonld': 'innerHTML' },
+      { rel: 'preconnect', href: 'https://www.google-analytics.com' }
+    ]
   },
   /*
   ** Customize the progress bar color
@@ -61,6 +42,29 @@ export default {
       // Inline fonts up to 10k
       loaders.fontUrl.limit = 10000
 
+      // Override image loader to:
+      // - match ico files
+      // - force loading via file loader through the as=file resource query
+      config.module.rules = config.module.rules
+        .reduce((memo, rule) => {
+          if (String(rule.test) === String(/\.(png|jpe?g|gif|svg|webp)$/i)) {
+            rule = {
+              test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
+              oneOf: [
+                {
+                  resourceQuery: /as=file/,
+                  loader: 'file-loader',
+                  options: {
+                    name: rule.use[0].options.name
+                  }
+                },
+                rule.use[0]
+              ]
+            }
+          }
+          return memo.concat(rule)
+        }, [])
+
       // Load glb models as arraybuffer
       config.module.rules.push({
         test: /\.glb$/,
@@ -75,6 +79,7 @@ export default {
         exclude: /(node_modules)/
       })
 
+      // Optimize svg files
       config.module.rules.push({
         test: /\.svg$/,
         loader: 'svgo-loader',
@@ -90,6 +95,27 @@ export default {
             }
           ]
         },
+        exclude: /(node_modules)/
+      })
+
+      config.module.rules.push({
+        test: [
+          /manifest\.json$/,
+          /browserconfig\.xml$/,
+        ],
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash:7].[ext]'
+            }
+          },{
+            loader: 'extract-loader'
+          },{
+            loader: 'frack-loader'
+          }
+        ],
         exclude: /(node_modules)/
       })
 
@@ -157,7 +183,7 @@ export default {
     exclude: [
       '/404.html',
     ],
-    hostname: organization.url,
+    hostname: 'https://purvisresearch.com',
     routes: [{
       url: '/',
       changefreq: 'monthly',
