@@ -113,7 +113,7 @@ export default {
           },{
             loader: 'extract-loader'
           },{
-            loader: 'require-loader'
+            loader: 'frack-loader'
           }
         ],
         exclude: /(node_modules)/
