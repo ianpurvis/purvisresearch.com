@@ -9,7 +9,7 @@
     "@pixi/unsafe-eval": "^5.0.0-rc.3",
     "bulma": "^0.7.4",
     "d3-ease": "^1.0.5",
-    "nuxt": "^2.6.2",
+    "nuxt": "^2.8.0",
     "nuxt-jsonld": "0.0.6",
     "pixi-particles": "^4.1.0",
     "pixi.js": "^5.0.0-rc.3",
