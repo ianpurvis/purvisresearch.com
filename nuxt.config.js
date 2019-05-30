@@ -39,9 +39,6 @@ export default {
         fs: "empty"
       }
 
-      // Inline fonts up to 10k
-      loaders.fontUrl.limit = 10000
-
       // Override image loader to:
       // - match ico files
       // - force loading via file loader through the as=file resource query
