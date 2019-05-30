@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-indent() { sed 's/^/  /'; }
-
-echo 'Normalizing generated filenames...'
-find dist -name *.html.html -print0 |
-  while IFS= read -r -d '' file; do
-    mv -v "$file" "$(dirname "$file")/$(basename "$file" .html)" | indent
-  done

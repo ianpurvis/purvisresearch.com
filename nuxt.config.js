@@ -162,8 +162,10 @@ export default {
   router: {
     extendRoutes (routes, resolve) {
       routes.forEach(route => {
-        if (!route.path.endsWith('/')) {
-          route.path += '\.html'
+        if (route.path === '/') {
+          route.alias = '/index.html'
+        } else {
+          route.alias = `${route.path}.html`
         }
       })
       // Return array to replace nuxt generated routes:
