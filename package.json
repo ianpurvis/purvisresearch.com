@@ -34,7 +34,7 @@
     "frack-loader": "^1.0.0",
     "imports-loader": "^0.8.0",
     "jszip": "^3.2.1",
-    "lighthouse": "^4.3.1",
+    "lighthouse": "^5.0.0",
     "node-inspect": "^1.11.5",
     "node-sass": "^4.12.0",
     "prettier": "^1.17.1",
