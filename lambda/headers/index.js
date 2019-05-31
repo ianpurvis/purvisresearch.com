@@ -1,10 +1,10 @@
 'use strict'
 
+// Mean Gregorian calendar year:
+const SECONDS_PER_YEAR = 31556952
+
 function cacheControlFor({uri}) {
-  let maxAge = 0
-  if (uri.startsWith('/_/')) {
-    maxAge = 31536000 // 365 days
-  }
+  let maxAge = uri.startsWith('/_/') ? SECONDS_PER_YEAR : 0
   return `public, max-age=${maxAge}`
 }
 
@@ -29,7 +29,7 @@ exports.handler = async (event) => {
       "style-src 'self' 'unsafe-inline'",
     ].join('; '),
     'Referrer-Policy': 'no-referrer-when-downgrade',
-    'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload',
+    'Strict-Transport-Security': `max-age=${SECONDS_PER_YEAR}; includeSubdomains; preload`,
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'X-XSS-Protection': '1; mode=block',
