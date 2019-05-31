@@ -14,7 +14,7 @@
     "pixi-particles": "^4.1.0",
     "pixi.js": "^5.0.0-rc.3",
     "stats.js": "^0.17.0",
-    "three": "^0.103.0"
+    "three": "^0.105.1"
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.4.5",
