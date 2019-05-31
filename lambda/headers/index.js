@@ -5,9 +5,6 @@ function cacheControlFor({uri}) {
   if (uri.startsWith('/_/')) {
     maxAge = 31536000 // 365 days
   }
-  else if (uri.startsWith('/favicons/')) {
-    maxAge = 86400 // 1 day
-  }
   return `public, max-age=${maxAge}`
 }
 
