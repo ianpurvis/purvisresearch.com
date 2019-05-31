@@ -12,14 +12,9 @@ exports.handler = async (event) => {
 
   const { request, response } = event.Records[0].cf
 
-  response.headers['strict-transport-security'] = [{
-    key: 'Strict-Transport-Security',
-    value: 'max-age=31536000; includeSubdomains; preload'
-  }]
-
-  response.headers['content-security-policy'] = [{
-    key: 'Content-Security-Policy',
-    value: [
+  let headers = {
+    'Cache-Control': cacheControlFor(request),
+    'Content-Security-Policy': [
       "base-uri 'none'",
       "connect-src 'self' https://www.google-analytics.com",
       "default-src 'none'",
@@ -32,28 +27,21 @@ exports.handler = async (event) => {
       "object-src 'none'",
       "script-src 'self' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline'",
-    ].join('; ')
-  }]
-  response.headers['x-content-type-options'] = [{
-    key: 'X-Content-Type-Options',
-    value: 'nosniff'
-  }]
-  response.headers['x-frame-options'] = [{
-    key: 'X-Frame-Options',
-    value: 'DENY'
-  }]
-  response.headers['x-xss-protection'] = [{
-    key: 'X-XSS-Protection',
-    value: '1; mode=block'
-  }]
-  response.headers['referrer-policy'] = [{
-    key: 'Referrer-Policy',
-    value: 'no-referrer-when-downgrade'
-  }]
-  response.headers['cache-control'] = [{
-    key: 'Cache-Control',
-    value: cacheControlFor(request)
-  }]
+    ].join('; '),
+    'Referrer-Policy': 'no-referrer-when-downgrade',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+  }
+
+  // Prepare structured header object:
+  headers = Object.entries(headers)
+    .reduce((result, [key, value]) => ({
+      ...result, [key.toLowerCase()]: [{ key, value }]
+    }), {})
+
+  Object.assign(response.headers, headers)
 
   return response
 }
