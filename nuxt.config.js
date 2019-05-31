@@ -39,9 +39,6 @@ export default {
         fs: "empty"
       }
 
-      // Inline fonts up to 10k
-      loaders.fontUrl.limit = 10000
-
       // Override image loader to:
       // - match ico files
       // - force loading via file loader through the as=file resource query
@@ -162,8 +159,10 @@ export default {
   router: {
     extendRoutes (routes, resolve) {
       routes.forEach(route => {
-        if (!route.path.endsWith('/')) {
-          route.path += '\.html'
+        if (route.path === '/') {
+          route.alias = '/index.html'
+        } else {
+          route.alias = `${route.path}.html`
         }
       })
       // Return array to replace nuxt generated routes:
