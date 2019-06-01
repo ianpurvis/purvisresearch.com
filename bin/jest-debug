@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+bin/node-inspect $(npm bin)/jest $@
