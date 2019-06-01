@@ -41,7 +41,7 @@ exports.handler = async (event) => {
       ...result, [key.toLowerCase()]: [{ key, value }]
     }), {})
 
-  response.headers = { ...response.headers, headers }
+  response.headers = { ...response.headers, ...headers }
 
   return response
 }
