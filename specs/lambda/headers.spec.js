@@ -1,7 +1,5 @@
 import { handler } from '~/lambda/headers/index.js'
-import event from '~/specs/fixtures/event.js'
-
-[ event ].forEach(Object.freeze)
+import { event } from '~/specs/fixtures'
 
 describe('handler', () => {
 
