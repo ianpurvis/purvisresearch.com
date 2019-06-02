@@ -3,13 +3,14 @@
 // Mean Gregorian calendar year:
 const SECONDS_PER_YEAR = 31556952
 
+
 function cacheControlFor({uri}) {
   let maxAge = uri.startsWith('/_/') ? SECONDS_PER_YEAR : 0
   return `public, max-age=${maxAge}`
 }
 
-exports.handler = async (event) => {
 
+exports.handler = async function(event) {
   const { request, response } = event.Records[0].cf
 
   let headers = {
@@ -41,7 +42,7 @@ exports.handler = async (event) => {
       ...result, [key.toLowerCase()]: [{ key, value }]
     }), {})
 
-  response.headers = { ...response.headers, ...headers }
+  headers = { ...response.headers, ...headers }
 
-  return response
+  return { ...response, headers }
 }
