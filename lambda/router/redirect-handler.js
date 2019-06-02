@@ -20,7 +20,7 @@ exports.handler = async function(event) {
 
   if (redirect) {
     return {
-      statusCode: 301,
+      status: '301',
       headers: {
         Location: redirect.location
       }

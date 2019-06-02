@@ -8,7 +8,7 @@ describe('handler', () => {
     it('returns a response with 301 status', async () => {
       const response = await handler(given)
       expect(response).toMatchObject({
-        statusCode: 301
+        status: '301'
       })
     })
 
