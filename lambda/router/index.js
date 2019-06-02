@@ -1,9 +1,13 @@
 'use strict'
 
-const { handler: headerHandler } = require('./header-handler.js')
+const middleware = require('./middleware')
 
 exports.handler = async function(event) {
+  let { request, response } = event.Records[0].cf
 
-  let response = await headerHandler(event)
+  for (const { call } of Object.values(middleware)) {
+    response = await call({ request, response })
+  }
+
   return response
 }

@@ -10,8 +10,7 @@ function cacheControlFor({uri}) {
 }
 
 
-exports.handler = async function(event) {
-  const { request, response } = event.Records[0].cf
+async function call({ request, response }) {
 
   let headers = {
     'Cache-Control': cacheControlFor(request),
@@ -46,3 +45,5 @@ exports.handler = async function(event) {
 
   return { ...response, headers }
 }
+
+module.exports = { call }

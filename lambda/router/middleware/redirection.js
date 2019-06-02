@@ -13,9 +13,7 @@ const redirects = [
   }
 ]
 
-exports.handler = async function(event) {
-  const { request, response } = event.Records[0].cf
-
+async function call({ request, response }) {
   const redirect = redirects.find(({path}) => request.uri.match(path))
 
   if (redirect) {
@@ -29,3 +27,5 @@ exports.handler = async function(event) {
 
   return response
 }
+
+module.exports = { call }

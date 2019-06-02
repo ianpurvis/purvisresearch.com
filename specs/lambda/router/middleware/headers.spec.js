@@ -1,28 +1,24 @@
-import { handler } from '~/lambda/router/header-handler.js'
+import { call } from '~/lambda/router/middleware/headers.js'
 
-describe('handler', () => {
+describe('call', () => {
   describe('given a request', () => {
     const given = {
-      Records: [{
-        cf: {
-          request: {
-            method: 'GET',
-            uri: '/'
-          },
-          response: {
-            status: '200'
-          }
-        }
-      }]
+      request: {
+        method: 'GET',
+        uri: '/'
+      },
+      response: {
+        status: '200'
+      }
     }
     it('returns a response with status', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         status: '200'
       })
     })
     it('returns a response with Cache-Control', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "cache-control": [
@@ -36,7 +32,7 @@ describe('handler', () => {
     })
 
     it('returns a response with Content-Security-Policy', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "content-security-policy": [
@@ -50,7 +46,7 @@ describe('handler', () => {
     })
 
     it('returns a response with Referrer-Policy', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "referrer-policy": [
@@ -64,7 +60,7 @@ describe('handler', () => {
     })
 
     it('returns a response with Strict-Transport-Policy', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "strict-transport-security": [
@@ -78,7 +74,7 @@ describe('handler', () => {
     })
 
     it('returns a response with X-Content-Type-Options', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "x-content-type-options": [
@@ -92,7 +88,7 @@ describe('handler', () => {
     })
 
     it('returns a response with X-Frame-Options', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "x-frame-options": [
@@ -106,7 +102,7 @@ describe('handler', () => {
     })
 
     it('returns a response with X-XSS-Protection', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "x-xss-protection": [
@@ -122,20 +118,16 @@ describe('handler', () => {
 
   describe('given an asset request', () => {
     const given = {
-      Records: [{
-        cf: {
-          request: {
-            method: 'GET',
-            uri: '/_/images/example.png'
-          },
-          response: {
-            status: '200'
-          }
-        }
-      }]
+      request: {
+        method: 'GET',
+        uri: '/_/images/example.png'
+      },
+      response: {
+        status: '200'
+      }
     }
     it('returns a response with Cache-Control', async () => {
-      const response = await handler(given)
+      const response = await call(given)
       expect(response).toMatchObject({
         headers: {
           "cache-control": [
