@@ -1,4 +1,4 @@
-import { handler } from '~/lambda/router/index.js'
+import { handler } from '~/lambda/middleware/index.js'
 import { event } from '~/specs/fixtures'
 
 describe('handler', () => {

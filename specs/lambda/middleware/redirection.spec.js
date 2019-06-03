@@ -1,4 +1,4 @@
-import { call } from '~/lambda/router/middleware/redirection.js'
+import { call } from '~/lambda/middleware/redirection.js'
 
 describe('call', () => {
   describe('given a redirectable request', () => {

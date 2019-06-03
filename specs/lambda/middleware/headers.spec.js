@@ -1,4 +1,4 @@
-import { call } from '~/lambda/router/middleware/headers.js'
+import { call } from '~/lambda/middleware/headers.js'
 
 describe('call', () => {
   describe('given a request', () => {
