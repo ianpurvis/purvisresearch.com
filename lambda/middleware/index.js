@@ -1,8 +1,8 @@
 'use strict'
 
 const middleware = [
-  './headers.js',
   './redirection.js',
+  './headers.js',
   './content-security-policy.js',
 ].map(require)
 
