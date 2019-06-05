@@ -2,7 +2,8 @@
 
 const middleware = [
   './headers.js',
-  './redirection.js'
+  './redirection.js',
+  './content-security-policy.js',
 ].map(require)
 
 exports.handler = async function(event) {
