@@ -13,19 +13,39 @@ const redirects = [
   }
 ]
 
+function filterReadOnlyHeaders(headers) {
+  // https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-requirements-limits.html#lambda-header-restrictions
+  let matcher = /^(Via|Transfer-Encoding)$/i
+
+  return Object.entries(headers)
+    .filter(([key, ]) => matcher.test(key))
+    .reduce((result, [key, value]) => ({
+      ...result, [key]: value
+    }), {})
+}
+
 async function call({ request, response }) {
   const redirect = redirects.find(({path}) => request.uri.match(path))
 
-  if (redirect) {
-    return {
-      status: '301',
-      headers: {
-        Location: redirect.location
-      }
-    }
+  if (!redirect) return response
+
+  let headers = {
+    'Location': redirect.location
   }
 
-  return response
+  // Prepare structured header object:
+  headers = Object.entries(headers)
+    .reduce((result, [key, value]) => ({
+      ...result, [key.toLowerCase()]: [{ key, value }]
+    }), {})
+
+  return {
+    status: '301',
+    headers: {
+      ...filterReadOnlyHeaders(response.headers || {}),
+      ...headers,
+    }
+  }
 }
 
 module.exports = { call }

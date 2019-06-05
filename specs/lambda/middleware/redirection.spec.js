@@ -21,12 +21,40 @@ describe('call', () => {
       const response = await call(given)
       expect(response).not.toHaveProperty('body')
     })
-    it('returns a response with empty body', async () => {
+    it('returns a response with Location header', async () => {
       const response = await call(given)
       expect(response).toMatchObject({
         headers: {
-          "Location": "/2017/sept.html"
+          'location': [{
+            key: 'Location',
+            value: '/2017/sept.html'
+          }]
         }
+      })
+    })
+    describe('given read-only headers for cloudfront origin response events', () =>{
+      it('returns a response with untouched read-only headers', async () => {
+        const eventWithReadonlyHeaders = {
+          ...given,
+          response: {
+            ...given.response,
+            headers: {
+              ...given.response.headers,
+              'transfer-encoding': [{
+                key: 'Transfer-Encoding',
+                value: 'exmaple'
+              }],
+              'via': [{
+                key: 'Via',
+                value: 'example'
+              }]
+            }
+          }
+        }
+        const response = await call(eventWithReadonlyHeaders)
+        expect(response).toMatchObject({
+          headers: eventWithReadonlyHeaders.response.headers
+        })
       })
     })
   })
