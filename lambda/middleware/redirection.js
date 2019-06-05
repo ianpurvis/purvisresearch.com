@@ -1,5 +1,7 @@
 'use strict'
 
+const { LambdaEdgeHeaders } = require('./util.js')
+
 const redirects = [
   {
     path: /sept_2017.html$/,
@@ -29,15 +31,9 @@ async function call({ request, response }) {
 
   if (!redirect) return response
 
-  let headers = {
+  let headers = LambdaEdgeHeaders({
     'Location': redirect.location
-  }
-
-  // Prepare structured header object:
-  headers = Object.entries(headers)
-    .reduce((result, [key, value]) => ({
-      ...result, [key.toLowerCase()]: [{ key, value }]
-    }), {})
+  })
 
   return {
     status: '301',

@@ -1,5 +1,7 @@
 'use strict'
 
+const { LambdaEdgeHeaders } = require('./util.js')
+
 // Mean Gregorian calendar year:
 const SECONDS_PER_YEAR = 31556952
 
@@ -12,7 +14,7 @@ function cacheControlFor({uri}) {
 
 async function call({ request, response }) {
 
-  let headers = {
+  let headers = LambdaEdgeHeaders({
     'Cache-Control': cacheControlFor(request),
     'Content-Security-Policy': [
       "base-uri 'none'",
@@ -33,13 +35,7 @@ async function call({ request, response }) {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'X-XSS-Protection': '1; mode=block',
-  }
-
-  // Prepare structured header object:
-  headers = Object.entries(headers)
-    .reduce((result, [key, value]) => ({
-      ...result, [key.toLowerCase()]: [{ key, value }]
-    }), {})
+  })
 
   headers = { ...response.headers, ...headers }
 
