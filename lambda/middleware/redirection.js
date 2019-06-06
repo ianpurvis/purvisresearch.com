@@ -4,14 +4,14 @@ const { LambdaEdgeHeaders } = require('./util.js')
 
 const redirects = [
   {
-    path: /sept_2017.html$/,
-    location: '/2017/sept.html',
+    path: /\/sept_2017.html$/,
+    location: 'https://purvisresearch.com/2017/sept.html',
   }, {
-    path: /oct_2017.html$/,
-    location: '/2017/oct.html',
+    path: /\/oct_2017.html$/,
+    location: 'https://purvisresearch.com/2017/oct.html',
   }, {
-    path: /nov_2017.html$/,
-    location: '/2017/nov.html',
+    path: /\/nov_2017.html$/,
+    location: 'https://purvisresearch.com/2017/nov.html',
   }
 ]
 
@@ -31,8 +31,10 @@ async function call({ request, response }) {
 
   if (!redirect) return response
 
+  const { path, location } = redirect
+
   let headers = LambdaEdgeHeaders({
-    'Location': redirect.location
+    'Location': request.uri.replace(path, location)
   })
 
   return {

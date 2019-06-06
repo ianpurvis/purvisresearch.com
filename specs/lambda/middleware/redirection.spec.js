@@ -28,7 +28,7 @@ describe('call', () => {
         headers: {
           'location': [{
             key: 'Location',
-            value: '/2017/sept.html'
+            value: 'https://purvisresearch.com/2017/sept.html'
           }]
         }
       })
