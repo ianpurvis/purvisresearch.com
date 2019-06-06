@@ -14,7 +14,8 @@ describe('call', () => {
     it('returns a response with 301 status', async () => {
       const response = await call(given)
       expect(response).toMatchObject({
-        status: '301'
+        status: '301',
+        statusDescription: 'Moved Permanently'
       })
     })
     it('returns a response with empty body', async () => {

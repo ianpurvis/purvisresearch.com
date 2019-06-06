@@ -37,6 +37,7 @@ async function call({ request, response }) {
 
   return {
     status: '301',
+    statusDescription: 'Moved Permanently',
     headers: {
       ...filterReadOnlyHeaders(response.headers || {}),
       ...headers,
