@@ -57,10 +57,10 @@ export default {
       this.renderer.render(this.scene, this.camera)
     },
     resize() {
-      let {height, width, aspect} = this.frame()
+      let { height, width, aspect, pixelRatio } = this.frame()
+      let { height: oldHeight, width: oldWidth } = this.renderer.getSize(new Vector2())
 
       if (this.camera.isPerspectiveCamera) {
-        let {height: oldHeight} = this.renderer.getSize(new Vector2())
         let oldTanFOV = Math.tan(((Math.PI/180) * this.camera.fov/2))
         let fov = (360/Math.PI) * Math.atan(oldTanFOV * (height/oldHeight))
         Object.assign(this.camera, {
@@ -70,12 +70,14 @@ export default {
         this.camera.updateProjectionMatrix()
       }
 
-      this.renderer.setSize(width, height)
+      // Prevent runaway growth when unstyled:
+      if (width / pixelRatio == oldWidth || height / pixelRatio == oldHeight) return
+
+      this.renderer.setSize(width, height, false)
     },
     frame() {
-      let height = Math.max(document.body.clientHeight, window.innerHeight)
-      let width = Math.max(document.body.clientWidth, window.innerWidth)
       let pixelRatio = Math.max(window.devicePixelRatio, 2)
+      let { clientHeight: height, clientWidth: width } = this.$refs.canvas
       return {
         height: height,
         width: width,
@@ -111,9 +113,8 @@ export default {
       canvas: this.$refs.canvas,
     })
     let { height, width, pixelRatio } = this.frame()
-    this.renderer.setSize(width, height)
+    this.renderer.setSize(width, height, false)
     this.renderer.setPixelRatio(pixelRatio)
     this.startAnimating()
   }
 }
-
