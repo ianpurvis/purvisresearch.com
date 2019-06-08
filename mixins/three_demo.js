@@ -57,7 +57,7 @@ export default {
       this.renderer.render(this.scene, this.camera)
     },
     resize() {
-      let { height, width, aspect, pixelRatio } = this.frame()
+      let { height, width, aspect } = this.frame()
       let { height: oldHeight, width: oldWidth } = this.renderer.getSize(new Vector2())
 
       if (this.camera.isPerspectiveCamera) {
@@ -71,18 +71,17 @@ export default {
       }
 
       // Prevent runaway growth when unstyled:
+      let pixelRatio = this.renderer.getPixelRatio()
       if (width / pixelRatio == oldWidth || height / pixelRatio == oldHeight) return
 
       this.renderer.setSize(width, height, false)
     },
     frame() {
-      let pixelRatio = Math.max(window.devicePixelRatio, 2)
       let { clientHeight: height, clientWidth: width } = this.$refs.canvas
       return {
         height: height,
         width: width,
         aspect: width / height,
-        pixelRatio: pixelRatio
       }
     },
     startAnimating() {
@@ -112,9 +111,10 @@ export default {
       antialias: false,
       canvas: this.$refs.canvas,
     })
-    let { height, width, pixelRatio } = this.frame()
-    this.renderer.setSize(width, height, false)
+    let pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.renderer.setPixelRatio(pixelRatio)
+    let { height, width } = this.frame()
+    this.renderer.setSize(width, height, false)
     this.startAnimating()
   }
 }
