@@ -4,6 +4,13 @@
 
 $mobile-width: 568px;
 
+canvas {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
 main {
   font-family: "Libre Barcode 128 Text", sans-serif;
   font-size: 96px;
