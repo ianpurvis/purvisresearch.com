@@ -5,13 +5,23 @@
 $mobile-width: 568px;
 
 canvas {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
+  bottom: 0;
+  height: 100%;
   left: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
 }
 
 main {
+  position: relative;
+}
+
+.snake {
   font-family: "Libre Barcode 128 Text", sans-serif;
   font-size: 96px;
   letter-spacing: 4px;

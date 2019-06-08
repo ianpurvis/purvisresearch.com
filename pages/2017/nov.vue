@@ -1,7 +1,9 @@
 <template>
   <main>
-    purvis_research<span class="nomobile">_</span>nov_2017<span class="nomobile">_</span><obfuscated-mailto/>
-    <canvas ref="canvas"></canvas>
+    <div class="snake">
+      purvis_research<span class="nomobile">_</span>nov_2017<span class="nomobile">_</span><obfuscated-mailto/>
+      <canvas ref="canvas"></canvas>
+    </div>
   </main>
 </template>
 
