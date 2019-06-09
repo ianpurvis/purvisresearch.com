@@ -192,7 +192,6 @@ export default {
     hostname: 'https://purvisresearch.com',
     routes: [{
       url: '/',
-      changefreq: 'monthly',
       priority: 1
     }]
   }
