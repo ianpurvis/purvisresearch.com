@@ -182,6 +182,13 @@ export default {
     exclude: [
       '/404.html',
     ],
+    filter: ({ routes }) =>
+      routes.map(({url, ...attributes}) =>
+        ({
+          url: (url === '/') ? String() : `${url}.html`,
+          ...attributes
+        })
+      ),
     hostname: 'https://purvisresearch.com',
     routes: [{
       url: '/',
