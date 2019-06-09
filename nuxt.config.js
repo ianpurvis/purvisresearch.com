@@ -180,7 +180,7 @@ export default {
 
   sitemap: {
     exclude: [
-      '/404.html',
+      '/404',
     ],
     filter: ({ routes }) =>
       routes.map(({url, ...attributes}) =>
