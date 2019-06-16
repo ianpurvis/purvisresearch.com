@@ -136,6 +136,7 @@ export default {
     transpile: [
       'nuxt-jsonld',
       'vue-analytics',
+      'three/examples/jsm/loaders/GLTFLoader'
     ],
   },
 
