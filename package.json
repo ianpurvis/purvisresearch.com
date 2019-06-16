@@ -44,7 +44,7 @@
     "raw-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "svgo": "^1.2.2",
-    "svgo-loader": "^2.2.0",
+    "svgo-loader": "^2.2.1",
     "ttf2woff": "^2.0.1"
   }
 }
