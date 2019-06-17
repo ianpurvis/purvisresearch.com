@@ -1,26 +1,33 @@
 import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
-import Oct2017Demo from '~/assets/javascripts/2017/oct.js'
+import PixiDemo from '~/mixins/pixi_demo.js'
+import { BezierTexture } from '~/assets/javascripts/bezier_texture.js'
+import Oscillator from '~/assets/javascripts/oscillator.js'
+import * as Random from '~/assets/javascripts/random.js'
+import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
 import organization from '~/structured_data/organization.js'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
-  beforeDestroy() {
-    window.removeEventListener('resize', this.maximizeFrame)
-    this.stopAnimating()
-    if (!this.demo) return
-    document.body.removeChild(this.demo.element)
-    this.demo.dispose()
-    this.demo = null
-  },
   components: {
     ObfuscatedMailto
   },
   data () {
     return {
-      animationFrame: null,
       canonicalUrl: `${organization.url}/2017/oct.html`,
-      demo: null,
       description: "A bézier moiré generator in WebGL.",
+      elapsedTime: 0,
+      oscillators: [
+        new Oscillator({
+          amplitude: 50,
+          period: 100 * SECONDS_TO_MILLISECONDS
+        }),
+        new Oscillator({
+          amplitude: 50,
+          period: 50 * SECONDS_TO_MILLISECONDS
+        })
+      ],
+      speedOfLife: 0.4, // Slow-motion
+      textures: [],
       title: "oct 2017 - purvis research",
     }
   },
@@ -60,28 +67,36 @@ export default {
     }
   },
   methods: {
-    animate() {
-      this.demo.update()
-      this.demo.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+    load() {
+      return Promise.resolve(
+        PixiDemo.methods.load.call(this)
+      ).then(() => {
+        let { height, width } = this.frame()
+        return Promise.all([
+          BezierTexture.create('0xff0000', height, width),
+          BezierTexture.create('0x00ff00', height, width),
+          BezierTexture.create('0x0000ff', height, width)
+        ])
+      }).then(textures => {
+        textures
+          .sort(Random.comparison)
+          .forEach(texture => this.scene.addChild(texture))
+        this.textures = textures
+      })
     },
-    frame() {
-      return {
-        height: Math.max(document.body.clientHeight, window.innerHeight),
-        width: Math.max(document.body.clientWidth, window.innerWidth)
-      }
-    },
-    maximizeFrame() {
-      this.demo.frame = this.frame()
-    },
-    startAnimating() {
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
-    stopAnimating() {
-      if (!this.animationFrame) return
-      window.cancelAnimationFrame(this.animationFrame)
-    },
+    update() {
+      let deltaTime = this.deltaTime()
+      if (deltaTime == 0) return
+      this.elapsedTime += deltaTime
+      if (this.oscillators.length < 1) return
+      if (this.textures.length < 1) return
+      this.textures[1].x = this.oscillators[0].sine(this.elapsedTime)
+      this.textures[2].x = this.oscillators[1].sine(this.elapsedTime)
+    }
   },
+  mixins: [
+    PixiDemo,
+  ],
   mounted() {
     if (!isWebGLAvailable()) {
       let message = [
@@ -91,11 +106,6 @@ export default {
       console.warn(message)
       return
     }
-    this.demo = new Oct2017Demo(this.frame())
-    this.demo.load().then(() => {
-      document.body.appendChild(this.demo.element)
-      this.startAnimating()
-      window.addEventListener('resize', this.maximizeFrame)
-    })
+    this.load()
   }
 }
