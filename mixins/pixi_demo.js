@@ -56,8 +56,10 @@ export default {
       return this.importPIXI()
         .then(({Container, Renderer, Ticker}) => {
           let { height, width } = this.frame()
+          let pixelRatio = Math.max(window.devicePixelRatio, 2)
           this.renderer = new Renderer({
             height: height,
+            resolution: pixelRatio,
             transparent: true,
             view: this.$refs.canvas,
             width: width,
