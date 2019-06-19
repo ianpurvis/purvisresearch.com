@@ -56,7 +56,7 @@ export default {
   methods: {
     dispose() {
       this.textures.forEach(texture => texture.destroy())
-      this.emitter.destroy()
+      if (this.emitter) this.emitter.destroy()
       PixiDemo.methods.dispose.call(this)
     },
     load() {
