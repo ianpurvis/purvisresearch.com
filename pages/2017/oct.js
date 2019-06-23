@@ -1,4 +1,3 @@
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import PixiDemo from '~/mixins/pixi_demo.js'
 import { BezierTexture } from '~/assets/javascripts/bezier_texture.js'
 import Oscillator from '~/assets/javascripts/oscillator.js'
@@ -8,9 +7,6 @@ import organization from '~/structured_data/organization.js'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
-  components: {
-    ObfuscatedMailto
-  },
   data () {
     return {
       canonicalUrl: `${organization.url}/2017/oct.html`,

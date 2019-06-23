@@ -1,11 +1,10 @@
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
+import unobfuscate from '~/directives/unobfuscate.js'
 import organization from '~/structured_data/organization.js'
 
 export default {
   components: {
     AutoscaledDiv,
-    ObfuscatedMailto,
   },
   data() {
     return {
@@ -43,6 +42,9 @@ export default {
       ],
       title: "purvis research",
     }
+  },
+  directives: {
+    unobfuscate
   },
   head() {
     return {

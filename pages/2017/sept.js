@@ -1,13 +1,9 @@
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import PixiDemo from '~/mixins/pixi_demo.js'
 import organization from '~/structured_data/organization.js'
 import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
-  components: {
-    ObfuscatedMailto
-  },
   data() {
     return {
       canonicalUrl: `${organization.url}/2017/sept.html`,

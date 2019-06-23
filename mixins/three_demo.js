@@ -6,6 +6,7 @@ import {
   WebGLRenderer,
 }  from 'three'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
+import unobfuscate from '~/directives/unobfuscate.js'
 
 export default {
   beforeDestroy() {
@@ -22,6 +23,9 @@ export default {
       scene: new Scene(),
       speedOfLife: 0.4, // Slow motion
     }
+  },
+  directives: {
+    unobfuscate
   },
   methods: {
     animate() {

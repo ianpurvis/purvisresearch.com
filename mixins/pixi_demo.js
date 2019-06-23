@@ -1,3 +1,5 @@
+import unobfuscate from '~/directives/unobfuscate.js'
+
 export default {
   beforeDestroy() {
     this.stopAnimating()
@@ -12,6 +14,9 @@ export default {
       scene: null,
       speedOfLife: 1.0
     }
+  },
+  directives: {
+    unobfuscate
   },
   methods: {
     animate() {

@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="snake">
-      purvis_research<span class="nomobile">_</span>oct_2018<span class="nomobile">_</span><obfuscated-mailto/>
+      purvis_research<span class="nomobile">_</span>oct_2018<span class="nomobile">_</span><a v-unobfuscate:href="'mailto:ian@purvisresearch@@com'">ian@purvisresearch.c0m</a>
       <canvas ref="canvas"></canvas>
     </div>
   </main>
