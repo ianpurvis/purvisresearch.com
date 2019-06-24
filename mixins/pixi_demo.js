@@ -1,4 +1,4 @@
-import unobfuscate from '~/directives/unobfuscate.js'
+import Graphix from '~/mixins/graphix.js'
 
 export default {
   beforeDestroy() {
@@ -14,9 +14,6 @@ export default {
       scene: null,
       speedOfLife: 1.0
     }
-  },
-  directives: {
-    unobfuscate
   },
   methods: {
     animate() {
@@ -94,6 +91,9 @@ export default {
     update() {
       // To be overriden by mixing class
     },
-  }
+  },
+  mixins: [
+    Graphix
+  ],
 }
 

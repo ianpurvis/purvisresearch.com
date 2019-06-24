@@ -1,5 +1,5 @@
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
-import unobfuscate from '~/directives/unobfuscate.js'
+import Graphix from '~/mixins/graphix.js'
 import organization from '~/structured_data/organization.js'
 
 export default {
@@ -43,9 +43,6 @@ export default {
       title: "purvis research",
     }
   },
-  directives: {
-    unobfuscate
-  },
   head() {
     return {
       title: this.title,
@@ -76,9 +73,7 @@ export default {
       }]
     }
   },
-  methods: {
-    snake(value) {
-      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
-    },
-  }
+  mixins: [
+    Graphix
+  ],
 }

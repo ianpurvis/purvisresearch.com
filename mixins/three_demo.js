@@ -6,7 +6,7 @@ import {
   WebGLRenderer,
 }  from 'three'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
-import unobfuscate from '~/directives/unobfuscate.js'
+import graphix from '~/mixins/graphix.js'
 
 export default {
   beforeDestroy() {
@@ -23,9 +23,6 @@ export default {
       scene: new Scene(),
       speedOfLife: 0.4, // Slow motion
     }
-  },
-  directives: {
-    unobfuscate
   },
   methods: {
     animate() {
@@ -101,6 +98,9 @@ export default {
       // To be overriden by mixing class
     },
   },
+  mixins: [
+    graphix
+  ],
   mounted() {
     if (!isWebGLAvailable()) {
       let message = [
