@@ -11,9 +11,3 @@ $text: $grey-darker;
 @import "~bulma/sass/base/minireset";
 @import "~bulma/sass/base/generic";
 
-canvas {
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-}

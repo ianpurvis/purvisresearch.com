@@ -13,7 +13,6 @@ import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
 import ModelLoader from '~/assets/javascripts/model_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import organization from '~/structured_data/organization.js'
 
@@ -21,9 +20,6 @@ const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.rad
 
 export default {
   beforeDestroy() {
-  },
-  components: {
-    ObfuscatedMailto
   },
   data() {
     return {

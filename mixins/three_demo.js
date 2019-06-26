@@ -6,13 +6,13 @@ import {
   WebGLRenderer,
 }  from 'three'
 import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
+import graphix from '~/mixins/graphix.js'
 
 export default {
   beforeDestroy() {
     this.stopAnimating()
     if (!this.renderer) return
     this.dispose()
-    document.body.removeChild(this.renderer.domElement)
   },
   data() {
     return {
@@ -58,10 +58,10 @@ export default {
       this.renderer.render(this.scene, this.camera)
     },
     resize() {
-      let {height, width, aspect} = this.frame()
+      let { height, width, aspect } = this.frame()
+      let { height: oldHeight, width: oldWidth } = this.renderer.getSize(new Vector2())
 
       if (this.camera.isPerspectiveCamera) {
-        let {height: oldHeight} = this.renderer.getSize(new Vector2())
         let oldTanFOV = Math.tan(((Math.PI/180) * this.camera.fov/2))
         let fov = (360/Math.PI) * Math.atan(oldTanFOV * (height/oldHeight))
         Object.assign(this.camera, {
@@ -71,17 +71,18 @@ export default {
         this.camera.updateProjectionMatrix()
       }
 
-      this.renderer.setSize(width, height)
+      // Prevent runaway growth when unstyled:
+      let pixelRatio = this.renderer.getPixelRatio()
+      if (width / pixelRatio == oldWidth || height / pixelRatio == oldHeight) return
+
+      this.renderer.setSize(width, height, false)
     },
     frame() {
-      let height = Math.max(document.body.clientHeight, window.innerHeight)
-      let width = Math.max(document.body.clientWidth, window.innerWidth)
-      let pixelRatio = Math.max(window.devicePixelRatio, 2)
+      let { clientHeight: height, clientWidth: width } = this.$refs.canvas
       return {
         height: height,
         width: width,
         aspect: width / height,
-        pixelRatio: pixelRatio
       }
     },
     startAnimating() {
@@ -97,6 +98,9 @@ export default {
       // To be overriden by mixing class
     },
   },
+  mixins: [
+    graphix
+  ],
   mounted() {
     if (!isWebGLAvailable()) {
       let message = [
@@ -109,12 +113,12 @@ export default {
     this.renderer = new WebGLRenderer({
       alpha: true,
       antialias: false,
+      canvas: this.$refs.canvas,
     })
-    let { height, width, pixelRatio } = this.frame()
-    this.renderer.setSize(width, height)
+    let pixelRatio = Math.max(window.devicePixelRatio, 2)
     this.renderer.setPixelRatio(pixelRatio)
-    document.body.appendChild(this.renderer.domElement)
+    let { height, width } = this.frame()
+    this.renderer.setSize(width, height, false)
     this.startAnimating()
   }
 }
-

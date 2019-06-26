@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+API_URL='https://fonts.googleapis.com/css'
+FONT_FAMILY='Libre Barcode 128 Text'
+FONT_TEXT='purvis_research_jan_feb_mar_apr_may_jun_jul_aug_sep_oct_nov_dec_2017_2018_2019: ian@purvisresearch.c0m'
+USER_AGENT='Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)'
+
+curl -G \
+  --data-urlencode "family=$FONT_FAMILY" \
+  --data-urlencode "text=$FONT_TEXT" \
+  --user-agent "$USER_AGENT" \
+  "$API_URL"

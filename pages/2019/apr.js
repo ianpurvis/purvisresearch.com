@@ -19,7 +19,6 @@ import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
 import { lerp } from '~/assets/javascripts/math.js'
 import TextureLoader from '~/assets/javascripts/texture_loader.js'
 import * as Random from '~/assets/javascripts/random.js'
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
 import ThreeDemo from '~/mixins/three_demo.js'
 import tatami from '~/assets/images/2019/apr/tatami-bw.png'
 import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
@@ -38,9 +37,6 @@ const Colors = {
 export default {
   beforeDestroy() {
     this.stopVideo()
-  },
-  components: {
-    ObfuscatedMailto
   },
   data() {
     return {

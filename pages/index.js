@@ -1,11 +1,10 @@
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
+import Graphix from '~/mixins/graphix.js'
 import organization from '~/structured_data/organization.js'
 
 export default {
   components: {
     AutoscaledDiv,
-    ObfuscatedMailto,
   },
   data() {
     return {
@@ -74,9 +73,7 @@ export default {
       }]
     }
   },
-  methods: {
-    snake(value) {
-      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
-    },
-  }
+  mixins: [
+    Graphix
+  ],
 }

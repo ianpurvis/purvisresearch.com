@@ -7,17 +7,13 @@ import {
   Vector3
 } from 'three'
 import AlphabetParticle from '~/assets/javascripts/alphabet_particle.js'
-import Inconsolata from "~/assets/fonts/Inconsolata_Regular.json"
 import * as Random from '~/assets/javascripts/random.js'
-import ObfuscatedMailto from '~/components/obfuscated_mailto.vue'
+import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
 import organization from '~/structured_data/organization.js'
 
 export default {
   beforeDestroy() {
-  },
-  components: {
-    ObfuscatedMailto
   },
   data () {
     return {
