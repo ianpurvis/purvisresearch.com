@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+API_URL='https://fonts.googleapis.com/css'
+FONT_FAMILY='Noto Sans JP:400'
+FONT_TEXT='スタートアップ　テクノロジーリサーチデザインデベロップメントテスティング プロジェクト　マネジメント'
+USER_AGENT='Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)'
+
+curl -G \
+  --data-urlencode "family=$FONT_FAMILY" \
+  --data-urlencode "text=$FONT_TEXT" \
+  --user-agent "$USER_AGENT" \
+  "$API_URL"
+
+
+FONT_FAMILY='Noto Sans JP:500'
+FONT_TEXT='イアン　パービス'
+
+curl -G \
+  --data-urlencode "family=$FONT_FAMILY" \
+  --data-urlencode "text=$FONT_TEXT" \
+  --user-agent "$USER_AGENT" \
+  "$API_URL"
