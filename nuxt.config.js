@@ -198,11 +198,4 @@ const config = {
   }
 }
 
-if (!isProduction) {
-  config.head.htmlAttrs = {
-    debug: true
-  }
-  config.css.push('~/assets/stylesheets/dev.scss')
-}
-
 export default config

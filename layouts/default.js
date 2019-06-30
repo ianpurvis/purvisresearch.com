@@ -4,6 +4,7 @@ import favicon16Url from '~/assets/images/logo-bw-16x16.png?as=file'
 import favicon32Url from '~/assets/images/logo-bw-32x32.png?as=file'
 import manifestUrl from '~/assets/manifest.json'
 import maskIconUrl from '~/assets/images/logo-bw-16x16.svg?as=file'
+import Debug from '~/mixins/debug.js'
 import organization from '~/structured_data/organization.js'
 
 export default {
@@ -31,4 +32,7 @@ export default {
   jsonld() {
     return organization
   },
+  mixins: [
+    Debug
+  ],
 }
