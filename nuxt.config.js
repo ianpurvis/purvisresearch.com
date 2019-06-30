@@ -141,7 +141,7 @@ export default {
   },
 
   css: [
-    '@/assets/stylesheets/app.scss'
+    '~/assets/stylesheets/app.scss'
   ],
 
   generate: {
