@@ -1,6 +1,6 @@
 const isProduction = (process.env.NODE_ENV === 'production')
 
-const config = {
+export default {
   /*
   ** Headers of the page
   */
@@ -141,7 +141,7 @@ const config = {
   },
 
   css: [
-    '~/assets/stylesheets/app.scss',
+    '~/assets/stylesheets/app.scss'
   ],
 
   generate: {
@@ -197,5 +197,3 @@ const config = {
     }]
   }
 }
-
-export default config
