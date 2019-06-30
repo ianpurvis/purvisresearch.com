@@ -1,7 +1,7 @@
 $debug-opacity: 0.6;
 
 html[debug] {
-  background-image: url('~assets/images/16x16.svg');
+  background-image: url('~assets/images/grid-dotted-16x16.svg');
 
   body {
     outline: 1rem solid rgba(yellow, $debug-opacity);
