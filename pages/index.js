@@ -31,15 +31,6 @@ export default {
         description: 'An Emoji Particle Flow',
         route: '2017/sept.html'
       }],
-      skills: [
-        'Startup Technology',
-        'Research',
-        'Design',
-        'Development',
-        'Testing',
-        'DevOps',
-        'Project Management'
-      ],
       title: "purvis research",
     }
   },
