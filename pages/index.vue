@@ -10,8 +10,14 @@
       </div>
       <div class="boxx">
         <h2>Ian Purvis</h2>
-        <ul class="snake-list skills">
-          <li v-for="(skill, index) in skills" :key="index" v-html="snake(skill)"></li>
+        <ul class="snake-list skills" v-tight>
+          <li v-html="snake('Startup Technology')"></li>
+          <li>Research</li>
+          <li>Design</li>
+          <li>Development</li>
+          <li>Testing</li>
+          <li>DevOps</li>
+          <li v-html="snake('Project Management')"></li>
         </ul>
       </div>
       <div class="boxx" lang="ja">
