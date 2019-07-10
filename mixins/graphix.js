@@ -1,8 +1,10 @@
-import unobfuscate from '~/directives/unobfuscate.js'
+import Tight from 'vue-tight'
+import Unobfuscate from '~/directives/unobfuscate.js'
 
 export default {
   directives: {
-    unobfuscate
+    Tight,
+    Unobfuscate
   },
   methods: {
     snake(value) {

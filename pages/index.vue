@@ -16,14 +16,25 @@
       </div>
       <div class="boxx" lang="ja">
         <h2>イアン　パービス</h2>
-        <ul class="snake-list skills">
-          <li>スタートアップ<span class="underscore">&#x3000;</span>テクノロジー</li><!--
-          --><li>リサーチ</li><!--
-          --><li>デザイン</li><!--
-          --><li class="no-underscore">デベロップメント</li><!--
-          --><li><span class="no-break">テス</span><wbr><span class="no-break">ティ</span>ング</li><!--
-          --><li class="romaji">DevOps</li><!--
-          --><li><span class="no-break">プロ</span><wbr><span class="stretch">ジェクト</span><span class="underscore">&#x3000;</span><span class="stretch">マネジメント</span></li>
+        <ul class="snake-list skills" v-tight>
+          <li>スタートアップ<span class="underscore">&#x3000;</span>テクノロジー</li>
+          <li>リサーチ</li>
+          <li>デザイン</li>
+          <li class="no-underscore">デベロップメント</li>
+          <li v-tight>
+            <span class="no-break">テス</span>
+            <wbr>
+            <span class="no-break">ティ</span>
+            <span>ング</span>
+          </li>
+          <li class="romaji">DevOps</li>
+          <li v-tight>
+            <span class="no-break">プロ</span>
+            <wbr>
+            <span class="stretch">ジェクト</span>
+            <span class="underscore">&#x3000;</span>
+            <span class="stretch">マネジメント</span>
+          </li>
         </ul>
       </div>
       <div class="boxx">
