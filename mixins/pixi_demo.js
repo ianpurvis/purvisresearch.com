@@ -1,3 +1,4 @@
+import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 import Graphix from '~/mixins/graphix.js'
 
 export default {
@@ -55,6 +56,14 @@ export default {
       })
     },
     load() {
+      if (!isWebGLAvailable()) {
+        let message = [
+          'Your device does not seem to support WebGL.',
+          'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
+        ].join('\n')
+        console.warn(message)
+        return
+      }
       return this.importPIXI()
         .then(({Container, Renderer, Ticker}) => {
           let { height, width } = this.frame()

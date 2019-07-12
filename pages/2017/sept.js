@@ -1,7 +1,6 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
 import organization from '~/structured_data/organization.js'
 import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
-import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
   data() {
@@ -152,14 +151,6 @@ export default {
     PixiDemo,
   ],
   mounted() {
-    if (!isWebGLAvailable()) {
-      let message = [
-        'Your device does not seem to support WebGL.',
-        'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-      ].join('\n')
-      console.warn(message)
-      return
-    }
     this.load().catch(console.error)
   }
 }
