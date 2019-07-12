@@ -13,13 +13,15 @@ export default {
   },
   data() {
     return {
-      elementWidth: 0,
       contentWidth: 0,
+      elementWidth: 0,
+      isWatchingDOM: false,
     }
   },
   methods: {
     watchDOM() {
       if (this._isDestroyed || this._isBeingDestroyed) return
+      this.isWatchingDOM = true
       this.elementWidth = this.$el.clientWidth
       this.contentWidth = this.$refs.content.clientWidth
       window.requestAnimationFrame(this.watchDOM)
