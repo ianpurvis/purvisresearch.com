@@ -5,6 +5,12 @@
          <slot></slot>
       </div>
     </div>
+    <!--
+      Chrome does not calculate container height correctly on first layout.
+      As a workaround, trigger an additional layout after mount via conditional
+      rendering of the following div:
+    -->
+    <div v-if="!isWatchingDOM"></div>
   </div>
 </template>
 
