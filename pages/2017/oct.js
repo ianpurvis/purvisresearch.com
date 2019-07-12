@@ -4,7 +4,6 @@ import Oscillator from '~/assets/javascripts/oscillator.js'
 import * as Random from '~/assets/javascripts/random.js'
 import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
 import organization from '~/structured_data/organization.js'
-import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
 
 export default {
   data () {
@@ -94,14 +93,6 @@ export default {
     PixiDemo,
   ],
   mounted() {
-    if (!isWebGLAvailable()) {
-      let message = [
-        'Your device does not seem to support WebGL.',
-        'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-      ].join('\n')
-      console.warn(message)
-      return
-    }
-    this.load()
+    this.load().catch(console.error)
   }
 }
