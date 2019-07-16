@@ -1,2 +1,2 @@
-export { default as event } from './event.js'
-export { default as eventThatNeedsRedirection } from './event-that-needs-redirection.js'
+export { default as originRequestEvent } from '~/specs/fixtures/cloudfront-origin-request.js'
+export { default as originResponseEvent } from '~/specs/fixtures/cloudfront-origin-response.js'

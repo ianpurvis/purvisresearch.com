@@ -1,38 +1,26 @@
 import { call } from '~/lambda/middleware/headers.js'
 
-describe('call', () => {
-  describe('given a request', () => {
-    const given = {
-      request: {
+describe('call({ request, response })', () => {
+  let request, response, result
+
+  describe('given a request and a response', () => {
+    beforeEach(() => {
+      request = Object.freeze({
         method: 'GET',
-        uri: '/'
-      },
-      response: {
+        uri: '/example.html'
+      })
+      response = {
         status: '200'
       }
-    }
-    it('returns a response with status', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
-        status: '200'
-      })
     })
-    it('returns a response with Cache-Control', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
-        headers: {
-          "cache-control": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=0",
-            },
-          ],
-        }
-      })
+    it('returns the unmodified request', async () => {
+      result = await call({ request, response })
+      expect(result.request).toBe(request)
     })
-    it('returns a response with Referrer-Policy', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the response with a Referrer-Policy header', async () => {
+      result = await call({ request, response })
+      expect(result.response).toMatchObject({
+        status: '200',
         headers: {
           "referrer-policy": [
             {
@@ -43,9 +31,10 @@ describe('call', () => {
         }
       })
     })
-    it('returns a response with Strict-Transport-Policy', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the response with a Strict-Transport-Policy header', async () => {
+      result = await call({ request, response })
+      expect(result.response).toMatchObject({
+        status: '200',
         headers: {
           "strict-transport-security": [
             {
@@ -56,9 +45,10 @@ describe('call', () => {
         }
       })
     })
-    it('returns a response with X-Content-Type-Options', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the response with a X-Content-Type-Options header', async () => {
+      result = await call({ request, response })
+      expect(result.response).toMatchObject({
+        status: '200',
         headers: {
           "x-content-type-options": [
             {
@@ -69,9 +59,10 @@ describe('call', () => {
         }
       })
     })
-    it('returns a response with X-Frame-Options', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the response with a X-Frame-Options header', async () => {
+      result = await call({ request, response })
+      expect(result.response).toMatchObject({
+        status: '200',
         headers: {
           "x-frame-options": [
             {
@@ -82,9 +73,10 @@ describe('call', () => {
         }
       })
     })
-    it('returns a response with X-XSS-Protection', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the response with a X-XSS-Protection header', async () => {
+      result = await call({ request, response })
+      expect(result.response).toMatchObject({
+        status: '200',
         headers: {
           "x-xss-protection": [
             {
@@ -96,28 +88,21 @@ describe('call', () => {
       })
     })
   })
-  describe('given an asset request', () => {
-    const given = {
-      request: {
+  describe('given a request only', () => {
+    beforeEach(() => {
+      request = Object.freeze({
         method: 'GET',
-        uri: '/_/images/example.png'
-      },
-      response: {
-        status: '200'
-      }
-    }
-    it('returns a response with Cache-Control', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
-        headers: {
-          "cache-control": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31556952",
-            },
-          ],
-        }
-      })
+        uri: '/'
+      }),
+      response = undefined
+    })
+    it('returns the unmodified request', async () => {
+      result = await call({ request, response })
+      expect(result.request).toBe(request)
+    })
+    it('returns an undefined response', async () => {
+      result = await call({ request, response })
+      expect(result.response).toBeUndefined()
     })
   })
 })
