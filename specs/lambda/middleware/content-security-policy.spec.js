@@ -1,4 +1,4 @@
-import { call, policyForNuxt } from '~/lambda/middleware/content-security-policy.js'
+import { call, isHtml, policyForNuxt } from '~/lambda/middleware/content-security-policy.js'
 
 describe('call({ request, response })', () => {
   let request, response, result
@@ -84,3 +84,45 @@ describe('call({ request, response })', () => {
   })
 })
 
+describe('isHtml(response)', () => {
+  let response, result
+  describe('when response Content-Type is html', () => {
+    it('returns true', () => {
+      response = {
+        status: '200',
+        headers: {
+          'content-type': [{
+            key: 'Content-Type',
+            value: 'text/html; charset=utf-8'
+          }]
+        }
+      }
+      result = isHtml(response)
+      expect(result).toBe(true)
+    })
+  })
+  describe('when response Content-Type is not html', () => {
+    it('returns false', () => {
+      response = {
+        status: '200',
+        headers: {
+          'content-type': [{
+            key: 'Content-Type',
+            value: 'image/png'
+          }]
+        }
+      }
+      result = isHtml(response)
+      expect(result).toBe(false)
+    })
+  })
+  describe('when response does not have a Content-Type', () => {
+    it('returns false', () => {
+      response = {
+        status: '200'
+      }
+      result = isHtml(response)
+      expect(result).toBe(false)
+    })
+  })
+})
