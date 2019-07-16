@@ -1,13 +1,14 @@
-import { call } from '~/lambda/middleware/content-security-policy.js'
+import { call, policyForNuxt } from '~/lambda/middleware/content-security-policy.js'
 
-describe('call', () => {
-  describe('given an html response', () => {
-    const given = {
-      request: {
+describe('call({ request, response })', () => {
+  let request, response, result
+  describe('given a request and an html response', () => {
+    beforeEach(() => {
+      request = Object.freeze({
         method: 'GET',
-        uri: '/'
-      },
-      response: {
+        uri: '/example.html'
+      })
+      response = {
         status: '200',
         headers: {
           'content-type': [{
@@ -16,34 +17,34 @@ describe('call', () => {
           }]
         }
       }
-    }
-    it('returns a response with status', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
-        status: '200'
-      })
     })
-    it('returns a response with Content-Security-Policy', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
+    it('returns the unmodified request', async () => {
+      result = await call({ request, response })
+      expect(result.request).toBe(request)
+    })
+    it('returns the response with a Content-Security-Policy header', async () => {
+      const policy = policyForNuxt()
+      result = await call({ request, response })
+      expect(result.response).toMatchObject(response)
+      expect(result.response).toMatchObject({
         headers: {
           "content-security-policy": [
             {
               "key": "Content-Security-Policy",
-              "value": "base-uri 'none'; connect-src 'self' https://www.google-analytics.com; default-src 'none'; frame-ancestors 'none'; font-src 'self' data:; form-action 'none'; img-src 'self' https://www.google-analytics.com; manifest-src 'self'; media-src 'self'; object-src 'none'; script-src 'self' 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0=' https://www.google-analytics.com; style-src 'self' 'unsafe-inline'",
+              "value": policy
             },
           ],
         }
       })
     })
   })
-  describe('given a non-html response', () => {
-    const given = {
-      request: {
+  describe('given a request and a non-html response', () => {
+    beforeEach(() => {
+      request = Object.freeze({
         method: 'GET',
         uri: '/example.png'
-      },
-      response: {
+      })
+      response = Object.freeze({
         status: '200',
         headers: {
           'content-type': [{
@@ -51,17 +52,32 @@ describe('call', () => {
             value: 'image/png'
           }]
         }
-      }
-    }
-    it('returns a response with status', async () => {
-      const response = await call(given)
-      expect(response).toMatchObject({
-        status: '200'
       })
     })
-    it('returns a response with Content-Security-Policy', async () => {
-      const response = await call(given)
-      expect(response.headers).not.toHaveProperty('content-security-policy')
+    it('returns the unmodified request', async () => {
+      result = await call({ request, response })
+      expect(result.request).toBe(request)
+    })
+    it('returns the unmodified response', async () => {
+      result = await call({ request, response })
+      expect(result.response).toBe(response)
+    })
+  })
+  describe('given a request only', () => {
+    beforeEach(() => {
+      request = Object.freeze({
+        method: 'GET',
+        uri: '/'
+      }),
+      response = undefined
+    })
+    it('returns the unmodified request', async () => {
+      result = await call({ request, response })
+      expect(result.request).toBe(request)
+    })
+    it('returns an undefined response', async () => {
+      result = await call({ request, response })
+      expect(result.response).toBeUndefined()
     })
   })
 })
