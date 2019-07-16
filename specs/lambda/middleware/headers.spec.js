@@ -17,20 +17,6 @@ describe('call({ request, response })', () => {
       result = await call({ request, response })
       expect(result.request).toBe(request)
     })
-    it('returns the response with a Cache-Control header', async () => {
-      result = await call({ request, response })
-      expect(result.response).toMatchObject({
-        status: '200',
-        headers: {
-          "cache-control": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=0",
-            },
-          ],
-        }
-      })
-    })
     it('returns the response with a Referrer-Policy header', async () => {
       result = await call({ request, response })
       expect(result.response).toMatchObject({
@@ -96,34 +82,6 @@ describe('call({ request, response })', () => {
             {
               "key": "X-XSS-Protection",
               "value": "1; mode=block",
-            },
-          ],
-        }
-      })
-    })
-  })
-  describe('given an request where uri starts with /_/ and a response', () => {
-    beforeEach(() => {
-      request = Object.freeze({
-        method: 'GET',
-        uri: '/_/images/example.png'
-      }),
-      response = {
-        status: '200'
-      }
-    })
-    it('returns the unmodified request', async () => {
-      result = await call({ request, response })
-      expect(result.request).toBe(request)
-    })
-    it('returns the response with a Cache-Control header', async () => {
-      result = await call({ request, response })
-      expect(result.response).toMatchObject({
-        headers: {
-          "cache-control": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31556952",
             },
           ],
         }

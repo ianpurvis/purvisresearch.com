@@ -3,6 +3,7 @@
 const middleware = [
   './redirection.js',
   './headers.js',
+  './cache-control.js',
   './content-security-policy.js',
 ].map(require)
 
