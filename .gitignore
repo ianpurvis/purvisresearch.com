@@ -17,3 +17,5 @@ static/sitemap.xml
 
 # Nuxt generate
 dist
+
+coverage
