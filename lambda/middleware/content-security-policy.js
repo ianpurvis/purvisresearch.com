@@ -5,7 +5,7 @@ const NUXT_ROOT_SCRIPT_HASH = 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ
 function isHtml(response) {
   if (!response.headers || !response.headers['content-type']) return false
   const contentType = response.headers['content-type'][0].value
-  const matcher = /^text\/html; charset=utf-8$/i
+  const matcher = /^text\/html/i
   return matcher.test(contentType)
 }
 

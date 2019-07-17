@@ -86,7 +86,7 @@ describe('call({ request, response })', () => {
 
 describe('isHtml(response)', () => {
   let response, result
-  describe('when response Content-Type is html', () => {
+  describe('when response Content-Type is text/html; charset=utf-8', () => {
     it('returns true', () => {
       response = {
         status: '200',
@@ -94,6 +94,21 @@ describe('isHtml(response)', () => {
           'content-type': [{
             key: 'Content-Type',
             value: 'text/html; charset=utf-8'
+          }]
+        }
+      }
+      result = isHtml(response)
+      expect(result).toBe(true)
+    })
+  })
+  describe('when response Content-Type is text/html', () => {
+    it('returns true', () => {
+      response = {
+        status: '200',
+        headers: {
+          'content-type': [{
+            key: 'Content-Type',
+            value: 'text/html'
           }]
         }
       }
