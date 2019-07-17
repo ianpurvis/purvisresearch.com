@@ -3,10 +3,10 @@ jest.mock('~/lambda/middleware/content-security-policy.js')
 jest.mock('~/lambda/middleware/headers.js')
 jest.mock('~/lambda/middleware/redirection.js')
 
-import cacheControl from '~/lambda/middleware/cache-control.js'
-import contentSecurityPolicy from '~/lambda/middleware/content-security-policy.js'
-import headers from '~/lambda/middleware/headers.js'
-import redirection from '~/lambda/middleware/redirection.js'
+import { call as cacheControl } from '~/lambda/middleware/cache-control.js'
+import { call as contentSecurityPolicy } from '~/lambda/middleware/content-security-policy.js'
+import { call as headers } from '~/lambda/middleware/headers.js'
+import { call as redirection } from '~/lambda/middleware/redirection.js'
 import { handler } from '~/lambda/middleware/index.js'
 import { originRequestEvent } from '~/specs/fixtures'
 
@@ -31,22 +31,22 @@ describe('handler(event)', () => {
         cacheControl,
         contentSecurityPolicy,
       ].forEach(middleware => {
-        middleware.call.mockResolvedValue(mocks)
+        middleware.mockResolvedValue(mocks)
       })
     })
 
     it('calls each middleware', async () => {
       await handler(event)
       const { request, response } = event.Records[0].cf
-      expect(redirection.call).toHaveBeenCalledWith({ request, response })
-      expect(headers.call).toHaveBeenCalledWith(mocks)
-      expect(cacheControl.call).toHaveBeenCalledWith(mocks)
-      expect(contentSecurityPolicy.call).toHaveBeenCalledWith(mocks)
+      expect(redirection).toHaveBeenCalledWith({ request, response })
+      expect(headers).toHaveBeenCalledWith(mocks)
+      expect(cacheControl).toHaveBeenCalledWith(mocks)
+      expect(contentSecurityPolicy).toHaveBeenCalledWith(mocks)
     })
 
     describe('when the last middleware returns a request and a response', () => {
       it('returns the response', async () => {
-        contentSecurityPolicy.call.mockResolvedValue({
+        contentSecurityPolicy.mockResolvedValue({
           request: mocks.request,
           response: mocks.response
         })
@@ -57,7 +57,7 @@ describe('handler(event)', () => {
 
     describe('when the last middleware returns only a request', () => {
       it('returns the request', async () => {
-        contentSecurityPolicy.call.mockResolvedValue({
+        contentSecurityPolicy.mockResolvedValue({
           request: mocks.request,
           response: undefined
         })

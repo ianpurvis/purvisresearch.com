@@ -1,6 +1,4 @@
-'use strict'
-
-const { LambdaEdgeHeaders } = require('./util.js')
+import { LambdaEdgeHeaders } from './util.js'
 
 const NUXT_ROOT_SCRIPT_HASH = 'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0='
 
@@ -41,7 +39,7 @@ async function call({ request, response }) {
   return { request, response }
 }
 
-module.exports = {
+export {
   call,
   isHtml,
   policyForNuxt,

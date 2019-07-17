@@ -1,6 +1,4 @@
-'use strict'
-
-const { LambdaEdgeHeaders } = require('./util.js')
+import { LambdaEdgeHeaders } from './util.js'
 
 const redirects = [
   {
@@ -32,4 +30,4 @@ async function call({ request, response }) {
   return { request, response }
 }
 
-module.exports = { call }
+export { call }

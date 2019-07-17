@@ -1,6 +1,4 @@
-'use strict'
-
-const { LambdaEdgeHeaders, SECONDS_PER_YEAR } = require('./util.js')
+import { LambdaEdgeHeaders, SECONDS_PER_YEAR } from './util.js'
 
 async function call({ request, response }) {
 
@@ -18,4 +16,4 @@ async function call({ request, response }) {
   return { request, response }
 }
 
-module.exports = { call }
+export { call }

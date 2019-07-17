@@ -1,6 +1,4 @@
-'use strict'
-
-const { LambdaEdgeHeaders, SECONDS_PER_YEAR } = require('./util.js')
+import { LambdaEdgeHeaders, SECONDS_PER_YEAR } from './util.js'
 
 function cacheControlFor({uri}) {
   const maxAge = uri.startsWith('/_/') ? SECONDS_PER_YEAR : 0
@@ -19,4 +17,4 @@ async function call({ request, response }) {
   return { request, response }
 }
 
-module.exports = { call }
+export { call }
