@@ -1,10 +1,10 @@
 jest.mock('~/lambda/middleware/app.js')
 
 import { App } from '~/lambda/middleware/app.js'
-import { call as cacheControl } from '~/lambda/middleware/cache-control.js'
-import { call as contentSecurityPolicy } from '~/lambda/middleware/content-security-policy.js'
-import { call as headers } from '~/lambda/middleware/headers.js'
-import { call as redirection } from '~/lambda/middleware/redirection.js'
+import { CacheControl } from '~/lambda/middleware/cache-control.js'
+import { ContentSecurityPolicy } from '~/lambda/middleware/content-security-policy.js'
+import { Headers } from '~/lambda/middleware/headers.js'
+import { Redirection } from '~/lambda/middleware/redirection.js'
 import { handler } from '~/lambda/middleware/index.js'
 import { originRequestEvent } from '~/specs/fixtures'
 
@@ -31,10 +31,10 @@ describe('handler(event)', () => {
       await expect(result).resolves.toBe(request)
       expect(App)
         .toHaveBeenCalledWith(expect.arrayContaining([
-          redirection,
-          headers,
-          cacheControl,
-          contentSecurityPolicy
+          expect.any(Redirection),
+          expect.any(Headers),
+          expect.any(CacheControl),
+          expect.any(ContentSecurityPolicy)
         ]))
       expect(App.prototype.call)
         .toHaveBeenCalledWith({ request, response })

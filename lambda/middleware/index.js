@@ -1,18 +1,18 @@
 import { App } from './app.js'
-import { call as redirection } from './redirection.js'
-import { call as headers } from './headers.js'
-import { call as cacheControl } from './cache-control.js'
-import { call as contentSecurityPolicy } from './content-security-policy.js'
+import { Redirection } from './redirection.js'
+import { Headers } from './headers.js'
+import { CacheControl } from './cache-control.js'
+import { ContentSecurityPolicy } from './content-security-policy.js'
 
 
 async function handler(event) {
   const { request, response } = event.Records[0].cf
 
   const app = new App([
-    redirection,
-    headers,
-    cacheControl,
-    contentSecurityPolicy
+    new Redirection(),
+    new Headers(),
+    new CacheControl(),
+    new ContentSecurityPolicy()
   ])
 
   return app.call({ request, response })

@@ -1,10 +1,18 @@
-import { call } from '~/lambda/middleware/cache-control.js'
+import { CacheControl } from '~/lambda/middleware/cache-control.js'
 
-describe('call({ request, response })', () => {
-  let request, response, result
+describe('CacheControl', () => {
+  let subject
 
-  describe('given a request and a response', () => {
-    describe('when request uri does not start with /_/', () => {
+  beforeEach(() => {
+    subject = new CacheControl()
+  })
+  describe('call({ request, response })', () => {
+    let request, response, result
+
+    beforeEach(() => {
+      jest.spyOn(subject, 'cacheControlFor')
+    })
+    describe('given a request and a response', () => {
       beforeEach(() => {
         request = Object.freeze({
           method: 'GET',
@@ -13,71 +21,79 @@ describe('call({ request, response })', () => {
         response = {
           status: '200'
         }
+        subject.cacheControlFor.mockReturnValue('example')
       })
       it('returns the unmodified request', async () => {
-        result = await call({ request, response })
+        result = await subject.call({ request, response })
+        expect(subject.cacheControlFor).toBeCalled()
         expect(result.request).toBe(request)
       })
-      it('returns the response with a Cache-Control header, max-age zero', async () => {
-        result = await call({ request, response })
+      it('returns the response with a Cache-Control header', async () => {
+        result = await subject.call({ request, response })
+        expect(subject.cacheControlFor).toBeCalled()
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
             "cache-control": [
               {
                 "key": "Cache-Control",
-                "value": "public, max-age=0",
+                "value": "example",
               },
             ],
           }
         })
       })
     })
-    describe('when request uri starts with /_/', () => {
+    describe('given a request only', () => {
+      beforeEach(() => {
+        request = Object.freeze({
+          method: 'GET',
+          uri: '/'
+        }),
+        response = undefined
+      })
+      it('returns the unmodified request', async () => {
+        result = await subject.call({ request, response })
+        expect(result.request).toBe(request)
+      })
+      it('returns an undefined response', async () => {
+        result = await subject.call({ request, response })
+        expect(result.response).toBeUndefined()
+      })
+    })
+  })
+
+  describe('cacheControlFor({ uri })', () => {
+    let request, response, result
+    describe('given a request where uri starts with /_/', () => {
       beforeEach(() => {
         request = Object.freeze({
           method: 'GET',
           uri: '/_/images/example.png'
-        }),
-          response = {
-            status: '200'
-          }
-      })
-      it('returns the unmodified request', async () => {
-        result = await call({ request, response })
-        expect(result.request).toBe(request)
-      })
-      it('returns the response with a Cache-Control header, max-age 1 year', async () => {
-        result = await call({ request, response })
-        expect(result.response).toMatchObject({
-          headers: {
-            "cache-control": [
-              {
-                "key": "Cache-Control",
-                "value": "public, max-age=31556952",
-              },
-            ],
-          }
+        })
+        response = Object.freeze({
+          status: '200'
         })
       })
+      it('returns public, max-age=31556952', () => {
+        result = subject.cacheControlFor(request)
+        expect(result).toBe("public, max-age=31556952")
+      })
     })
-  })
-  describe('given a request only', () => {
-    beforeEach(() => {
-      request = Object.freeze({
-        method: 'GET',
-        uri: '/'
-      }),
-      response = undefined
-    })
-    it('returns the unmodified request', async () => {
-      result = await call({ request, response })
-      expect(result.request).toBe(request)
-    })
-    it('returns an undefined response', async () => {
-      result = await call({ request, response })
-      expect(result.response).toBeUndefined()
+    describe('given a request where uri does not start with /_/', () => {
+      beforeEach(() => {
+        request = Object.freeze({
+          method: 'GET',
+          uri: '/example.html'
+        })
+        response = Object.freeze({
+          status: '200'
+        })
+      })
+      it('returns public, max-age=0', () => {
+        result = subject.cacheControlFor(request)
+        expect(result).toBe("public, max-age=0")
+      })
     })
   })
 })
-

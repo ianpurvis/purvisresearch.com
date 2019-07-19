@@ -5,8 +5,8 @@ class App {
   }
 
   async call({ request, response }) {
-    for (const call of this.middleware) {
-      ({ request, response } = await call({ request, response }))
+    for (const m of this.middleware) {
+      ({ request, response } = await m.call({ request, response }))
     }
     return response || request
   }
