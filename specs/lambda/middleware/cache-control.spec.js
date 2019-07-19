@@ -63,7 +63,7 @@ describe('CacheControl', () => {
     })
   })
 
-  describe('cacheControlFor({ uri })', () => {
+  describe('cacheControlFor({ request, response })', () => {
     let request, response, result
     describe('given a request where uri starts with /_/', () => {
       beforeEach(() => {
@@ -76,7 +76,7 @@ describe('CacheControl', () => {
         })
       })
       it('returns public, max-age=31556952', () => {
-        result = subject.cacheControlFor(request)
+        result = subject.cacheControlFor({ request, response })
         expect(result).toBe("public, max-age=31556952")
       })
     })
@@ -91,8 +91,23 @@ describe('CacheControl', () => {
         })
       })
       it('returns public, max-age=0', () => {
-        result = subject.cacheControlFor(request)
+        result = subject.cacheControlFor({ request, response })
         expect(result).toBe("public, max-age=0")
+      })
+    })
+    describe('given a response where status is 301', () => {
+      beforeEach(() => {
+        request = Object.freeze({
+          method: 'GET',
+          uri: '/example.html'
+        })
+        response = Object.freeze({
+          status: '301'
+        })
+      })
+      it('returns public, max-age=31556952', () => {
+        result = subject.cacheControlFor({ request, response })
+        expect(result).toBe("public, max-age=31556952")
       })
     })
   })

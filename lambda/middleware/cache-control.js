@@ -2,15 +2,19 @@ import { LambdaEdgeHeaders, SECONDS_PER_YEAR } from './util.js'
 
 class CacheControl {
 
-  cacheControlFor({ uri }) {
-    const maxAge = uri.startsWith('/_/') ? SECONDS_PER_YEAR : 0
+  cacheControlFor({ request, response }) {
+    let maxAge
+    if (response.status == '301' || request.uri.startsWith('/_/'))
+      maxAge = SECONDS_PER_YEAR
+    else
+      maxAge = 0
     return `public, max-age=${maxAge}`
   }
 
   async call({ request, response }) {
     if (response) {
       const headers = LambdaEdgeHeaders({
-        'Cache-Control': this.cacheControlFor(request),
+        'Cache-Control': this.cacheControlFor({ request, response }),
       })
       response.headers = { ...response.headers, ...headers }
     }
