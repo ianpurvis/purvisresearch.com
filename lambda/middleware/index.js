@@ -1,18 +1,21 @@
-'use strict'
+import { App } from './app.js'
+import { Redirection } from './redirection.js'
+import { Headers } from './headers.js'
+import { CacheControl } from './cache-control.js'
+import { ContentSecurityPolicy } from './content-security-policy.js'
 
-const middleware = [
-  './redirection.js',
-  './headers.js',
-  './cache-control.js',
-  './content-security-policy.js',
-].map(require)
 
-exports.handler = async function(event) {
-  let { request, response } = event.Records[0].cf
+async function handler(event) {
+  const { request, response } = event.Records[0].cf
 
-  for (const { call } of middleware) {
-    ({ request, response } = await call({ request, response }))
-  }
+  const app = new App([
+    new Redirection(),
+    new Headers(),
+    new CacheControl(),
+    new ContentSecurityPolicy()
+  ])
 
-  return response || request
+  return app.call({ request, response })
 }
+
+export { handler }

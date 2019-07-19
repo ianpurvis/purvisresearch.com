@@ -1,52 +1,104 @@
 #!/usr/bin/env node
 
 require('dotenv').config()
-const crypto = require('crypto')
-const { promises: fs } = require('fs')
-const glob = require('glob')
+const ChildProcess = require('child_process')
+const Crypto = require('crypto')
 const JSZip = require('jszip')
 const Lambda = require('aws-sdk/clients/lambda')
-const { relative } = require('path')
-const { Readable } = require('stream')
+const MemoryFS = require('memory-fs')
+const Path = require('path')
+const Webpack = require('webpack')
 
-let createCodeSha256 = (buffer) => {
-  let hash = crypto.createHash('sha256')
+const LAMBDA_FUNCTION_NAME = 'purvisresearch-middleware'
+
+const config = {
+  entry: Path.resolve('lambda/middleware/index.js'),
+  mode: process.env.NODE_ENV,
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              '@babel/preset-env',
+              {
+                corejs: 3,
+                targets: {
+                  node: '10.15',
+                },
+                useBuiltIns: 'usage'
+              },
+            ],
+          ],
+        },
+        exclude: /(node_modules)/
+      }
+    ]
+  },
+  output: {
+    filename: 'index.js',
+    libraryTarget: 'commonjs2',
+    path: '/'
+  },
+  resolve: {
+    alias: {
+      '~': Path.resolve(__dirname)
+    }
+  },
+  target: 'node',
+}
+
+function createCodeSha256(buffer) {
+  let hash = Crypto.createHash('sha256')
   hash.update(buffer)
   return hash.digest('base64')
 }
 
-let createDeploymentPackage = async (directory) => {
+async function compileToBuffer(config) {
+  const outputPath = Path.join(config.output.path, config.output.filename)
+  const { memoryfs } = await compileToMemoryFS(config)
+  const buffer = memoryfs.readFileSync(outputPath)
+  return buffer
+}
 
-  let zip = new JSZip()
-
-  console.log(`Creating deployment package...`)
-  for (const path of glob.sync(`${directory}/**/*.js`)) {
-    const [ relativePath, stats, buffer ] =
-      await Promise.all([
-        relative(directory, path),
-        fs.stat(path),
-        fs.readFile(path),
-      ])
-    zip.file(relativePath, buffer, {
-      base64: true,
-      binary: true,
-      unixPermissions: stats.mode,
-      date: stats.mtime,
+async function compileToMemoryFS(config, memoryfs = new MemoryFS()) {
+  const compiler = Webpack(config)
+  compiler.outputFileSystem = memoryfs
+  return new Promise((resolve, reject) => {
+    compiler.run((error, stats) => {
+      if (error) {
+        reject(error)
+      } else if (stats.hasErrors()) {
+        reject(new Error(stats.toJson().errors))
+      } else {
+        resolve({ memoryfs, stats })
+      }
     })
-    console.log(`Zipped ${path}`)
-  }
-
-  return zip.generateAsync({
-    compression: "DEFLATE",
-    compressionOptions: {
-      level: 9,
-    },
-    platform: "UNIX",
-    type: "nodebuffer",
   })
 }
 
-let getRemoteCodeSha256 = async (functionName) => {
+async function exec(command, options) {
+  return new Promise((resolve, reject) => {
+    ChildProcess.exec(command, options, (error, stdout, stderr) => {
+      error ? reject(error) : resolve({ stdout, stderr })
+    })
+  })
+}
+
+async function getMostRecentCommitDate(path) {
+  return exec(`git log -1 --format=%cd ${path}`)
+    .then(({ stdout }) => {
+      const date = new Date(stdout)
+      if (date instanceof Date && !isNaN(date))
+        return date
+      else
+        throw new Error('Could not parse date!')
+    })
+}
+
+async function getRemoteCodeSha256(functionName) {
   return new Lambda()
     .getFunctionConfiguration({
       FunctionName: functionName,
@@ -55,7 +107,7 @@ let getRemoteCodeSha256 = async (functionName) => {
     .then(result => result.CodeSha256)
 }
 
-let updateCode = async (functionName, buffer) => {
+async function updateFunctionCode(functionName, buffer) {
   return new Lambda()
     .updateFunctionCode({
       FunctionName: functionName,
@@ -64,14 +116,33 @@ let updateCode = async (functionName, buffer) => {
     .promise()
 }
 
+async function zipToBuffer(data, options) {
+  return new JSZip()
+    .file("index.js", data, options)
+    .generateAsync({
+      compression: "DEFLATE",
+      compressionOptions: {
+        level: 9,
+      },
+      platform: "UNIX",
+      type: "nodebuffer",
+    })
+}
+
 Promise
   .all([
-    createDeploymentPackage('./lambda/middleware'),
-    getRemoteCodeSha256('purvisresearch-middleware'),
+    compileToBuffer(config),
+    getMostRecentCommitDate(Path.dirname(config.entry)),
   ])
-  .then(([buffer, remoteCodeSha]) => {
-    let localCodeSha = createCodeSha256(buffer)
-
+  .then(([buffer, date]) =>
+    zipToBuffer(buffer, { date })
+  )
+  .then(buffer => Promise.all([
+    buffer,
+    createCodeSha256(buffer),
+    getRemoteCodeSha256(LAMBDA_FUNCTION_NAME),
+  ]))
+  .then(([buffer, localCodeSha, remoteCodeSha]) => {
     console.log(`Comparing code sha values...`)
     console.log(`local:   ${localCodeSha}`)
     console.log(`remote:  ${remoteCodeSha}`)
@@ -79,13 +150,10 @@ Promise
       console.log('Everything up-to-date')
       process.exit()
     }
-
     console.log('Updating function code...')
-    return updateCode('purvisresearch-middleware', buffer)
+    return updateFunctionCode(LAMBDA_FUNCTION_NAME, buffer)
   })
   .then(result =>
     console.log(`Code updated successfully (Revision ID ${result.RevisionId})`)
   )
-  .catch(error => {
-    console.error(error)
-  })
+  .catch(console.error)

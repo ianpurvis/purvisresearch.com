@@ -1,22 +1,25 @@
-'use strict'
+import { LambdaEdgeHeaders, SECONDS_PER_YEAR } from './util.js'
 
-const { LambdaEdgeHeaders, SECONDS_PER_YEAR } = require('./util.js')
+class CacheControl {
 
-function cacheControlFor({uri}) {
-  const maxAge = uri.startsWith('/_/') ? SECONDS_PER_YEAR : 0
-  return `public, max-age=${maxAge}`
-}
-
-async function call({ request, response }) {
-
-  if (response) {
-    const headers = LambdaEdgeHeaders({
-      'Cache-Control': cacheControlFor(request),
-    })
-    response.headers = { ...response.headers, ...headers }
+  cacheControlFor({ request, response }) {
+    let maxAge
+    if (response.status == '301' || request.uri.startsWith('/_/'))
+      maxAge = SECONDS_PER_YEAR
+    else
+      maxAge = 0
+    return `public, max-age=${maxAge}`
   }
 
-  return { request, response }
+  async call({ request, response }) {
+    if (response) {
+      const headers = LambdaEdgeHeaders({
+        'Cache-Control': this.cacheControlFor({ request, response }),
+      })
+      response.headers = { ...response.headers, ...headers }
+    }
+    return { request, response }
+  }
 }
 
-module.exports = { call }
+export { CacheControl }

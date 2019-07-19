@@ -8,4 +8,4 @@ function LambdaEdgeHeaders(headers) {
     }), {})
 }
 
-module.exports = { LambdaEdgeHeaders, SECONDS_PER_YEAR }
+export { LambdaEdgeHeaders, SECONDS_PER_YEAR }
