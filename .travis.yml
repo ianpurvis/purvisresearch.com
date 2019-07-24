@@ -2,10 +2,6 @@ branches:
   only:
     - master
 language: node_js
-node_js:
-  - "8"
-  - "10"
-  - "12"
 script:
   - bin/lint
   - bin/build
