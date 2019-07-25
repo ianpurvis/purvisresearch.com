@@ -6,7 +6,7 @@ import { ContentSecurityPolicy } from '~/lambda/middleware/content-security-poli
 import { Headers } from '~/lambda/middleware/headers.js'
 import { Redirection } from '~/lambda/middleware/redirection.js'
 import { handler } from '~/lambda/middleware/index.js'
-import { originRequestEvent } from '~/specs/fixtures'
+import { originRequestEvent } from '~/spec/fixtures'
 
 describe('handler(event)', () => {
   let event, result

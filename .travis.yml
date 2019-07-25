@@ -1,0 +1,8 @@
+branches:
+  only:
+    - master
+language: node_js
+script:
+  - bin/lint
+  - bin/build
+  - bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'

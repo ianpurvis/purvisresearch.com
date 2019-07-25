@@ -171,6 +171,8 @@ export default {
     }
   },
 
+  srcDir: 'app',
+
   'google-analytics': {
     id: 'UA-106821101-1',
     debug: {
