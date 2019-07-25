@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     browser: true,
+    es6: true,
     node: true
   },
   overrides: [
@@ -25,7 +26,8 @@ module.exports = {
     }
   ],
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    sourceType: 'module',
   },
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
