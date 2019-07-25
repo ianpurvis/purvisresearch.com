@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ianpurvis/purvisresearch.com.svg?branch=master)](https://travis-ci.org/ianpurvis/purvisresearch.com)
+[![codecov](https://codecov.io/gh/ianpurvis/purvisresearch.com/branch/master/graph/badge.svg)](https://codecov.io/gh/ianpurvis/purvisresearch.com)
 
 # purvisresearch.com
 
