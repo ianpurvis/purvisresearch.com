@@ -1,4 +1,10 @@
+import Path from 'path'
 const isProduction = (process.env.NODE_ENV === 'production')
+
+function name(file) {
+  const imagePath = Path.relative('app/assets/images', Path.dirname(file))
+  return Path.join('img', imagePath, '[name].[ext]?[hash:7]')
+}
 
 export default {
   /*
@@ -52,10 +58,16 @@ export default {
                   resourceQuery: /as=file/,
                   loader: 'file-loader',
                   options: {
-                    name: rule.use[0].options.name
+                    name
                   }
                 },
-                rule.use[0]
+                {
+                  ...rule.use[0],
+                  options: {
+                    ...rule.use[0].options,
+                    name
+                  }
+                }
               ]
             }
           }
