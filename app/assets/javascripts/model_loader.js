@@ -1,6 +1,6 @@
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import DracoDecoderModule from 'three/examples/js/libs/draco/gltf/draco_decoder.js'
+import DracoDecoderModule from 'draco3dgltf/draco_decoder_gltf_nodejs.js'
 
 export default class ModelLoader extends GLTFLoader {
 
