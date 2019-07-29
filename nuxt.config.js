@@ -1,4 +1,5 @@
 import Path from 'path'
+import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
 
 function name(file) {
@@ -193,21 +194,5 @@ export default {
     }
   },
 
-  sitemap: {
-    exclude: [
-      '/404',
-    ],
-    filter: ({ routes }) =>
-      routes.map(({url, ...attributes}) =>
-        ({
-          url: (url === '/') ? String() : `${url}.html`,
-          ...attributes
-        })
-      ),
-    hostname: 'https://purvisresearch.com',
-    routes: [{
-      url: '/',
-      priority: 1
-    }]
-  }
+  sitemap: sitemapConfig
 }
