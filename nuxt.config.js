@@ -42,6 +42,11 @@ export default {
       sourceType: 'unambiguous',
     },
     extend (config, { isDev, isClient, loaders }) {
+
+      if (isClient && !isProduction) {
+        config.devtool = '#source-map'
+      }
+
       config.node = {
         fs: "empty"
       }
