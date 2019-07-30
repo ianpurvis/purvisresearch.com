@@ -1,4 +1,11 @@
+import Path from 'path'
+import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
+
+function name(file) {
+  const imagePath = Path.relative('app/assets/images', Path.dirname(file))
+  return Path.join('img', imagePath, '[name].[ext]?[hash:7]')
+}
 
 export default {
   /*
@@ -52,10 +59,16 @@ export default {
                   resourceQuery: /as=file/,
                   loader: 'file-loader',
                   options: {
-                    name: rule.use[0].options.name
+                    name
                   }
                 },
-                rule.use[0]
+                {
+                  ...rule.use[0],
+                  options: {
+                    ...rule.use[0].options,
+                    name
+                  }
+                }
               ]
             }
           }
@@ -181,21 +194,5 @@ export default {
     }
   },
 
-  sitemap: {
-    exclude: [
-      '/404',
-    ],
-    filter: ({ routes }) =>
-      routes.map(({url, ...attributes}) =>
-        ({
-          url: (url === '/') ? String() : `${url}.html`,
-          ...attributes
-        })
-      ),
-    hostname: 'https://purvisresearch.com',
-    routes: [{
-      url: '/',
-      priority: 1
-    }]
-  }
+  sitemap: sitemapConfig
 }
