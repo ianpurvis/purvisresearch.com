@@ -40,7 +40,7 @@
     "frack-loader": "^1.0.0",
     "jest": "^24.8.0",
     "jszip": "^3.2.2",
-    "lighthouse": "^5.1.0",
+    "lighthouse": "^5.2.0",
     "memory-fs": "^0.4.1",
     "node-inspect": "^1.11.6",
     "node-sass": "^4.12.0",
