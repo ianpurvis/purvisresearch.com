@@ -5,7 +5,7 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
-import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
+import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import graphix from '~/mixins/graphix.js'
 
 export default {
