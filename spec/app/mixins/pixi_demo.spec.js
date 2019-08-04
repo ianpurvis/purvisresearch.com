@@ -54,6 +54,8 @@ describe('pixi_demo', () => {
     })
   })
   describe('methods', () => {
+    let result
+
     describe('animate()', () => {
       let mockAnimationFrameRequestId
 
@@ -125,8 +127,6 @@ describe('pixi_demo', () => {
       })
     })
     describe('deltaTime()', () => {
-      let result
-
       it('returns elapsed clock ms multiplied by the speed of life', () => {
           mockData = {
             clock: {
@@ -142,8 +142,6 @@ describe('pixi_demo', () => {
       })
     })
     describe('frame()', () => {
-      let result
-
       it('returns the canvas height, width, and aspect', () => {
         mockRefs = {
           canvas: {
@@ -162,8 +160,6 @@ describe('pixi_demo', () => {
       })
     })
     describe('importPIXI()', () => {
-      let result
-
       it([
         'dynamically imports pixi components',
         'installs @pixi/unsafe-eval',
@@ -182,8 +178,6 @@ describe('pixi_demo', () => {
       })
     })
     describe('load()', () => {
-      let result
-
       describe('when webgl is available', () => {
         it('imports pixi and initializes the renderer, clock, and scene', async () => {
           mockMethods = {
@@ -351,6 +345,13 @@ describe('pixi_demo', () => {
           expect(global.window.cancelAnimationFrame)
             .toHaveBeenCalledWith(mockData.animationFrame)
         })
+      })
+    })
+    describe('update()', () => {
+      it('does nothing', () => {
+        wrapper = shallowMountPixiDemo()
+        result = wrapper.vm.update()
+        expect(result).toBeUndefined()
       })
     })
   })
