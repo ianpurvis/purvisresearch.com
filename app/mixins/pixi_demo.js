@@ -13,7 +13,8 @@ export default {
       clock: null,
       elapsedTime: 0,
       scene: null,
-      speedOfLife: 1.0
+      speedOfLife: 1.0,
+      ticker: null
     }
   },
   methods: {
