@@ -94,8 +94,8 @@ export default {
       this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     stopAnimating() {
-      if (!this.animationFrame) return
       this.clock.stop()
+      if (!this.animationFrame) return
       window.cancelAnimationFrame(this.animationFrame)
     },
     update() {

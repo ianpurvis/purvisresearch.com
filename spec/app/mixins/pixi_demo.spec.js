@@ -332,10 +332,10 @@ describe('pixi_demo', () => {
         global.window.cancelAnimationFrame = jest.fn()
       })
       describe('when animationFrame is not present', () => {
-        it('does nothing', () => {
+        it('stops the clock only', () => {
           wrapper.vm.stopAnimating()
           expect(mockData.clock.stop)
-            .not.toHaveBeenCalled()
+            .toHaveBeenCalled()
           expect(global.window.cancelAnimationFrame)
             .not.toHaveBeenCalled()
         })
