@@ -117,26 +117,25 @@ export default {
       )
     },
     load() {
-      return this.loader.parse(Basket)
-        .then(gltf => {
-          this.basket = gltf.scene.children[0]
-          this.basket.position.set(0,0,0)
-          this.basket.geometry.center()
-          this.basket.material.depthTest = false
-          this.basket.material.transparent = true
-          this.scene.add(this.basket)
+      return Promise.all([
+        ThreeDemo.methods.load.call(this),
+        this.loader.parse(Basket),
+      ]).then(([, gltf]) => {
+        this.basket = gltf.scene.children[0]
+        this.basket.position.set(0,0,0)
+        this.basket.geometry.center()
+        this.basket.material.depthTest = false
+        this.basket.material.transparent = true
+        this.scene.add(this.basket)
 
-          let wireframe = new WireframeGeometry(this.basket.geometry)
-          this.clone = new LineSegments(wireframe)
-          this.clone.rotation.copy(this.basket.rotation)
-          this.clone.material.depthTest = false
-          this.clone.material.side = DoubleSide
-          this.clone.material.transparent = true
-          this.scene.add(this.clone)
-        })
-        .catch((error) => {
-          console.error(`An error happened ${error}`)
-        })
+        let wireframe = new WireframeGeometry(this.basket.geometry)
+        this.clone = new LineSegments(wireframe)
+        this.clone.rotation.copy(this.basket.rotation)
+        this.clone.material.depthTest = false
+        this.clone.material.side = DoubleSide
+        this.clone.material.transparent = true
+        this.scene.add(this.clone)
+      })
     },
     update() {
       let deltaTime = this.deltaTime()
@@ -165,7 +164,9 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout)
+    this.load().then(this.layout).catch((error) => {
+      console.error(`An error happened ${error}`)
+    })
   }
 }
 

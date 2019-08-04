@@ -67,7 +67,9 @@ export default {
       this.camera.position.z = Random.rand({min: 100, max: 150})
     },
     load() {
-      return new Promise(resolve => {
+      return Promise.resolve(
+        ThreeDemo.methods.load.call(this)
+      ).then(() => {
         this.alphabet.forEach(character => {
           let geometry = new TextBufferGeometry(character, {
             font: this.font
@@ -110,7 +112,6 @@ export default {
           this.particles.push(particle)
           this.scene.add(mesh)
         })
-        resolve()
       })
     },
     update() {

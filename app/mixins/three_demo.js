@@ -53,6 +53,26 @@ export default {
     deltaTime() {
       return this.clock.getDelta() * this.speedOfLife
     },
+    load() {
+      if (!isWebGLAvailable()) {
+        let message = [
+          'Your device does not seem to support WebGL.',
+          'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
+        ].join('\n')
+        console.warn(message)
+        return
+      }
+      this.renderer = new WebGLRenderer({
+        alpha: true,
+        antialias: false,
+        canvas: this.$refs.canvas,
+      })
+      let pixelRatio = Math.max(window.devicePixelRatio, 2)
+      this.renderer.setPixelRatio(pixelRatio)
+      let { height, width } = this.frame()
+      this.renderer.setSize(width, height, false)
+      this.startAnimating()
+    },
     render() {
       this.resize()
       this.renderer.render(this.scene, this.camera)
@@ -101,24 +121,4 @@ export default {
   mixins: [
     graphix
   ],
-  mounted() {
-    if (!isWebGLAvailable()) {
-      let message = [
-        'Your device does not seem to support WebGL.',
-        'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-      ].join('\n')
-      console.warn(message)
-      return
-    }
-    this.renderer = new WebGLRenderer({
-      alpha: true,
-      antialias: false,
-      canvas: this.$refs.canvas,
-    })
-    let pixelRatio = Math.max(window.devicePixelRatio, 2)
-    this.renderer.setPixelRatio(pixelRatio)
-    let { height, width } = this.frame()
-    this.renderer.setSize(width, height, false)
-    this.startAnimating()
-  }
 }

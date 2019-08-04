@@ -102,10 +102,11 @@ export default {
       return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
     },
     load() {
-      this.loadCamera()
-      this.loadAmbientLight()
-      this.loadSubfloor()
-      return this.loadFloor()
+      return Promise.resolve(ThreeDemo.methods.load.call(this))
+        .then(this.loadCamera)
+        .then(this.loadAmbientLight)
+        .then(this.loadSubfloor)
+        .then(this.loadFloor)
         .then(() => Promise.all([
           this.loadNekoTV(),
           this.loadScreen(),
