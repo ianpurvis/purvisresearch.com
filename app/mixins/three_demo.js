@@ -8,10 +8,15 @@ import {
 import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import graphix from '~/mixins/graphix.js'
 
+const safeDispose = (object) => {
+  if (object != null && typeof object.dispose === 'function') {
+    object.dispose()
+  }
+}
+
 export default {
   beforeDestroy() {
     this.stopAnimating()
-    if (!this.renderer) return
     this.dispose()
   },
   data() {
@@ -31,24 +36,23 @@ export default {
       this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     dispose() {
-      const safeDispose = (object) => {
-        if (object != null && typeof object.dispose === 'function') {
-          object.dispose()
-        }
-      }
-      this.scene.traverse((node) => {
-        [].concat(node.material).forEach(material => {
-          if (material == null) return
-          Object.values(material).forEach(safeDispose)
-          safeDispose(material)
+      if (this.scene) {
+        this.scene.traverse((node) => {
+          [].concat(node.material).forEach(material => {
+            if (material == null) return
+            Object.values(material).forEach(safeDispose)
+            safeDispose(material)
+          })
+          safeDispose(node.geometry)
+          safeDispose(node)
         })
-        safeDispose(node.geometry)
-        safeDispose(node)
-      })
-      safeDispose(this.scene)
-      let renderTarget = this.renderer.getRenderTarget()
-      safeDispose(renderTarget)
-      safeDispose(this.renderer)
+        safeDispose(this.scene)
+      }
+      if (this.renderer) {
+        let renderTarget = this.renderer.getRenderTarget()
+        safeDispose(renderTarget)
+        safeDispose(this.renderer)
+      }
     },
     deltaTime() {
       return this.clock.getDelta() * this.speedOfLife
