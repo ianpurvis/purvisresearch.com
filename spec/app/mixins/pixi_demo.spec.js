@@ -25,31 +25,29 @@ import { install } from '@pixi/unsafe-eval'
 import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import { shallowMount } from '@vue/test-utils'
 
-const shallowMountPixiDemo = (options = {}) => shallowMount({
-  render: jest.fn()
-}, {
-  mixins: [
-    pixiDemo
-  ],
-  ...options
-})
 
 describe('pixi_demo', () => {
-  let wrapper, mockData, mockMethods, mockRefs
+  let component, wrapper
 
+  beforeEach(() => {
+    component = {
+      mixins: [
+        pixiDemo
+      ],
+      render: jest.fn()
+    }
+  })
   describe('hooks', () => {
     describe('beforeDestroy()', () => {
       it('stops animating and disposes pixi resources', () => {
-        mockMethods = {
+        component.methods = {
           dispose: jest.fn(),
           stopAnimating: jest.fn()
         }
-        wrapper = shallowMountPixiDemo({
-          methods: mockMethods
-        })
+        wrapper = shallowMount(component)
         wrapper.destroy()
-        expect(mockMethods.stopAnimating).toHaveBeenCalled()
-        expect(mockMethods.dispose).toHaveBeenCalled()
+        expect(component.methods.stopAnimating).toHaveBeenCalled()
+        expect(component.methods.dispose).toHaveBeenCalled()
       })
     })
   })
@@ -60,21 +58,19 @@ describe('pixi_demo', () => {
       let mockAnimationFrameRequestId
 
       it('updates, renders, and requests an animation frame callback to itself', () => {
-        mockMethods = {
+        component.methods = {
           update: jest.fn(),
           render: jest.fn()
         }
-        wrapper = shallowMountPixiDemo({
-          methods: mockMethods
-        })
         mockAnimationFrameRequestId = 'example'
         global.window.requestAnimationFrame =
           jest.fn(() => mockAnimationFrameRequestId)
 
+        wrapper = shallowMount(component)
         wrapper.vm.animate()
-        expect(mockMethods.update)
+        expect(component.methods.update)
           .toHaveBeenCalled()
-        expect(mockMethods.render)
+        expect(component.methods.render)
           .toHaveBeenCalled()
         expect(global.window.requestAnimationFrame)
           .toHaveBeenCalledWith(wrapper.vm.animate)
@@ -85,77 +81,69 @@ describe('pixi_demo', () => {
     describe('dispose()', () => {
       describe('when renderer is present', () => {
         it('destroys the renderer', () => {
-          mockData = {
+          component.data = () => ({
             renderer: {
               destroy: jest.fn()
-            },
-          }
-          wrapper = shallowMountPixiDemo({
-            data: () => mockData
+            }
           })
+          wrapper = shallowMount(component)
           wrapper.vm.dispose()
-          expect(mockData.renderer.destroy).toHaveBeenCalled()
+          expect(wrapper.vm.renderer.destroy).toHaveBeenCalled()
         })
       })
       describe('when scene is present', () => {
         it('destroys the scene', () => {
-          mockData = {
+          component.data = () => ({
             scene: {
               destroy: jest.fn()
-            },
-          }
-          wrapper = shallowMountPixiDemo({
-            data: () => mockData
+            }
           })
+          wrapper = shallowMount(component)
           wrapper.vm.dispose()
-          expect(mockData.scene.destroy).toHaveBeenCalledWith(true)
+          expect(wrapper.vm.scene.destroy).toHaveBeenCalledWith(true)
         })
       })
       describe('when ticker is present', () => {
         it('destroys the ticker', () => {
-          mockData = {
+          component.data = () => ({
             ticker: {
               destroy: jest.fn()
             },
-          }
-          wrapper = shallowMountPixiDemo({
-            data: () => mockData
           })
+          wrapper = shallowMount(component)
           wrapper.vm.dispose()
-          expect(mockData.ticker.destroy).toHaveBeenCalled()
+          expect(wrapper.vm.ticker.destroy).toHaveBeenCalled()
         })
       })
     })
     describe('deltaTime()', () => {
       it('returns elapsed clock ms multiplied by the speed of life', () => {
-          mockData = {
+          component.data = () => ({
             clock: {
               elapsedMS: 100
             },
             speedOfLife: 0.5
-          }
-          wrapper = shallowMountPixiDemo({
-            data: () => mockData
           })
+          wrapper = shallowMount(component)
           result = wrapper.vm.deltaTime()
-          expect(result).toBe(mockData.clock.elapsedMS * mockData.speedOfLife)
+          expect(result).toBe(50)
       })
     })
     describe('frame()', () => {
+      let mockCanvas
+
       it('returns the canvas height, width, and aspect', () => {
-        mockRefs = {
-          canvas: {
-            clientHeight: 100,
-            clientWidth: 100,
-          }
+        mockCanvas = {
+          clientHeight: 100,
+          clientWidth: 100,
         }
-        wrapper = shallowMountPixiDemo()
-        wrapper.vm.$refs = mockRefs
+        wrapper = shallowMount(component)
+        wrapper.vm.$refs.canvas = mockCanvas
         result = wrapper.vm.frame()
         expect(result).toStrictEqual({
-          height: mockRefs.canvas.clientHeight,
-          width: mockRefs.canvas.clientWidth,
-          aspect: mockRefs.canvas.clientWidth / mockRefs.canvas.clientHeight
+          height: mockCanvas.clientHeight,
+          width: mockCanvas.clientWidth,
+          aspect: mockCanvas.clientWidth / mockCanvas.clientHeight
         })
       })
     })
@@ -166,7 +154,7 @@ describe('pixi_demo', () => {
         'registers the batch renderer plugin',
         'and resolves with Container, Renderer, and Ticker'
       ].join(', '), async () => {
-        wrapper = shallowMountPixiDemo()
+        wrapper = shallowMount(component)
         result = wrapper.vm.importPIXI()
         await expect(result)
           .resolves
@@ -180,7 +168,7 @@ describe('pixi_demo', () => {
     describe('load()', () => {
       describe('when webgl is available', () => {
         it('imports pixi and initializes the renderer, clock, and scene', async () => {
-          mockMethods = {
+          component.methods = {
             frame: jest.fn().mockReturnValue({
               height: 'mockHeight',
               width: 'mockWidth'
@@ -191,29 +179,24 @@ describe('pixi_demo', () => {
               Ticker
             }),
           }
-          mockRefs = {
-            canvas: 'mockCanvas'
-          }
           isWebGLAvailable.mockReturnValue(true)
           window.devicePixelRatio = 'mockDevicePixelRatio'
           global.Math.max = jest.fn().mockReturnValue('mockPixelRatio')
 
-          wrapper = shallowMountPixiDemo({
-            methods: mockMethods,
-          })
-          wrapper.vm.$refs = mockRefs
+          wrapper = shallowMount(component)
+          wrapper.vm.$refs.canvas = 'mockCanvas'
 
           result = wrapper.vm.load()
           await expect(result).resolves
           expect(isWebGLAvailable).toHaveBeenCalled()
-          expect(mockMethods.importPIXI).toHaveBeenCalled()
-          expect(mockMethods.frame).toHaveBeenCalled()
+          expect(component.methods.importPIXI).toHaveBeenCalled()
+          expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
           expect(Renderer).toHaveBeenCalledWith({
             height: 'mockHeight',
             resolution: 'mockPixelRatio',
             transparent: true,
-            view: mockRefs.canvas,
+            view: 'mockCanvas',
             width: 'mockWidth',
           })
           expect(wrapper.vm.renderer).toBe(Renderer.mock.instances[0])
@@ -227,7 +210,7 @@ describe('pixi_demo', () => {
         it('logs a console warning and returns', () => {
           isWebGLAvailable.mockReturnValue(false)
           global.console.warn = jest.fn()
-          wrapper = shallowMountPixiDemo()
+          wrapper = shallowMount(component)
           result = wrapper.vm.load()
           expect(isWebGLAvailable)
             .toHaveBeenCalled()
@@ -239,23 +222,20 @@ describe('pixi_demo', () => {
     })
     describe('render()', () => {
       it('resizes and renders the scene', () => {
-        mockData = {
+        component.data = () => ({
           renderer: {
             render: jest.fn()
           },
           scene: 'example'
-        }
-        mockMethods = {
+        })
+        component.methods = {
           resize: jest.fn()
         }
-        wrapper = shallowMountPixiDemo({
-          data: () => mockData,
-          methods: mockMethods
-        })
+        wrapper = shallowMount(component)
         wrapper.vm.render()
-        expect(mockMethods.resize).toHaveBeenCalled()
-        expect(mockData.renderer.render)
-          .toHaveBeenCalledWith(mockData.scene)
+        expect(component.methods.resize).toHaveBeenCalled()
+        expect(wrapper.vm.renderer.render)
+          .toHaveBeenCalledWith(wrapper.vm.scene)
       })
     })
     describe('resize()', () => {
@@ -266,21 +246,18 @@ describe('pixi_demo', () => {
           height: 100,
           width: 100
         }
-        mockData = {
+        component.data = () => ({
           renderer: {
             resize: jest.fn()
           }
-        }
-        mockMethods = {
+        })
+        component.methods = {
           frame: jest.fn(() => mockFrame)
         }
-        wrapper = shallowMountPixiDemo({
-          data: () => mockData,
-          methods: mockMethods
-        })
+        wrapper = shallowMount(component)
         wrapper.vm.resize()
-        expect(mockMethods.frame).toHaveBeenCalled()
-        expect(mockData.renderer.resize)
+        expect(component.methods.frame).toHaveBeenCalled()
+        expect(wrapper.vm.renderer.resize)
           .toHaveBeenCalledWith(mockFrame.width, mockFrame.height)
       })
     })
@@ -292,20 +269,18 @@ describe('pixi_demo', () => {
         'requests an animation frame callback to animate',
         'and stores the request id'
       ].join(', '), () => {
-        mockData = {
+        component.data = () => ({
           clock: {
             start: jest.fn()
           }
-        }
-        wrapper = shallowMountPixiDemo({
-          data: () => mockData,
         })
         mockAnimationFrameRequestId = 'example'
         global.window.requestAnimationFrame =
           jest.fn(() => mockAnimationFrameRequestId)
 
+        wrapper = shallowMount(component)
         wrapper.vm.startAnimating()
-        expect(mockData.clock.start)
+        expect(wrapper.vm.clock.start)
           .toHaveBeenCalled()
         expect(global.window.requestAnimationFrame)
           .toHaveBeenCalledWith(wrapper.vm.animate)
@@ -314,21 +289,22 @@ describe('pixi_demo', () => {
       })
     })
     describe('stopAnimating()', () => {
+      let mockAnimationFrameRequestId
+
       beforeEach(() => {
-        mockData = {
+        component.data = () => ({
           clock: {
             stop: jest.fn()
           }
-        }
-        wrapper = shallowMountPixiDemo({
-          data: () => mockData,
         })
+        wrapper = shallowMount(component)
         global.window.cancelAnimationFrame = jest.fn()
       })
       describe('when animationFrame is not present', () => {
         it('stops the clock only', () => {
+          wrapper.setData({ animationFrame: null })
           wrapper.vm.stopAnimating()
-          expect(mockData.clock.stop)
+          expect(wrapper.vm.clock.stop)
             .toHaveBeenCalled()
           expect(global.window.cancelAnimationFrame)
             .not.toHaveBeenCalled()
@@ -336,20 +312,18 @@ describe('pixi_demo', () => {
       })
       describe('when animationFrame is present', () => {
         it('stops the clock and cancels the animation frame', () => {
-          mockData.animationFrame = 'example'
-          wrapper.setData(mockData)
-
+          wrapper.setData({ animationFrame: 'mockAnimationFrame' })
           wrapper.vm.stopAnimating()
-          expect(mockData.clock.stop)
+          expect(wrapper.vm.clock.stop)
             .toHaveBeenCalled()
           expect(global.window.cancelAnimationFrame)
-            .toHaveBeenCalledWith(mockData.animationFrame)
+            .toHaveBeenCalledWith(wrapper.vm.animationFrame)
         })
       })
     })
     describe('update()', () => {
       it('does nothing', () => {
-        wrapper = shallowMountPixiDemo()
+        wrapper = shallowMount(component)
         result = wrapper.vm.update()
         expect(result).toBeUndefined()
       })

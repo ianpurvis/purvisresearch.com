@@ -5,69 +5,67 @@ import { shallowMount } from '@vue/test-utils'
 
 
 describe('debug', () => {
+  let component, wrapper
 
-  const shallowMountDebug = (options) => shallowMount({
-    render: jest.fn()
-  }, {
-    attachToDocument: true,
-    mixins: [
-      debug
-    ],
-    ...options
+  beforeEach(() => {
+    component = {
+      mixins: [
+        debug
+      ],
+      render: jest.fn()
+    }
   })
-
-  let wrapper, spy
-
-  afterEach(() => {
-    wrapper.destroy()
-  })
-
   describe('beforeDestroy()', () => {
     it('it removes handleKeyup from window keyup', () => {
-      spy = jest.spyOn(window, 'removeEventListener')
-      wrapper = shallowMountDebug()
+      global.window.removeEventListener = jest.fn()
+      wrapper = shallowMount(component, {
+        mounted: jest.fn()
+      })
       wrapper.destroy()
-      expect(spy).toHaveBeenCalledWith('keyup', wrapper.vm.handleKeyup)
+      expect(global.window.removeEventListener)
+        .toHaveBeenCalledWith('keyup', wrapper.vm.handleKeyup)
     })
   })
   describe('mounted()', () => {
     it('it adds handleKeyup to window keyup', () => {
-      spy = jest.spyOn(window, 'addEventListener')
-      wrapper = shallowMountDebug()
-      expect(spy).toHaveBeenCalledWith('keyup', wrapper.vm.handleKeyup)
+      global.window.addEventListener = jest.fn()
+      wrapper = shallowMount(component)
+      expect(global.window.addEventListener)
+        .toHaveBeenCalledWith('keyup', wrapper.vm.handleKeyup)
     })
   })
   describe('methods', () => {
     describe('handleKeyup(event)', () => {
-      let event, mockMethods
+      let event
 
       beforeEach(() => {
-        mockMethods = {
+        component.methods = {
           toggleDebugMode: jest.fn()
         }
-        wrapper = shallowMountDebug({ methods: mockMethods })
+        wrapper = shallowMount(component)
       })
       describe('when event prevents default', () => {
         it('it does nothing', () => {
           event = { defaultPrevented: true }
           wrapper.vm.handleKeyup(event)
-          expect(mockMethods.toggleDebugMode).not.toHaveBeenCalled()
+          expect(component.methods.toggleDebugMode).not.toHaveBeenCalled()
         })
       })
       describe('when event key is \'d\'', () => {
         it('it toggles debug mode', () => {
           event = { defaultPrevented: false, key: 'd' }
           wrapper.vm.handleKeyup(event)
-          expect(mockMethods.toggleDebugMode).toHaveBeenCalled()
+          expect(component.methods.toggleDebugMode).toHaveBeenCalled()
         })
       })
     })
     describe('toggleDebugMode()', () => {
       it('toggles the debug attribute on the window document element', () => {
-        document.documentElement.toggleAttribute = jest.fn()
-        wrapper = shallowMountDebug()
+        global.document.documentElement.toggleAttribute = jest.fn()
+        wrapper = shallowMount(component)
         wrapper.vm.toggleDebugMode()
-        expect(document.documentElement.toggleAttribute).toHaveBeenCalledWith('debug')
+        expect(global.document.documentElement.toggleAttribute)
+          .toHaveBeenCalledWith('debug')
       })
     })
   })

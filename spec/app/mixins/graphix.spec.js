@@ -6,18 +6,18 @@ import unobfuscate from '~/directives/unobfuscate.js'
 import graphix from '~/mixins/graphix.js'
 import { shallowMount } from '@vue/test-utils'
 
-const shallowMountGraphix = (options = {}) => shallowMount({
-  render: jest.fn()
-}, {
-  mixins: [
-    graphix
-  ],
-  ...options
-})
 
 describe('graphix', () => {
-  let wrapper
+  let component, wrapper
 
+  beforeEach(() => {
+    component = {
+      mixins: [
+        graphix
+      ],
+      render: jest.fn()
+    }
+  })
   describe('directives', () => {
     let directives
 
@@ -37,9 +37,8 @@ describe('graphix', () => {
 
       describe('given a value string with spaces', () => {
         it('returns the string with spaces replaced by scoped underscore spans', () => {
-          wrapper = shallowMountGraphix({
-            _scopeId: 'example-scope'
-          })
+          component._scopeId = 'example-scope'
+          wrapper = shallowMount(component)
           value = 'snake example'
           result = wrapper.vm.snake(value)
           expect(result).toBe('snake<span class="underscore" example-scope>&nbsp;</span>example')
