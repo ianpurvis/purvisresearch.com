@@ -137,9 +137,6 @@ export default {
         this.emitter = new Emitter(this.scene, this.textures, options)
       })
     },
-    snake(value) {
-      return value.replace(/\s/g, `<span class="underscore" ${this.$options._scopeId}>&nbsp;</span>`)
-    },
     update() {
       let deltaTime = this.deltaTime()
       if (deltaTime == 0) return

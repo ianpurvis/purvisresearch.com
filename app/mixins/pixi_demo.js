@@ -1,4 +1,4 @@
-import { isWebGLAvailable } from 'exports-loader?WEBGL!three/examples/js/WebGL.js'
+import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import Graphix from '~/mixins/graphix.js'
 
 export default {
@@ -13,7 +13,8 @@ export default {
       clock: null,
       elapsedTime: 0,
       scene: null,
-      speedOfLife: 1.0
+      speedOfLife: 1.0,
+      ticker: null
     }
   },
   methods: {
@@ -93,8 +94,8 @@ export default {
       this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     stopAnimating() {
-      if (!this.animationFrame) return
       this.clock.stop()
+      if (!this.animationFrame) return
       window.cancelAnimationFrame(this.animationFrame)
     },
     update() {

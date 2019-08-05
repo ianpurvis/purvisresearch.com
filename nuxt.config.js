@@ -94,6 +94,14 @@ export default {
         exclude: /(node_modules)/
       })
 
+      // Shim export for three WebGL funcs
+      config.module.rules.push({
+        test: /three\/examples\/js\/WebGL\.js$/,
+        include: /(node_modules)\/three/,
+        loader: 'exports-loader',
+        options: 'WEBGL',
+      })
+
       // Optimize svg files
       config.module.rules.push({
         test: /\.svg$/,

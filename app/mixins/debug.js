@@ -5,7 +5,7 @@ export default {
     window.removeEventListener('keyup', this.handleKeyup)
   },
   methods: {
-    handleKeyup() {
+    handleKeyup(event) {
       if (event.defaultPrevented) return
       switch (event.key) {
         case 'd': this.toggleDebugMode()
