@@ -1,9 +1,9 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
-import { BezierTexture } from '~/assets/javascripts/bezier_texture.js'
-import Oscillator from '~/assets/javascripts/oscillator.js'
-import * as Random from '~/assets/javascripts/random.js'
-import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
-import organization from '~/structured_data/organization.js'
+import { BezierTexture } from '~/models/bezier_texture.js'
+import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
+import organization from '~/models/organization.js'
+import Oscillator from '~/models/oscillator.js'
+import * as Random from '~/models/random.js'
 
 export default {
   data () {

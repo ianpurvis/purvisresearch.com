@@ -1,4 +1,4 @@
-import { rand } from '~/assets/javascripts/random.js'
+import { rand } from '~/models/random.js'
 
 class BezierCurve {
   constructor({

@@ -6,11 +6,11 @@ import {
   TextBufferGeometry,
   Vector3
 } from 'three'
-import AlphabetParticle from '~/assets/javascripts/alphabet_particle.js'
-import * as Random from '~/assets/javascripts/random.js'
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
-import organization from '~/structured_data/organization.js'
+import AlphabetParticle from '~/models/alphabet_particle.js'
+import organization from '~/models/organization.js'
+import * as Random from '~/models/random.js'
 
 export default {
   beforeDestroy() {

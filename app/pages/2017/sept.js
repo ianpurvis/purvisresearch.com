@@ -1,6 +1,6 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
-import organization from '~/structured_data/organization.js'
-import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
+import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
+import organization from '~/models/organization.js'
 
 export default {
   data() {
@@ -57,12 +57,10 @@ export default {
     load() {
       return Promise.all([
         PixiDemo.methods.load.call(this),
-        import(/* webpackMode: "eager" */"@pixi/text"),
-        import(/* webpackMode: "eager" */"pixi-particles")
+        import('~/shims/pixi.js'),
       ]).then(([
         ,
-        {Text},
-        {Emitter}
+        { Emitter, RenderTexture, Text },
       ]) => {
         Array
           .from("💾📀")
@@ -71,14 +69,14 @@ export default {
           }))
           .forEach(text => {
             // Pre-render texture and discard the text:
-            text.visible = false
-            text.render(this.renderer)
-            this.textures.push(text.texture)
-            text.destroy({
-              children: true,
-              texture: false,
-              baseTexture: true,
+            let texture = RenderTexture.create({
+              height: 32,
+              width: 32,
+              resolution: this.renderer.resolution
             })
+            this.renderer.render(text, texture)
+            this.textures.push(texture)
+            text.destroy(true)
           })
 
         let options = {

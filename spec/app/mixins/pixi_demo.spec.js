@@ -1,28 +1,17 @@
-jest.mock('three/examples/js/WebGL.js')
-jest.mock('~/mixins/graphix.js')
-jest.mock('@pixi/core', () => {
-  let module = {
-    BatchRenderer: jest.fn(),
-    Renderer: jest.fn(),
-    systems: jest.fn()
-  }
-  module.Renderer.registerPlugin = jest.fn()
-  return module
-})
-jest.mock('@pixi/display')
-jest.mock('@pixi/ticker')
-jest.mock('@pixi/unsafe-eval')
 jest.mock('three/examples/js/WebGL.js', () => ({
   isWebGLAvailable: jest.fn()
 }))
+jest.mock('~/mixins/graphix.js')
+jest.mock('~/shims/pixi.js', () => ({
+  Container: jest.fn(),
+  Renderer: jest.fn(),
+  Ticker: jest.fn(),
+}))
 
+import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import graphix from '~/mixins/graphix.js'
 import pixiDemo from '~/mixins/pixi_demo.js'
-import { BatchRenderer, Renderer, systems } from '@pixi/core'
-import { Container } from '@pixi/display'
-import { Ticker } from '@pixi/ticker'
-import { install } from '@pixi/unsafe-eval'
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
+import { Container, Renderer, Ticker } from '~/shims/pixi.js'
 import { shallowMount } from '@vue/test-utils'
 
 
@@ -147,24 +136,6 @@ describe('pixi_demo', () => {
         })
       })
     })
-    describe('importPIXI()', () => {
-      it([
-        'dynamically imports pixi components',
-        'installs @pixi/unsafe-eval',
-        'registers the batch renderer plugin',
-        'and resolves with Container, Renderer, and Ticker'
-      ].join(', '), async () => {
-        wrapper = shallowMount(component)
-        result = wrapper.vm.importPIXI()
-        await expect(result)
-          .resolves
-          .toStrictEqual({ Container, Renderer, Ticker })
-        expect(install)
-          .toHaveBeenCalledWith({ systems })
-        expect(Renderer.registerPlugin)
-          .toHaveBeenCalledWith('batch', BatchRenderer)
-      })
-    })
     describe('load()', () => {
       describe('when webgl is available', () => {
         it('imports pixi and initializes the renderer, clock, and scene', async () => {
@@ -173,11 +144,7 @@ describe('pixi_demo', () => {
               height: 'mockHeight',
               width: 'mockWidth'
             }),
-            importPIXI: jest.fn().mockResolvedValue({
-              Container,
-              Renderer,
-              Ticker
-            }),
+            startAnimating: jest.fn()
           }
           isWebGLAvailable.mockReturnValue(true)
           window.devicePixelRatio = 'mockDevicePixelRatio'
@@ -187,9 +154,8 @@ describe('pixi_demo', () => {
           wrapper.vm.$refs.canvas = 'mockCanvas'
 
           result = wrapper.vm.load()
-          await expect(result).resolves
+          await expect(result).resolves.toBeUndefined()
           expect(isWebGLAvailable).toHaveBeenCalled()
-          expect(component.methods.importPIXI).toHaveBeenCalled()
           expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
           expect(Renderer).toHaveBeenCalledWith({
@@ -204,6 +170,7 @@ describe('pixi_demo', () => {
           expect(wrapper.vm.clock).toBe(Ticker.mock.instances[0])
           expect(Container).toHaveBeenCalled()
           expect(wrapper.vm.scene).toBe(Container.mock.instances[0])
+          expect(component.methods.startAnimating).toHaveBeenCalled()
         })
       })
       describe('when webgl is not available', () => {

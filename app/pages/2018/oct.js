@@ -9,12 +9,12 @@ import {
   Vector3,
   WireframeGeometry,
 } from 'three'
-import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
-import ModelLoader from '~/assets/javascripts/model_loader.js'
-import * as Random from '~/assets/javascripts/random.js'
-import Basket from '~/assets/models/basket.draco.glb'
 import ThreeDemo from '~/mixins/three_demo.js'
-import organization from '~/structured_data/organization.js'
+import { DEGREES_TO_RADIANS } from '~/models/constants.js'
+import ModelLoader from '~/models/model_loader.js'
+import organization from '~/models/organization.js'
+import * as Random from '~/models/random.js'
+import Basket from '~/assets/models/basket.draco.glb'
 
 const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 
