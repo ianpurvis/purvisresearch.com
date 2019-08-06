@@ -1,6 +1,6 @@
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
 import Graphix from '~/mixins/graphix.js'
-import organization from '~/structured_data/organization.js'
+import organization from '~/models/organization.js'
 
 export default {
   components: {

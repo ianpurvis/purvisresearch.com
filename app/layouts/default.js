@@ -5,7 +5,7 @@ import favicon32Url from '~/assets/images/logo-bw-32x32.png?as=file'
 import manifestUrl from '~/assets/manifest.json'
 import maskIconUrl from '~/assets/images/logo-bw-16x16.svg?as=file'
 import Debug from '~/mixins/debug.js'
-import organization from '~/structured_data/organization.js'
+import organization from '~/models/organization.js'
 
 export default {
   head() {

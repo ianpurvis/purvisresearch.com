@@ -1,6 +1,6 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
-import organization from '~/structured_data/organization.js'
-import { SECONDS_TO_MILLISECONDS } from '~/assets/javascripts/constants.js'
+import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
+import organization from '~/models/organization.js'
 
 export default {
   data() {

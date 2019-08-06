@@ -14,17 +14,17 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
-import { DEGREES_TO_RADIANS } from '~/assets/javascripts/constants.js'
-import HalftoneMaterial from '~/assets/javascripts/halftone_material.js'
-import { lerp } from '~/assets/javascripts/math.js'
-import TextureLoader from '~/assets/javascripts/texture_loader.js'
-import * as Random from '~/assets/javascripts/random.js'
 import ThreeDemo from '~/mixins/three_demo.js'
+import { DEGREES_TO_RADIANS } from '~/models/constants.js'
+import HalftoneMaterial from '~/models/halftone_material.js'
+import { lerp } from '~/models/math.js'
+import organization from '~/models/organization.js'
+import * as Random from '~/models/random.js'
+import TextureLoader from '~/models/texture_loader.js'
 import tatami from '~/assets/images/2019/apr/tatami-bw.png'
 import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
 import neko from '~/assets/images/2019/apr/neko-bw.png'
 import monster from '~/assets/images/2019/apr/monster-bw.png'
-import organization from '~/structured_data/organization.js'
 
 const Colors = {
   black: 0x000000,
