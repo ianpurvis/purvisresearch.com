@@ -39,23 +39,6 @@ export default {
         aspect: width / height,
       }
     },
-    importPIXI() {
-      return Promise.all([
-        import(/* webpackMode: "eager" */'@pixi/core'),
-        import(/* webpackMode: "eager" */"@pixi/display"),
-        import(/* webpackMode: "eager" */"@pixi/ticker"),
-        import(/* webpackMode: "eager" */"@pixi/unsafe-eval")
-      ]).then(([
-        {BatchRenderer, Renderer, systems},
-        {Container},
-        {Ticker},
-        {install}
-      ]) => {
-        install({ systems: systems })
-        Renderer.registerPlugin('batch', BatchRenderer)
-        return { Container, Renderer, Ticker }
-      })
-    },
     load() {
       if (!isWebGLAvailable()) {
         let message = [
@@ -65,21 +48,23 @@ export default {
         console.warn(message)
         return
       }
-      return this.importPIXI()
-        .then(({Container, Renderer, Ticker}) => {
-          let { height, width } = this.frame()
-          let pixelRatio = Math.max(window.devicePixelRatio, 2)
-          this.renderer = new Renderer({
-            height: height,
-            resolution: pixelRatio,
-            transparent: true,
-            view: this.$refs.canvas,
-            width: width,
-          })
-          this.clock = new Ticker()
-          this.scene = new Container()
+      return Promise.resolve(
+        import('~/shims/pixi.js')
+      ).then(({ Container, Renderer, Ticker }) => {
+        let { height, width } = this.frame()
+        let pixelRatio = Math.max(window.devicePixelRatio, 2)
+        this.renderer = new Renderer({
+          height: height,
+          resolution: pixelRatio,
+          transparent: true,
+          view: this.$refs.canvas,
+          width: width,
         })
-        .then(this.startAnimating)
+        this.clock = new Ticker()
+        this.scene = new Container()
+      }).then(
+        this.startAnimating
+      )
     },
     render() {
       this.resize()

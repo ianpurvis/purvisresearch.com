@@ -57,14 +57,10 @@ export default {
     load() {
       return Promise.all([
         PixiDemo.methods.load.call(this),
-        import(/* webpackMode: "eager" */"@pixi/core"),
-        import(/* webpackMode: "eager" */"@pixi/text"),
-        import(/* webpackMode: "eager" */"pixi-particles")
+        import('~/shims/pixi.js'),
       ]).then(([
         ,
-        { RenderTexture },
-        { Text },
-        { Emitter }
+        { Emitter, RenderTexture, Text },
       ]) => {
         Array
           .from("💾📀")
