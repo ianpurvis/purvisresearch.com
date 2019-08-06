@@ -57,12 +57,14 @@ export default {
     load() {
       return Promise.all([
         PixiDemo.methods.load.call(this),
+        import(/* webpackMode: "eager" */"@pixi/core"),
         import(/* webpackMode: "eager" */"@pixi/text"),
         import(/* webpackMode: "eager" */"pixi-particles")
       ]).then(([
         ,
-        {Text},
-        {Emitter}
+        { RenderTexture },
+        { Text },
+        { Emitter }
       ]) => {
         Array
           .from("💾📀")
@@ -71,14 +73,14 @@ export default {
           }))
           .forEach(text => {
             // Pre-render texture and discard the text:
-            text.visible = false
-            text.render(this.renderer)
-            this.textures.push(text.texture)
-            text.destroy({
-              children: true,
-              texture: false,
-              baseTexture: true,
+            let texture = RenderTexture.create({
+              height: 32,
+              width: 32,
+              resolution: this.renderer.resolution
             })
+            this.renderer.render(text, texture)
+            this.textures.push(texture)
+            text.destroy(true)
           })
 
         let options = {
