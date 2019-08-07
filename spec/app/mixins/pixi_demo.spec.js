@@ -1,6 +1,4 @@
-jest.mock('three/examples/js/WebGL.js', () => ({
-  isWebGLAvailable: jest.fn()
-}))
+jest.mock('three/examples/jsm/WebGL.js')
 jest.mock('~/mixins/graphix.js')
 jest.mock('~/shims/pixi.js', () => ({
   Container: jest.fn(),
@@ -8,7 +6,7 @@ jest.mock('~/shims/pixi.js', () => ({
   Ticker: jest.fn(),
 }))
 
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
+import { WEBGL } from 'three/examples/jsm/WebGL.js'
 import graphix from '~/mixins/graphix.js'
 import pixiDemo from '~/mixins/pixi_demo.js'
 import { Container, Renderer, Ticker } from '~/shims/pixi.js'
@@ -146,7 +144,7 @@ describe('pixi_demo', () => {
             }),
             startAnimating: jest.fn()
           }
-          isWebGLAvailable.mockReturnValue(true)
+          WEBGL.isWebGLAvailable.mockReturnValue(true)
           window.devicePixelRatio = 'mockDevicePixelRatio'
           global.Math.max = jest.fn().mockReturnValue('mockPixelRatio')
 
@@ -155,7 +153,7 @@ describe('pixi_demo', () => {
 
           result = wrapper.vm.load()
           await expect(result).resolves.toBeUndefined()
-          expect(isWebGLAvailable).toHaveBeenCalled()
+          expect(WEBGL.isWebGLAvailable).toHaveBeenCalled()
           expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
           expect(Renderer).toHaveBeenCalledWith({
@@ -175,11 +173,11 @@ describe('pixi_demo', () => {
       })
       describe('when webgl is not available', () => {
         it('logs a console warning and returns', () => {
-          isWebGLAvailable.mockReturnValue(false)
+          WEBGL.isWebGLAvailable.mockReturnValue(false)
           global.console.warn = jest.fn()
           wrapper = shallowMount(component)
           result = wrapper.vm.load()
-          expect(isWebGLAvailable)
+          expect(WEBGL.isWebGLAvailable)
             .toHaveBeenCalled()
           expect(global.console.warn)
             .toHaveBeenCalledWith(expect.any(String))

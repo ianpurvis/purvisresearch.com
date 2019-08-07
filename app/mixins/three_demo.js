@@ -5,7 +5,7 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
+import { WEBGL } from 'three/examples/jsm/WebGL.js'
 import graphix from '~/mixins/graphix.js'
 
 const safeDispose = (object) => {
@@ -58,7 +58,7 @@ export default {
       return this.clock.getDelta() * this.speedOfLife
     },
     load() {
-      if (!isWebGLAvailable()) {
+      if (!WEBGL.isWebGLAvailable()) {
         let message = [
           'Your device does not seem to support WebGL.',
           'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'

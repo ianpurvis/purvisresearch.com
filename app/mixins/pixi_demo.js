@@ -1,4 +1,4 @@
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
+import { WEBGL } from 'three/examples/jsm/WebGL.js'
 import Graphix from '~/mixins/graphix.js'
 
 export default {
@@ -40,7 +40,7 @@ export default {
       }
     },
     load() {
-      if (!isWebGLAvailable()) {
+      if (!WEBGL.isWebGLAvailable()) {
         let message = [
           'Your device does not seem to support WebGL.',
           'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
