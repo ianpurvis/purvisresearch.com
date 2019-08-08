@@ -1,11 +1,11 @@
 jest.mock('three')
-jest.mock('three/examples/jsm/WebGL.js')
 jest.mock('~/mixins/graphix.js')
+jest.mock('~/models/webgl.js')
 
 import graphix from '~/mixins/graphix.js'
 import threeDemo from '~/mixins/three_demo.js'
+import { WebGL } from '~/models/webgl.js'
 import { WebGLRenderer } from 'three'
-import { WEBGL } from 'three/examples/jsm/WebGL.js'
 import { shallowMount } from '@vue/test-utils'
 
 
@@ -138,7 +138,7 @@ describe('three_demo', () => {
             }),
             startAnimating: jest.fn()
           }
-          WEBGL.isWebGLAvailable.mockReturnValue(true)
+          WebGL.assertWebGLAvailable.mockReturnValue()
           // For some reason, these methods don't get mocked automatically:
           Object.assign(WebGLRenderer.prototype, {
             setPixelRatio: jest.fn(),
@@ -151,7 +151,9 @@ describe('three_demo', () => {
           wrapper.vm.$refs.canvas = 'mockCanvas'
 
           result = wrapper.vm.load()
-          expect(WEBGL.isWebGLAvailable).toHaveBeenCalled()
+          expect(result)
+            .toBeUndefined()
+          expect(WebGL.assertWebGLAvailable).toHaveBeenCalledWith('mockCanvas')
           expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
           expect(WebGLRenderer).toHaveBeenCalledWith({
@@ -171,16 +173,18 @@ describe('three_demo', () => {
       })
       describe('when webgl is not available', () => {
         it('logs a console warning and returns', () => {
-          WEBGL.isWebGLAvailable.mockReturnValue(false)
+          WebGL.assertWebGLAvailable.mockImplementation(() => {
+            throw new WebGL.WebGLNotAvailableError()
+          })
           global.console.warn = jest.fn()
           wrapper = shallowMount(component)
           result = wrapper.vm.load()
-          expect(WEBGL.isWebGLAvailable)
-            .toHaveBeenCalled()
-          expect(global.console.warn)
-            .toHaveBeenCalledWith(expect.any(String))
           expect(result)
             .toBeUndefined()
+          expect(WebGL.assertWebGLAvailable)
+            .toHaveBeenCalledWith('mockCanvas')
+          expect(global.console.warn)
+            .toHaveBeenCalledWith(expect.any(String))
         })
       })
     })

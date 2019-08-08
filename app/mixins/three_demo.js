@@ -5,7 +5,7 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
-import { WEBGL } from 'three/examples/jsm/WebGL.js'
+import { WebGL } from '~/models/webgl.js'
 import graphix from '~/mixins/graphix.js'
 
 const safeDispose = (object) => {
@@ -58,24 +58,25 @@ export default {
       return this.clock.getDelta() * this.speedOfLife
     },
     load() {
-      if (!WEBGL.isWebGLAvailable()) {
-        let message = [
-          'Your device does not seem to support WebGL.',
-          'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-        ].join('\n')
-        console.warn(message)
-        return
+      try {
+        WebGL.assertWebGLAvailable(this.$refs.canvas)
+        this.renderer = new WebGLRenderer({
+          alpha: true,
+          antialias: false,
+          canvas: this.$refs.canvas,
+        })
+        let pixelRatio = Math.max(window.devicePixelRatio, 2)
+        this.renderer.setPixelRatio(pixelRatio)
+        let { height, width } = this.frame()
+        this.renderer.setSize(width, height, false)
+        this.startAnimating()
+      } catch(error) {
+        if (error instanceof WebGL.WebGLNotAvailableError) {
+          console.warn(error.message)
+        } else {
+          throw error
+        }
       }
-      this.renderer = new WebGLRenderer({
-        alpha: true,
-        antialias: false,
-        canvas: this.$refs.canvas,
-      })
-      let pixelRatio = Math.max(window.devicePixelRatio, 2)
-      this.renderer.setPixelRatio(pixelRatio)
-      let { height, width } = this.frame()
-      this.renderer.setSize(width, height, false)
-      this.startAnimating()
     },
     render() {
       this.resize()

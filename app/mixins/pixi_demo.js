@@ -1,4 +1,4 @@
-import { WEBGL } from 'three/examples/jsm/WebGL.js'
+import { WebGL } from '~/models/webgl.js'
 import Graphix from '~/mixins/graphix.js'
 
 export default {
@@ -40,17 +40,10 @@ export default {
       }
     },
     load() {
-      if (!WEBGL.isWebGLAvailable()) {
-        let message = [
-          'Your device does not seem to support WebGL.',
-          'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-        ].join('\n')
-        console.warn(message)
-        return
-      }
-      return Promise.resolve(
-        import('~/shims/pixi.js')
-      ).then(({ Container, Renderer, Ticker }) => {
+      return Promise.resolve().then(() => {
+        WebGL.assertWebGLAvailable(this.$refs.canvas)
+        return import('~/shims/pixi.js')
+      }).then(({ Container, Renderer, Ticker }) => {
         let { height, width } = this.frame()
         let pixelRatio = Math.max(window.devicePixelRatio, 2)
         this.renderer = new Renderer({
@@ -62,9 +55,14 @@ export default {
         })
         this.clock = new Ticker()
         this.scene = new Container()
-      }).then(
-        this.startAnimating
-      )
+        this.startAnimating()
+      }).catch(error => {
+        if (error instanceof WebGL.WebGLNotAvailableError) {
+          console.warn(error.message)
+        } else {
+          throw error
+        }
+      })
     },
     render() {
       this.resize()
