@@ -316,31 +316,26 @@ describe('three_demo', () => {
     describe('stopAnimating()', () => {
       beforeEach(() => {
         component.data = () => ({
+          animationFrame: 'mockAnimationFrame',
           clock: {
             stop: jest.fn()
           }
         })
-        wrapper = shallowMount(component)
         global.window.cancelAnimationFrame = jest.fn()
+        wrapper = shallowMount(component)
       })
-      describe('when animationFrame is not present', () => {
-        it('stops the clock only', () => {
-          wrapper.setData({ animationFrame: null })
-          wrapper.vm.stopAnimating()
-          expect(wrapper.vm.clock.stop)
-            .toHaveBeenCalled()
-          expect(global.window.cancelAnimationFrame)
-            .not.toHaveBeenCalled()
-        })
+      it('stops the clock and cancels the animation frame', () => {
+        wrapper.vm.stopAnimating()
+        expect(wrapper.vm.clock.stop)
+          .toHaveBeenCalled()
+        expect(global.window.cancelAnimationFrame)
+          .toHaveBeenCalledWith('mockAnimationFrame')
       })
-      describe('when animationFrame is present', () => {
-        it('stops the clock and cancels the animation frame', () => {
-          wrapper.setData({ animationFrame: 'mockAnimationFrame' })
-          wrapper.vm.stopAnimating()
-          expect(wrapper.vm.clock.stop)
-            .toHaveBeenCalled()
-          expect(global.window.cancelAnimationFrame)
-            .toHaveBeenCalledWith('mockAnimationFrame')
+      describe('when clock is null', () => {
+        it('does not throw an error', () => {
+          wrapper.setData({ clock: null })
+          expect(() => wrapper.vm.stopAnimating())
+            .not.toThrow()
         })
       })
     })
