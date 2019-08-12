@@ -174,17 +174,39 @@ describe('pixi_demo', () => {
       describe('when webgl is not available', () => {
         it('logs a console warning and returns', async () => {
           WebGL.assertWebGLAvailable.mockImplementation(() => {
-            throw new WebGL.WebGLNotAvailableError()
+            throw new Error('mockError')
           })
-          global.console.warn = jest.fn()
           wrapper = shallowMount(component)
           wrapper.vm.$refs.canvas = 'mockCanvas'
           result = wrapper.vm.load()
-          await expect(result).resolves.toBeUndefined()
+          await expect(result)
+            .rejects.toThrow('mockError')
           expect(WebGL.assertWebGLAvailable)
             .toHaveBeenCalledWith('mockCanvas')
+        })
+      })
+    })
+    describe('logError(error)', () => {
+      let error
+
+      describe('when error is an WebGL.WebGLNotAvailableError', () => {
+        it('logs a console warning with the error message', () => {
+          global.console.warn = jest.fn()
+          error = new WebGL.WebGLNotAvailableError()
+          wrapper = shallowMount(component)
+          result = wrapper.vm.logError(error)
           expect(global.console.warn)
-            .toHaveBeenCalledWith(expect.any(String))
+            .toHaveBeenCalledWith(error.message)
+        })
+      })
+      describe('otherwise', () => {
+        it('logs a console error with the error object', () => {
+          global.console.error = jest.fn()
+          error = new Error('mock error')
+          wrapper = shallowMount(component)
+          result = wrapper.vm.logError(error)
+          expect(global.console.error)
+            .toHaveBeenCalledWith(error)
         })
       })
     })

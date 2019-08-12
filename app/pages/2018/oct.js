@@ -117,10 +117,11 @@ export default {
       )
     },
     load() {
-      return Promise.all([
-        ThreeDemo.methods.load.call(this),
-        this.loader.parse(Basket),
-      ]).then(([, gltf]) => {
+      return Promise.resolve(
+        ThreeDemo.methods.load.call(this)
+      ).then(() =>
+        this.loader.parse(Basket)
+      ).then(gltf => {
         this.basket = gltf.scene.children[0]
         this.basket.position.set(0,0,0)
         this.basket.geometry.center()
@@ -164,9 +165,7 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout).catch((error) => {
-      console.error(`An error happened ${error}`)
-    })
+    this.load().then(this.layout).catch(this.logError)
   }
 }
 

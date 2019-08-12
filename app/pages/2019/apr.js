@@ -102,7 +102,8 @@ export default {
       return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
     },
     load() {
-      return Promise.resolve(ThreeDemo.methods.load.call(this))
+      return Promise
+        .resolve(ThreeDemo.methods.load.call(this))
         .then(this.loadCamera)
         .then(this.loadAmbientLight)
         .then(this.loadSubfloor)
@@ -392,5 +393,6 @@ export default {
             .then(this.transitionToDay)
         }
       })
+      .catch(this.logError)
   }
 }

@@ -58,7 +58,7 @@ export default {
       return this.clock.getDelta() * this.speedOfLife
     },
     load() {
-      try {
+      return Promise.resolve().then(() => {
         WebGL.assertWebGLAvailable(this.$refs.canvas)
         this.renderer = new WebGLRenderer({
           alpha: true,
@@ -70,12 +70,13 @@ export default {
         let { height, width } = this.frame()
         this.renderer.setSize(width, height, false)
         this.startAnimating()
-      } catch(error) {
-        if (error instanceof WebGL.WebGLNotAvailableError) {
-          console.warn(error.message)
-        } else {
-          throw error
-        }
+      })
+    },
+    logError(error) {
+      if (error instanceof WebGL.WebGLNotAvailableError) {
+        console.warn(error.message)
+      } else {
+        console.error(error)
       }
     },
     render() {

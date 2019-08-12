@@ -56,13 +56,14 @@ export default {
         this.clock = new Ticker()
         this.scene = new Container()
         this.startAnimating()
-      }).catch(error => {
-        if (error instanceof WebGL.WebGLNotAvailableError) {
-          console.warn(error.message)
-        } else {
-          throw error
-        }
       })
+    },
+    logError(error) {
+      if (error instanceof WebGL.WebGLNotAvailableError) {
+        console.warn(error.message)
+      } else {
+        console.error(error)
+      }
     },
     render() {
       this.resize()

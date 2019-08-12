@@ -124,7 +124,7 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout)
+    this.load().then(this.layout).catch(this.logError)
   }
 }
 
