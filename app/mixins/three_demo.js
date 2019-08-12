@@ -5,7 +5,7 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
+import { WebGL } from '~/models/webgl.js'
 import graphix from '~/mixins/graphix.js'
 
 const safeDispose = (object) => {
@@ -58,24 +58,26 @@ export default {
       return this.clock.getDelta() * this.speedOfLife
     },
     load() {
-      if (!isWebGLAvailable()) {
-        let message = [
-          'Your device does not seem to support WebGL.',
-          'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
-        ].join('\n')
-        console.warn(message)
-        return
-      }
-      this.renderer = new WebGLRenderer({
-        alpha: true,
-        antialias: false,
-        canvas: this.$refs.canvas,
+      return Promise.resolve().then(() => {
+        WebGL.assertWebGLAvailable(this.$refs.canvas)
+        this.renderer = new WebGLRenderer({
+          alpha: true,
+          antialias: false,
+          canvas: this.$refs.canvas,
+        })
+        let pixelRatio = Math.max(window.devicePixelRatio, 2)
+        this.renderer.setPixelRatio(pixelRatio)
+        let { height, width } = this.frame()
+        this.renderer.setSize(width, height, false)
+        this.startAnimating()
       })
-      let pixelRatio = Math.max(window.devicePixelRatio, 2)
-      this.renderer.setPixelRatio(pixelRatio)
-      let { height, width } = this.frame()
-      this.renderer.setSize(width, height, false)
-      this.startAnimating()
+    },
+    logError(error) {
+      if (error instanceof WebGL.WebGLNotAvailableError) {
+        console.warn(error.message)
+      } else {
+        console.error(error)
+      }
     },
     render() {
       this.resize()
@@ -114,8 +116,7 @@ export default {
       this.animationFrame = window.requestAnimationFrame(this.animate)
     },
     stopAnimating() {
-      this.clock.stop()
-      if (!this.animationFrame) return
+      this.clock && this.clock.stop()
       window.cancelAnimationFrame(this.animationFrame)
     },
     update() {

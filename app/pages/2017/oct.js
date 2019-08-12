@@ -93,6 +93,6 @@ export default {
     PixiDemo,
   ],
   mounted() {
-    this.load().catch(console.error)
+    this.load().catch(this.logError)
   }
 }

@@ -2,6 +2,9 @@ const defaults = {
   coveragePathIgnorePatterns: [
     'spec/.*'
   ],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!three/examples/jsm/.*)'
+  ],
 }
 
 module.exports = {

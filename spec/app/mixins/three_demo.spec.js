@@ -1,13 +1,11 @@
 jest.mock('three')
-jest.mock('three/examples/js/WebGL.js', () => ({
-  isWebGLAvailable: jest.fn()
-}))
 jest.mock('~/mixins/graphix.js')
+jest.mock('~/models/webgl.js')
 
 import graphix from '~/mixins/graphix.js'
 import threeDemo from '~/mixins/three_demo.js'
+import { WebGL } from '~/models/webgl.js'
 import { WebGLRenderer } from 'three'
-import { isWebGLAvailable } from 'three/examples/js/WebGL.js'
 import { shallowMount } from '@vue/test-utils'
 
 
@@ -132,7 +130,7 @@ describe('three_demo', () => {
     })
     describe('load()', () => {
       describe('when webgl is available', () => {
-        it('initializes the renderer and starts animating', () => {
+        it('initializes the renderer and starts animating', async () => {
           component.methods = {
             frame: jest.fn().mockReturnValue({
               height: 'mockHeight',
@@ -140,7 +138,7 @@ describe('three_demo', () => {
             }),
             startAnimating: jest.fn()
           }
-          isWebGLAvailable.mockReturnValue(true)
+          WebGL.assertWebGLAvailable.mockReturnValue()
           // For some reason, these methods don't get mocked automatically:
           Object.assign(WebGLRenderer.prototype, {
             setPixelRatio: jest.fn(),
@@ -153,7 +151,8 @@ describe('three_demo', () => {
           wrapper.vm.$refs.canvas = 'mockCanvas'
 
           result = wrapper.vm.load()
-          expect(isWebGLAvailable).toHaveBeenCalled()
+          await expect(result).resolves.toBeUndefined()
+          expect(WebGL.assertWebGLAvailable).toHaveBeenCalledWith('mockCanvas')
           expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
           expect(WebGLRenderer).toHaveBeenCalledWith({
@@ -172,17 +171,41 @@ describe('three_demo', () => {
         })
       })
       describe('when webgl is not available', () => {
-        it('logs a console warning and returns', () => {
-          isWebGLAvailable.mockReturnValue(false)
+        it('logs a console warning and returns', async () => {
+          WebGL.assertWebGLAvailable.mockImplementation(() => {
+            throw new Error('mockError')
+          })
           global.console.warn = jest.fn()
           wrapper = shallowMount(component)
           result = wrapper.vm.load()
-          expect(isWebGLAvailable)
-            .toHaveBeenCalled()
+          await expect(result)
+            .rejects.toThrow('mockError')
+          expect(WebGL.assertWebGLAvailable)
+            .toHaveBeenCalledWith('mockCanvas')
+        })
+      })
+    })
+    describe('logError(error)', () => {
+      let error
+
+      describe('when error is an WebGL.WebGLNotAvailableError', () => {
+        it('logs a console warning with the error message', () => {
+          global.console.warn = jest.fn()
+          error = new WebGL.WebGLNotAvailableError()
+          wrapper = shallowMount(component)
+          result = wrapper.vm.logError(error)
           expect(global.console.warn)
-            .toHaveBeenCalledWith(expect.any(String))
-          expect(result)
-            .toBeUndefined()
+            .toHaveBeenCalledWith(error.message)
+        })
+      })
+      describe('otherwise', () => {
+        it('logs a console error with the error object', () => {
+          global.console.error = jest.fn()
+          error = new Error('mockError')
+          wrapper = shallowMount(component)
+          result = wrapper.vm.logError(error)
+          expect(global.console.error)
+            .toHaveBeenCalledWith(error)
         })
       })
     })
@@ -293,31 +316,26 @@ describe('three_demo', () => {
     describe('stopAnimating()', () => {
       beforeEach(() => {
         component.data = () => ({
+          animationFrame: 'mockAnimationFrame',
           clock: {
             stop: jest.fn()
           }
         })
-        wrapper = shallowMount(component)
         global.window.cancelAnimationFrame = jest.fn()
+        wrapper = shallowMount(component)
       })
-      describe('when animationFrame is not present', () => {
-        it('stops the clock only', () => {
-          wrapper.setData({ animationFrame: null })
-          wrapper.vm.stopAnimating()
-          expect(wrapper.vm.clock.stop)
-            .toHaveBeenCalled()
-          expect(global.window.cancelAnimationFrame)
-            .not.toHaveBeenCalled()
-        })
+      it('stops the clock and cancels the animation frame', () => {
+        wrapper.vm.stopAnimating()
+        expect(wrapper.vm.clock.stop)
+          .toHaveBeenCalled()
+        expect(global.window.cancelAnimationFrame)
+          .toHaveBeenCalledWith('mockAnimationFrame')
       })
-      describe('when animationFrame is present', () => {
-        it('stops the clock and cancels the animation frame', () => {
-          wrapper.setData({ animationFrame: 'mockAnimationFrame' })
-          wrapper.vm.stopAnimating()
-          expect(wrapper.vm.clock.stop)
-            .toHaveBeenCalled()
-          expect(global.window.cancelAnimationFrame)
-            .toHaveBeenCalledWith('mockAnimationFrame')
+      describe('when clock is null', () => {
+        it('does not throw an error', () => {
+          wrapper.setData({ clock: null })
+          expect(() => wrapper.vm.stopAnimating())
+            .not.toThrow()
         })
       })
     })

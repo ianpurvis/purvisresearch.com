@@ -55,13 +55,11 @@ export default {
       PixiDemo.methods.dispose.call(this)
     },
     load() {
-      return Promise.all([
-        PixiDemo.methods.load.call(this),
-        import('~/shims/pixi.js'),
-      ]).then(([
-        ,
-        { Emitter, RenderTexture, Text },
-      ]) => {
+      return Promise.resolve(
+        PixiDemo.methods.load.call(this)
+      ).then(() =>
+        import('~/shims/pixi.js')
+      ).then(({ Emitter, RenderTexture, Text }) => {
         Array
           .from("💾📀")
           .map(emoji => new Text(emoji, {
@@ -146,6 +144,6 @@ export default {
     PixiDemo,
   ],
   mounted() {
-    this.load().catch(console.error)
+    this.load().catch(this.logError)
   }
 }
