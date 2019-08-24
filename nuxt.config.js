@@ -176,6 +176,7 @@ export default {
 
   modules: [
     '@nuxtjs/google-analytics',
+    '@nuxtjs/sentry',
     '@nuxtjs/sitemap'
   ],
 
@@ -205,6 +206,11 @@ export default {
       enabled: !isProduction,
       sendHitTask: isProduction
     }
+  },
+
+  sentry: {
+    disabled: !isProduction,
+    disableServerSide: true,
   },
 
   sitemap: sitemapConfig
