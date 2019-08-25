@@ -188,22 +188,39 @@ describe('three_demo', () => {
     describe('logError(error)', () => {
       let error
 
+      beforeEach(() => {
+        global.console = {
+          error: jest.fn(),
+          warn: jest.fn()
+        }
+        wrapper = shallowMount(component, {
+          mocks: {
+            $sentry: {
+              captureException: jest.fn()
+            }
+          }
+        })
+      })
       describe('when error is an WebGL.WebGLNotAvailableError', () => {
-        it('logs a console warning with the error message', () => {
-          global.console.warn = jest.fn()
+        beforeEach(() => {
           error = new WebGL.WebGLNotAvailableError()
-          wrapper = shallowMount(component)
           result = wrapper.vm.logError(error)
+        })
+        it('logs a console warning with the error message', () => {
           expect(global.console.warn)
             .toHaveBeenCalledWith(error.message)
         })
       })
       describe('otherwise', () => {
-        it('logs a console error with the error object', () => {
-          global.console.error = jest.fn()
+        beforeEach(() => {
           error = new Error('mockError')
-          wrapper = shallowMount(component)
           result = wrapper.vm.logError(error)
+        })
+        it('sends the error to sentry', () => {
+          expect(wrapper.vm.$sentry.captureException)
+            .toHaveBeenCalledWith(error)
+        })
+        it('logs a console error with the error object', () => {
           expect(global.console.error)
             .toHaveBeenCalledWith(error)
         })
