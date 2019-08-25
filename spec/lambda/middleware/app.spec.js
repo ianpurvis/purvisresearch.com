@@ -32,7 +32,7 @@ describe('App', () => {
     describe('given a request and a response', () => {
       it('calls the first middleware with the request and response', async () => {
         result = app.call({ request, response })
-        await expect(result).resolves
+        await expect(result).resolves.toBeDefined()
         expect(app.middleware[0].call)
           .toHaveBeenCalledWith({ request, response })
       })
