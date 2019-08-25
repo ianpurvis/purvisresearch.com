@@ -5,10 +5,6 @@ module.exports = (api) => {
 
   if (api.env('test')) {
     config = {
-      plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-        'babel-plugin-dynamic-import-node',
-      ],
       presets: [
         ['@babel/preset-env', {
           corejs: 3,
