@@ -210,8 +210,8 @@ export default {
   },
 
   sentry: {
-    disabled: !isProduction,
     disableServerSide: true,
+    initialize: isProduction,
   },
 
   sitemap: sitemapConfig

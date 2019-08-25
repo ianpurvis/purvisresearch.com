@@ -62,6 +62,7 @@ export default {
       if (error instanceof WebGL.WebGLNotAvailableError) {
         console.warn(error.message)
       } else {
+        this.$sentry.captureException(error)
         console.error(error)
       }
     },
