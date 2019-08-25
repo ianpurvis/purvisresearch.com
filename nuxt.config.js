@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import Path from 'path'
 import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
