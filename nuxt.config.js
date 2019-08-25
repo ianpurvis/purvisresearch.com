@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import Path from 'path'
 import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
@@ -176,6 +177,7 @@ export default {
 
   modules: [
     '@nuxtjs/google-analytics',
+    '@nuxtjs/sentry',
     '@nuxtjs/sitemap'
   ],
 
@@ -205,6 +207,21 @@ export default {
       enabled: !isProduction,
       sendHitTask: isProduction
     }
+  },
+
+  sentry: {
+    clientIntegrations: {
+      Dedupe: {},
+      ExtraErrorData: {},
+      ReportingObserver: {},
+      RewriteFrames: {},
+      Vue: {
+        attachProps: true,
+        logErrors: true
+      }
+    },
+    disableServerSide: true,
+    initialize: isProduction,
   },
 
   sitemap: sitemapConfig
