@@ -1,9 +1,14 @@
+const transformPatterns = [
+  'three/examples/jsm',
+  'three/build/three.module'
+]
+
 const defaults = {
   coveragePathIgnorePatterns: [
     'spec/.*'
   ],
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!three/examples/jsm/.*)'
+    `<rootDir>/node_modules/(?!(${transformPatterns.join('|')}))`
   ],
 }
 
