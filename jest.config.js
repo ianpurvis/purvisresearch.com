@@ -28,6 +28,11 @@ module.exports = {
       ...defaults,
       displayName: 'app',
       moduleNameMapper: {
+        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/spec/mocks/file-mock.js',
+        '\\.(eot|otf|ttf|woff|woff2)$': '<rootDir>/spec/mocks/file-mock.js',
+        '\\.(mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/spec/mocks/file-mock.js',
+        '\\.(gltf|glb)$': '<rootDir>/spec/mocks/file-mock.js',
+        '\\?as=file$': '<rootDir>/spec/mocks/file-mock.js',
         '~(.*)$': '<rootDir>/app/$1',
       },
       testEnvironment: 'jsdom',
