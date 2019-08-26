@@ -11,7 +11,7 @@ import {
 } from 'three'
 import ThreeDemo from '~/mixins/three_demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
-import GLTFLoader from '~/models/gltf-loader.js'
+import { GLTFLoader } from '~/models/gltf-loader.js'
 import organization from '~/models/organization.js'
 import * as Random from '~/models/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
