@@ -1,8 +1,9 @@
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { GLTFLoader as THREEGLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import DracoDecoderModule from 'draco3dgltf/draco_decoder_gltf_nodejs.js'
 
-export default class ModelLoader extends GLTFLoader {
+
+class GLTFLoader extends THREEGLTFLoader {
 
   static loadDracoDecoder() {
     return new Promise((resolve) => {
@@ -22,7 +23,7 @@ export default class ModelLoader extends GLTFLoader {
 
     // Lazy-load DRACO decoder
     if (DRACOLoader.decoderModulePromise) return
-    DRACOLoader.decoderModulePromise = ModelLoader.loadDracoDecoder()
+    DRACOLoader.decoderModulePromise = GLTFLoader.loadDracoDecoder()
   }
 
   parse(data, path = '/') {
@@ -31,3 +32,5 @@ export default class ModelLoader extends GLTFLoader {
     })
   }
 }
+
+export { GLTFLoader }
