@@ -10,7 +10,7 @@ import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
 import AlphabetParticle from '~/models/alphabet_particle.js'
 import organization from '~/models/organization.js'
-import * as Random from '~/models/random.js'
+import { Random } from '~/models/random.js'
 
 export default {
   beforeDestroy() {
