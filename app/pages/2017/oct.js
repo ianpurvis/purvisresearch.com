@@ -1,14 +1,14 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
-import organization from '~/models/organization.js'
+import { Organization } from '~/models/organization.js'
 import Oscillator from '~/models/oscillator.js'
 import { Random } from '~/models/random.js'
 
 export default {
   data () {
     return {
-      canonicalUrl: `${organization.url}/2017/oct.html`,
+      canonicalUrl: `${Organization.default.url}/2017/oct.html`,
       description: "A bézier moiré generator in WebGL.",
       elapsedTime: 0,
       oscillators: [
@@ -32,7 +32,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:"og:description", content: this.description },
-        { property:"og:image", content: `${organization.url}${require("~/assets/images/2017/oct.png")}` },
+        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2017/oct.png")}` },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Oct 2017" },
@@ -52,12 +52,12 @@ export default {
         "@type": "ListItem",
         "position": 1,
         "name": "purvis research",
-        "item": organization.url
+        "item": Organization.default.url
       },{
         "@type": "ListItem",
         "position": 2,
         "name": "oct 2017",
-        "item": `${organization.url}/2017/oct.html`
+        "item": this.canonicalUrl
       }]
     }
   },
