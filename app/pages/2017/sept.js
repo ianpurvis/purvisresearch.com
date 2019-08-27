@@ -1,11 +1,11 @@
 import PixiDemo from '~/mixins/pixi_demo.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
-import organization from '~/models/organization.js'
+import { Organization } from '~/models/organization.js'
 
 export default {
   data() {
     return {
-      canonicalUrl: `${organization.url}/2017/sept.html`,
+      canonicalUrl: `${Organization.default.url}/2017/sept.html`,
       description: "An emoji particle flow in WebGL.",
       emitter: null,
       speedOfLife: 0.4, // Slow-motion
@@ -19,7 +19,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:"og:description", content: this.description },
-        { property:"og:image", content: `${organization.url}${require("~/assets/images/2017/sept.png")}` },
+        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2017/sept.png")}` },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Sept 2017" },
@@ -39,12 +39,12 @@ export default {
         "@type": "ListItem",
         "position": 1,
         "name": "purvis research",
-        "item": organization.url
+        "item": Organization.default.url
       },{
         "@type": "ListItem",
         "position": 2,
         "name": "sept 2017",
-        "item": `${organization.url}/2017/sept.html`
+        "item": this.canonicalUrl
       }]
     }
   },
