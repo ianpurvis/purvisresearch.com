@@ -11,7 +11,7 @@ import {
 } from 'three'
 import ThreeDemo from '~/mixins/three_demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
-import ModelLoader from '~/models/model_loader.js'
+import { GLTFLoader } from '~/models/gltf-loader.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
@@ -29,7 +29,7 @@ export default {
       ],
       canonicalUrl: `${Organization.default.url}/2018/oct.html`,
       description: "Screen printing a 3D scan with WebGL.",
-      loader: new ModelLoader(),
+      loader: new GLTFLoader(),
       speedOfLife: 0.05,
       title: "oct 2018 - purvis research",
     }
