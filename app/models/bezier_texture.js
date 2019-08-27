@@ -1,4 +1,7 @@
-import { rand } from '~/models/random.js'
+import { Random } from '~/models/random.js'
+
+// Alias Random.rand as rand
+const { rand } = Random
 
 class BezierCurve {
   constructor({
