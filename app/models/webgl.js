@@ -8,7 +8,6 @@ function  assertWebGLAvailable(canvas) {
 }
 
 function isWebGLAvailable(canvas) {
-  canvas = canvas || document.createElement('canvas')
   try {
     return !! (window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
   } catch {
