@@ -3,7 +3,7 @@ import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import organization from '~/models/organization.js'
 import Oscillator from '~/models/oscillator.js'
-import * as Random from '~/models/random.js'
+import { Random } from '~/models/random.js'
 
 export default {
   data () {
