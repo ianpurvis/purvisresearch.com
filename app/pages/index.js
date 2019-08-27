@@ -31,7 +31,6 @@ export default {
         description: 'An Emoji Particle Flow',
         route: '2017/sept.html'
       }],
-      organization: Organization.default,
       title: "purvis research",
     }
   },
