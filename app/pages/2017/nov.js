@@ -9,7 +9,7 @@ import {
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
 import AlphabetParticle from '~/models/alphabet_particle.js'
-import organization from '~/models/organization.js'
+import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 
 export default {
@@ -19,7 +19,7 @@ export default {
     return {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
       animationFrame: null,
-      canonicalUrl: `${organization.url}/2017/nov.html`,
+      canonicalUrl: `${Organization.default.url}/2017/nov.html`,
       description: "A 3d character exploder in WebGL.",
       font: new Font(Inconsolata),
       particles: [],
@@ -32,7 +32,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:"og:description", content: this.description },
-        { property:"og:image", content: `${organization.url}${require("~/assets/images/2017/nov.png")}` },
+        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2017/nov.png")}` },
         { property:"og:image:height", content:"859" },
         { property:"og:image:width", content:"1646" },
         { property:"og:title", content:"Nov 2017" },
@@ -52,12 +52,12 @@ export default {
           "@type": "ListItem",
           "position": 1,
           "name": "purvis research",
-          "item": organization.url
+          "item": Organization.default.url
         },{
           "@type": "ListItem",
           "position": 2,
           "name": "nov 2017",
-          "item": `${organization.url}/2017/nov.html`
+          "item": this.canonicalUrl
         }]
     }
   },

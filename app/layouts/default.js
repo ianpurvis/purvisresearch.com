@@ -5,7 +5,7 @@ import favicon32Url from '~/assets/images/logo-bw-32x32.png?as=file'
 import manifestUrl from '~/assets/manifest.json'
 import maskIconUrl from '~/assets/images/logo-bw-16x16.svg?as=file'
 import Debug from '~/mixins/debug.js'
-import organization from '~/models/organization.js'
+import { Organization } from '~/models/organization.js'
 
 export default {
   head() {
@@ -23,14 +23,14 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: organization.description },
+        { hid: 'description', name: 'description', content: Organization.default.description },
         { name: 'msapplication-config', content: browserConfigUrl }
       ],
       title: 'purvis research',
     }
   },
   jsonld() {
-    return organization
+    return Organization.default
   },
   mixins: [
     Debug
