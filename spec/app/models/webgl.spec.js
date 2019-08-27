@@ -73,6 +73,14 @@ describe('WebGL', () => {
           expect(mockCanvas.getContext).toHaveBeenCalledWith('experimental-webgl')
         })
       })
+      describe('when an error is thrown', () => {
+        it('returns false', () => {
+          mockCanvas.getContext.mockImplementation(() => {
+            throw new Error('Mock Error')
+          })
+          expect(example()).toBe(false)
+        })
+      })
     })
     describe('when window does not support WebGLRenderingContext', () => {
       beforeEach(() => {
