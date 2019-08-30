@@ -16,12 +16,6 @@ module.exports = (api) => {
         }]
       ]
     }
-  } else {
-    config = {
-      presets: [
-        '@vue/babel-preset-app'
-      ]
-    }
   }
 
   return config

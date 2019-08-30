@@ -24,7 +24,7 @@ class ContentSecurityPolicy {
   policyForNuxt(scriptHash = NUXT_ROOT_SCRIPT_HASH) {
     return [
       "base-uri 'none'",
-      "connect-src 'self' https://www.google-analytics.com",
+      "connect-src 'self' https://www.google-analytics.com https://sentry.io",
       "default-src 'none'",
       "frame-ancestors 'none'",
       "font-src 'self' data:",
