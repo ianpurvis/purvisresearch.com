@@ -60,7 +60,7 @@ p {
   .snake-list {
     display: inline;
 
-    &:before {
+    &::before {
       content: '_';
       // Margin equals characters of trailing space in content * -(1ch + letter spacing)
       margin-right: 0 * -(1ch + 0.3ch);
@@ -108,11 +108,11 @@ p {
   li {
     display: inline;
 
-    &:not(:first-child):before {
+    &:not(:first-child)::before {
       content: '_';
     }
 
-    &.no-underscore:before {
+    &.no-underscore::before {
       content: none;
     }
   }
@@ -126,7 +126,7 @@ p {
   // Margin equals characters replaced * -(1ch + letter spacing)
   margin-right: 1 * -(1ch + 0.08ch);
 
-  &:before {
+  &::before {
     content: '_';
     // Margin equals characters of trailing space in content * -(1ch + letter spacing)
     margin-right: 0 * -(1ch + 0.08ch);
@@ -153,7 +153,7 @@ p {
 
   .snake-list {
     li {
-      &:not(:first-child):before {
+      &:not(:first-child)::before {
         // Prevent CJK character rendering issue
         // by appending a trailing space:
         content: '_ ';
@@ -165,7 +165,7 @@ p {
         margin-right: 1 * -(1ch + 0.08ch);
       }
 
-      &.no-underscore:before {
+      &.no-underscore::before {
         content: none;
       }
     }
@@ -182,7 +182,7 @@ p {
     // Margin equals characters replaced * -(1ch + letter spacing)
     margin-right: 1 * -(1ch + 0ch);
 
-    &:before {
+    &::before {
       font-family: $font-family-en;
       font-size: 2rem;
       letter-spacing: 0.08ch;

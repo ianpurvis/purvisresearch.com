@@ -13,11 +13,11 @@ html[debug] {
     background-color: rgba(red, $debug-opacity);
   }
 
-  :before {
+  ::before {
     background-color: rgba(cyan, $debug-opacity);
   }
 
-  :after {
+  ::after {
     background-color: rgba(orange, $debug-opacity);
   }
 

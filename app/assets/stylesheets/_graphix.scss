@@ -29,7 +29,7 @@ h1 {
   display: inline;
 
   @include from($mobile-width) {
-    &:before {
+    &::before {
       content: '_';
     }
   }
@@ -99,7 +99,7 @@ main {
   margin-right: 1 * -(1ch + 0.125ch);
   visibility: hidden;
 
-  &:before {
+  &::before {
     content: '_';
     visibility: visible;
   }
