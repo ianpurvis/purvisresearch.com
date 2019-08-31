@@ -1,2 +1,2 @@
-#!/bin/sh
-exec bin/eslint
+#!/usr/bin/env bash
+$(npm bin)/lint-staged
