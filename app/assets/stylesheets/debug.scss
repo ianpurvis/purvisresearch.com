@@ -1,3 +1,5 @@
+/* stylelint-disable color-named */
+
 $debug-opacity: 0.6;
 
 html[debug] {
@@ -27,3 +29,5 @@ html[debug] {
     background-color: rgba(lawngreen, $debug-opacity);
   }
 }
+
+/* stylelint-enable */
