@@ -1,6 +1,6 @@
 @charset "utf-8";
-@import "~bulma/sass/utilities/mixins";
-@import "~assets/stylesheets/libre-barcode-128-text-regular";
+@import '~bulma/sass/utilities/mixins';
+@import '~assets/stylesheets/libre-barcode-128-text-regular';
 
 $mobile-width: 568px;
 
@@ -48,7 +48,7 @@ main {
 }
 
 .label {
-  font-family: "Libre Barcode 128 Text", sans-serif;
+  font-family: 'Libre Barcode 128 Text', sans-serif;
   font-size: 96px;
   letter-spacing: 0.125ch;
   line-height: 1.125;

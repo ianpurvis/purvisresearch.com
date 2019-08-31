@@ -1,9 +1,9 @@
 @charset "utf-8";
-@import "~assets/stylesheets/courier-prime-code";
-@import "~assets/stylesheets/noto-sans-jp";
+@import '~assets/stylesheets/courier-prime-code';
+@import '~assets/stylesheets/noto-sans-jp';
 
-$font-family-en: "Courier Prime Code", sans-serif;
-$font-family-jp: "Noto Sans JP", sans-serif;
+$font-family-en: 'Courier Prime Code', sans-serif;
+$font-family-jp: 'Noto Sans JP', sans-serif;
 
 address {
   font-style: inherit;
@@ -133,7 +133,7 @@ p {
   }
 }
 
-[lang="ja"] {
+[lang='ja'] {
   font-family: $font-family-jp;
   letter-spacing: 0;
   line-height: 1.5;
