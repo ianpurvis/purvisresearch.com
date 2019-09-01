@@ -62,8 +62,6 @@ p {
 
     &::before {
       content: '_';
-      // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-      margin-right: 0 * -(1ch + 0.3ch);
     }
   }
 
@@ -128,8 +126,6 @@ p {
 
   &::before {
     content: '_';
-    // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-    margin-right: 0 * -(1ch + 0.08ch);
   }
 }
 
@@ -154,19 +150,10 @@ p {
   .snake-list {
     li {
       &:not(:first-child)::before {
-        // Prevent CJK character rendering issue
-        // by appending a trailing space:
-        content: '_ ';
         font-family: $font-family-en;
         font-size: 2rem;
         letter-spacing: 0.08ch;
         line-height: 0;
-        // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-        margin-right: 1 * -(1ch + 0.08ch);
-      }
-
-      &.no-underscore::before {
-        content: none;
       }
     }
   }
