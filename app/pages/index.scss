@@ -49,20 +49,10 @@ p {
   text-transform: uppercase;
 
   h2 {
-    display: inline;
     font-size: inherit;
     font-weight: inherit;
     letter-spacing: inherit;
     line-height: inherit;
-    margin-bottom: 0;
-  }
-
-  .snake-list {
-    display: inline;
-
-    &::before {
-      content: '_';
-    }
   }
 
   .underscore {
@@ -103,16 +93,16 @@ p {
   padding-left: 0;
   word-break: break-all;
 
-  li {
+  >* {
     display: inline;
+  }
 
-    &:not(:first-child)::before {
-      content: '_';
-    }
+  >:not(:first-child)::before {
+    content: '_';
+  }
 
-    &.no-underscore::before {
-      content: none;
-    }
+  >.no-underscore::before {
+    content: none;
   }
 }
 
@@ -148,13 +138,11 @@ p {
   }
 
   .snake-list {
-    li {
-      &:not(:first-child)::before {
-        font-family: $font-family-en;
-        font-size: 2rem;
-        letter-spacing: 0.08ch;
-        line-height: 0;
-      }
+    >:not(:first-child)::before {
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08ch;
+      line-height: 0;
     }
   }
 
