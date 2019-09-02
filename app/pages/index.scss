@@ -138,6 +138,7 @@ p {
   }
 
   .snake-list {
+    /* stylelint-disable-next-line max-nesting-depth */
     >:not(:first-child)::before {
       font-family: $font-family-en;
       font-size: 2rem;
@@ -157,6 +158,7 @@ p {
     // Margin equals characters replaced * -(1ch + letter spacing)
     margin-right: 1 * -(1ch + 0);
 
+    /* stylelint-disable-next-line max-nesting-depth */
     &::before {
       font-family: $font-family-en;
       font-size: 2rem;
