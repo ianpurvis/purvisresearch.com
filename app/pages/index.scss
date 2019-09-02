@@ -167,7 +167,7 @@ p {
 
   .underscore {
     // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0ch);
+    margin-right: 1 * -(1ch + 0);
 
     &::before {
       font-family: $font-family-en;
