@@ -99,14 +99,14 @@ main {
   margin-right: 1 * -(1ch + 0.125ch);
   visibility: hidden;
 
-  &::before {
-    content: '_';
-    visibility: visible;
-  }
-
   @include from($mobile-width) {
     // Margin equals characters replaced * -(1ch + letter spacing)
     margin-right: 1 * -(1ch + 0.06ch);
+  }
+
+  &::before {
+    content: '_';
+    visibility: visible;
   }
 
   &.replace-2 {
