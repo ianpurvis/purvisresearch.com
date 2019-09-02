@@ -1,9 +1,9 @@
 @charset "utf-8";
-@import "~assets/stylesheets/courier-prime-code";
-@import "~assets/stylesheets/noto-sans-jp";
+@import '~assets/stylesheets/courier-prime-code';
+@import '~assets/stylesheets/noto-sans-jp';
 
-$font-family-en: "Courier Prime Code", sans-serif;
-$font-family-jp: "Noto Sans JP", sans-serif;
+$font-family-en: 'Courier Prime Code', sans-serif;
+$font-family-jp: 'Noto Sans JP', sans-serif;
 
 address {
   font-style: inherit;
@@ -27,7 +27,7 @@ h2 {
   font-size: 2.6rem;
   font-weight: 500;
   letter-spacing: 0.1ch;
-  line-height: 1.0;
+  line-height: 1;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
@@ -37,34 +37,22 @@ p {
 }
 
 .boxx {
-  width: 22rem;
   margin: 1rem;
+  width: 22rem;
 }
 
 .experiments {
   font-size: 1.1rem;
   letter-spacing: 0.3ch;
   line-height: 1.5;
-  text-transform: uppercase;
   max-width: 21.1rem;
+  text-transform: uppercase;
 
   h2 {
-    display: inline;
     font-size: inherit;
     font-weight: inherit;
     letter-spacing: inherit;
     line-height: inherit;
-    margin-bottom: 0;
-  }
-
-  .snake-list {
-    display: inline;
-
-    &:before {
-      content: '_';
-      // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-      margin-right: 0 * -(1ch + 0.3ch);
-    }
   }
 
   .underscore {
@@ -94,7 +82,7 @@ p {
 .skills {
   font-size: 2rem;
   letter-spacing: 0.08ch;
-  line-height: 1.0;
+  line-height: 1;
   text-transform: uppercase;
   width: 21rem;
 }
@@ -105,16 +93,16 @@ p {
   padding-left: 0;
   word-break: break-all;
 
-  li {
+  >* {
     display: inline;
+  }
 
-    &:not(:first-child):before {
-      content: '_';
-    }
+  >:not(:first-child)::before {
+    content: '_';
+  }
 
-    &.no-underscore:before {
-      content: none;
-    }
+  >.no-underscore::before {
+    content: none;
   }
 }
 
@@ -126,14 +114,12 @@ p {
   // Margin equals characters replaced * -(1ch + letter spacing)
   margin-right: 1 * -(1ch + 0.08ch);
 
-  &:before {
+  &::before {
     content: '_';
-    // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-    margin-right: 0 * -(1ch + 0.08ch);
   }
 }
 
-[lang="ja"] {
+[lang='ja'] {
   font-family: $font-family-jp;
   letter-spacing: 0;
   line-height: 1.5;
@@ -152,22 +138,12 @@ p {
   }
 
   .snake-list {
-    li {
-      &:not(:first-child):before {
-        // Prevent CJK character rendering issue
-        // by appending a trailing space:
-        content: '_ ';
-        font-family: $font-family-en;
-        font-size: 2rem;
-        letter-spacing: 0.08ch;
-        line-height: 0;
-        // Margin equals characters of trailing space in content * -(1ch + letter spacing)
-        margin-right: 1 * -(1ch + 0.08ch);
-      }
-
-      &.no-underscore:before {
-        content: none;
-      }
+    /* stylelint-disable-next-line max-nesting-depth */
+    >:not(:first-child)::before {
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08ch;
+      line-height: 0;
     }
   }
 
@@ -180,9 +156,10 @@ p {
 
   .underscore {
     // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0ch);
+    margin-right: 1 * -(1ch + 0);
 
-    &:before {
+    /* stylelint-disable-next-line max-nesting-depth */
+    &::before {
       font-family: $font-family-en;
       font-size: 2rem;
       letter-spacing: 0.08ch;

@@ -44,7 +44,7 @@
         </ul>
       </div>
       <div class="boxx">
-        <nav class="experiments" v-tight>
+        <nav class="experiments snake-list" v-tight>
           <h2 v-html="snake('Digital Art Experiments')"></h2>
           <ul class="snake-list" v-tight>
             <li v-for="(experiment, index) in experiments" :key="index" v-tight>

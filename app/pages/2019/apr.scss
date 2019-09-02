@@ -1,8 +1,8 @@
 @charset "utf-8";
-@import "~assets/stylesheets/graphix";
+@import '~assets/stylesheets/graphix';
 
 main {
-  color: #FFFFFF;
+  color: #fff;
 }
 
 a {
@@ -11,7 +11,7 @@ a {
   }
 
   &:not(:hover) {
-    color: #FFFFFF;
+    color: #fff;
   }
 }
 

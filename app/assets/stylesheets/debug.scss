@@ -1,6 +1,8 @@
+/* stylelint-disable color-named */
+
 $debug-opacity: 0.6;
 
-html[debug] {
+[debug] {
   background-image: url('~assets/images/grid-dotted-16x16.svg');
 
   body {
@@ -11,11 +13,11 @@ html[debug] {
     background-color: rgba(red, $debug-opacity);
   }
 
-  :before {
+  ::before {
     background-color: rgba(cyan, $debug-opacity);
   }
 
-  :after {
+  ::after {
     background-color: rgba(orange, $debug-opacity);
   }
 
@@ -27,3 +29,5 @@ html[debug] {
     background-color: rgba(lawngreen, $debug-opacity);
   }
 }
+
+/* stylelint-enable */
