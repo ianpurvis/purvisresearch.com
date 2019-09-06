@@ -17,7 +17,7 @@
     "pixi.js": "^5.1.2",
     "stats.js": "^0.17.0",
     "three": "^0.107.0",
-    "vue-tight": "^1.0.0"
+    "vue-tight": "^1.0.1"
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.6.0",
