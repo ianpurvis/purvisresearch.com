@@ -1,7 +1,6 @@
 import {
   Font,
   LessDepth,
-  Mesh,
   MeshNormalMaterial,
   TextBufferGeometry,
   Vector3
@@ -9,7 +8,7 @@ import {
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
 import { Organization } from '~/models/organization.js'
-import Particle from '~/models/particle.js'
+import { Particle } from '~/models/particle.js'
 import { Random } from '~/models/random.js'
 
 export default {
@@ -70,7 +69,7 @@ export default {
       return Promise.resolve(
         ThreeDemo.methods.load.call(this)
       ).then(() => {
-        this.alphabet.forEach(character => {
+        this.particles = this.alphabet.map(character => {
           let geometry = new TextBufferGeometry(character, {
             font: this.font
           })
@@ -84,34 +83,32 @@ export default {
             wireframeLinewidth: 2.0,
           })
 
-          let mesh = new Mesh(geometry, material)
-          let radius = 60
+          let particle = new Particle(geometry, material)
+
+          let blastRadius = 60
           let acceleration = new Vector3(
-            Random.rand({min: -radius, max: radius}),
-            Random.rand({min: -radius, max: radius}),
-            Random.rand({min: -radius, max: radius})
+            Random.rand({min: -blastRadius, max: blastRadius}),
+            Random.rand({min: -blastRadius, max: blastRadius}),
+            Random.rand({min: -blastRadius, max: blastRadius})
           )
-          let scale = Random.rand({min: 0.25, max: 1})
-
+          particle.acceleration = acceleration
           // Give each particle a jump start:
-          mesh.position.copy(acceleration)
+          particle.position.copy(acceleration)
 
-          mesh.rotation.set(
+          let mass = Random.rand({min: 0.25, max: 1})
+          particle.mass = mass
+          particle.scale.setScalar(mass)
+
+          particle.rotation.set(
             Random.rand({max: 2 * Math.PI}),
             Random.rand({max: 2 * Math.PI}),
             Random.rand({max: 2 * Math.PI})
           )
-          mesh.scale.setScalar(scale)
 
-          let particle = new AlphabetParticle({
-            mesh: mesh,
-            acceleration: acceleration,
-            mass: scale
-          })
-
-          this.particles.push(particle)
-          this.scene.add(mesh)
+          return particle
         })
+
+        this.scene.add(...this.particles)
       })
     },
     update() {

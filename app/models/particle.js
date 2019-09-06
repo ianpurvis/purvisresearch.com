@@ -1,32 +1,12 @@
-import { Vector3 } from 'three'
+import { Mesh, Vector3 } from 'three'
 
-export default class Particle {
-  constructor({
-    acceleration = new Vector3(0, 0, 0),
-    mass = 1,
-    mesh = null,
-    velocity = new Vector3(0, 0, 0)
-  }) {
-    this.acceleration = acceleration
-    this.mass = mass
-    this.mesh = mesh
-    this.velocity = velocity
-  }
+class Particle extends Mesh {
 
-  get position() {
-    return this.mesh.position
-  }
-
-  set position(p) {
-    this.mesh.position = p
-  }
-
-  get rotation() {
-    return this.mesh.rotation
-  }
-
-  set rotation(r) {
-    this.mesh.rotation = r
+  constructor(geometry, material) {
+    super(geometry, material)
+    this.acceleration = new Vector3(0, 0, 0)
+    this.mass = 1
+    this.velocity = new Vector3(0, 0, 0)
   }
 
   toString() {
@@ -44,3 +24,5 @@ export default class Particle {
     this.acceleration.setScalar(0)
   }
 }
+
+export { Particle }
