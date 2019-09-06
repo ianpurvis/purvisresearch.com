@@ -8,8 +8,8 @@ import {
 } from 'three'
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
 import ThreeDemo from '~/mixins/three_demo.js'
-import AlphabetParticle from '~/models/alphabet_particle.js'
 import { Organization } from '~/models/organization.js'
+import Particle from '~/models/particle.js'
 import { Random } from '~/models/random.js'
 
 export default {

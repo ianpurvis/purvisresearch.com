@@ -1,6 +1,6 @@
 import { Vector3 } from 'three'
 
-export default class AlphabetParticle {
+export default class Particle {
   constructor({
     acceleration = new Vector3(0, 0, 0),
     mass = 1,
