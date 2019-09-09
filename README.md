@@ -21,7 +21,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
 
 - [**app/shims/pixi.js**](app/shims/pixi.js) is a module shim that bundles a subset of PixiJS and patches it with [@pixi/unsafe-eval](https://github.com/pixijs/pixi.js/tree/dev/packages/unsafe-eval) for compatibility with strict Content Security Policy.
 
-- [**app/models/gltf-loader.js**](app/models/gltf-loader.js) and	[**app/models/texture_loader.js**](app/models/texture_loader.js) extend their callback-based three.js counterparts with a simple promise API.
+- [**app/models/gltf-loader.js**](app/models/gltf-loader.js) and	[**app/models/texture-loader.js**](app/models/texture-loader.js) extend their callback-based three.js counterparts with a simple promise API.
 
 - [**bin/fetch-libre-barcode-128-text**](bin/fetch-libre-barcode-128-text) fetches the font's optimized `.woff` file from the Google Font API so that it can be included as a webpack build asset. Only glyphs used in page content are included.
 
