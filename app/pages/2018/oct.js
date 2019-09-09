@@ -29,7 +29,6 @@ export default {
       ],
       canonicalUrl: `${Organization.default.url}/2018/oct.html`,
       description: "Screen printing a 3D scan with WebGL.",
-      loader: new GLTFLoader(),
       speedOfLife: 0.05,
       title: "oct 2018 - purvis research",
     }
@@ -120,8 +119,12 @@ export default {
       return Promise.resolve(
         ThreeDemo.methods.load.call(this)
       ).then(() =>
-        this.loader.parse(Basket)
-      ).then(gltf => {
+        import('~/models/draco-loader.js')
+      ).then(({ DRACOLoader }) => {
+        let gltfLoader = new GLTFLoader()
+        gltfLoader.dracoLoader = new DRACOLoader()
+        return gltfLoader.parse(Basket)
+      }).then(gltf => {
         this.basket = gltf.scene.children[0]
         this.basket.position.set(0,0,0)
         this.basket.geometry.center()
