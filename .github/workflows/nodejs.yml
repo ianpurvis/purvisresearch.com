@@ -17,10 +17,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: npm install, lint, build, and test
       run: |
         npm install
-        npm run build --if-present
-        npm test
+        bin/eslint
+        bin/stylelint
+        bin/build
+        bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'
+        bin/codecov --disable=gcov --file=coverage/coverage-final.json
       env:
         CI: true
