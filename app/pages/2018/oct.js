@@ -12,6 +12,7 @@ import {
 import ThreeDemo from '~/mixins/three_demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
+import { DRACOLoader } from '~/models/draco-loader.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
@@ -118,11 +119,10 @@ export default {
     load() {
       return Promise.resolve(
         ThreeDemo.methods.load.call(this)
-      ).then(() =>
-        import('~/models/draco-loader.js')
-      ).then(({ DRACOLoader }) => {
+      ).then(() => {
         let gltfLoader = new GLTFLoader()
-        gltfLoader.dracoLoader = new DRACOLoader()
+        let dracoLoader = new DRACOLoader()
+        gltfLoader.dracoLoader = dracoLoader
         return gltfLoader.parse(Basket)
       }).then(gltf => {
         this.basket = gltf.scene.children[0]
