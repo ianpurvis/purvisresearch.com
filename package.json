@@ -28,7 +28,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
-    "codecov": "^3.5.0",
     "core-js": "^3.2.1",
     "dotenv": "^8.1.0",
     "dotenv-cli": "^2.0.1",
