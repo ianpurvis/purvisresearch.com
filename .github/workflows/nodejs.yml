@@ -30,7 +30,8 @@ jobs:
     - name: Test
       run: |
         bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'
-    - uses: codecov/codecov-action@v1.0.2
-      with:
-        token: ${{secrets.CODECOV_TOKEN}}
-        file: coverage/coverage-final.json
+    - name: Upload coverage to codecov.io
+      run: |
+        bin/codecov --disable=gcov --file=coverage/coverage-final.json
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
