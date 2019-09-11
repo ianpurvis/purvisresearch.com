@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ianpurvis/purvisresearch.com.svg?branch=master)](https://travis-ci.org/ianpurvis/purvisresearch.com)
+[![Build Status](https://github.com/ianpurvis/purvisresearch.com/workflows/ci/badge.svg)](https://github.com/ianpurvis/purvisresearch.com)
 [![codecov](https://codecov.io/gh/ianpurvis/purvisresearch.com/branch/master/graph/badge.svg)](https://codecov.io/gh/ianpurvis/purvisresearch.com)
 
 [![Purvis Research](app/assets/images/qr-logo-200x280.svg)](https://purvisresearch.com)
