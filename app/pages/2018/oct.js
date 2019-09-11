@@ -12,6 +12,7 @@ import {
 import ThreeDemo from '~/mixins/three_demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
+import { DRACOLoader } from '~/models/draco-loader.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 import Basket from '~/assets/models/basket.draco.glb'
@@ -29,7 +30,6 @@ export default {
       ],
       canonicalUrl: `${Organization.default.url}/2018/oct.html`,
       description: "Screen printing a 3D scan with WebGL.",
-      loader: new GLTFLoader(),
       speedOfLife: 0.05,
       title: "oct 2018 - purvis research",
     }
@@ -119,9 +119,12 @@ export default {
     load() {
       return Promise.resolve(
         ThreeDemo.methods.load.call(this)
-      ).then(() =>
-        this.loader.parse(Basket)
-      ).then(gltf => {
+      ).then(() => {
+        let gltfLoader = new GLTFLoader()
+        let dracoLoader = new DRACOLoader()
+        gltfLoader.dracoLoader = dracoLoader
+        return gltfLoader.parse(Basket)
+      }).then(gltf => {
         this.basket = gltf.scene.children[0]
         this.basket.position.set(0,0,0)
         this.basket.geometry.center()
