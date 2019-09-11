@@ -23,6 +23,8 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
 
 - [**app/models/gltf-loader.js**](app/models/gltf-loader.js) and	[**app/models/texture-loader.js**](app/models/texture-loader.js) extend their callback-based three.js counterparts with a simple promise API.
 
+- [**app/models/draco-loader.js**](app/models/draco-loader.js) overrides the three.js DRACOLoader to stop fetching its decoder module and instead use a module that has been inlined with webpack.
+
 - [**bin/fetch-libre-barcode-128-text**](bin/fetch-libre-barcode-128-text) fetches the font's optimized `.woff` file from the Google Font API so that it can be included as a webpack build asset. Only glyphs used in page content are included.
 
 - [**app/mixins/debug.js**](app/mixins/debug.js) provides a layout debug mode that can be enabled by hitting the 'd' key on any page.
