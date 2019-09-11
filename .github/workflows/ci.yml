@@ -1,0 +1,34 @@
+name: CI
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: ${{ format('Set up node {0}', matrix.node-version) }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install npm packages
+      run: |
+        npm ci
+    - name: Lint
+      run: |
+        bin/eslint
+        bin/stylelint
+    - name: Build
+      run: |
+        bin/build
+    - name: Test
+      run: |
+        bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'
+    - name: Upload coverage to codecov.io
+      run: |
+        bin/codecov --disable=gcov --file=coverage/coverage-final.json
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
