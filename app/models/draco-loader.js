@@ -30,8 +30,8 @@ class DRACOLoader extends THREEDRACOLoader {
     return URL.createObjectURL(new Blob([body]))
   }
 
-  constructor(args) {
-    super(args)
+  constructor(manager) {
+    super(manager)
     this.decoderConfig.type = 'js'
     this.workerSourceURL = DRACOLoader.buildWorkerSourceURL()
     this.decoderPending = Promise.resolve()
