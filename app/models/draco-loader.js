@@ -4,37 +4,30 @@ import DracoDecoderModule from 'draco3dgltf/draco_decoder_gltf_nodejs.js'
 
 class DRACOLoader extends THREEDRACOLoader {
 
-  static buildWorkerSourceURL() {
-    let decoderSource = DracoDecoderModule.toString()
-
-    // Expose the decoder as the global variable that the
-    // worker source expects:
-    decoderSource = `DracoDecoderModule = ${decoderSource}`
-
-    let workerSource = DRACOLoader.DRACOWorker.toString()
-
-    // Unpack worker source so that it is immediately
-    // executed in the worker context:
-    workerSource = workerSource.substring(
-      workerSource.indexOf('{') + 1,
-      workerSource.lastIndexOf('}')
-    )
-
-    let body = [
+  _compileWorkerSource() {
+    let workerSource = [
       '/* draco decoder */',
-      decoderSource,
+      // The worker expecta a global DracoDecoderModule:
+      `DracoDecoderModule = ${DracoDecoderModule.toString()}`,
       '/* worker */',
-      workerSource
+      this._extractSourceFromFunction(DRACOLoader.DRACOWorker)
     ].join('\n')
-
-    return URL.createObjectURL(new Blob([body]))
+    return workerSource
   }
 
-  constructor(manager) {
-    super(manager)
-    this.decoderConfig.type = 'js'
-    this.workerSourceURL = DRACOLoader.buildWorkerSourceURL()
-    this.decoderPending = Promise.resolve()
+  _extractSourceFromFunction(functi0n) {
+    let source = functi0n.toString()
+    // Unpack worker source so that it can be immediately executed:
+    source = source.substring(source.indexOf('{') + 1, source.lastIndexOf('}'))
+    return source
+  }
+
+  // Overridden to use webpacked decoder
+  _initDecoder() {
+    let workerSource = this._compileWorkerSource()
+    let workerSourceBlob = new Blob([workerSource])
+    this.workerSourceURL = URL.createObjectURL(workerSourceBlob)
+    return Promise.resolve()
   }
 }
 
