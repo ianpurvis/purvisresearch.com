@@ -37,7 +37,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
 
 - [**bin/push_lambda**](bin/push_lambda) uses Webpack to compile the lambda source tree into a [memory-fs](https://github.com/webpack/memory-fs) and then update the function in AWS if the checksum has changed.
 
-- [**.travis.yml**](.travis.yml) checks the codebase with [ESLint](https://github.com/eslint/eslint) and [StyleLint](https://stylelint.io), generates the static site with Nuxt, and then executes the Jest test suites and sends code coverage to [CodeCov](https://codecov.io/gh/ianpurvis/purvisresearch.com). All build checks are required to pass before a PR is merged.
+- [**.github/workflows/ci.yml**](.github/workflows/ci.yml) checks the codebase with [ESLint](https://github.com/eslint/eslint) and [StyleLint](https://stylelint.io), generates the static site with Nuxt, and then executes the Jest test suites and sends code coverage to [CodeCov](https://codecov.io/gh/ianpurvis/purvisresearch.com). All build checks are required to pass before a PR is merged.
 
 
 ## WebGL Experiments
