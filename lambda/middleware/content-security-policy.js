@@ -33,7 +33,7 @@ class ContentSecurityPolicy {
       "manifest-src 'self'",
       "media-src 'self'",
       "object-src 'none'",
-      `script-src 'self' '${scriptHash}' https://www.google-analytics.com`,
+      `script-src 'self' '${scriptHash}' https://www.google-analytics.com https://sentry.io`,
       "style-src 'self' 'unsafe-inline'",
     ].join('; ')
   }
