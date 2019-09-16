@@ -3,6 +3,9 @@ import { LambdaEdgeHeaders } from './util.js'
 const DEFAULT_POLICY = `
   base-uri
     'none';
+  child-src
+    'self'
+    blob:;
   connect-src
     'self'
     https://www.google-analytics.com
