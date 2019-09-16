@@ -8,7 +8,8 @@ describe('ContentSecurityPolicy', () => {
   })
 
   describe('call({ request, response })', () => {
-    let request, response, policy, result
+    let request, response, result
+
     describe('given a request and a response', () => {
       describe('when response is html', () => {
         beforeEach(() => {
@@ -25,24 +26,22 @@ describe('ContentSecurityPolicy', () => {
               }]
             }
           }
-          policy = 'example'
-          subject.policyForNuxt = jest.fn().mockReturnValue(policy)
+          subject.formatPolicy = jest.fn().mockReturnValue('mockFormattedPolicy')
         })
         it('returns the unmodified request', async () => {
           result = await subject.call({ request, response })
-          expect(subject.policyForNuxt).toHaveBeenCalled()
           expect(result.request).toBe(request)
         })
         it('returns the response with a Content-Security-Policy header', async () => {
           result = await subject.call({ request, response })
-          expect(subject.policyForNuxt).toHaveBeenCalled()
+          expect(subject.formatPolicy).toHaveBeenCalledWith(subject.policy)
           expect(result.response).toMatchObject(response)
           expect(result.response).toMatchObject({
             headers: {
               "content-security-policy": [
                 {
                   "key": "Content-Security-Policy",
-                  "value": policy
+                  "value": "mockFormattedPolicy"
                 },
               ],
             }
@@ -91,6 +90,19 @@ describe('ContentSecurityPolicy', () => {
         result = await subject.call({ request, response })
         expect(result.response).toBeUndefined()
       })
+    })
+  })
+
+  describe('formatPolicy(policy)', () => {
+    let policy, result
+
+    it('collapses and trims whitespace', () => {
+      policy = `
+        base-uri
+          'none';
+      `
+      result = subject.formatPolicy(policy)
+      expect(result).toBe('base-uri \'none\';')
     })
   })
 
