@@ -3,6 +3,9 @@ import { LambdaEdgeHeaders } from './util.js'
 const DEFAULT_POLICY = `
   base-uri
     'none';
+  child-src
+    'self'
+    blob:;
   connect-src
     'self'
     https://www.google-analytics.com
@@ -33,6 +36,9 @@ const DEFAULT_POLICY = `
   style-src
     'self'
     'unsafe-inline';
+  worker-src
+    'self'
+    blob:;
 `
 
 class ContentSecurityPolicy {
