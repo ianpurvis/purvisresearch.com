@@ -33,6 +33,9 @@ const DEFAULT_POLICY = `
   style-src
     'self'
     'unsafe-inline';
+  worker-src
+    'self'
+    blob:;
 `
 
 class ContentSecurityPolicy {
