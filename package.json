@@ -23,7 +23,7 @@
     "vue-tight": "^1.0.2"
   },
   "devDependencies": {
-    "@babel/runtime-corejs3": "^7.6.0",
+    "@babel/runtime-corejs3": "^7.6.2",
     "@nuxtjs/sitemap": "^1.3.1",
     "@vue/test-utils": "^1.0.0-beta.29",
     "arraybuffer-loader": "^1.0.7",
