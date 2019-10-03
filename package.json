@@ -45,7 +45,7 @@
     "frack-loader": "^1.0.0",
     "jest": "^24.9.0",
     "jszip": "^3.2.2",
-    "lighthouse": "^5.4.0",
+    "lighthouse": "^5.5.0",
     "lint-staged": "^9.4.1",
     "memory-fs": "^0.4.1",
     "node-sass": "^4.12.0",
