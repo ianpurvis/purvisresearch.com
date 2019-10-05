@@ -1,5 +1,6 @@
 import {
   AmbientLight,
+  Math as _Math,
   Mesh,
   MeshPhongMaterial,
   Object3D,
@@ -17,7 +18,6 @@ import {
 import ThreeDemo from '~/mixins/three_demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
-import { lerp } from '~/models/math.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 import { TextureLoader } from '~/models/texture-loader.js'
@@ -313,7 +313,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            light.intensity = lerp(intensity, value, easeQuadIn(t/d))
+            light.intensity = _Math.lerp(intensity, value, easeQuadIn(t/d))
           },
           resolve: resolve,
           reject: reject
@@ -327,7 +327,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            object.material.opacity = lerp(opacity, value, easeBackInOut(t/d, 0.5))
+            object.material.opacity = _Math.lerp(opacity, value, easeBackInOut(t/d, 0.5))
           },
           resolve: resolve,
           reject: reject
