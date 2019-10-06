@@ -322,10 +322,94 @@ describe('pixi_demo', () => {
       })
     })
     describe('update()', () => {
-      it('does nothing', () => {
+      beforeEach(() => {
+        component.data = () => ({
+          clock: {
+            elapsedMS: 1000,
+            started: true
+          },
+          elapsedTime: 0,
+          speedOfLife: 1
+        })
         wrapper = shallowMount(component)
-        result = wrapper.vm.update()
-        expect(result).toBeUndefined()
+      })
+      it('updates elapsed time', () => {
+        wrapper.vm.update()
+        expect(wrapper.vm.elapsedTime).toBe(1000)
+        wrapper.vm.update()
+        expect(wrapper.vm.elapsedTime).toBe(2000)
+      })
+      describe('when an animation exists', () => {
+        let animation
+
+        beforeEach(() => {
+          animation = {
+            startTime: 0,
+            duration: 1001,
+            tick: jest.fn(),
+            resolve: jest.fn(),
+            reject: jest.fn()
+          }
+          wrapper.setData({
+            animations: [
+              animation
+            ]
+          })
+        })
+        it('ticks the animation', () => {
+          wrapper.vm.update()
+          expect(animation.tick).toHaveBeenCalledWith(1000, 1001)
+        })
+        describe('when the animation throws an error', () => {
+          let error
+
+          beforeEach(() => {
+            error = new Error('Example Error')
+            animation.tick.mockImplementation(() => { throw error })
+          })
+          it('rejects the animation with the error', () => {
+            wrapper.vm.update()
+            expect(animation.reject).toHaveBeenCalledWith(error)
+          })
+          it('culls the animation', () => {
+            wrapper.vm.update()
+            expect(wrapper.vm.animations).toHaveLength(0)
+          })
+        })
+        describe('when the animation is complete', () => {
+          beforeEach(() => {
+            wrapper.setData({
+              elapsedTime: 1002
+            })
+          })
+          it('resolves the animation', () => {
+            wrapper.vm.update()
+            expect(animation.resolve).toHaveBeenCalled()
+          })
+          it('culls the animation', () => {
+            wrapper.vm.update()
+            expect(wrapper.vm.animations).toHaveLength(0)
+          })
+        })
+      })
+      describe('when clock is stopped', () => {
+        it('does nothing', () => {
+          wrapper.setData({
+            clock: {
+              started: false
+            }
+          })
+          let result = wrapper.vm.update()
+          expect(result).toBeUndefined()
+        })
+      })
+      describe('when clock is null', () => {
+        it('does not throw an error', () => {
+          wrapper.setData({ clock: null })
+          expect(() =>
+            wrapper.vm.update()
+          ).not.toThrow()
+        })
       })
     })
   })

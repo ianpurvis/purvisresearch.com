@@ -8,10 +8,11 @@ export default {
   },
   data() {
     return {
-      renderer: null,
+      animations: [],
       animationFrame: null,
       clock: null,
       elapsedTime: 0,
+      renderer: null,
       scene: null,
       speedOfLife: 1.0,
       ticker: null
@@ -83,7 +84,25 @@ export default {
       window.cancelAnimationFrame(this.animationFrame)
     },
     update() {
-      // To be overriden by mixing class
+      if (!this.clock || !this.clock.started) return
+      this.elapsedTime += (this.clock.elapsedMS * this.speedOfLife)
+
+      // Update animations
+      let globalElapsedTime = this.elapsedTime
+      this.animations.forEach((animation, index) => {
+        let {startTime, duration, tick, resolve, reject} = animation
+        let elapsedTime = Math.min(globalElapsedTime - startTime, duration)
+        try {
+          tick(elapsedTime, duration)
+        } catch (error) {
+          this.animations.splice(index, 1)
+          if (reject) reject(error)
+        }
+        if (elapsedTime >= duration) {
+          this.animations.splice(index, 1)
+          if (resolve) resolve()
+        }
+      })
     },
   },
   mixins: [
