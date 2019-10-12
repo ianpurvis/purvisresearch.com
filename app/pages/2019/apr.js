@@ -40,7 +40,6 @@ export default {
   },
   data() {
     return {
-      animations: [],
       camera: new OrthographicCamera(),
       canonicalUrl: `${Organization.default.url}/2019/apr.html`,
       description: "Surreal television with WebRTC and WebGL.",
@@ -358,23 +357,7 @@ export default {
       ])
     },
     update() {
-      // Update animations
-      if (!this.clock.running) return
-      let globalElapsedTime = this.clock.getElapsedTime()
-      this.animations.forEach((animation, index) => {
-        let {startTime, duration, tick, resolve, reject} = animation
-        let elapsedTime = Math.min(globalElapsedTime - startTime, duration)
-        try {
-          tick(elapsedTime, duration)
-        } catch (error) {
-          this.animations.splice(index, 1)
-          if (reject) reject(error)
-        }
-        if (elapsedTime >= duration) {
-          this.animations.splice(index, 1)
-          if (resolve) resolve()
-        }
-      })
+      ThreeDemo.methods.update.call(this)
     },
   },
   mixins: [

@@ -98,7 +98,7 @@ describe('three_demo', () => {
       })
     })
     describe('deltaTime()', () => {
-      it('returns elapsed clock ms multiplied by the speed of life', () => {
+      it('returns delta clock ms multiplied by the speed of life', () => {
           component.data = () => ({
             clock: {
               getDelta: jest.fn().mockReturnValue(100)
@@ -107,6 +107,19 @@ describe('three_demo', () => {
           })
           wrapper = shallowMount(component)
           result = wrapper.vm.deltaTime()
+          expect(result).toBe(50)
+      })
+    })
+    describe('elapsedTime()', () => {
+      it('returns elapsed clock ms multiplied by the speed of life', () => {
+          component.data = () => ({
+            clock: {
+              getElapsedTime: jest.fn().mockReturnValue(100)
+            },
+            speedOfLife: 0.5
+          })
+          wrapper = shallowMount(component)
+          result = wrapper.vm.elapsedTime()
           expect(result).toBe(50)
       })
     })
@@ -357,10 +370,78 @@ describe('three_demo', () => {
       })
     })
     describe('update()', () => {
-      it('does nothing', () => {
+      beforeEach(() => {
+        component.data = () => ({
+          clock: {
+            running: true
+          }
+        })
+        component.methods = {
+          elapsedTime: jest.fn().mockReturnValue(1000)
+        }
         wrapper = shallowMount(component)
-        result = wrapper.vm.update()
-        expect(result).toBeUndefined()
+      })
+      describe('when an animation exists', () => {
+        let animation
+
+        beforeEach(() => {
+          animation = {
+            startTime: 0,
+            duration: 1001,
+            tick: jest.fn(),
+            resolve: jest.fn(),
+            reject: jest.fn()
+          }
+          wrapper.setData({
+            animations: [
+              animation
+            ]
+          })
+        })
+        it('ticks the animation', () => {
+          wrapper.vm.update()
+          expect(animation.tick).toHaveBeenCalledWith(1000, 1001)
+        })
+        describe('when the animation throws an error', () => {
+          let error
+
+          beforeEach(() => {
+            error = new Error('Example Error')
+            animation.tick.mockImplementation(() => { throw error })
+          })
+          it('rejects the animation with the error', () => {
+            wrapper.vm.update()
+            expect(animation.reject).toHaveBeenCalledWith(error)
+          })
+          it('culls the animation', () => {
+            wrapper.vm.update()
+            expect(wrapper.vm.animations).toHaveLength(0)
+          })
+        })
+        describe('when the animation is complete', () => {
+          beforeEach(() => {
+            component.methods.elapsedTime.mockReturnValue(1002)
+          })
+          it('resolves the animation', () => {
+            wrapper.vm.update()
+            expect(animation.resolve).toHaveBeenCalled()
+          })
+          it('culls the animation', () => {
+            wrapper.vm.update()
+            expect(wrapper.vm.animations).toHaveLength(0)
+          })
+        })
+      })
+      describe('when clock is stopped', () => {
+        it('does nothing', () => {
+          wrapper.setData({
+            clock: {
+              running: false
+            }
+          })
+          let result = wrapper.vm.update()
+          expect(result).toBeUndefined()
+        })
       })
     })
   })
