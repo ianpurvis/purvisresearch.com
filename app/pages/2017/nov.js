@@ -22,6 +22,7 @@ export default {
       description: "A 3d character exploder in WebGL.",
       font: new Font(Inconsolata),
       particles: [],
+      speedOfLife: 0.4, // Slow motion
       title: "nov 2017 - purvis research",
     }
   },
