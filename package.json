@@ -9,7 +9,7 @@
     "@nuxtjs/sentry": "^3.0.0",
     "@pixi/unsafe-eval": "^5.0.4",
     "@sentry/browser": "^5.7.0",
-    "@sentry/integrations": "^5.7.0",
+    "@sentry/integrations": "^5.7.1",
     "@sentry/node": "^5.7.1",
     "bulma": "^0.7.5",
     "d3-ease": "^1.0.5",
