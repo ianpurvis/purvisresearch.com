@@ -5,13 +5,13 @@ jest.mock('~/models/webgl.js')
 
 import Animatable from '~/mixins/animatable.js'
 import graphix from '~/mixins/graphix.js'
-import threeDemo from '~/mixins/three_demo.js'
+import threeDemo from '~/mixins/three-demo.js'
 import { WebGL } from '~/models/webgl.js'
 import { WebGLRenderer } from 'three'
 import { shallowMount } from '@vue/test-utils'
 
 
-describe('three_demo', () => {
+describe('three-demo', () => {
   let component, wrapper
 
   beforeEach(() => {

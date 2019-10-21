@@ -10,7 +10,7 @@ import {
   Vector3,
   WireframeGeometry,
 } from 'three'
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
 import { DRACOLoader } from '~/models/draco-loader.js'

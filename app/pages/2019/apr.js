@@ -15,7 +15,7 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
 import { Organization } from '~/models/organization.js'

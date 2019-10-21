@@ -6,7 +6,7 @@ import {
   Vector3
 } from 'three'
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
 import { Particle } from '~/models/particle.js'
 import { Random } from '~/models/random.js'
