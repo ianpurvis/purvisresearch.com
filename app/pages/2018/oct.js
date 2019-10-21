@@ -73,7 +73,7 @@ export default {
     delay(duration) {
       return new Promise((resolve, reject) => {
         const animation = {
-          startTime: this.elapsedTime(),
+          startTime: this.elapsedTime,
           duration: duration,
           tick: (t, d) => {},
           resolve: resolve,
@@ -173,7 +173,7 @@ export default {
       return new Promise((resolve, reject) => {
         const opacity = object.material.opacity
         const animation = {
-          startTime: this.elapsedTime(),
+          startTime: this.elapsedTime,
           duration: duration,
           tick: (t, d) => {
             object.material.opacity = _Math.lerp(opacity, value, t/d)
@@ -183,9 +183,6 @@ export default {
         }
         this.animations.push(animation)
       })
-    },
-    update() {
-      ThreeDemo.methods.update.call(this)
     },
     vectorFromSpherical({radius, theta, phi}) {
       let spherical = new Spherical(radius, theta * DEGREES_TO_RADIANS, phi * DEGREES_TO_RADIANS).makeSafe()

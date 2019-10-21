@@ -5,8 +5,9 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
+import Animatable from '~/mixins/animatable.js'
+import Graphix from '~/mixins/graphix.js'
 import { WebGL } from '~/models/webgl.js'
-import graphix from '~/mixins/graphix.js'
 
 const safeDispose = (object) => {
   if (object != null && typeof object.dispose === 'function') {
@@ -21,8 +22,6 @@ export default {
   },
   data() {
     return {
-      animations: [],
-      animationFrame: null,
       camera: new PerspectiveCamera(60),
       clock: new Clock(false),
       renderer: null,
@@ -31,11 +30,6 @@ export default {
     }
   },
   methods: {
-    animate() {
-      this.update()
-      this.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
     dispose() {
       if (this.scene) {
         this.scene.traverse((node) => {
@@ -54,12 +48,6 @@ export default {
         safeDispose(renderTarget)
         safeDispose(this.renderer)
       }
-    },
-    deltaTime() {
-      return this.clock.getDelta() * this.speedOfLife
-    },
-    elapsedTime() {
-      return this.clock.getElapsedTime() * this.speedOfLife
     },
     load() {
       return Promise.resolve().then(() => {
@@ -118,34 +106,21 @@ export default {
     },
     startAnimating() {
       this.clock.start()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+      Animatable.methods.startAnimating.call(this)
     },
     stopAnimating() {
       this.clock && this.clock.stop()
-      window.cancelAnimationFrame(this.animationFrame)
+      Animatable.methods.stopAnimating.call(this)
     },
     update() {
       if (!this.clock.running) return
-
-      // Update animations
-      let globalElapsedTime = this.elapsedTime()
-      this.animations.forEach((animation, index) => {
-        let {startTime, duration, tick, resolve, reject} = animation
-        let elapsedTime = Math.min(globalElapsedTime - startTime, duration)
-        try {
-          tick(elapsedTime, duration)
-        } catch (error) {
-          this.animations.splice(index, 1)
-          if (reject) reject(error)
-        }
-        if (elapsedTime >= duration) {
-          this.animations.splice(index, 1)
-          if (resolve) resolve()
-        }
-      })
+      this.deltaTime = this.clock.getDelta() * this.speedOfLife
+      this.elapsedTime += this.deltaTime
+      Animatable.methods.update.call(this)
     },
   },
   mixins: [
-    graphix
+    Animatable,
+    Graphix
   ],
 }

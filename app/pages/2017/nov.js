@@ -17,7 +17,6 @@ export default {
   data () {
     return {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
-      animationFrame: null,
       canonicalUrl: `${Organization.default.url}/2017/nov.html`,
       description: "A 3d character exploder in WebGL.",
       font: new Font(Inconsolata),
@@ -113,9 +112,8 @@ export default {
       })
     },
     update() {
-      let deltaTime = this.deltaTime()
-      if (deltaTime == 0) return
-      this.particles.forEach(p => p.update(deltaTime))
+      ThreeDemo.methods.update.call(this)
+      this.particles.forEach(p => p.update(this.deltaTime))
     },
   },
   mixins: [

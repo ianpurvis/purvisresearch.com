@@ -134,10 +134,9 @@ export default {
       })
     },
     update() {
-      let deltaTime = this.deltaTime()
-      if (deltaTime == 0) return
+      PixiDemo.methods.update.call(this)
       if (!this.emitter) return
-      this.emitter.update(deltaTime / SECONDS_TO_MILLISECONDS)
+      this.emitter.update(this.deltaTime / SECONDS_TO_MILLISECONDS)
     }
   },
   mixins: [

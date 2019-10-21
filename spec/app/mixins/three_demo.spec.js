@@ -1,7 +1,9 @@
 jest.mock('three')
+jest.mock('~/mixins/animatable.js')
 jest.mock('~/mixins/graphix.js')
 jest.mock('~/models/webgl.js')
 
+import Animatable from '~/mixins/animatable.js'
 import graphix from '~/mixins/graphix.js'
 import threeDemo from '~/mixins/three_demo.js'
 import { WebGL } from '~/models/webgl.js'
@@ -37,30 +39,6 @@ describe('three_demo', () => {
   describe('methods', () => {
     let result
 
-    describe('animate()', () => {
-      let mockAnimationFrameRequestId
-
-      it('updates, renders, and requests an animation frame callback to itself', () => {
-        component.methods = {
-          update: jest.fn(),
-          render: jest.fn()
-        }
-        wrapper = shallowMount(component)
-        mockAnimationFrameRequestId = 'example'
-        global.window.requestAnimationFrame =
-          jest.fn(() => mockAnimationFrameRequestId)
-
-        wrapper.vm.animate()
-        expect(component.methods.update)
-          .toHaveBeenCalled()
-        expect(component.methods.render)
-          .toHaveBeenCalled()
-        expect(global.window.requestAnimationFrame)
-          .toHaveBeenCalledWith(wrapper.vm.animate)
-        expect(wrapper.vm.animationFrame)
-          .toBe(mockAnimationFrameRequestId)
-      })
-    })
     describe('dispose()', () => {
       describe('when renderer and scene are not present', () => {
         it('does nothing', () => {
@@ -95,32 +73,6 @@ describe('three_demo', () => {
           expect(wrapper.vm.scene.traverse).toHaveBeenCalled()
           expect(wrapper.vm.scene.dispose).toHaveBeenCalled()
         })
-      })
-    })
-    describe('deltaTime()', () => {
-      it('returns delta clock ms multiplied by the speed of life', () => {
-          component.data = () => ({
-            clock: {
-              getDelta: jest.fn().mockReturnValue(100)
-            },
-            speedOfLife: 0.5
-          })
-          wrapper = shallowMount(component)
-          result = wrapper.vm.deltaTime()
-          expect(result).toBe(50)
-      })
-    })
-    describe('elapsedTime()', () => {
-      it('returns elapsed clock ms multiplied by the speed of life', () => {
-          component.data = () => ({
-            clock: {
-              getElapsedTime: jest.fn().mockReturnValue(100)
-            },
-            speedOfLife: 0.5
-          })
-          wrapper = shallowMount(component)
-          result = wrapper.vm.elapsedTime()
-          expect(result).toBe(50)
       })
     })
     describe('frame()', () => {
@@ -317,49 +269,39 @@ describe('three_demo', () => {
       })
     })
     describe('startAnimating()', () => {
-      let mockAnimationFrameRequestId
-
-      it([
-        'starts the clock',
-        'requests an animation frame callback to animate',
-        'and stores the request id'
-      ].join(', '), () => {
+      beforeEach(() => {
         component.data = () => ({
           clock: {
             start: jest.fn()
           }
         })
-        mockAnimationFrameRequestId = 'example'
-        global.window.requestAnimationFrame =
-          jest.fn(() => mockAnimationFrameRequestId)
-
         wrapper = shallowMount(component)
+      })
+      it('starts the clock', () => {
         wrapper.vm.startAnimating()
-        expect(wrapper.vm.clock.start)
-          .toHaveBeenCalled()
-        expect(global.window.requestAnimationFrame)
-          .toHaveBeenCalledWith(wrapper.vm.animate)
-        expect(wrapper.vm.animationFrame)
-          .toBe(mockAnimationFrameRequestId)
+        expect(wrapper.vm.clock.start).toHaveBeenCalled()
+      })
+      it('calls Animatable.methods.startAnimating()', () => {
+        wrapper.vm.startAnimating()
+        expect(Animatable.methods.startAnimating).toHaveBeenCalled()
       })
     })
     describe('stopAnimating()', () => {
       beforeEach(() => {
         component.data = () => ({
-          animationFrame: 'mockAnimationFrame',
           clock: {
             stop: jest.fn()
           }
         })
-        global.window.cancelAnimationFrame = jest.fn()
         wrapper = shallowMount(component)
       })
-      it('stops the clock and cancels the animation frame', () => {
+      it('stops the clock', () => {
         wrapper.vm.stopAnimating()
-        expect(wrapper.vm.clock.stop)
-          .toHaveBeenCalled()
-        expect(global.window.cancelAnimationFrame)
-          .toHaveBeenCalledWith('mockAnimationFrame')
+        expect(wrapper.vm.clock.stop).toHaveBeenCalled()
+      })
+      it('calls Animatable.methods.stopAnimating()', () => {
+        wrapper.vm.stopAnimating()
+        expect(Animatable.methods.stopAnimating).toHaveBeenCalled()
       })
       describe('when clock is null', () => {
         it('does not throw an error', () => {
@@ -372,74 +314,45 @@ describe('three_demo', () => {
     describe('update()', () => {
       beforeEach(() => {
         component.data = () => ({
-          clock: {
+          clock: {}
+        })
+        wrapper = shallowMount(component)
+        wrapper.vm.elapsedTime = 0
+        wrapper.vm.speedOfLife = 1
+      })
+      describe('when clock is running', () => {
+        let deltaTime
+
+        beforeEach(() => {
+          deltaTime = 1000
+          wrapper.vm.clock = {
+            getDelta: jest.fn().mockReturnValue(deltaTime),
             running: true
           }
         })
-        component.methods = {
-          elapsedTime: jest.fn().mockReturnValue(1000)
-        }
-        wrapper = shallowMount(component)
-      })
-      describe('when an animation exists', () => {
-        let animation
-
-        beforeEach(() => {
-          animation = {
-            startTime: 0,
-            duration: 1001,
-            tick: jest.fn(),
-            resolve: jest.fn(),
-            reject: jest.fn()
-          }
-          wrapper.setData({
-            animations: [
-              animation
-            ]
+        it('updates delta time', () => {
+          [1,2].forEach(i => {
+            wrapper.vm.update()
+            expect(wrapper.vm.deltaTime).toBe(deltaTime)
           })
         })
-        it('ticks the animation', () => {
+        it('updates elapsed time', () => {
+          [1,2].forEach(i => {
+            wrapper.vm.update()
+            expect(wrapper.vm.elapsedTime).toBe(deltaTime * i)
+          })
+        })
+        it('calls Animatable.methods.update()', () => {
           wrapper.vm.update()
-          expect(animation.tick).toHaveBeenCalledWith(1000, 1001)
-        })
-        describe('when the animation throws an error', () => {
-          let error
-
-          beforeEach(() => {
-            error = new Error('Example Error')
-            animation.tick.mockImplementation(() => { throw error })
-          })
-          it('rejects the animation with the error', () => {
-            wrapper.vm.update()
-            expect(animation.reject).toHaveBeenCalledWith(error)
-          })
-          it('culls the animation', () => {
-            wrapper.vm.update()
-            expect(wrapper.vm.animations).toHaveLength(0)
-          })
-        })
-        describe('when the animation is complete', () => {
-          beforeEach(() => {
-            component.methods.elapsedTime.mockReturnValue(1002)
-          })
-          it('resolves the animation', () => {
-            wrapper.vm.update()
-            expect(animation.resolve).toHaveBeenCalled()
-          })
-          it('culls the animation', () => {
-            wrapper.vm.update()
-            expect(wrapper.vm.animations).toHaveLength(0)
-          })
+          expect(Animatable.methods.update).toHaveBeenCalled()
         })
       })
       describe('when clock is stopped', () => {
+        beforeEach(() => {
+          wrapper.vm.clock.running = false
+        })
         it('does nothing', () => {
-          wrapper.setData({
-            clock: {
-              running: false
-            }
-          })
-          let result = wrapper.vm.update()
+          const result = wrapper.vm.update()
           expect(result).toBeUndefined()
         })
       })
