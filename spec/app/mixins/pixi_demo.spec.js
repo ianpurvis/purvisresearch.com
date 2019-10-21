@@ -9,13 +9,13 @@ jest.mock('~/shims/pixi.js', () => ({
 
 import Animatable from '~/mixins/animatable.js'
 import graphix from '~/mixins/graphix.js'
-import pixiDemo from '~/mixins/pixi_demo.js'
+import pixiDemo from '~/mixins/pixi-demo.js'
 import { WebGL } from '~/models/webgl.js'
 import { Container, Renderer, Ticker } from '~/shims/pixi.js'
 import { shallowMount } from '@vue/test-utils'
 
 
-describe('pixi_demo', () => {
+describe('pixi-demo', () => {
   let component, wrapper
 
   beforeEach(() => {

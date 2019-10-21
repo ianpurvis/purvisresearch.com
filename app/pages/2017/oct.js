@@ -1,4 +1,4 @@
-import PixiDemo from '~/mixins/pixi_demo.js'
+import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
