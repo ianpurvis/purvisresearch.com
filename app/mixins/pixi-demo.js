@@ -1,5 +1,6 @@
-import { WebGL } from '~/models/webgl.js'
+import Animatable from '~/mixins/animatable.js'
 import Graphix from '~/mixins/graphix.js'
+import { WebGL } from '~/models/webgl.js'
 
 export default {
   beforeDestroy() {
@@ -8,28 +9,17 @@ export default {
   },
   data() {
     return {
-      renderer: null,
-      animationFrame: null,
       clock: null,
-      elapsedTime: 0,
+      renderer: null,
       scene: null,
-      speedOfLife: 1.0,
       ticker: null
     }
   },
   methods: {
-    animate() {
-      this.update()
-      this.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
     dispose() {
       if (this.ticker) this.ticker.destroy()
       if (this.scene) this.scene.destroy(true)
       if (this.renderer) this.renderer.destroy()
-    },
-    deltaTime() {
-      return this.clock.elapsedMS * this.speedOfLife
     },
     frame() {
       let { clientHeight: height, clientWidth: width } = this.$refs.canvas
@@ -76,17 +66,21 @@ export default {
     },
     startAnimating() {
       this.clock.start()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+      Animatable.methods.startAnimating.call(this)
     },
     stopAnimating() {
       this.clock && this.clock.stop()
-      window.cancelAnimationFrame(this.animationFrame)
+      Animatable.methods.stopAnimating.call(this)
     },
     update() {
-      // To be overriden by mixing class
+      if (!this.clock || !this.clock.started) return
+      this.deltaTime = this.clock.elapsedMS * this.speedOfLife
+      this.elapsedTime += this.deltaTime
+      Animatable.methods.update.call(this)
     },
   },
   mixins: [
+    Animatable,
     Graphix
   ],
 }

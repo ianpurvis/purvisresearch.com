@@ -1,5 +1,6 @@
 import {
   AmbientLight,
+  Math as _Math,
   Mesh,
   MeshPhongMaterial,
   Object3D,
@@ -14,10 +15,9 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
-import { lerp } from '~/models/math.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
 import { TextureLoader } from '~/models/texture-loader.js'
@@ -40,7 +40,6 @@ export default {
   },
   data() {
     return {
-      animations: [],
       camera: new OrthographicCamera(),
       canonicalUrl: `${Organization.default.url}/2019/apr.html`,
       description: "Surreal television with WebRTC and WebGL.",
@@ -313,7 +312,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            light.intensity = lerp(intensity, value, easeQuadIn(t/d))
+            light.intensity = _Math.lerp(intensity, value, easeQuadIn(t/d))
           },
           resolve: resolve,
           reject: reject
@@ -327,7 +326,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            object.material.opacity = lerp(opacity, value, easeBackInOut(t/d, 0.5))
+            object.material.opacity = _Math.lerp(opacity, value, easeBackInOut(t/d, 0.5))
           },
           resolve: resolve,
           reject: reject
@@ -358,23 +357,7 @@ export default {
       ])
     },
     update() {
-      // Update animations
-      if (!this.clock.running) return
-      let globalElapsedTime = this.clock.getElapsedTime()
-      this.animations.forEach((animation, index) => {
-        let {startTime, duration, tick, resolve, reject} = animation
-        let elapsedTime = Math.min(globalElapsedTime - startTime, duration)
-        try {
-          tick(elapsedTime, duration)
-        } catch (error) {
-          this.animations.splice(index, 1)
-          if (reject) reject(error)
-        }
-        if (elapsedTime >= duration) {
-          this.animations.splice(index, 1)
-          if (resolve) resolve()
-        }
-      })
+      ThreeDemo.methods.update.call(this)
     },
   },
   mixins: [

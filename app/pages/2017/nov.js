@@ -6,7 +6,7 @@ import {
   Vector3
 } from 'three'
 import Inconsolata from "~/assets/models/Inconsolata_Regular.json"
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
 import { Particle } from '~/models/particle.js'
 import { Random } from '~/models/random.js'
@@ -17,11 +17,11 @@ export default {
   data () {
     return {
       alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
-      animationFrame: null,
       canonicalUrl: `${Organization.default.url}/2017/nov.html`,
       description: "A 3d character exploder in WebGL.",
       font: new Font(Inconsolata),
       particles: [],
+      speedOfLife: 0.4, // Slow motion
       title: "nov 2017 - purvis research",
     }
   },
@@ -112,9 +112,8 @@ export default {
       })
     },
     update() {
-      let deltaTime = this.deltaTime()
-      if (deltaTime == 0) return
-      this.particles.forEach(p => p.update(deltaTime))
+      ThreeDemo.methods.update.call(this)
+      this.particles.forEach(p => p.update(this.deltaTime))
     },
   },
   mixins: [

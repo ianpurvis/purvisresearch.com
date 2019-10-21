@@ -1,4 +1,4 @@
-import PixiDemo from '~/mixins/pixi_demo.js'
+import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
@@ -10,17 +10,6 @@ export default {
     return {
       canonicalUrl: `${Organization.default.url}/2017/oct.html`,
       description: "A bézier moiré generator in WebGL.",
-      elapsedTime: 0,
-      oscillators: [
-        new Oscillator({
-          amplitude: 50,
-          period: 100 * SECONDS_TO_MILLISECONDS
-        }),
-        new Oscillator({
-          amplitude: 50,
-          period: 50 * SECONDS_TO_MILLISECONDS
-        })
-      ],
       speedOfLife: 0.4, // Slow-motion
       textures: [],
       title: "oct 2017 - purvis research",
@@ -79,20 +68,35 @@ export default {
         this.textures = textures
       })
     },
+    oscillatePosition(object, { amplitude, period }) {
+      return new Promise((resolve, reject) => {
+        const oscillator = new Oscillator({ amplitude, period })
+        this.animations.push({
+          startTime: this.elapsedTime,
+          duration: Number.MAX_VALUE,
+          tick: (t, d) => {
+            object.x = oscillator.sine(t)
+          },
+          resolve: resolve,
+          reject: reject
+        })
+      })
+    },
     update() {
-      let deltaTime = this.deltaTime()
-      if (deltaTime == 0) return
-      this.elapsedTime += deltaTime
-      if (this.oscillators.length < 1) return
-      if (this.textures.length < 1) return
-      this.textures[1].x = this.oscillators[0].sine(this.elapsedTime)
-      this.textures[2].x = this.oscillators[1].sine(this.elapsedTime)
+      PixiDemo.methods.update.call(this)
     }
   },
   mixins: [
     PixiDemo,
   ],
   mounted() {
-    this.load().catch(this.logError)
+    this.load().then(() => {
+      this.textures.slice(-2).forEach(texture => {
+        this.oscillatePosition(texture, {
+          amplitude: 50, // pixels
+          period: Random.rand({ min: 50, max: 100 }) * SECONDS_TO_MILLISECONDS
+        })
+      })
+    }).catch(this.logError)
   }
 }

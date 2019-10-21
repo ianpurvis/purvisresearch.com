@@ -5,8 +5,9 @@ import {
   Vector2,
   WebGLRenderer,
 }  from 'three'
+import Animatable from '~/mixins/animatable.js'
+import Graphix from '~/mixins/graphix.js'
 import { WebGL } from '~/models/webgl.js'
-import graphix from '~/mixins/graphix.js'
 
 const safeDispose = (object) => {
   if (object != null && typeof object.dispose === 'function') {
@@ -21,20 +22,14 @@ export default {
   },
   data() {
     return {
-      animationFrame: null,
       camera: new PerspectiveCamera(60),
       clock: new Clock(false),
       renderer: null,
       scene: new Scene(),
-      speedOfLife: 0.4, // Slow motion
+      speedOfLife: 1.0,
     }
   },
   methods: {
-    animate() {
-      this.update()
-      this.render()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
-    },
     dispose() {
       if (this.scene) {
         this.scene.traverse((node) => {
@@ -53,9 +48,6 @@ export default {
         safeDispose(renderTarget)
         safeDispose(this.renderer)
       }
-    },
-    deltaTime() {
-      return this.clock.getDelta() * this.speedOfLife
     },
     load() {
       return Promise.resolve().then(() => {
@@ -114,17 +106,21 @@ export default {
     },
     startAnimating() {
       this.clock.start()
-      this.animationFrame = window.requestAnimationFrame(this.animate)
+      Animatable.methods.startAnimating.call(this)
     },
     stopAnimating() {
       this.clock && this.clock.stop()
-      window.cancelAnimationFrame(this.animationFrame)
+      Animatable.methods.stopAnimating.call(this)
     },
     update() {
-      // To be overriden by mixing class
+      if (!this.clock.running) return
+      this.deltaTime = this.clock.getDelta() * this.speedOfLife
+      this.elapsedTime += this.deltaTime
+      Animatable.methods.update.call(this)
     },
   },
   mixins: [
-    graphix
+    Animatable,
+    Graphix
   ],
 }

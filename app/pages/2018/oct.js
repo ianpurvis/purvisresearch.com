@@ -3,13 +3,14 @@ import {
   DoubleSide,
   LineSegments,
   Material,
+  Math as _Math,
   Mesh,
   Spherical,
   Vector2,
   Vector3,
   WireframeGeometry,
 } from 'three'
-import ThreeDemo from '~/mixins/three_demo.js'
+import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
 import { DRACOLoader } from '~/models/draco-loader.js'
@@ -30,7 +31,6 @@ export default {
       ],
       canonicalUrl: `${Organization.default.url}/2018/oct.html`,
       description: "Screen printing a 3D scan with WebGL.",
-      speedOfLife: 0.05,
       title: "oct 2018 - purvis research",
     }
   },
@@ -70,14 +70,42 @@ export default {
     }
   },
   methods: {
+    delay(duration) {
+      return new Promise((resolve, reject) => {
+        const animation = {
+          startTime: this.elapsedTime,
+          duration: duration,
+          tick: (t, d) => {},
+          resolve: resolve,
+          reject: reject
+        }
+        this.animations.push(animation)
+      })
+    },
+    fadeIn(duration) {
+      const basketOpacity = Random.rand({min: 0.25, max: 0.90})
+      const cloneOpacity = Random.rand({min: 0.25, max: 0.90})
+      return Promise.all([
+        this.transitionOpacity(this.basket, basketOpacity, duration),
+        this.transitionOpacity(this.clone, cloneOpacity, duration),
+      ])
+    },
+    fadeOut(duration) {
+      const basketDuration = duration * this.basket.material.opacity
+      const cloneDuration = duration * this.clone.material.opacity
+      return Promise.all([
+        this.transitionOpacity(this.basket, 0.0, basketDuration),
+        this.transitionOpacity(this.clone, 0.0, cloneDuration),
+      ])
+    },
     layout() {
       this.colors.sort(Random.comparison)
 
       this.basket.material.color = this.colors[0]
-      this.basket.material.opacity = Random.rand({min: 0.25, max: 0.90})
+      this.basket.material.opacity = 0
 
       this.clone.material.color = this.colors[1]
-      this.clone.material.opacity = Random.rand({min: 0.25, max: 0.90})
+      this.clone.material.opacity = 0
 
       this.clone.position.copy(
         this.vectorFromSpherical({
@@ -141,22 +169,20 @@ export default {
         this.scene.add(this.clone)
       })
     },
-    update() {
-      let deltaTime = this.deltaTime()
-      if (deltaTime == 0) return
-      if (!this.basket || !this.clone) return
-
-      this.basket.material.opacity -= deltaTime
-      this.clone.material.opacity -= deltaTime
-
-      // This update loop will decrement opacity below zero,
-      // providing a hack to delay re-layout for a few ms:
-      let threshold = -0.1
-      if (this.basket.material.opacity < threshold
-        && this.clone.material.opacity < threshold
-      ) {
-        this.layout()
-      }
+    transitionOpacity(object, value, duration=1.0) {
+      return new Promise((resolve, reject) => {
+        const opacity = object.material.opacity
+        const animation = {
+          startTime: this.elapsedTime,
+          duration: duration,
+          tick: (t, d) => {
+            object.material.opacity = _Math.lerp(opacity, value, t/d)
+          },
+          resolve: resolve,
+          reject: reject
+        }
+        this.animations.push(animation)
+      })
     },
     vectorFromSpherical({radius, theta, phi}) {
       let spherical = new Spherical(radius, theta * DEGREES_TO_RADIANS, phi * DEGREES_TO_RADIANS).makeSafe()
@@ -168,7 +194,16 @@ export default {
     ThreeDemo,
   ],
   mounted() {
-    this.load().then(this.layout).catch(this.logError)
+    this.load()
+      .then(async () => {
+        while (this.clock.running) {
+          this.layout()
+          await this.fadeIn(0.1)
+            .then(() => this.fadeOut(24))
+            .then(() => this.delay(2))
+        }
+      })
+      .catch(this.logError)
   }
 }
 
