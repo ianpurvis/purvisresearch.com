@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-once>
     <autoscaled-div :max-scale=2.8>
       <div class="boxx">
         <h1>

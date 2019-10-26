@@ -1,5 +1,5 @@
 <template>
-  <div class="error aspect">404</div>
+  <div class="error aspect" v-once>404</div>
 </template>
 
 <style src="./404.scss" lang="scss" scoped></style>
