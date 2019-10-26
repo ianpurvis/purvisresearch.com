@@ -49,26 +49,22 @@ describe('three-demo', () => {
       })
       describe('when renderer is present', () => {
         it('disposes the renderer', () => {
-          component.data = () => ({
-            renderer: {
-              dispose: jest.fn(),
-              getRenderTarget: jest.fn(),
-            },
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.renderer = {
+            dispose: jest.fn(),
+            getRenderTarget: jest.fn(),
+          }
           wrapper.vm.dispose()
           expect(wrapper.vm.renderer.dispose).toHaveBeenCalled()
         })
       })
       describe('when scene is present', () => {
         it('destroys the scene', () => {
-          component.data = () => ({
-            scene: {
-              dispose: jest.fn(),
-              traverse: jest.fn()
-            },
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.scene = {
+            dispose: jest.fn(),
+            traverse: jest.fn()
+          }
           wrapper.vm.dispose()
           expect(wrapper.vm.scene.traverse).toHaveBeenCalled()
           expect(wrapper.vm.scene.dispose).toHaveBeenCalled()
@@ -193,17 +189,15 @@ describe('three-demo', () => {
     })
     describe('render()', () => {
       it('resizes and renders the scene', () => {
-        component.data = () => ({
-          camera: 'mockCamera',
-          renderer: {
-            render: jest.fn()
-          },
-          scene: 'mockScene'
-        })
         component.methods = {
           resize: jest.fn()
         }
         wrapper = shallowMount(component)
+        wrapper.vm.camera = 'mockCamera'
+        wrapper.vm.renderer = {
+          render: jest.fn()
+        }
+        wrapper.vm.scene = 'mockScene'
         wrapper.vm.render()
         expect(component.methods.resize)
           .toHaveBeenCalled()
@@ -221,20 +215,18 @@ describe('three-demo', () => {
             width: 100
           }
           mockPixelRatio = 2.0
-          component.data = () => ({
-            camera: {
-              isPerspectiveCamera: false
-            },
-            renderer: {
-              getPixelRatio: jest.fn(() => mockPixelRatio),
-              getSize: jest.fn(() =>  mockRendererSize),
-              setSize: jest.fn()
-            }
-          })
           component.methods = {
             frame: jest.fn()
           }
           wrapper = shallowMount(component)
+          wrapper.vm.camera = {
+            isPerspectiveCamera: false
+          }
+          wrapper.vm.renderer = {
+            getPixelRatio: jest.fn(() => mockPixelRatio),
+            getSize: jest.fn(() =>  mockRendererSize),
+            setSize: jest.fn()
+          }
         })
         it('resizes the renderer to match the frame', () => {
           mockFrame = {
@@ -270,12 +262,10 @@ describe('three-demo', () => {
     })
     describe('startAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            start: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          start: jest.fn()
+        }
       })
       it('starts the clock', () => {
         wrapper.vm.startAnimating()
@@ -288,12 +278,10 @@ describe('three-demo', () => {
     })
     describe('stopAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            stop: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          stop: jest.fn()
+        }
       })
       it('stops the clock', () => {
         wrapper.vm.stopAnimating()
@@ -305,17 +293,13 @@ describe('three-demo', () => {
       })
       describe('when clock is null', () => {
         it('does not throw an error', () => {
-          wrapper.setData({ clock: null })
-          expect(() => wrapper.vm.stopAnimating())
-            .not.toThrow()
+          wrapper.vm.clock = null
+          expect(() => wrapper.vm.stopAnimating()).not.toThrow()
         })
       })
     })
     describe('update()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {}
-        })
         wrapper = shallowMount(component)
         wrapper.vm.elapsedTime = 0
         wrapper.vm.speedOfLife = 1
@@ -349,7 +333,9 @@ describe('three-demo', () => {
       })
       describe('when clock is stopped', () => {
         beforeEach(() => {
-          wrapper.vm.clock.running = false
+          wrapper.vm.clock = {
+            running: false
+          }
         })
         it('does nothing', () => {
           const result = wrapper.vm.update()

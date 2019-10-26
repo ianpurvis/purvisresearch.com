@@ -6,14 +6,13 @@ import Oscillator from '~/models/oscillator.js'
 import { Random } from '~/models/random.js'
 
 export default {
-  data () {
-    return {
-      canonicalUrl: `${Organization.default.url}/2017/oct.html`,
-      description: "A bézier moiré generator in WebGL.",
-      speedOfLife: 0.4, // Slow-motion
-      textures: [],
-      title: "oct 2017 - purvis research",
-    }
+  created() {
+    // Non-reactive data:
+    this.canonicalUrl = `${Organization.default.url}/2017/oct.html`
+    this.description = "A bézier moiré generator in WebGL."
+    this.speedOfLife = 0.4 // Slow-motion
+    this.textures = []
+    this.title = "oct 2017 - purvis research"
   },
   head () {
     return {

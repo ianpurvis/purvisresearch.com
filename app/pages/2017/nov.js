@@ -14,16 +14,15 @@ import { Random } from '~/models/random.js'
 export default {
   beforeDestroy() {
   },
-  data () {
-    return {
-      alphabet: Array.from("abcdefghijklmnopqrstuvwxyz0123456789"),
-      canonicalUrl: `${Organization.default.url}/2017/nov.html`,
-      description: "A 3d character exploder in WebGL.",
-      font: new Font(Inconsolata),
-      particles: [],
-      speedOfLife: 0.4, // Slow motion
-      title: "nov 2017 - purvis research",
-    }
+  created() {
+    // Non-reactive data:
+    this.alphabet = Array.from("abcdefghijklmnopqrstuvwxyz0123456789")
+    this.canonicalUrl = `${Organization.default.url}/2017/nov.html`
+    this.description = "A 3d character exploder in WebGL."
+    this.font = new Font(Inconsolata)
+    this.particles = []
+    this.speedOfLife = 0.4 // Slow motion
+    this.title = "nov 2017 - purvis research"
   },
   head () {
     return {

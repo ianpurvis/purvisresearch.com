@@ -46,36 +46,30 @@ describe('pixi-demo', () => {
     describe('dispose()', () => {
       describe('when renderer is present', () => {
         it('destroys the renderer', () => {
-          component.data = () => ({
-            renderer: {
-              destroy: jest.fn()
-            }
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.renderer = {
+            destroy: jest.fn()
+          }
           wrapper.vm.dispose()
           expect(wrapper.vm.renderer.destroy).toHaveBeenCalled()
         })
       })
       describe('when scene is present', () => {
         it('destroys the scene', () => {
-          component.data = () => ({
-            scene: {
-              destroy: jest.fn()
-            }
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.scene = {
+            destroy: jest.fn()
+          }
           wrapper.vm.dispose()
           expect(wrapper.vm.scene.destroy).toHaveBeenCalledWith(true)
         })
       })
       describe('when ticker is present', () => {
         it('destroys the ticker', () => {
-          component.data = () => ({
-            ticker: {
-              destroy: jest.fn()
-            },
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.ticker = {
+            destroy: jest.fn()
+          }
           wrapper.vm.dispose()
           expect(wrapper.vm.ticker.destroy).toHaveBeenCalled()
         })
@@ -194,16 +188,15 @@ describe('pixi-demo', () => {
     })
     describe('render()', () => {
       it('resizes and renders the scene', () => {
-        component.data = () => ({
-          renderer: {
-            render: jest.fn()
-          },
-          scene: 'mockScene'
-        })
         component.methods = {
           resize: jest.fn()
         }
         wrapper = shallowMount(component)
+        wrapper.vm.renderer = {
+          render: jest.fn()
+        }
+        wrapper.vm.scene = 'mockScene'
+
         wrapper.vm.render()
         expect(component.methods.resize)
           .toHaveBeenCalled()
@@ -219,15 +212,14 @@ describe('pixi-demo', () => {
           height: 100,
           width: 100
         }
-        component.data = () => ({
-          renderer: {
-            resize: jest.fn()
-          }
-        })
         component.methods = {
           frame: jest.fn(() => mockFrame)
         }
         wrapper = shallowMount(component)
+        wrapper.vm.renderer = {
+          resize: jest.fn()
+        }
+
         wrapper.vm.resize()
         expect(component.methods.frame).toHaveBeenCalled()
         expect(wrapper.vm.renderer.resize)
@@ -236,12 +228,10 @@ describe('pixi-demo', () => {
     })
     describe('startAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            start: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          start: jest.fn()
+        }
       })
       it('starts the clock', () => {
         wrapper.vm.startAnimating()
@@ -254,12 +244,10 @@ describe('pixi-demo', () => {
     })
     describe('stopAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            stop: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          stop: jest.fn()
+        }
       })
       it('stops the clock', () => {
         wrapper.vm.stopAnimating()
@@ -271,7 +259,7 @@ describe('pixi-demo', () => {
       })
       describe('when clock is null', () => {
         it('does not throw an error', () => {
-          wrapper.setData({ clock: null })
+          wrapper.vm.clock = null
           expect(() => wrapper.vm.stopAnimating())
             .not.toThrow()
         })
@@ -279,9 +267,6 @@ describe('pixi-demo', () => {
     })
     describe('update()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {}
-        })
         wrapper = shallowMount(component)
         wrapper.vm.elapsedTime = 0
         wrapper.vm.speedOfLife = 1
@@ -315,7 +300,9 @@ describe('pixi-demo', () => {
       })
       describe('when clock is stopped', () => {
         beforeEach(() => {
-          wrapper.vm.clock.started = false
+          wrapper.vm.clock = {
+            started: false
+          }
         })
         it('does nothing', () => {
           const result = wrapper.vm.update()
@@ -324,7 +311,7 @@ describe('pixi-demo', () => {
       })
       describe('when clock is null', () => {
         it('does not throw an error', () => {
-          wrapper.setData({ clock: null })
+          wrapper.vm.clock = null
           expect(() =>
             wrapper.vm.update()
           ).not.toThrow()
