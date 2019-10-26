@@ -56,9 +56,10 @@ export default {
     load() {
       return Promise.resolve(
         PixiDemo.methods.load.call(this)
-      ).then(() =>
-        import('~/shims/pixi.js')
-      ).then(({ Emitter, RenderTexture, Text }) => {
+      ).then(() => Promise.all([
+        import('~/shims/pixi.js'),
+        import('pixi-particles')
+      ])).then(([{ RenderTexture, Text }, { Emitter }]) => {
         Array
           .from("💾📀")
           .map(emoji => new Text(emoji, {

@@ -6,9 +6,6 @@ jest.mock('pixi.js', () => ({
   systems: jest.fn()
 }))
 jest.mock('@pixi/unsafe-eval')
-jest.mock('pixi-particles', () => ({
-  Emitter: jest.fn()
-}))
 
 import { BatchRenderer, Renderer, systems } from 'pixi.js'
 import { install } from '@pixi/unsafe-eval'
