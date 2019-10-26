@@ -81,18 +81,16 @@ export default {
     }
   },
   methods: {
-    delay(seconds) {
-      return new Promise(resolve => {
-        let clock = this.clock
-        let startTime = clock.elapsedTime
-        let tick = () => {
-          if (clock.elapsedTime - startTime >= seconds) {
-            resolve()
-          } else {
-            window.requestAnimationFrame(tick)
-          }
+    delay(duration) {
+      return new Promise((resolve, reject) => {
+        const animation = {
+          startTime: this.elapsedTime,
+          duration: duration,
+          tick: (t, d) => {},
+          resolve: resolve,
+          reject: reject
         }
-        window.requestAnimationFrame(tick)
+        this.animations.push(animation)
       })
     },
     isDesktopSafari() {
