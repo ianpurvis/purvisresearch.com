@@ -78,6 +78,7 @@ export default {
           })
 
         let options = {
+          autoUpdate: false,
           frequency: 0.020,
           pos: {
             x: 0,
