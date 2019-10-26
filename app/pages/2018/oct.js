@@ -23,16 +23,15 @@ const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.rad
 export default {
   beforeDestroy() {
   },
-  data() {
-    return {
-      colors: [
-        new Color(0xff00ff),
-        new Color(0xffff00)
-      ],
-      canonicalUrl: `${Organization.default.url}/2018/oct.html`,
-      description: "Screen printing a 3D scan with WebGL.",
-      title: "oct 2018 - purvis research",
-    }
+  created() {
+    // Non-reactive data:
+    this.colors = [
+      new Color(0xff00ff),
+      new Color(0xffff00)
+    ]
+    this.canonicalUrl = `${Organization.default.url}/2018/oct.html`
+    this.description = "Screen printing a 3D scan with WebGL."
+    this.title = "oct 2018 - purvis research"
   },
   head() {
     return {

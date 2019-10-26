@@ -38,13 +38,12 @@ export default {
   beforeDestroy() {
     this.stopVideo()
   },
-  data() {
-    return {
-      camera: new OrthographicCamera(),
-      canonicalUrl: `${Organization.default.url}/2019/apr.html`,
-      description: "Surreal television with WebRTC and WebGL.",
-      title: "apr 2019 - purvis research",
-    }
+  created() {
+    // Non-reactive data:
+    this.camera = new OrthographicCamera()
+    this.canonicalUrl = `${Organization.default.url}/2019/apr.html`
+    this.description = "Surreal television with WebRTC and WebGL."
+    this.title = "apr 2019 - purvis research"
   },
   head() {
     return {

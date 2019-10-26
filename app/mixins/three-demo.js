@@ -20,14 +20,13 @@ export default {
     this.stopAnimating()
     this.dispose()
   },
-  data() {
-    return {
-      camera: new PerspectiveCamera(60),
-      clock: new Clock(false),
-      renderer: null,
-      scene: new Scene(),
-      speedOfLife: 1.0,
-    }
+  created() {
+    // Non-reactive data:
+    this.camera = new PerspectiveCamera(60)
+    this.clock = new Clock(false)
+    this.renderer = null
+    this.scene = new Scene()
+    this.speedOfLife = 1.0
   },
   methods: {
     dispose() {

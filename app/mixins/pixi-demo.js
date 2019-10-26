@@ -7,13 +7,12 @@ export default {
     this.stopAnimating()
     this.dispose()
   },
-  data() {
-    return {
-      clock: null,
-      renderer: null,
-      scene: null,
-      ticker: null
-    }
+  created() {
+    // Non-reactive data:
+    this.clock = null
+    this.renderer = null
+    this.scene = null
+    this.ticker = null
   },
   methods: {
     dispose() {

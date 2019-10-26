@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-once>
     <div class="snake label" v-tight>
       <nuxt-link class="tighten inherit-color" to="/" v-tight>
         <span class="stretch" v-html="snake('Purvis ')"></span>

@@ -1,34 +1,30 @@
+jest.mock('three')
 jest.mock('~/mixins/animatable.js')
 jest.mock('~/mixins/graphix.js')
 jest.mock('~/models/webgl.js')
-jest.mock('~/shims/pixi.js', () => ({
-  Container: jest.fn(),
-  Renderer: jest.fn(),
-  Ticker: jest.fn(),
-}))
 
 import Animatable from '~/mixins/animatable.js'
 import graphix from '~/mixins/graphix.js'
-import pixiDemo from '~/mixins/pixi-demo.js'
+import threeDemo from '~/mixins/three-demo.js'
 import { WebGL } from '~/models/webgl.js'
-import { Container, Renderer, Ticker } from '~/shims/pixi.js'
+import { WebGLRenderer } from 'three'
 import { shallowMount } from '@vue/test-utils'
 
 
-describe('pixi-demo', () => {
+describe('three-demo', () => {
   let component, wrapper
 
   beforeEach(() => {
     component = {
       mixins: [
-        pixiDemo
+        threeDemo
       ],
       render: jest.fn()
     }
   })
   describe('hooks', () => {
     describe('beforeDestroy()', () => {
-      it('stops animating and disposes pixi resources', () => {
+      it('stops animating and disposes', () => {
         component.methods = {
           dispose: jest.fn(),
           stopAnimating: jest.fn()
@@ -44,40 +40,34 @@ describe('pixi-demo', () => {
     let result
 
     describe('dispose()', () => {
-      describe('when renderer is present', () => {
-        it('destroys the renderer', () => {
-          component.data = () => ({
-            renderer: {
-              destroy: jest.fn()
-            }
-          })
+      describe('when renderer and scene are not present', () => {
+        it('does nothing', () => {
           wrapper = shallowMount(component)
+          result = wrapper.vm.dispose()
+          expect(result).toBeUndefined()
+        })
+      })
+      describe('when renderer is present', () => {
+        it('disposes the renderer', () => {
+          wrapper = shallowMount(component)
+          wrapper.vm.renderer = {
+            dispose: jest.fn(),
+            getRenderTarget: jest.fn(),
+          }
           wrapper.vm.dispose()
-          expect(wrapper.vm.renderer.destroy).toHaveBeenCalled()
+          expect(wrapper.vm.renderer.dispose).toHaveBeenCalled()
         })
       })
       describe('when scene is present', () => {
         it('destroys the scene', () => {
-          component.data = () => ({
-            scene: {
-              destroy: jest.fn()
-            }
-          })
           wrapper = shallowMount(component)
+          wrapper.vm.scene = {
+            dispose: jest.fn(),
+            traverse: jest.fn()
+          }
           wrapper.vm.dispose()
-          expect(wrapper.vm.scene.destroy).toHaveBeenCalledWith(true)
-        })
-      })
-      describe('when ticker is present', () => {
-        it('destroys the ticker', () => {
-          component.data = () => ({
-            ticker: {
-              destroy: jest.fn()
-            },
-          })
-          wrapper = shallowMount(component)
-          wrapper.vm.dispose()
-          expect(wrapper.vm.ticker.destroy).toHaveBeenCalled()
+          expect(wrapper.vm.scene.traverse).toHaveBeenCalled()
+          expect(wrapper.vm.scene.dispose).toHaveBeenCalled()
         })
       })
     })
@@ -101,7 +91,7 @@ describe('pixi-demo', () => {
     })
     describe('load()', () => {
       describe('when webgl is available', () => {
-        it('imports pixi and initializes the renderer, clock, and scene', async () => {
+        it('initializes the renderer and starts animating', async () => {
           component.methods = {
             frame: jest.fn().mockReturnValue({
               height: 'mockHeight',
@@ -110,6 +100,11 @@ describe('pixi-demo', () => {
             startAnimating: jest.fn()
           }
           WebGL.assertWebGLAvailable.mockReturnValue()
+          // For some reason, these methods don't get mocked automatically:
+          Object.assign(WebGLRenderer.prototype, {
+            setPixelRatio: jest.fn(),
+            setSize: jest.fn()
+          })
           window.devicePixelRatio = 'mockDevicePixelRatio'
           global.Math.max = jest.fn().mockReturnValue('mockPixelRatio')
 
@@ -121,19 +116,19 @@ describe('pixi-demo', () => {
           expect(WebGL.assertWebGLAvailable).toHaveBeenCalledWith('mockCanvas')
           expect(component.methods.frame).toHaveBeenCalled()
           expect(global.Math.max).toHaveBeenCalledWith('mockDevicePixelRatio', 2)
-          expect(Renderer).toHaveBeenCalledWith({
-            height: 'mockHeight',
-            resolution: 'mockPixelRatio',
-            transparent: true,
-            view: 'mockCanvas',
-            width: 'mockWidth',
+          expect(WebGLRenderer).toHaveBeenCalledWith({
+            alpha: true,
+            antialias: false,
+            canvas: 'mockCanvas'
           })
-          expect(wrapper.vm.renderer).toBe(Renderer.mock.instances[0])
-          expect(Ticker).toHaveBeenCalled()
-          expect(wrapper.vm.clock).toBe(Ticker.mock.instances[0])
-          expect(Container).toHaveBeenCalled()
-          expect(wrapper.vm.scene).toBe(Container.mock.instances[0])
-          expect(component.methods.startAnimating).toHaveBeenCalled()
+          expect(wrapper.vm.renderer.setPixelRatio)
+            .toHaveBeenCalledWith('mockPixelRatio')
+          expect(wrapper.vm.renderer.setSize)
+            .toHaveBeenCalledWith('mockWidth', 'mockHeight', false)
+          expect(wrapper.vm.renderer)
+            .toBe(WebGLRenderer.mock.instances[0])
+          expect(component.methods.startAnimating)
+            .toHaveBeenCalled()
         })
       })
       describe('when webgl is not available', () => {
@@ -141,8 +136,8 @@ describe('pixi-demo', () => {
           WebGL.assertWebGLAvailable.mockImplementation(() => {
             throw new Error('mockError')
           })
+          global.console.warn = jest.fn()
           wrapper = shallowMount(component)
-          wrapper.vm.$refs.canvas = 'mockCanvas'
           result = wrapper.vm.load()
           await expect(result)
             .rejects.toThrow('mockError')
@@ -194,54 +189,83 @@ describe('pixi-demo', () => {
     })
     describe('render()', () => {
       it('resizes and renders the scene', () => {
-        component.data = () => ({
-          renderer: {
-            render: jest.fn()
-          },
-          scene: 'mockScene'
-        })
         component.methods = {
           resize: jest.fn()
         }
         wrapper = shallowMount(component)
+        wrapper.vm.camera = 'mockCamera'
+        wrapper.vm.renderer = {
+          render: jest.fn()
+        }
+        wrapper.vm.scene = 'mockScene'
         wrapper.vm.render()
         expect(component.methods.resize)
           .toHaveBeenCalled()
         expect(wrapper.vm.renderer.render)
-          .toHaveBeenCalledWith(wrapper.vm.scene)
+          .toHaveBeenCalledWith(wrapper.vm.scene, wrapper.vm.camera)
       })
     })
     describe('resize()', () => {
-      let mockFrame
+      let mockFrame, mockRendererSize, mockPixelRatio
 
-      it('resizes the renderer to match the frame', () => {
-        mockFrame = {
-          height: 100,
-          width: 100
-        }
-        component.data = () => ({
-          renderer: {
-            resize: jest.fn()
+      describe('when camera is not a perspective camera', () => {
+        beforeEach(() => {
+          mockRendererSize = {
+            height: 100,
+            width: 100
+          }
+          mockPixelRatio = 2.0
+          component.methods = {
+            frame: jest.fn()
+          }
+          wrapper = shallowMount(component)
+          wrapper.vm.camera = {
+            isPerspectiveCamera: false
+          }
+          wrapper.vm.renderer = {
+            getPixelRatio: jest.fn(() => mockPixelRatio),
+            getSize: jest.fn(() =>  mockRendererSize),
+            setSize: jest.fn()
           }
         })
-        component.methods = {
-          frame: jest.fn(() => mockFrame)
-        }
-        wrapper = shallowMount(component)
-        wrapper.vm.resize()
-        expect(component.methods.frame).toHaveBeenCalled()
-        expect(wrapper.vm.renderer.resize)
-          .toHaveBeenCalledWith(mockFrame.width, mockFrame.height)
+        it('resizes the renderer to match the frame', () => {
+          mockFrame = {
+            height: 100,
+            width: 100
+          }
+          component.methods.frame.mockReturnValue(mockFrame)
+          wrapper.vm.resize()
+          expect(component.methods.frame)
+            .toHaveBeenCalled()
+          expect(wrapper.vm.renderer.getSize)
+            .toHaveBeenCalled()
+          expect(wrapper.vm.renderer.setSize)
+            .toHaveBeenCalledWith(mockFrame.width, mockFrame.height, false)
+        })
+        describe('when frame dimensions do not change', () => {
+          it('does not resize the renderer', () => {
+            mockFrame = {
+              height: 200,
+              width: 200
+            }
+            component.methods.frame.mockReturnValue(mockFrame)
+            wrapper.vm.resize()
+            expect(component.methods.frame)
+              .toHaveBeenCalled()
+            expect(wrapper.vm.renderer.getSize)
+              .toHaveBeenCalled()
+            expect(wrapper.vm.renderer.setSize)
+              .not.toHaveBeenCalled()
+          })
+        })
       })
     })
     describe('startAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            start: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          start: jest.fn()
+        }
       })
       it('starts the clock', () => {
         wrapper.vm.startAnimating()
@@ -254,12 +278,10 @@ describe('pixi-demo', () => {
     })
     describe('stopAnimating()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {
-            stop: jest.fn()
-          }
-        })
         wrapper = shallowMount(component)
+        wrapper.vm.clock = {
+          stop: jest.fn()
+        }
       })
       it('stops the clock', () => {
         wrapper.vm.stopAnimating()
@@ -271,17 +293,13 @@ describe('pixi-demo', () => {
       })
       describe('when clock is null', () => {
         it('does not throw an error', () => {
-          wrapper.setData({ clock: null })
-          expect(() => wrapper.vm.stopAnimating())
-            .not.toThrow()
+          wrapper.vm.clock = null
+          expect(() => wrapper.vm.stopAnimating()).not.toThrow()
         })
       })
     })
     describe('update()', () => {
       beforeEach(() => {
-        component.data = () => ({
-          clock: {}
-        })
         wrapper = shallowMount(component)
         wrapper.vm.elapsedTime = 0
         wrapper.vm.speedOfLife = 1
@@ -292,8 +310,8 @@ describe('pixi-demo', () => {
         beforeEach(() => {
           deltaTime = 1000
           wrapper.vm.clock = {
-            elapsedMS: deltaTime,
-            started: true
+            getDelta: jest.fn().mockReturnValue(deltaTime),
+            running: true
           }
         })
         it('updates delta time', () => {
@@ -315,26 +333,20 @@ describe('pixi-demo', () => {
       })
       describe('when clock is stopped', () => {
         beforeEach(() => {
-          wrapper.vm.clock.started = false
+          wrapper.vm.clock = {
+            running: false
+          }
         })
         it('does nothing', () => {
           const result = wrapper.vm.update()
           expect(result).toBeUndefined()
         })
       })
-      describe('when clock is null', () => {
-        it('does not throw an error', () => {
-          wrapper.setData({ clock: null })
-          expect(() =>
-            wrapper.vm.update()
-          ).not.toThrow()
-        })
-      })
     })
   })
   describe('mixins', () => {
     it('registers graphix', () => {
-      const mixins = Object.values(pixiDemo.mixins)
+      const mixins = Object.values(threeDemo.mixins)
       expect(mixins).toContain(graphix)
     })
   })

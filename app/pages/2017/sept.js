@@ -3,15 +3,14 @@ import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
 
 export default {
-  data() {
-    return {
-      canonicalUrl: `${Organization.default.url}/2017/sept.html`,
-      description: "An emoji particle flow in WebGL.",
-      emitter: null,
-      speedOfLife: 0.4, // Slow-motion
-      textures: [],
-      title: "sept 2017 - purvis research",
-    }
+  created() {
+    // Non-reactive data:
+    this.canonicalUrl = `${Organization.default.url}/2017/sept.html`
+    this.description = "An emoji particle flow in WebGL."
+    this.emitter = null
+    this.speedOfLife = 0.4 // Slow-motion
+    this.textures = []
+    this.title = "sept 2017 - purvis research"
   },
   head() {
     return {
