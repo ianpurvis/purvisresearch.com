@@ -12,11 +12,10 @@ export default {
     this.clock = null
     this.renderer = null
     this.scene = null
-    this.ticker = null
   },
   methods: {
     dispose() {
-      if (this.ticker) this.ticker.destroy()
+      if (this.clock) this.clock.destroy()
       if (this.scene) this.scene.destroy(true)
       if (this.renderer) this.renderer.destroy()
     },
