@@ -8,6 +8,7 @@ import {
 import ogImagePath from '~/assets/images/2017/nov.png'
 import Inconsolata from '~/assets/models/Inconsolata_Regular.json'
 import ThreeDemo from '~/mixins/three-demo.js'
+import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
 import { Particle } from '~/models/particle.js'
 import { Random } from '~/models/random.js'
@@ -17,7 +18,6 @@ export default {
   },
   created() {
     // Non-reactive data:
-    this.alphabet = Array.from('abcdefghijklmnopqrstuvwxyz0123456789')
     this.canonicalUrl = `${Organization.default.url}/2017/nov.html`
     this.description = 'A 3d character exploder in WebGL.'
     this.jsonld = {
@@ -63,7 +63,27 @@ export default {
   methods: {
     layout() {
       this.camera.far = 10000
-      this.camera.position.z = Random.rand({min: 100, max: 150})
+      this.camera.position.z = Random.rand({ min: 100, max: 150 })
+
+      const blastRadius = 60
+      const components = [ 'x', 'y', 'z' ]
+      let mass, acceleration, rotation
+      this.particles.forEach(particle => {
+        mass = Random.rand({ min: 0.25, max: 1 })
+        acceleration = components.map(() =>
+          Random.rand({ min: -blastRadius, max: blastRadius })
+        )
+        rotation = components.map(() =>
+          Random.rand({ max: 360 }) * DEGREES_TO_RADIANS
+        )
+        particle.mass = mass
+        particle.acceleration.set(...acceleration)
+        particle.rotation.set(...rotation)
+        // Scale particle according to mass:
+        particle.scale.setScalar(mass)
+        // Give particle a jump start in the explosion:
+        particle.position.set(...acceleration)
+      })
     },
     load() {
       return Promise.resolve(
@@ -78,34 +98,12 @@ export default {
           wireframeLinewidth: 2.0,
         })
 
-        this.particles = this.alphabet.map(character => {
-          let geometry = new TextBufferGeometry(character, { font })
-          geometry.center()
-
-          let particle = new Particle(geometry, material)
-
-          let blastRadius = 60
-          let acceleration = new Vector3(
-            Random.rand({min: -blastRadius, max: blastRadius}),
-            Random.rand({min: -blastRadius, max: blastRadius}),
-            Random.rand({min: -blastRadius, max: blastRadius})
+        this.particles = Array
+          .from('abcdefghijklmnopqrstuvwxyz0123456789')
+          .map(character =>
+            new TextBufferGeometry(character, { font }).center()
           )
-          particle.acceleration = acceleration
-          // Give each particle a jump start:
-          particle.position.copy(acceleration)
-
-          let mass = Random.rand({min: 0.25, max: 1})
-          particle.mass = mass
-          particle.scale.setScalar(mass)
-
-          particle.rotation.set(
-            Random.rand({max: 2 * Math.PI}),
-            Random.rand({max: 2 * Math.PI}),
-            Random.rand({max: 2 * Math.PI})
-          )
-
-          return particle
-        })
+          .map(geometry => new Particle(geometry, material))
 
         this.scene.add(...this.particles)
       })
