@@ -20,7 +20,6 @@ export default {
     this.alphabet = Array.from('abcdefghijklmnopqrstuvwxyz0123456789')
     this.canonicalUrl = `${Organization.default.url}/2017/nov.html`
     this.description = 'A 3d character exploder in WebGL.'
-    this.font = new Font(Inconsolata)
     this.jsonld = {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -70,10 +69,10 @@ export default {
       return Promise.resolve(
         ThreeDemo.methods.load.call(this)
       ).then(() => {
+        const font = new Font(Inconsolata)
+
         this.particles = this.alphabet.map(character => {
-          let geometry = new TextBufferGeometry(character, {
-            font: this.font
-          })
+          let geometry = new TextBufferGeometry(character, { font })
           geometry.center()
 
           let material = new MeshNormalMaterial({
