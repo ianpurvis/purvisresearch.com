@@ -3,26 +3,39 @@ jest.mock('pixi.js', () => ({
   Renderer: {
     registerPlugin: jest.fn()
   },
-  systems: jest.fn()
+  systems: jest.fn(),
+  Ticker: {
+    shared: {
+      stop: jest.fn()
+    },
+    system: {
+      stop: jest.fn()
+    }
+  }
 }))
 jest.mock('@pixi/unsafe-eval')
-jest.mock('pixi-particles', () => ({
-  Emitter: jest.fn()
-}))
 
-import { BatchRenderer, Renderer, systems } from 'pixi.js'
+import { BatchRenderer, Renderer, systems, Ticker } from 'pixi.js'
 import { install } from '@pixi/unsafe-eval'
 
 
 describe('shims/pixi', () => {
-  it('installs @pixi/unsafe-eval', async () => {
+  beforeEach(async () => {
     await import('~/shims/pixi.js')
+  })
+  it('installs @pixi/unsafe-eval', () => {
     expect(install).toHaveBeenCalledWith({ systems })
   })
-
-  it('registers the batch renderer plugin', async () => {
-    await import('~/shims/pixi.js')
+  it('registers the batch renderer plugin', () => {
     expect(Renderer.registerPlugin)
       .toHaveBeenCalledWith('batch', BatchRenderer)
+  })
+  it('disables auto start for Ticker.shared', () => {
+    expect(Ticker.shared).toHaveProperty('autoStart', false)
+    expect(Ticker.shared.stop).toHaveBeenCalled()
+  })
+  it('disables auto start for Ticker.system', () => {
+    expect(Ticker.system).toHaveProperty('autoStart', false)
+    expect(Ticker.system.stop).toHaveBeenCalled()
   })
 })

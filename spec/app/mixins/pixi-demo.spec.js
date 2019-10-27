@@ -64,14 +64,14 @@ describe('pixi-demo', () => {
           expect(wrapper.vm.scene.destroy).toHaveBeenCalledWith(true)
         })
       })
-      describe('when ticker is present', () => {
-        it('destroys the ticker', () => {
+      describe('when clock is present', () => {
+        it('destroys the clock', () => {
           wrapper = shallowMount(component)
-          wrapper.vm.ticker = {
+          wrapper.vm.clock = {
             destroy: jest.fn()
           }
           wrapper.vm.dispose()
-          expect(wrapper.vm.ticker.destroy).toHaveBeenCalled()
+          expect(wrapper.vm.clock.destroy).toHaveBeenCalled()
         })
       })
     })
