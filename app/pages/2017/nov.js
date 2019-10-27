@@ -70,18 +70,17 @@ export default {
         ThreeDemo.methods.load.call(this)
       ).then(() => {
         const font = new Font(Inconsolata)
+        const material = new MeshNormalMaterial({
+          depthFunc: LessDepth,
+          opacity: 0.7,
+          transparent: false,
+          wireframe: true,
+          wireframeLinewidth: 2.0,
+        })
 
         this.particles = this.alphabet.map(character => {
           let geometry = new TextBufferGeometry(character, { font })
           geometry.center()
-
-          let material = new MeshNormalMaterial({
-            depthFunc: LessDepth,
-            opacity: 0.7,
-            transparent: false,
-            wireframe: true,
-            wireframeLinewidth: 2.0,
-          })
 
           let particle = new Particle(geometry, material)
 
