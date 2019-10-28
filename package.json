@@ -35,7 +35,7 @@
     "core-js": "^3.3.3",
     "dotenv": "^8.2.0",
     "dotenv-cli": "^3.0.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^3.0.2",
     "eslint-plugin-jest": "^22.20.0",
