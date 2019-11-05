@@ -1,4 +1,4 @@
-import { expect, matchTemplate, MatchStyle } from '@aws-cdk/assert'
+import { expect, exactlyMatchTemplate } from '@aws-cdk/assert'
 import * as cdk from '@aws-cdk/core'
 import { Stack } from '~/lib/stack'
 
@@ -14,10 +14,21 @@ describe('Stack', () => {
     beforeEach(() => {
       stack = new Stack(app, 'MyTestStack')
     })
-    it('has no resources', () => {
-      expect(stack).to(matchTemplate({
-        "Resources": {}
-      }, MatchStyle.EXACT))
+    it('initializes a S3 bucket resource', () => {
+      expect(stack).to(exactlyMatchTemplate({
+        "Resources": {
+          "MyFirstBucketB8884501": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+              "VersioningConfiguration": {
+                "Status": "Enabled"
+              }
+            },
+            "UpdateReplacePolicy": "Delete",
+            "DeletionPolicy": "Delete"
+          }
+        }
+      }))
     })
   })
 })
