@@ -11,6 +11,10 @@ node_modules
 # logs
 npm-debug.log
 
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
 # Nuxt build
 .nuxt
 static/sitemap.xml

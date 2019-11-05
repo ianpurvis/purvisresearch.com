@@ -51,5 +51,16 @@ module.exports = {
         '<rootDir>/spec/lambda/**/*\.spec\.js'
       ]
     },
+    {
+      ...defaults,
+      displayName: 'lib',
+      moduleNameMapper: {
+        '~(.*)$': '<rootDir>/$1',
+      },
+      testEnvironment: 'node',
+      testMatch: [
+        '<rootDir>/spec/lib/**/*\.spec\.js'
+      ]
+    },
   ]
 }
