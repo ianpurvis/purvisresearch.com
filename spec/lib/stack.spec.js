@@ -1,4 +1,4 @@
-import { expect, exactlyMatchTemplate } from '@aws-cdk/assert'
+import '@aws-cdk/assert/jest'
 import * as cdk from '@aws-cdk/core'
 import { Stack } from '~/lib/stack'
 
@@ -9,26 +9,287 @@ describe('Stack', () => {
     app = new cdk.App()
   })
   describe('constructor', () => {
-    let stack
+    let stack, synthesizedResources, resource
 
     beforeEach(() => {
       stack = new Stack(app, 'MyTestStack')
     })
-    it('initializes a S3 bucket resource', () => {
-      expect(stack).to(exactlyMatchTemplate({
-        "Resources": {
-          "MyFirstBucketB8884501": {
-            "Type": "AWS::S3::Bucket",
-            "Properties": {
-              "VersioningConfiguration": {
-                "Status": "Enabled"
+    it('initializes a s3 bucket blocking public access', () => {
+      expect(stack).toHaveResource("AWS::S3::Bucket", {
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      })
+    })
+    it([
+      'initializes a lambda service role',
+      'with privilege to read objects in the s3 bucket',
+      'and basic lambda execution privileges'
+    ].join(' '), () => {
+      expect(stack).toHaveResource('AWS::IAM::Role', {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
               }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "s3:GetObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        {
+                          "Fn::GetAtt": [
+                            "MyFirstBucketB8884501",
+                            "Arn"
+                          ]
+                        },
+                        "/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
             },
-            "UpdateReplacePolicy": "Delete",
-            "DeletionPolicy": "Delete"
+            "PolicyName": "s3"
+          }
+        ]
+      })
+    })
+    it('initializes a lambda function with the lambda service role', () => {
+      expect(stack).toHaveResource('AWS::Lambda::Function', {
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "MyFirstLambdaServiceRoleFC14EE9B",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs8.10",
+      })
+    })
+    it([
+      'initializes an api gateway service role',
+      'with privilege to invoke the lambda function',
+      'and privilege to push cloudwatch logs'
+    ].join(' '), () => {
+      expect(stack).toHaveResource('AWS::IAM::Role', {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "lambda:InvokeFunction",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "MyFirstFunction9FC50B64",
+                      "Arn"
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "lambda"
+          }
+        ]
+      })
+    })
+    it('initializes an api gateway account with the service role as the cloudwatch role', () => {
+      expect(stack).toHaveResource('AWS::ApiGateway::Account', {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "MyFirstApiGatewayServiceRole87B8E1AE",
+            "Arn"
+          ]
+        }
+      })
+    })
+    it('initializes a regional rest api', () => {
+      expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+        "EndpointConfiguration": {
+          "Types": [
+            "REGIONAL"
+          ]
+        },
+        "Name": "MyFirstApi"
+      })
+    })
+    it('initializes a lambda proxy resource at the root of the rest api', () => {
+      expect(stack).toHaveResource('AWS::ApiGateway::Resource', {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "MyFirstApi093A92CC",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "MyFirstApi093A92CC"
+        }
+      })
+      expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Ref": "MyFirstApiproxy50AB6DE1"
+        },
+        "RestApiId": {
+          "Ref": "MyFirstApi093A92CC"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "MyFirstApiGatewayServiceRole87B8E1AE",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "MyFirstFunction9FC50B64",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
           }
         }
-      }))
+      })
+      expect(stack).toHaveResource('AWS::ApiGateway::Method', {
+        "HttpMethod": "ANY",
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "MyFirstApi093A92CC",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "MyFirstApi093A92CC"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "MyFirstApiGatewayServiceRole87B8E1AE",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "MyFirstFunction9FC50B64",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      })
+    })
+    it('initializes a rest api deployment stage with logging and data tracing', () => {
+      expect(stack).toHaveResource('AWS::ApiGateway::Stage', {
+        "RestApiId": {
+          "Ref": "MyFirstApi093A92CC"
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": true,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*"
+          }
+        ],
+        "StageName": "prod"
+      })
     })
   })
 })
