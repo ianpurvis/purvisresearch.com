@@ -1,0 +1,73 @@
+{
+   "multiValueHeaders" : {
+      "X-Amzn-Trace-Id" : [
+         "Root=1-5dc9bd8f-a970ed437efdad7481b0eddd"
+      ],
+      "X-Forwarded-Port" : [
+         "443"
+      ],
+      "X-Forwarded-For" : [
+         "206.72.19.127"
+      ],
+      "Host" : [
+         "i38ocr8k73.execute-api.us-east-1.amazonaws.com"
+      ],
+      "User-Agent" : [
+         "curl/7.64.1"
+      ],
+      "accept" : [
+         "*/*"
+      ],
+      "X-Forwarded-Proto" : [
+         "https"
+      ]
+   },
+   "headers" : {
+      "accept" : "*/*",
+      "X-Forwarded-Proto" : "https",
+      "X-Amzn-Trace-Id" : "Root=1-5dc9bd8f-a970ed437efdad7481b0eddd",
+      "X-Forwarded-Port" : "443",
+      "X-Forwarded-For" : "206.72.19.127",
+      "Host" : "i38ocr8k73.execute-api.us-east-1.amazonaws.com",
+      "User-Agent" : "curl/7.64.1"
+   },
+   "httpMethod" : "GET",
+   "resource" : "/",
+   "queryStringParameters" : null,
+   "multiValueQueryStringParameters" : null,
+   "body" : null,
+   "path" : "/",
+   "isBase64Encoded" : false,
+   "requestContext" : {
+      "requestTimeEpoch" : 1573502351897,
+      "requestTime" : "11/Nov/2019:19:59:11 +0000",
+      "requestId" : "0fb99ec6-b9f5-4d72-b964-02c504e01883",
+      "httpMethod" : "GET",
+      "extendedRequestId" : "DAqOfG-eoAMFT7Q=",
+      "domainPrefix" : "i38ocr8k73",
+      "path" : "/prod/",
+      "apiId" : "i38ocr8k73",
+      "resourceId" : "qai1armo5h",
+      "domainName" : "i38ocr8k73.execute-api.us-east-1.amazonaws.com",
+      "stage" : "prod",
+      "resourcePath" : "/",
+      "accountId" : "242911119866",
+      "protocol" : "HTTP/1.1",
+      "identity" : {
+         "cognitoIdentityId" : null,
+         "userAgent" : "curl/7.64.1",
+         "user" : null,
+         "cognitoAuthenticationProvider" : null,
+         "caller" : null,
+         "principalOrgId" : null,
+         "accessKey" : null,
+         "cognitoIdentityPoolId" : null,
+         "sourceIp" : "206.72.19.127",
+         "cognitoAuthenticationType" : null,
+         "accountId" : null,
+         "userArn" : null
+      }
+   },
+   "stageVariables" : null,
+   "pathParameters" : null
+}

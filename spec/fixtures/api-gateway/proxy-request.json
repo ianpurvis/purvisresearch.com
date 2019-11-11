@@ -1,0 +1,75 @@
+{
+  "resource" : "/{proxy+}",
+  "queryStringParameters" : null,
+  "path" : "/example.html",
+  "multiValueHeaders" : {
+    "X-Forwarded-Proto" : [
+       "https"
+    ],
+    "X-Forwarded-For" : [
+       "206.72.19.127"
+    ],
+    "User-Agent" : [
+       "curl/7.64.1"
+    ],
+    "X-Forwarded-Port" : [
+       "443"
+    ],
+    "accept" : [
+       "*/*"
+    ],
+    "Host" : [
+       "i38ocr8k73.execute-api.us-east-1.amazonaws.com"
+    ],
+    "X-Amzn-Trace-Id" : [
+       "Root=1-5dc9917a-09474d90de6f26c09535b260"
+    ]
+  },
+  "pathParameters" : {
+    "proxy" : "example.html"
+  },
+  "isBase64Encoded" : false,
+  "multiValueQueryStringParameters" : null,
+  "httpMethod" : "GET",
+  "requestContext" : {
+    "stage" : "prod",
+    "httpMethod" : "GET",
+    "resourceId" : "tqjtrk",
+    "domainName" : "i38ocr8k73.execute-api.us-east-1.amazonaws.com",
+    "resourcePath" : "/{proxy+}",
+    "accountId" : "242911119866",
+    "identity" : {
+       "accountId" : null,
+       "accessKey" : null,
+       "cognitoIdentityId" : null,
+       "cognitoIdentityPoolId" : null,
+       "userArn" : null,
+       "cognitoAuthenticationProvider" : null,
+       "sourceIp" : "206.72.19.127",
+       "user" : null,
+       "caller" : null,
+       "cognitoAuthenticationType" : null,
+       "principalOrgId" : null,
+       "userAgent" : "curl/7.64.1"
+    },
+    "path" : "/prod/example.html",
+    "extendedRequestId" : "DAOrNG7lIAMF_Cw=",
+    "requestTime" : "11/Nov/2019:16:51:06 +0000",
+    "protocol" : "HTTP/1.1",
+    "apiId" : "i38ocr8k73",
+    "requestId" : "7ea5f74c-b5a0-4ca9-886c-f2186452d3af",
+    "requestTimeEpoch" : 1573491066823,
+    "domainPrefix" : "i38ocr8k73"
+  },
+  "body" : null,
+  "headers" : {
+    "X-Forwarded-Proto" : "https",
+    "X-Forwarded-For" : "206.72.19.127",
+    "User-Agent" : "curl/7.64.1",
+    "X-Forwarded-Port" : "443",
+    "Host" : "i38ocr8k73.execute-api.us-east-1.amazonaws.com",
+    "accept" : "*/*",
+    "X-Amzn-Trace-Id" : "Root=1-5dc9917a-09474d90de6f26c09535b260"
+  },
+  "stageVariables" : null
+}

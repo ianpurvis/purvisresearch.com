@@ -19,6 +19,9 @@ const defaults = {
   transformIgnorePatterns: [
     `<rootDir>/node_modules/(?!(${transformPatterns.join('|')}))`
   ],
+  setupFilesAfterEnv: [
+    '<rootDir>/spec/spec-helper'
+  ]
 }
 
 module.exports = {

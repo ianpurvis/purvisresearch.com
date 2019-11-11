@@ -86,9 +86,13 @@ describe('Stack', () => {
         ]
       })
     })
-    it('initializes a lambda function with the lambda service role', () => {
+    it([
+      'initializes a lambda function',
+      'that handles api gateway requests',
+      'with the lambda service role'
+    ].join(' '), () => {
       expect(stack).toHaveResource('AWS::Lambda::Function', {
-        "Handler": "index.handler",
+        "Handler": "index.onRequest",
         "Role": {
           "Fn::GetAtt": [
             "MyFirstLambdaServiceRoleFC14EE9B",
