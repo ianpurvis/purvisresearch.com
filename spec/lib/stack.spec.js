@@ -25,7 +25,8 @@ describe('Stack', () => {
       })
     })
     it([
-      'initializes a lambda service role',
+      'initializes a lambda execution role',
+      'assumable by lambda and api gateway',
       'with privilege to read objects in the s3 bucket',
       'and basic lambda execution privileges'
     ].join(' '), () => {
@@ -36,7 +37,10 @@ describe('Stack', () => {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": "lambda.amazonaws.com"
+                "Service": [
+                  "lambda.amazonaws.com",
+                  "apigateway.amazonaws.com"
+                ]
               }
             }
           ],
@@ -103,9 +107,10 @@ describe('Stack', () => {
       })
     })
     it([
-      'initializes an api gateway service role',
+      'initializes an api gateway execution role',
+      'assumable by api gateway',
       'with privilege to invoke the lambda function',
-      'and privilege to push cloudwatch logs'
+      'and privileges to push cloudwatch logs'
     ].join(' '), () => {
       expect(stack).toHaveResource('AWS::IAM::Role', {
         "AssumeRolePolicyDocument": {
