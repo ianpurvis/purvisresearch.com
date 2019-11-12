@@ -97,6 +97,14 @@ describe('Stack', () => {
     ].join(' '), () => {
       expect(stack).toHaveResource('AWS::Lambda::Function', {
         "Handler": "index.onRequest",
+        "Environment": {
+          "Variables": {
+            "S3_DEFAULT_OBJECT_KEY": "index.html",
+            "S3_BUCKET": {
+              "Ref": "MyFirstBucketB8884501"
+            }
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "MyFirstLambdaServiceRoleFC14EE9B",
