@@ -181,6 +181,9 @@ describe('Stack', () => {
     })
     it('initializes a regional rest api', () => {
       expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+        "BinaryMediaTypes": [
+          "*/*"
+        ],
         "EndpointConfiguration": {
           "Types": [
             "REGIONAL"
@@ -212,6 +215,7 @@ describe('Stack', () => {
         },
         "AuthorizationType": "NONE",
         "Integration": {
+          "ContentHandling": "CONVERT_TO_BINARY",
           "Credentials": {
             "Fn::GetAtt": [
               "MyFirstApiGatewayServiceRole87B8E1AE",
@@ -258,6 +262,7 @@ describe('Stack', () => {
         },
         "AuthorizationType": "NONE",
         "Integration": {
+          "ContentHandling": "CONVERT_TO_BINARY",
           "Credentials": {
             "Fn::GetAtt": [
               "MyFirstApiGatewayServiceRole87B8E1AE",

@@ -9,12 +9,16 @@ describe('onRequest(request)', () => {
 
   beforeEach(() => {
     mocks = {
+      data: {
+        Body: 'mock-body',
+        ContentType: 'mock-content-type'
+      },
       env: {
         S3_DEFAULT_OBJECT_KEY: 'mock-object-key',
         S3_BUCKET: 'mock-bucket-name'
       },
       Request: {
-        promise: jest.fn()
+        promise: jest.fn(async () => mocks.data)
       },
       S3: {
         getObject: jest.fn(() => mocks.Request)
@@ -30,8 +34,6 @@ describe('onRequest(request)', () => {
     })
     describe('when object successfully fetched from S3', () => {
       beforeEach(async () => {
-        mocks.data = 'mock-data'
-        mocks.Request.promise.mockResolvedValue(mocks.data)
         response = await onRequest(request)
 
         // Ensure mocking was properly called:
@@ -44,9 +46,13 @@ describe('onRequest(request)', () => {
       it('returns a valid api gateway proxy response', () => {
         expect(response).toBeApiGatewayProxyResponse()
       })
-      it('returns the object data in the response body', () => {
-        const stringifiedData = JSON.stringify(mocks.data)
-        expect(response.body).toBe(stringifiedData)
+      it('returns the base64-encoded object data in the response body', () => {
+        const base64data = mocks.data.Body.toString('base64')
+        expect(response.body).toBe(base64data)
+        expect(response.isBase64Encoded).toBe(true)
+      })
+      it('returns the object Content-Type in the response headers', () => {
+        expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
       })
     })
   })
@@ -56,8 +62,6 @@ describe('onRequest(request)', () => {
     })
     describe('when object successfully fetched from S3', () => {
       beforeEach(async () => {
-        mocks.data = 'mock-data'
-        mocks.Request.promise.mockResolvedValue(mocks.data)
         response = await onRequest(request)
 
         // Ensure mocking was properly called:
@@ -70,9 +74,13 @@ describe('onRequest(request)', () => {
       it('returns a valid api gateway proxy response', async () => {
         expect(response).toBeApiGatewayProxyResponse()
       })
-      it('returns the object data in the response body', () => {
-        const stringifiedData = JSON.stringify(mocks.data)
-        expect(response.body).toBe(stringifiedData)
+      it('returns the base64-encoded object data in the response body', () => {
+        const base64data = mocks.data.Body.toString('base64')
+        expect(response.body).toBe(base64data)
+        expect(response.isBase64Encoded).toBe(true)
+      })
+      it('returns the object Content-Type in the response headers', () => {
+        expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
       })
     })
   })
