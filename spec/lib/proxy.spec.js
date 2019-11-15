@@ -11,21 +11,27 @@ describe('onRequest(request)', () => {
     mocks = {
       data: {
         Body: 'mock-body',
-        ContentType: 'mock-content-type'
+        ContentType: 'mock-content-type',
+        ETag: 'mock-etag',
+        LastModified: new Date(),
       },
       env: {
         S3_DEFAULT_OBJECT_KEY: 'mock-object-key',
         S3_BUCKET: 'mock-bucket-name'
       },
-      Request: {
+      getObjectRequest: {
         promise: jest.fn(async () => mocks.data)
       },
-      S3: {
-        getObject: jest.fn(() => mocks.Request)
+      headObjectRequest: {
+        promise: jest.fn(async () => mocks.data)
+      },
+      s3: {
+        getObject: jest.fn(() => mocks.getObjectRequest),
+        headObject: jest.fn(() => mocks.headObjectRequest)
       }
     }
     global.process.env = mocks.env
-    S3.mockImplementation(() => mocks.S3)
+    S3.mockImplementation(() => mocks.s3)
   })
 
   describe('given a request from /{proxy+}', () => {
@@ -37,22 +43,37 @@ describe('onRequest(request)', () => {
         response = await onRequest(request)
 
         // Ensure mocking was properly called:
-        expect(mocks.S3.getObject).toHaveBeenCalledWith({
+        const s3params = {
           Key: request.pathParameters.proxy,
           Bucket: mocks.env.S3_BUCKET
+        }
+        expect(mocks.s3.headObject).toHaveBeenCalledWith(s3params)
+        expect(mocks.headObjectRequest.promise).toHaveBeenCalled()
+        expect(mocks.s3.getObject).toHaveBeenCalledWith(s3params)
+        expect(mocks.getObjectRequest.promise).toHaveBeenCalled()
+      })
+      describe('returns a response where', () => {
+        it('integrable with api gateway lambda proxy', () => {
+          expect(response).toBeApiGatewayProxyResponse()
         })
-        expect(mocks.Request.promise).toHaveBeenCalled()
-      })
-      it('returns a valid api gateway proxy response', () => {
-        expect(response).toBeApiGatewayProxyResponse()
-      })
-      it('returns the base64-encoded object data in the response body', () => {
-        const base64data = mocks.data.Body.toString('base64')
-        expect(response.body).toBe(base64data)
-        expect(response.isBase64Encoded).toBe(true)
-      })
-      it('returns the object Content-Type in the response headers', () => {
-        expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
+        it('status code is 200', () => {
+          expect(response).toHaveProperty('statusCode', 200)
+        })
+        it('body is the object data encoded as a base64 string', () => {
+          const base64data = mocks.data.Body.toString('base64')
+          expect(response.body).toBe(base64data)
+          expect(response.isBase64Encoded).toBe(true)
+        })
+        it('Content-Type is the object content type', () => {
+          expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
+        })
+        it('ETag is the object ETag', () => {
+          expect(response.headers).toHaveProperty('ETag', mocks.data.ETag)
+        })
+        it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
+          const httpDate = mocks.data.LastModified.toUTCString()
+          expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+        })
       })
     })
   })
@@ -65,22 +86,37 @@ describe('onRequest(request)', () => {
         response = await onRequest(request)
 
         // Ensure mocking was properly called:
-        expect(mocks.S3.getObject).toHaveBeenCalledWith({
+        const s3params = {
           Key: mocks.env.S3_DEFAULT_OBJECT_KEY,
           Bucket: mocks.env.S3_BUCKET
+        }
+        expect(mocks.s3.headObject).toHaveBeenCalledWith(s3params)
+        expect(mocks.headObjectRequest.promise).toHaveBeenCalled()
+        expect(mocks.s3.getObject).toHaveBeenCalledWith(s3params)
+        expect(mocks.getObjectRequest.promise).toHaveBeenCalled()
+      })
+      describe('returns a response where', () => {
+        it('integrable with api gateway lambda proxy', () => {
+          expect(response).toBeApiGatewayProxyResponse()
         })
-        expect(mocks.Request.promise).toHaveBeenCalled()
-      })
-      it('returns a valid api gateway proxy response', async () => {
-        expect(response).toBeApiGatewayProxyResponse()
-      })
-      it('returns the base64-encoded object data in the response body', () => {
-        const base64data = mocks.data.Body.toString('base64')
-        expect(response.body).toBe(base64data)
-        expect(response.isBase64Encoded).toBe(true)
-      })
-      it('returns the object Content-Type in the response headers', () => {
-        expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
+        it('status code is 200', () => {
+          expect(response).toHaveProperty('statusCode', 200)
+        })
+        it('body is the object data encoded as a base64 string', () => {
+          const base64data = mocks.data.Body.toString('base64')
+          expect(response.body).toBe(base64data)
+          expect(response.isBase64Encoded).toBe(true)
+        })
+        it('Content-Type is the object content type', () => {
+          expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
+        })
+        it('ETag is the object ETag', () => {
+          expect(response.headers).toHaveProperty('ETag', mocks.data.ETag)
+        })
+        it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
+          const httpDate = mocks.data.LastModified.toUTCString()
+          expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+        })
       })
     })
   })
