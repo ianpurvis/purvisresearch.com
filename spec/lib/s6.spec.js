@@ -103,4 +103,69 @@ describe('S6', () => {
       })
     })
   })
+
+  describe('handlerForHttpMethod(method)', () => {
+    let httpMethod, result, boundResult
+
+    beforeEach(() => {
+      mocks = {
+        ...mocks,
+        httpMethod: 'MOCK-METHOD',
+        handler: jest.fn(function() { return this }),
+        handlerArgs: 'mock-args'
+      }
+      s6 = new S6(mocks)
+    })
+    describe('when instance has a method named after the lowercase http method', () => {
+      beforeEach(() => {
+        s6[mocks.httpMethod.toLowerCase()] = mocks.handler
+      })
+      it('returns the method bound to the s6 instance', () => {
+        result = s6.handlerForHttpMethod(mocks.httpMethod)
+        expect(result(mocks.handlerArgs)).toBe(s6)
+        expect(mocks.handler).toHaveBeenCalledWith(mocks.handlerArgs)
+      })
+    })
+    describe('when instance does not have a method named after the lowercase http method', () => {
+      beforeEach(() => {
+        s6.methodNotAllowed = mocks.handler
+      })
+      it('returns .methodNotAllowed bound to the s6 instance', () => {
+        result = s6.handlerForHttpMethod(mocks.httpMethod)
+        expect(result(mocks.handlerArgs)).toBe(s6)
+        expect(mocks.handler).toHaveBeenCalledWith(mocks.handlerArgs)
+      })
+    })
+  })
+
+  describe('handle({ httpMethod, path, headers })', () => {
+    let httpMethod, path, headers, result
+
+    beforeEach(() => {
+      mocks = {
+        ...mocks,
+        httpMethod: 'mock-method',
+        path: 'mock-path',
+        headers: 'mock-headers',
+        response: 'mock-response',
+        handler: jest.fn()
+      }
+      mocks.handler.mockResolvedValue(mocks.response)
+      s6 = new S6(mocks)
+      s6.handler = mocks.handler
+      jest.spyOn(s6, 'handlerForHttpMethod').mockReturnValue(mocks.handler)
+    })
+    afterEach(() => {
+      s6.handlerForHttpMethod.mockRestore()
+    })
+    it('calls the handler for httpMethod', async () => {
+      result = s6.handle(mocks)
+      await expect(result).resolves.toBe(mocks.response)
+      expect(s6.handlerForHttpMethod).toHaveBeenCalledWith(mocks.httpMethod)
+      expect(mocks.handler).toHaveBeenCalledWith({
+        path: mocks.path,
+        headers: mocks.headers
+      })
+    })
+  })
 })
