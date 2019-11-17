@@ -14,7 +14,7 @@ function toBeApiGatewayProxyResponse(received) {
     ...others
   } = received
 
-  expect(typeof body).toBe('string')
+  expect([ 'undefined', 'string' ].includes(typeof body)).toBe(true)
   expect(typeof statusCode).toBe('number')
 
   for (const property in headers) {

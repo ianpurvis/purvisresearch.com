@@ -10,24 +10,7 @@ describe('S6', () => {
     mocks = {
       bucketName: 'mock-bucket-name',
       defaultObjectKey: 'mock-default-object-key',
-      data: {
-        Body: 'mock-body',
-        ContentType: 'mock-content-type',
-        ETag: 'mock-etag',
-        LastModified: new Date(),
-      },
-      getObjectRequest: {
-        promise: jest.fn(async () => mocks.data)
-      },
-      headObjectRequest: {
-        promise: jest.fn(async () => mocks.data)
-      },
-      s3: {
-        getObject: jest.fn(() => mocks.getObjectRequest),
-        headObject: jest.fn(() => mocks.headObjectRequest)
-      }
     }
-    S3.mockImplementation(() => mocks.s3)
   })
 
   describe('constructor(options)', () => {
@@ -53,11 +36,24 @@ describe('S6', () => {
       headers = {}
       mocks = {
         ...mocks,
-        key: 'mock-key',
+        getObjectData: {
+          Body: 'mock-body',
+          ContentType: 'mock-content-type',
+          ETag: 'mock-etag',
+          LastModified: new Date(),
+        },
+        getObjectRequest: {
+          promise: jest.fn(async () => mocks.getObjectData)
+        },
         headResponse: {
           statusCode: 200
+        },
+        key: 'mock-key',
+        s3: {
+          getObject: jest.fn(() => mocks.getObjectRequest),
         }
       }
+      S3.mockImplementation(() => mocks.s3)
       s6 = new S6(mocks)
       jest.spyOn(s6, 'keyForPath').mockReturnValue(mocks.key)
       jest.spyOn(s6, 'head').mockReturnValue(mocks.headResponse)
@@ -86,18 +82,20 @@ describe('S6', () => {
           expect(response).toHaveProperty('statusCode', 200)
         })
         it('body is the object data encoded as a base64 string', () => {
-          const base64data = mocks.data.Body.toString('base64')
+          const base64data = mocks.getObjectData.Body.toString('base64')
           expect(response.body).toBe(base64data)
           expect(response.isBase64Encoded).toBe(true)
         })
         it('Content-Type is the object content type', () => {
-          expect(response.headers).toHaveProperty('Content-Type', mocks.data.ContentType)
+          expect(response.headers)
+            .toHaveProperty('Content-Type', mocks.getObjectData.ContentType)
         })
         it('ETag is the object ETag', () => {
-          expect(response.headers).toHaveProperty('ETag', mocks.data.ETag)
+          expect(response.headers)
+            .toHaveProperty('ETag', mocks.getObjectData.ETag)
         })
         it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
-          const httpDate = mocks.data.LastModified.toUTCString()
+          const httpDate = mocks.getObjectData.LastModified.toUTCString()
           expect(response.headers).toHaveProperty('Last-Modified', httpDate)
         })
       })
@@ -165,6 +163,69 @@ describe('S6', () => {
       expect(mocks.handler).toHaveBeenCalledWith({
         path: mocks.path,
         headers: mocks.headers
+      })
+    })
+  })
+
+  describe('head({ path, headers })', () => {
+    let path, headers, response
+
+    beforeEach(() => {
+      path = 'mock-path'
+      headers = {}
+      mocks = {
+        ...mocks,
+        headObjectData: {
+          Body: 'mock-body',
+          ContentType: 'mock-content-type',
+          ETag: 'mock-etag',
+          LastModified: new Date(),
+        },
+        headObjectRequest: {
+          promise: jest.fn(async () => mocks.headObjectData)
+        },
+        key: 'mock-key',
+        s3: {
+          headObject: jest.fn(() => mocks.headObjectRequest)
+        }
+      }
+      S3.mockImplementation(() => mocks.s3)
+      s6 = new S6(mocks)
+      jest.spyOn(s6, 'keyForPath').mockReturnValue(mocks.key)
+    })
+    afterEach(() => {
+      s6.keyForPath.mockRestore()
+    })
+    describe('when object successfully fetched from S3', () => {
+      beforeEach(async () => {
+        response = await s6.head({ path, headers })
+
+        // Ensure mocking was properly called:
+        expect(s6.keyForPath).toHaveBeenCalledWith(path)
+        expect(mocks.s3.headObject).toHaveBeenCalledWith({ Key: mocks.key })
+        expect(mocks.headObjectRequest.promise).toHaveBeenCalled()
+      })
+      describe('returns a response where', () => {
+        it('integrable with api gateway lambda proxy', () => {
+          expect(response).toBeApiGatewayProxyResponse()
+        })
+        it('status code is 200', () => {
+          expect(response).toHaveProperty('statusCode', 200)
+        })
+        it('body is empty', () => {
+          expect(response.body).toBeUndefined()
+        })
+        it('Content-Type is the object content type', () => {
+          expect(response.headers)
+            .toHaveProperty('Content-Type', mocks.headObjectData.ContentType)
+        })
+        it('ETag is the object ETag', () => {
+          expect(response.headers).toHaveProperty('ETag', mocks.headObjectData.ETag)
+        })
+        it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
+          const httpDate = mocks.headObjectData.LastModified.toUTCString()
+          expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+        })
       })
     })
   })
