@@ -163,6 +163,7 @@ export default {
   ],
 
   generate: {
+    dir: 'dist/app',
     subFolders: false
   },
 
