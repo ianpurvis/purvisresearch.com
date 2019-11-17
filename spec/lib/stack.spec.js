@@ -1,6 +1,8 @@
 import '@aws-cdk/assert/jest'
 import * as cdk from '@aws-cdk/core'
+import { readFileSync } from 'fs'
 import { Stack } from '~/lib/stack'
+
 
 describe('Stack', () => {
   let app
@@ -9,10 +11,11 @@ describe('Stack', () => {
     app = new cdk.App()
   })
   describe('constructor', () => {
-    let stack, synthesizedResources, resource
+    let stack, lambdaEntryPath
 
     beforeEach(() => {
-      stack = new Stack(app, 'MyTestStack')
+      lambdaEntryPath = 'spec/mocks/file-mock.js'
+      stack = new Stack(app, 'MyTestStack', { lambdaEntryPath })
     })
     it('initializes a s3 bucket blocking public access', () => {
       expect(stack).toHaveResource("AWS::S3::Bucket", {
@@ -95,7 +98,12 @@ describe('Stack', () => {
       'that handles api gateway requests',
       'with the lambda service role'
     ].join(' '), () => {
+      const lambdaEntrySource = readFileSync(lambdaEntryPath, 'utf-8')
+
       expect(stack).toHaveResource('AWS::Lambda::Function', {
+        "Code": {
+          "ZipFile": lambdaEntrySource,
+        },
         "Handler": "index.onRequest",
         "Environment": {
           "Variables": {
