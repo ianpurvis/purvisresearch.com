@@ -177,6 +177,7 @@ describe('S6', () => {
         ...mocks,
         headObjectData: {
           Body: 'mock-body',
+          ContentLength: 'mock-content-length',
           ContentType: 'mock-content-type',
           ETag: 'mock-etag',
           LastModified: new Date(),
@@ -214,6 +215,10 @@ describe('S6', () => {
         })
         it('body is empty', () => {
           expect(response.body).toBeUndefined()
+        })
+        it('Content-Length is the object content length', () => {
+          expect(response.headers)
+            .toHaveProperty('Content-Length', mocks.headObjectData.ContentLength)
         })
         it('Content-Type is the object content type', () => {
           expect(response.headers)
