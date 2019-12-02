@@ -18,11 +18,13 @@ function toBeApiGatewayProxyResponse(received) {
   expect(typeof statusCode).toBe('number')
 
   for (const property in headers) {
+    if (headers[property] === null) continue
     expect(headers).not.toHaveProperty(property, expect.any(Array))
     expect(headers).not.toHaveProperty(property, expect.any(Object))
   }
 
   for (const property in multiValueHeaders) {
+    if (multiValueHeaders[property] === null) continue
     if (Array.isArray(multiValueHeaders[property])) continue
     expect(multiValueHeaders).not.toHaveProperty(property, expect.any(Object))
   }

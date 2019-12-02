@@ -1,16 +1,18 @@
 import S3 from 'aws-sdk/clients/s3'
+import * as HttpMethods from '~/lib/http-methods'
 import { S6, S6Error } from '~/lib/s6'
 
 jest.mock('aws-sdk/clients/s3')
 
 describe('S6', () => {
-  let s6, mocks
+  let s6, mocks, spies
 
   beforeEach(() => {
     mocks = {
       bucketName: 'mock-bucket-name',
       defaultObjectKey: 'mock-default-object-key',
     }
+    spies = []
   })
 
   describe('constructor(options)', () => {
@@ -28,224 +30,461 @@ describe('S6', () => {
     })
   })
 
-  describe('handlerForHttpMethod(method)', () => {
-    let httpMethod, result, boundResult
+  describe('keyForPath(path)', () => {
+    let path, result
 
     beforeEach(() => {
-      mocks = {
-        ...mocks,
-        httpMethod: 'MOCK-METHOD',
-        handler: jest.fn(function() { return this }),
-        handlerArgs: 'mock-args'
-      }
       s6 = new S6(mocks)
     })
-    describe('when instance has a method named after the lowercase http method', () => {
-      beforeEach(() => {
-        s6[mocks.httpMethod.toLowerCase()] = mocks.handler
-      })
-      it('returns the method bound to the s6 instance', () => {
-        result = s6.handlerForHttpMethod(mocks.httpMethod)
-        expect(result(mocks.handlerArgs)).toBe(s6)
-        expect(mocks.handler).toHaveBeenCalledWith(mocks.handlerArgs)
+    describe('when path is root', () => {
+      it('returns the default object key', () => {
+        path = '/'
+        result = s6.keyForPath(path)
+        expect(result).toBe(s6.defaultObjectKey)
       })
     })
-    describe('when instance does not have a method named after the lowercase http method', () => {
-      beforeEach(() => {
-        s6.methodNotAllowed = mocks.handler
-      })
-      it('returns .methodNotAllowed bound to the s6 instance', () => {
-        result = s6.handlerForHttpMethod(mocks.httpMethod)
-        expect(result(mocks.handlerArgs)).toBe(s6)
-        expect(mocks.handler).toHaveBeenCalledWith(mocks.handlerArgs)
+    describe('when path is not root', () => {
+      it('returns the path with the root removed', () => {
+        path = '/example.html'
+        result = s6.keyForPath(path)
+        expect(result).toBe('example.html')
       })
     })
   })
 
-  describe('handle({ httpMethod, path, headers })', () => {
-    let httpMethod, path, headers, result
+  describe('resourceForPath(path)', () => {
+    let path, result
 
     beforeEach(() => {
       mocks = {
         ...mocks,
-        httpMethod: 'mock-method',
-        path: 'mock-path',
-        headers: 'mock-headers',
-        response: 'mock-response',
-        handler: jest.fn()
-      }
-      mocks.handler.mockResolvedValue(mocks.response)
-      s6 = new S6(mocks)
-      s6.handler = mocks.handler
-      jest.spyOn(s6, 'handlerForHttpMethod').mockReturnValue(mocks.handler)
-    })
-    afterEach(() => {
-      s6.handlerForHttpMethod.mockRestore()
-    })
-    it('calls the handler for httpMethod', async () => {
-      result = s6.handle(mocks)
-      await expect(result).resolves.toBe(mocks.response)
-      expect(s6.handlerForHttpMethod).toHaveBeenCalledWith(mocks.httpMethod)
-      expect(mocks.handler).toHaveBeenCalledWith({
-        path: mocks.path,
-        headers: mocks.headers
-      })
-    })
-  })
-
-  describe('head({ path, headers })', () => {
-    let path, headers, response
-
-    beforeEach(() => {
-      path = 'mock-path'
-      headers = {}
-      mocks = {
-        ...mocks,
-        headObjectData: {
+        key: 'mock-key',
+        objectData: {
           Body: 'mock-body',
-          ContentLength: 'mock-content-length',
           ContentType: 'mock-content-type',
           ETag: 'mock-etag',
           LastModified: new Date(),
         },
-        headObjectRequest: {
-          promise: jest.fn(async () => mocks.headObjectData)
+        objectError: new Error('mock-error'),
+        objectRequest: {
+          promise: jest.fn()
         },
-        key: 'mock-key',
         s3: {
-          headObject: jest.fn(() => mocks.headObjectRequest)
+          getObject: jest.fn(() => mocks.objectRequest),
         }
       }
       S3.mockImplementation(() => mocks.s3)
       s6 = new S6(mocks)
       jest.spyOn(s6, 'keyForPath').mockReturnValue(mocks.key)
+
+      path = '/example.html'
     })
     afterEach(() => {
       s6.keyForPath.mockRestore()
     })
-    describe('when object successfully fetched from S3', () => {
-      beforeEach(async () => {
-        response = await s6.head({ path, headers })
-
-        // Ensure mocking was properly called:
-        expect(s6.keyForPath).toHaveBeenCalledWith(path)
-        expect(mocks.s3.headObject).toHaveBeenCalledWith({ Key: mocks.key })
-        expect(mocks.headObjectRequest.promise).toHaveBeenCalled()
+    it('creates an s3 get-object request with the key for the path', async () => {
+      await s6.resourceForPath(path)
+      expect(s6.keyForPath).toHaveBeenCalledWith(path)
+      expect(mocks.s3.getObject).toHaveBeenCalledWith({ Key: mocks.key })
+      expect(mocks.objectRequest.promise).toHaveBeenCalled()
+    })
+    describe('when the request resolves with an object', () => {
+      it('resolves with the object data', async () => {
+        mocks.objectRequest.promise
+          .mockImplementation(async () => mocks.objectData)
+        result = s6.resourceForPath(path)
+        await expect(result).resolves.toBe(mocks.objectData)
       })
-      describe('returns a response where', () => {
-        it('integrable with api gateway lambda proxy', () => {
-          expect(response).toBeApiGatewayProxyResponse()
-        })
-        it('status code is 200', () => {
-          expect(response).toHaveProperty('statusCode', 200)
-        })
-        it('body is empty', () => {
-          expect(response.body).toBeUndefined()
-        })
-        it('Content-Length is the object content length', () => {
-          expect(response.headers)
-            .toHaveProperty('Content-Length', mocks.headObjectData.ContentLength)
-        })
-        it('Content-Type is the object content type', () => {
-          expect(response.headers)
-            .toHaveProperty('Content-Type', mocks.headObjectData.ContentType)
-        })
-        it('ETag is the object ETag', () => {
-          expect(response.headers).toHaveProperty('ETag', mocks.headObjectData.ETag)
-        })
-        it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
-          const httpDate = mocks.headObjectData.LastModified.toUTCString()
-          expect(response.headers).toHaveProperty('Last-Modified', httpDate)
-        })
+    })
+    describe('when the request rejects with an error', () => {
+      it('rejects with the error', async () => {
+        mocks.objectRequest.promise
+          .mockImplementation(async () => { throw mocks.objectError })
+        result = s6.resourceForPath(path)
+        await expect(result).rejects.toThrow(mocks.objectError)
       })
     })
   })
 
-  describe('get({ path, headers })', () => {
-    let path, headers, response
+
+  describe('handle({ httpMethod, path, headers })', () => {
+    const { GET, HEAD, ...unallowedMethods } = HttpMethods
+
+    let headers, path, response, result
 
     beforeEach(() => {
-      path = 'mock-path'
-      headers = {}
-      mocks = {
-        ...mocks,
-        getObjectData: {
-          Body: 'mock-body',
-          ContentType: 'mock-content-type',
-          ETag: 'mock-etag',
-          LastModified: new Date(),
-        },
-        getObjectRequest: {
-          promise: jest.fn(async () => mocks.getObjectData)
-        },
-        headResponse: {
-        },
-        key: 'mock-key',
-        s3: {
-          getObject: jest.fn(() => mocks.getObjectRequest),
-        }
-      }
-      S3.mockImplementation(() => mocks.s3)
       s6 = new S6(mocks)
-      jest.spyOn(s6, 'keyForPath').mockReturnValue(mocks.key)
-      jest.spyOn(s6, 'head').mockReturnValue(mocks.headResponse)
+      spies = [
+        'methodNotAllowedResponse',
+        'resourceForPath',
+        'isNotModified',
+        'notModifiedResponse',
+        'headResponse',
+        'getResponse',
+      ].map(methodName => jest
+        .spyOn(s6, methodName)
+        .mockImplementation(() => undefined)
+      )
+      headers = 'mock-headers'
+      path = 'mock-path'
+      response = 'mock-response'
     })
     afterEach(() => {
-      [
-        s6.keyForPath,
-        s6.head
-      ].forEach(spy => spy.mockRestore())
+      spies.forEach(spy => spy.mockRestore())
     })
-    describe('when head response is success', () => {
-      beforeEach(() => {
-        mocks.headResponse.statusCode = 200
-      })
-      describe('when object successfully fetched from S3', () => {
-        beforeEach(async () => {
-          response = await s6.get({ path, headers })
+    describe.each(
+      Object.values(unallowedMethods)
+    )('when the http method is %s', httpMethod => {
+      it('returns a METHOD NOT ALLOWED response', async () => {
+        s6.methodNotAllowedResponse.mockReturnValue(response)
 
-          // Ensure mocking was properly called:
-          expect(s6.keyForPath).toHaveBeenCalledWith(path)
-          expect(s6.head).toHaveBeenCalledWith({ path, headers })
-          expect(mocks.s3.getObject).toHaveBeenCalledWith({ Key: mocks.key })
-          expect(mocks.getObjectRequest.promise).toHaveBeenCalled()
+        result = s6.handle({ headers, httpMethod, path })
+        await expect(result).resolves.toBe(response)
+        expect(s6.methodNotAllowedResponse)
+          .toHaveBeenCalledWith([ HEAD, GET ])
+      })
+    })
+    describe('when the http method is HEAD', (httpMethod = HEAD) => {
+      it('requests the s3 resource for the path', async () => {
+        await s6.handle({ headers, httpMethod, path })
+        expect(s6.resourceForPath)
+          .toHaveBeenCalledWith(path)
+      })
+      describe('when the s3 request rejects with an error', () => {
+        let error
+
+        it('rejects with the error', async () => {
+          error = new Error('mock-error')
+          s6.resourceForPath.mockImplementation(async () => { throw error })
+          result = s6.handle({ headers, httpMethod, path })
+          await expect(result).rejects.toThrow(error)
         })
-        describe('returns a response where', () => {
-          it('integrable with api gateway lambda proxy', () => {
-            expect(response).toBeApiGatewayProxyResponse()
+      })
+      describe('when the s3 request resolves with a resource', () => {
+        let resource
+
+        beforeEach(() => {
+          resource = 'mock-resource'
+          s6.resourceForPath.mockResolvedValue(resource)
+        })
+        describe('when the resource is not modified', () => {
+          it('returns a NOT MODIFIED response', async () => {
+            s6.isNotModified.mockReturnValue(true)
+            s6.notModifiedResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.isNotModified).toHaveBeenCalledWith({ resource, headers })
+            expect(s6.notModifiedResponse).toHaveBeenCalledWith(resource)
           })
-          it('status code is 200', () => {
-            expect(response).toHaveProperty('statusCode', 200)
-          })
-          it('body is the object data encoded as a base64 string', () => {
-            const base64data = mocks.getObjectData.Body.toString('base64')
-            expect(response.body).toBe(base64data)
-            expect(response.isBase64Encoded).toBe(true)
-          })
-          it('Content-Type is the object content type', () => {
-            expect(response.headers)
-              .toHaveProperty('Content-Type', mocks.getObjectData.ContentType)
-          })
-          it('ETag is the object ETag', () => {
-            expect(response.headers)
-              .toHaveProperty('ETag', mocks.getObjectData.ETag)
-          })
-          it('Last-Modified is the object last modfified date formatted as an HTTP date', () => {
-            const httpDate = mocks.getObjectData.LastModified.toUTCString()
-            expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+        })
+        describe('when the resource has been modified', () => {
+          it('returns a SUCCESS response', async () => {
+            s6.isNotModified.mockReturnValue(false)
+            s6.headResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.isNotModified).toHaveBeenCalledWith({ resource, headers })
+            expect(s6.headResponse).toHaveBeenCalledWith(resource)
           })
         })
       })
     })
-    describe('when head response is not modified', () => {
-      beforeEach(() => {
-        mocks.headResponse.statusCode = 304
+    describe('when the http method is GET', (httpMethod = GET) => {
+      it('requests the s3 resource for the path', async () => {
+        await s6.handle({ headers, httpMethod, path })
+        expect(s6.resourceForPath)
+          .toHaveBeenCalledWith(path)
       })
-      it('returns the header response', async () => {
-        response = await s6.get({ path, headers })
-        expect(response).toBe(mocks.headResponse)
+      describe('when the s3 request rejects with an error', () => {
+        let error
+
+        it('rejects with the error', async () => {
+          error = new Error('mock-error')
+          s6.resourceForPath.mockImplementation(async () => { throw error })
+          result = s6.handle({ headers, httpMethod, path })
+          await expect(result).rejects.toThrow(error)
+        })
+      })
+      describe('when the s3 request resolves with a resource', () => {
+        let resource
+
+        beforeEach(() => {
+          resource = 'mock-resource'
+          s6.resourceForPath.mockResolvedValue(resource)
+        })
+        describe('when the resource is not modified', () => {
+          it('returns a NOT MODIFIED response', async () => {
+            s6.isNotModified.mockReturnValue(true)
+            s6.notModifiedResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.isNotModified).toHaveBeenCalledWith({ resource, headers })
+            expect(s6.notModifiedResponse).toHaveBeenCalledWith(resource)
+          })
+        })
+        describe('when the resource has been modified', () => {
+          it('returns a GET response', async () => {
+            s6.isNotModified.mockReturnValue(false)
+            s6.getResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.isNotModified).toHaveBeenCalledWith({ resource, headers })
+            expect(s6.getResponse).toHaveBeenCalledWith(resource)
+          })
+        })
       })
     })
   })
 
+  describe('isNotModified({ resource, headers })', () => {
+    let resource, headers, result
+
+    beforeEach(() => {
+      resource = {
+        ETag: 'mock-etag',
+        LastModified: new Date('Sat, 23 Nov 2019 00:00:00 GMT'),
+      }
+    })
+    describe('when neither If-None-Match or If-Modified-Since are defined', () => {
+      beforeEach(() => {
+        headers = {}
+      })
+      it('it returns false', () => {
+        result = s6.isNotModified({ resource, headers })
+        expect(result).toBe(false)
+      })
+    })
+    describe('when both If-None-Match and If-Modified-Since are defined', () => {
+      describe('when resource matches', () => {
+        describe('when resource not modified since', () => {
+          it('it returns true', () => {
+            headers = {
+              'If-None-Match': resource.ETag,
+              'If-Modified-Since': resource.LastModified.toUTCString()
+            }
+            result = s6.isNotModified({ resource, headers })
+            expect(result).toBe(true)
+          })
+        })
+        describe('when resource modified since', () => {
+          it('it returns false', () => {
+            headers = {
+              'If-None-Match': resource.ETag,
+              'If-Modified-Since': new Date(resource.LastModified - 1).toUTCString()
+            }
+            result = s6.isNotModified({ resource, headers })
+            expect(result).toBe(false)
+          })
+        })
+      })
+      describe('when resource does not match', () => {
+        it('it returns false', () => {
+          headers = {
+            'If-None-Match': 'mock-etag-that-does-not-match',
+            'If-Modified-Since': resource.LastModified.toUTCString()
+          }
+          result = s6.isNotModified({ resource, headers })
+          expect(result).toBe(false)
+        })
+      })
+    })
+    describe('when If-None-Match is defined', () => {
+      describe('when resource matches', () => {
+        it('it returns true', () => {
+          headers = {
+            'If-None-Match': resource.ETag
+          }
+          result = s6.isNotModified({ resource, headers })
+          expect(result).toBe(true)
+        })
+      })
+      describe('when resource does not match', () => {
+        it('it returns false', () => {
+          headers = {
+            'If-None-Match': 'mock-etag-that-does-not-match'
+          }
+          result = s6.isNotModified({ resource, headers })
+          expect(result).toBe(false)
+        })
+      })
+    })
+    describe('when If-Modified-Since is defined', () => {
+      describe('when resource not modified since', () => {
+        it('it returns true', () => {
+          headers = {
+            'If-Modified-Since': resource.LastModified.toUTCString()
+          }
+          result = s6.isNotModified({ resource, headers })
+          expect(result).toBe(true)
+        })
+      })
+      describe('when resource modified since', () => {
+        it('it returns false', () => {
+          headers = {
+            'If-Modified-Since': new Date(resource.LastModified - 1).toUTCString()
+          }
+          result = s6.isNotModified({ resource, headers })
+          expect(result).toBe(false)
+        })
+      })
+    })
+  })
+
+  describe('headResponse(resource)', () => {
+    let resource, response
+
+    beforeEach(() => {
+      resource = {
+        Body: 'mock-body',
+        ContentLength: 'mock-content-length',
+        ContentType: 'mock-content-type',
+        ETag: 'mock-etag',
+        LastModified: new Date(),
+      }
+    })
+    describe('returns a response where', () => {
+      beforeEach(() => {
+        response = s6.headResponse(resource)
+      })
+      it('integrable with api gateway lambda proxy', () => {
+        expect(response).toBeApiGatewayProxyResponse()
+      })
+      it('status code is 200', () => {
+        expect(response).toHaveProperty('statusCode', 200)
+      })
+      it('body is empty', () => {
+        expect(response.body).toBeUndefined()
+      })
+      it('Content-Length is the resource content length', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Length', resource.ContentLength)
+      })
+      it('Content-Type is the resource content type', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Type', resource.ContentType)
+      })
+      it('ETag is the resource ETag', () => {
+        expect(response.headers).toHaveProperty('ETag', resource.ETag)
+      })
+      it('Last-Modified is the resource last modfified date formatted as an HTTP date', () => {
+        const httpDate = resource.LastModified.toUTCString()
+        expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+      })
+    })
+  })
+
+  describe('getResponse(resource)', () => {
+    let resource, response
+
+    beforeEach(() => {
+      resource = {
+        Body: 'mock-body',
+        ContentType: 'mock-content-type',
+        ETag: 'mock-etag',
+        LastModified: new Date(),
+      }
+    })
+    describe('returns a response where', () => {
+      beforeEach(() => {
+        response = s6.getResponse(resource)
+      })
+      it('integrable with api gateway lambda proxy', () => {
+        expect(response).toBeApiGatewayProxyResponse()
+      })
+      it('status code is 200', () => {
+        expect(response).toHaveProperty('statusCode', 200)
+      })
+      it('body is the resource data encoded as a base64 string', () => {
+        const base64data = resource.Body.toString('base64')
+        expect(response.body).toBe(base64data)
+        expect(response.isBase64Encoded).toBe(true)
+      })
+      it('Content-Type is the resource content type', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Type', resource.ContentType)
+      })
+      it('ETag is the resource ETag', () => {
+        expect(response.headers)
+          .toHaveProperty('ETag', resource.ETag)
+      })
+      it('Last-Modified is the resource last modfified date formatted as an HTTP date', () => {
+        const httpDate = resource.LastModified.toUTCString()
+        expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+      })
+    })
+  })
+
+  describe('methodNotAllowedResponse(allowed)', () => {
+    let allowed, response
+
+    beforeEach(() => {
+      allowed = [
+        'mock-method-one',
+        'mock-method-two'
+      ]
+    })
+    describe('returns a response where', () => {
+      beforeEach(() => {
+        response = s6.methodNotAllowedResponse(allowed)
+      })
+      it('integrable with api gateway lambda proxy', () => {
+        expect(response).toBeApiGatewayProxyResponse()
+      })
+      it('status code is 405', () => {
+        expect(response).toHaveProperty('statusCode', 405)
+      })
+      it('body is empty', () => {
+        expect(response.body).toBeUndefined()
+      })
+      it('Allowed is allowed formatted as a comma-separated list', () => {
+        expect(response.headers)
+          .toHaveProperty('Allow', allowed.join(', '))
+      })
+    })
+  })
+
+  describe('notModifiedResponse(resource)', () => {
+    let resource, response
+
+    beforeEach(() => {
+      resource = {
+        ETag: 'mock-etag',
+        LastModified: new Date(),
+      }
+    })
+    describe('returns a response where', () => {
+      beforeEach(() => {
+        response = s6.notModifiedResponse(resource)
+      })
+      it('integrable with api gateway lambda proxy', () => {
+        expect(response).toBeApiGatewayProxyResponse()
+      })
+      it('status code is 304', () => {
+        expect(response).toHaveProperty('statusCode', 304)
+      })
+      it('body is empty', () => {
+        expect(response.body).toBeUndefined()
+      })
+      it('Content-Length is null', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Length', null)
+      })
+      it('Content-Type is null', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Type', null)
+      })
+      it('ETag is the resource ETag', () => {
+        expect(response.headers)
+          .toHaveProperty('ETag', resource.ETag)
+      })
+      it('Last-Modified is the resource last modfified date formatted as an HTTP date', () => {
+        const httpDate = resource.LastModified.toUTCString()
+        expect(response.headers).toHaveProperty('Last-Modified', httpDate)
+      })
+    })
+  })
 })
