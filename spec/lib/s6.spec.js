@@ -10,7 +10,7 @@ describe('S6', () => {
   beforeEach(() => {
     mocks = {
       bucketName: 'mock-bucket-name',
-      defaultObjectKey: 'mock-default-object-key',
+      indexFileName: 'mock-file-name',
     }
     spies = []
   })
@@ -22,10 +22,17 @@ describe('S6', () => {
         expect(() => new S6(mocks)).toThrow(S6Error)
       })
     })
-    describe('when options do not define defaultObjectKey', () => {
-      it('throws an error', () => {
-        delete mocks.defaultObjectKey
-        expect(() => new S6(mocks)).toThrow(S6Error)
+    describe('when options define indexFileName', () => {
+      it('initializes indexFileName', () => {
+        s6 = new S6(mocks)
+        expect(s6.indexFileName).toBe(mocks.indexFileName)
+      })
+    })
+    describe('when options do not define indexFileName', () => {
+      it('defaults to index.html', () => {
+        delete mocks.indexFileName
+        s6 = new S6(mocks)
+        expect(s6.indexFileName).toBe('index.html')
       })
     })
   })
@@ -36,14 +43,14 @@ describe('S6', () => {
     beforeEach(() => {
       s6 = new S6(mocks)
     })
-    describe('when path is root', () => {
-      it('returns the default object key', () => {
-        path = '/'
+    describe("when path ends with '/'", () => {
+      it('returns .indexFileName appended to the path with the root removed', () => {
+        path = '/example/'
         result = s6.keyForPath(path)
-        expect(result).toBe(s6.defaultObjectKey)
+        expect(result).toBe(`example/${s6.indexFileName}`)
       })
     })
-    describe('when path is not root', () => {
+    describe('when path ends with a file name', () => {
       it('returns the path with the root removed', () => {
         path = '/example.html'
         result = s6.keyForPath(path)

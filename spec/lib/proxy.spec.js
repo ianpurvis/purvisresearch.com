@@ -13,28 +13,25 @@ describe('onRequest(request)', () => {
 
     beforeEach(() => {
       mocks = {
+        bucketName: 'mock-bucket-name',
         error: new Error('mock-error'),
-        response: 'mock-response'
+        response: 'mock-response',
       }
       mocks.s6 = {
         handle: jest.fn().mockReturnValue(mocks.response)
       }
       S6.mockImplementation(() => mocks.s6)
     })
-    describe('when environment defines S3_BUCKET and S3_DEFAULT_OBJECT_KEY', () => {
+    describe('when environment defines S3_BUCKET', () => {
       beforeEach(() => {
         global.process.env = {
-          S3_BUCKET: 'mock-bucket-name',
-          S3_DEFAULT_OBJECT_KEY: 'mock-object-key'
+          S3_BUCKET: mocks.bucketName
         }
       })
       it('creates a new instance of S6', async () => {
         await onRequest(request)
-        const {
-          S3_BUCKET: bucketName,
-          S3_DEFAULT_OBJECT_KEY: defaultObjectKey
-        } = global.process.env
-        expect(S6).toHaveBeenCalledWith({ bucketName, defaultObjectKey })
+        const { bucketName } = mocks
+        expect(S6).toHaveBeenCalledWith({ bucketName })
       })
       it('calls the S6 handler with the request', async () => {
         await onRequest(request)
@@ -58,20 +55,7 @@ describe('onRequest(request)', () => {
     })
     describe('when environment does not define S3_BUCKET', () => {
       beforeEach(() => {
-        global.process.env = {
-          S3_DEFAULT_OBJECT_KEY: 'mock-object-key'
-        }
-      })
-      it('rejects with an error', async () => {
-        result = onRequest(request)
-        await expect(result).rejects.toThrow()
-      })
-    })
-    describe('when environment does not define S3_DEFAULT_OBJECT_KEY', () => {
-      beforeEach(() => {
-        global.process.env = {
-          S3_BUCKET: 'mock-bucket-name'
-        }
+        global.process.env = {}
       })
       it('rejects with an error', async () => {
         result = onRequest(request)
