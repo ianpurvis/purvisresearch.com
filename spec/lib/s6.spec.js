@@ -125,6 +125,7 @@ describe('S6', () => {
         'methodNotAllowedResponse',
         'resourceForPath',
         'isNotModified',
+        'notFoundResponse',
         'notModifiedResponse',
         'headResponse',
         'getResponse',
@@ -160,11 +161,25 @@ describe('S6', () => {
       describe('when the s3 request rejects with an error', () => {
         let error
 
-        it('rejects with the error', async () => {
+        beforeEach(() => {
           error = new Error('mock-error')
           s6.resourceForPath.mockImplementation(async () => { throw error })
-          result = s6.handle({ headers, httpMethod, path })
-          await expect(result).rejects.toThrow(error)
+        })
+        describe('when the error has status code 404', () => {
+          it('returns a NOT FOUND response', async () => {
+            error.statusCode = 404
+            s6.notFoundResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.notFoundResponse).toHaveBeenCalled()
+          })
+        })
+        describe('when the error does not have status code 404', () => {
+          it('rejects with the error', async () => {
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).rejects.toThrow(error)
+          })
         })
       })
       describe('when the s3 request resolves with a resource', () => {
@@ -207,11 +222,25 @@ describe('S6', () => {
       describe('when the s3 request rejects with an error', () => {
         let error
 
-        it('rejects with the error', async () => {
+        beforeEach(() => {
           error = new Error('mock-error')
           s6.resourceForPath.mockImplementation(async () => { throw error })
-          result = s6.handle({ headers, httpMethod, path })
-          await expect(result).rejects.toThrow(error)
+        })
+        describe('when the error has status code 404', () => {
+          it('returns a NOT FOUND response', async () => {
+            error.statusCode = 404
+            s6.notFoundResponse.mockReturnValue(response)
+
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).resolves.toBe(response)
+            expect(s6.notFoundResponse).toHaveBeenCalled()
+          })
+        })
+        describe('when the error does not have status code 404', () => {
+          it('rejects with the error', async () => {
+            result = s6.handle({ headers, httpMethod, path })
+            await expect(result).rejects.toThrow(error)
+          })
         })
       })
       describe('when the s3 request resolves with a resource', () => {
@@ -450,6 +479,33 @@ describe('S6', () => {
       it('Allowed is allowed formatted as a comma-separated list', () => {
         expect(response.headers)
           .toHaveProperty('Allow', allowed.join(', '))
+      })
+    })
+  })
+
+  describe('notFoundResponse()', () => {
+    let response
+
+    describe('returns a response where', () => {
+      beforeEach(() => {
+        response = s6.notFoundResponse()
+      })
+      it('integrable with api gateway lambda proxy', () => {
+        expect(response).toBeApiGatewayProxyResponse()
+      })
+      it('status code is 404', () => {
+        expect(response).toHaveProperty('statusCode', 404)
+      })
+      it('body is empty', () => {
+        expect(response.body).toBeUndefined()
+      })
+      it('Content-Length is null', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Length', null)
+      })
+      it('Content-Type is null', () => {
+        expect(response.headers)
+          .toHaveProperty('Content-Type', null)
       })
     })
   })
