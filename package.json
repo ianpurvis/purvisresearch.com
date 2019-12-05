@@ -10,7 +10,7 @@
     "@pixi/unsafe-eval": "^5.0.4",
     "@sentry/browser": "^5.7.1",
     "@sentry/integrations": "^5.7.1",
-    "@sentry/node": "^5.7.1",
+    "@sentry/node": "^5.10.0",
     "bulma": "^0.8.0",
     "d3-ease": "^1.0.5",
     "draco3dgltf": "^1.3.4",
