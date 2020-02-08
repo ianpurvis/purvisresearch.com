@@ -48,7 +48,7 @@
     "lighthouse": "^5.6.0",
     "lint-staged": "^10.0.7",
     "memory-fs": "^0.4.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.2",
