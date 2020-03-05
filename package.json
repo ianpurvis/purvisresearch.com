@@ -26,6 +26,7 @@
     "@aws-cdk/aws-lambda": "^1.27.0",
     "@aws-cdk/aws-s3": "^1.27.0",
     "@aws-cdk/core": "^1.27.0",
+    "@babel/preset-env": "^7.8.7",
     "@babel/runtime-corejs3": "^7.8.7",
     "@nuxtjs/sitemap": "^2.0.1",
     "@vue/test-utils": "^1.0.0-beta.31",
