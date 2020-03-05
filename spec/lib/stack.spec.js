@@ -84,6 +84,16 @@ describe('Stack', () => {
                       ]
                     ]
                   }
+                },
+                {
+                  "Action": "s3:ListBucket",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "MyFirstBucketB8884501",
+                      "Arn"
+                    ]
+                  }
                 }
               ],
               "Version": "2012-10-17"
