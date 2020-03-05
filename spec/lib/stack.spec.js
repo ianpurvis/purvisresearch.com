@@ -114,7 +114,7 @@ describe('Stack', () => {
         "Code": {
           "ZipFile": lambdaEntrySource,
         },
-        "Handler": "index.onRequest",
+        "Handler": "index.handler",
         "Environment": {
           "Variables": {
             "S3_DEFAULT_OBJECT_KEY": "index.html",
