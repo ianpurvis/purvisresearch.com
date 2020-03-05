@@ -1,6 +1,6 @@
 import {
   AmbientLight,
-  Math as _Math,
+  MathUtils,
   Mesh,
   MeshPhongMaterial,
   Object3D,
@@ -309,7 +309,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            light.intensity = _Math.lerp(intensity, value, easeQuadIn(t/d))
+            light.intensity = MathUtils.lerp(intensity, value, easeQuadIn(t/d))
           },
           resolve: resolve,
           reject: reject
@@ -323,7 +323,7 @@ export default {
           startTime: this.clock.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            object.material.opacity = _Math.lerp(opacity, value, easeBackInOut(t/d, 0.5))
+            object.material.opacity = MathUtils.lerp(opacity, value, easeBackInOut(t/d, 0.5))
           },
           resolve: resolve,
           reject: reject

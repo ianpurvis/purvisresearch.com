@@ -3,7 +3,7 @@ import {
   DoubleSide,
   LineSegments,
   Material,
-  Math as _Math,
+  MathUtils,
   Mesh,
   Spherical,
   Vector2,
@@ -175,7 +175,7 @@ export default {
           startTime: this.elapsedTime,
           duration: duration,
           tick: (t, d) => {
-            object.material.opacity = _Math.lerp(opacity, value, t/d)
+            object.material.opacity = MathUtils.lerp(opacity, value, t/d)
           },
           resolve: resolve,
           reject: reject
