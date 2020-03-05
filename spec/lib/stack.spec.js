@@ -119,7 +119,7 @@ describe('Stack', () => {
             "Arn",
           ],
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
       })
     })
     it([
