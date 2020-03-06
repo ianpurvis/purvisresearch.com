@@ -20,6 +20,21 @@ export default {
     this.canonicalUrl = `${Organization.default.url}/2017/nov.html`
     this.description = "A 3d character exploder in WebGL."
     this.font = new Font(Inconsolata)
+    this.jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": Organization.default.url
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "nov 2017",
+        "item": this.canonicalUrl
+      }]
+    },
     this.particles = []
     this.speedOfLife = 0.4 // Slow motion
     this.title = "nov 2017 - purvis research"
@@ -40,23 +55,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-          "@type": "ListItem",
-          "position": 1,
-          "name": "purvis research",
-          "item": Organization.default.url
-        },{
-          "@type": "ListItem",
-          "position": 2,
-          "name": "nov 2017",
-          "item": this.canonicalUrl
-        }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   methods: {

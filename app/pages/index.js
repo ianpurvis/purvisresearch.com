@@ -31,6 +31,16 @@ export default {
         description: 'An Emoji Particle Flow',
         route: '2017/sept.html'
       }],
+      jsonld: {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+          "@type": "ListItem",
+          "position": 1,
+          "name": "purvis research",
+          "item": Organization.default.url
+        }]
+      },
       title: "purvis research",
     }
   },
@@ -50,18 +60,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
-      }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   mixins: [
