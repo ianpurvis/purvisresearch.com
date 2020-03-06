@@ -153,7 +153,6 @@ export default {
     publicPath: '/_/',
     // Transpile npm packages lacking ES5 compatibility:
     transpile: [
-      'nuxt-jsonld',
       'vue-analytics',
       /^three\/examples\/jsm/
     ],
@@ -171,10 +170,6 @@ export default {
     '@nuxtjs/google-analytics',
     '@nuxtjs/sentry',
     '@nuxtjs/sitemap'
-  ],
-
-  plugins: [
-    '~/plugins/nuxt-jsonld'
   ],
 
   router: {

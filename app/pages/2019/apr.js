@@ -43,6 +43,21 @@ export default {
     this.camera = new OrthographicCamera()
     this.canonicalUrl = `${Organization.default.url}/2019/apr.html`
     this.description = "Surreal television with WebRTC and WebGL."
+    this.jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": Organization.default.url
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "apr 2019",
+        "item": this.canonicalUrl
+      }]
+    },
     this.title = "apr 2019 - purvis research"
   },
   head() {
@@ -61,23 +76,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
-      },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "apr 2019",
-        "item": this.canonicalUrl
-      }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   methods: {

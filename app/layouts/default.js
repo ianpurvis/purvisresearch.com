@@ -26,11 +26,11 @@ export default {
         { hid: 'description', name: 'description', content: Organization.default.description },
         { name: 'msapplication-config', content: browserConfigUrl }
       ],
+      script: [
+        { type: 'application/ld+json', json: Organization.default }
+      ],
       title: 'purvis research',
     }
-  },
-  jsonld() {
-    return Organization.default
   },
   mixins: [
     Debug

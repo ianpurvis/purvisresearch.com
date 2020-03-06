@@ -8,6 +8,21 @@ export default {
     this.canonicalUrl = `${Organization.default.url}/2017/sept.html`
     this.description = "An emoji particle flow in WebGL."
     this.emitter = null
+    this.jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": Organization.default.url
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "sept 2017",
+        "item": this.canonicalUrl
+      }]
+    },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
     this.title = "sept 2017 - purvis research"
@@ -28,23 +43,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
-      },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "sept 2017",
-        "item": this.canonicalUrl
-      }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   methods: {

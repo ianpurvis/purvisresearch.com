@@ -31,6 +31,21 @@ export default {
     ]
     this.canonicalUrl = `${Organization.default.url}/2018/oct.html`
     this.description = "Screen printing a 3D scan with WebGL."
+    this.jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": Organization.default.url
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "oct 2018",
+        "item": this.canonicalUrl
+      }]
+    },
     this.title = "oct 2018 - purvis research"
   },
   head() {
@@ -49,23 +64,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
-      },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "oct 2018",
-        "item": this.canonicalUrl
-      }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   methods: {

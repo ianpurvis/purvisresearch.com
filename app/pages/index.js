@@ -6,33 +6,42 @@ export default {
   components: {
     AutoscaledDiv,
   },
-  data() {
-    return {
-      canonicalUrl: Organization.default.url,
-      description: Organization.default.description,
-      experiments: [{
-        title: '2019 Apr',
-        description: 'Surreal WebRTC Television',
-        route: '2019/apr.html'
-      }, {
-        title: '2018 Oct',
-        description: 'Screen Printing A 3D Scan',
-        route: '2018/oct.html'
-      }, {
-        title: '2017 Nov',
-        description: 'A 3D Character Exploder',
-        route: '2017/nov.html'
-      }, {
-        title: '2017 Oct',
-        description: 'A Bézier Moiré Generator',
-        route: '2017/oct.html'
-      }, {
-        title: '2017 Sep',
-        description: 'An Emoji Particle Flow',
-        route: '2017/sept.html'
-      }],
-      title: "purvis research",
+  created() {
+    // Non-reactive data:
+    this.canonicalUrl = Organization.default.url
+    this.description = Organization.default.description
+    this.experiments = [{
+      title: '2019 Apr',
+      description: 'Surreal WebRTC Television',
+      route: '2019/apr.html'
+    }, {
+      title: '2018 Oct',
+      description: 'Screen Printing A 3D Scan',
+      route: '2018/oct.html'
+    }, {
+      title: '2017 Nov',
+      description: 'A 3D Character Exploder',
+      route: '2017/nov.html'
+    }, {
+      title: '2017 Oct',
+      description: 'A Bézier Moiré Generator',
+      route: '2017/oct.html'
+    }, {
+      title: '2017 Sep',
+      description: 'An Emoji Particle Flow',
+      route: '2017/sept.html'
+    }],
+    this.jsonld = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "purvis research",
+        "item": Organization.default.url
+      }]
     }
+    this.title = "purvis research"
   },
   head() {
     return {
@@ -50,18 +59,9 @@ export default {
       link: [
         { rel: "canonical", href: this.canonicalUrl }
       ],
-    }
-  },
-  jsonld() {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
-      }]
+      script: [
+        { type: 'application/ld+json', json: this.jsonld }
+      ],
     }
   },
   mixins: [
