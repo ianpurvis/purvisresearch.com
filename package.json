@@ -34,7 +34,7 @@
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-vue": "^6.2.1",
+    "eslint-plugin-vue": "^6.2.2",
     "exports-loader": "^0.7.0",
     "extract-loader": "^2.0.1",
     "frack-loader": "^1.0.0",
