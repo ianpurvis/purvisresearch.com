@@ -1,22 +1,15 @@
 #!/usr/bin/env bash
+readonly USAGE="Usage: sync-to-s3 <path>"
 readonly MEAN_GREGORIAN_YEAR=31556952 # duration in seconds
 
 set -euo pipefail
 
-set -o allexport
-source .env
-set +o allexport
-
-[ -z "${S3_BUCKET_URI+x}" ] \
-  && (&>2 echo 'Missing environment variable S3_BUCKET_URI') \
-  && exit 1
-
 [ -z "${1+x}" ] \
-  && (&>2 echo 'Missing argument path') \
+  && (>&2 echo -e "Missing path\n${USAGE}") \
   && exit 1
 
-readonly bucket_uri="${S3_BUCKET_URI}"
 readonly local_path="$1"
+readonly bucket_uri="s3://$(bin/get-stack-output bucketName)"
 
 echo "Syncing ${local_path} with ${bucket_uri}"
 
