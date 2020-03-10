@@ -1,7 +1,6 @@
 jest.mock('~/lambda/middleware/app.js')
 
 import { App } from '~/lambda/middleware/app.js'
-import { CacheControl } from '~/lambda/middleware/cache-control.js'
 import { ContentSecurityPolicy } from '~/lambda/middleware/content-security-policy.js'
 import { Headers } from '~/lambda/middleware/headers.js'
 import { Redirection } from '~/lambda/middleware/redirection.js'
@@ -33,7 +32,6 @@ describe('handler(event)', () => {
         .toHaveBeenCalledWith(expect.arrayContaining([
           expect.any(Redirection),
           expect.any(Headers),
-          expect.any(CacheControl),
           expect.any(ContentSecurityPolicy)
         ]))
       expect(App.prototype.call)
