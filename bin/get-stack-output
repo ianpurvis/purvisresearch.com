@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+readonly USAGE="Usage: get-stack-output <key>"
+
+set -euo pipefail
+
+set -o allexport
+source .env
+set +o allexport
+
+[ -z "${1+x}" ] \
+  && (>&2 echo -e "Missing key\n${USAGE}") \
+  && exit 1
+readonly key="$1"
+
+[ -z "${CLOUD_FORMATION_STACK_NAME+x}" ] \
+  && (>&2 echo -e "Missing environment variable CLOUD_FORMATION_STACK_NAME\n${USAGE}") \
+  && exit 1
+readonly stack_name="${CLOUD_FORMATION_STACK_NAME}"
+
+aws cloudformation describe-stacks \
+  --stack-name "${stack_name}" \
+  --query "Stacks[0].Outputs[?OutputKey=='${key}'].OutputValue" \
+  --output text
