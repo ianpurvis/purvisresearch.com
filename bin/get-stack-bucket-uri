@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+aws cloudformation describe-stacks \
+  --stack-name PurvisResearchStack \
+  --query "Stacks[0].Outputs[?OutputKey=='bucketName'].OutputValue" \
+  --output text
