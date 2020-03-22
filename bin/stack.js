@@ -2,7 +2,11 @@
 
 require('dotenv').config()
 const cdk = require('@aws-cdk/core')
-const { Stack } = require('../lib/stack')
+const {
+  RootStack,
+  WwwStack,
+  ZoneStack,
+} = require('../lib/stack')
 
 const {
   ROUTE53_DOMAIN,
@@ -15,7 +19,16 @@ if (!CLOUD_FORMATION_STACK_NAME)
   throw new Error("Missing environment variable 'CLOUD_FORMATION_STACK_NAME'")
 
 const app = new cdk.App()
-const stack = new Stack(app, CLOUD_FORMATION_STACK_NAME, {
-  domainName: ROUTE53_DOMAIN,
+
+const zoneStack = new ZoneStack(app, `${CLOUD_FORMATION_STACK_NAME}-zone`, {
+  domainName: ROUTE53_DOMAIN
+})
+
+const rootStack = new RootStack(app, `${CLOUD_FORMATION_STACK_NAME}-root`, {
+  zoneStack,
   lambdaPath: 'dist/lambda'
+})
+
+const wwwStack = new WwwStack(app, `${CLOUD_FORMATION_STACK_NAME}-www`, {
+  rootStack
 })

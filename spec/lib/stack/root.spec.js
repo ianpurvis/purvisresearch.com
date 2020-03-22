@@ -1,22 +1,27 @@
 import '@aws-cdk/assert/jest'
 import * as cdk from '@aws-cdk/core'
-import { Stack } from '~/lib/stack'
+import { HostedZone } from '@aws-cdk/aws-route53'
+import { RootStack } from '~/lib/stack/root'
 
-describe('Stack', () => {
-  let app
+describe('RootStack', () => {
+  let app, zoneStack
 
   beforeEach(() => {
     app = new cdk.App()
+    zoneStack = new cdk.Stack(app, 'mock-zone-stack')
+    zoneStack.hostedZone = new HostedZone(zoneStack, 'mock-zone', {
+      zoneName: 'mock-zone-name'
+    })
   })
   describe('constructor', () => {
     let stack, props
 
     beforeEach(() => {
       props = {
-        domainName: 'mock-domain-name',
+        zoneStack,
         lambdaPath: 'spec/fixtures'
       }
-      stack = new Stack(app, 'MyTestStack', props)
+      stack = new RootStack(app, 'TestStack', props)
     })
     it('synthesizes an s3 bucket', () => {
       expect(stack).toHaveResource("AWS::S3::Bucket", {
@@ -45,38 +50,11 @@ describe('Stack', () => {
         }
       })
     })
-    it('synthesizes an s3 bucket for www redirection', () => {
-      expect(stack).toHaveResource("AWS::S3::Bucket", {
-        "CorsConfiguration": {
-          "CorsRules": [
-            {
-              "AllowedHeaders": [
-                "*"
-              ],
-              "AllowedMethods": [
-                "GET",
-                "HEAD"
-              ],
-              "AllowedOrigins": [
-                "*"
-              ],
-              "MaxAge": 3000
-            }
-          ]
-        },
-        "WebsiteConfiguration": {
-          "RedirectAllRequestsTo": {
-            "HostName": props.domainName,
-            "Protocol": "https"
-          }
-        }
-      })
-    })
     it('synthesizes a cloudfront distribution', () => {
       expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
         "DistributionConfig": {
           "Aliases": [
-            props.domainName
+            zoneStack.hostedZone.zoneName
           ],
           "DefaultCacheBehavior": {
             "AllowedMethods": [
@@ -134,80 +112,6 @@ describe('Stack', () => {
                   ]
                 }
               }
-            }
-          ],
-          "PriceClass": "PriceClass_All",
-          "ViewerCertificate": {
-            "AcmCertificateArn": {
-              "Fn::GetAtt": [
-                "CertificateCertificateRequestorResource2890C6B7",
-                "Arn"
-              ]
-            },
-            "MinimumProtocolVersion": "TLSv1.1_2016",
-            "SslSupportMethod": "sni-only"
-          }
-        }
-      })
-    })
-    it('synthesizes a cloudfront distribution for www redirection', () => {
-      expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
-        "DistributionConfig": {
-          "Aliases": [
-            `www.${props.domainName}`
-          ],
-          "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
-            ],
-            "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
-              },
-              "QueryString": false
-            },
-            "TargetOriginId": "origin1",
-            "ViewerProtocolPolicy": "redirect-to-https"
-          },
-          "DefaultRootObject": "",
-          "Enabled": true,
-          "HttpVersion": "http2",
-          "IPV6Enabled": true,
-          "Origins": [
-            {
-              "CustomOriginConfig": {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
-                "OriginProtocolPolicy": "http-only",
-                "OriginReadTimeout": 30,
-                "OriginSSLProtocols": [
-                  "TLSv1.2"
-                ]
-              },
-              "DomainName": {
-                "Fn::Select": [
-                  2,
-                  {
-                    "Fn::Split": [
-                      "/",
-                      {
-                        "Fn::GetAtt": [
-                          "RedirectBucket2BBBF2DF",
-                          "WebsiteURL"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              "Id": "origin1"
             }
           ],
           "PriceClass": "PriceClass_All",
