@@ -4,12 +4,21 @@ readonly MEAN_GREGORIAN_YEAR=31556952 # duration in seconds
 
 set -euo pipefail
 
+set -o allexport
+source .env
+set +o allexport
+
 [ -z "${1+x}" ] \
   && (>&2 echo -e "Missing path\n${USAGE}") \
   && exit 1
-
 readonly local_path="$1"
-readonly bucket_uri="s3://$(bin/get-stack-output bucketName)"
+
+[ -z "${CLOUD_FORMATION_STACK_NAME+x}" ] \
+  && (>&2 echo -e "Missing environment variable CLOUD_FORMATION_STACK_NAME\n${USAGE}") \
+  && exit 1
+readonly stack_name="${CLOUD_FORMATION_STACK_NAME}-root"
+
+readonly bucket_uri="s3://$(bin/get-stack-output "${stack_name}" 'bucketName')"
 
 echo "Syncing ${local_path} with ${bucket_uri}"
 
