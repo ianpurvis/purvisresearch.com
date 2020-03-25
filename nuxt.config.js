@@ -45,7 +45,7 @@ export default {
     extend (config, { isDev, isClient, loaders }) {
 
       if (isClient && !isProduction) {
-        config.devtool = '#source-map'
+        config.devtool = 'inline-cheap-module-source-map'
       }
 
       config.node = {
@@ -163,6 +163,7 @@ export default {
   ],
 
   generate: {
+    dir: 'dist/app',
     subFolders: false
   },
 

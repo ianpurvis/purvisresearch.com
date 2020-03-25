@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+readonly USAGE="Usage: sync-to-s3 <path>"
+readonly MEAN_GREGORIAN_YEAR=31556952 # duration in seconds
+
+set -euo pipefail
+
+set -o allexport
+source .env
+set +o allexport
+
+[ -z "${1+x}" ] \
+  && (>&2 echo -e "Missing path\n${USAGE}") \
+  && exit 1
+readonly local_path="$1"
+
+[ -z "${CLOUD_FORMATION_STACK_NAME+x}" ] \
+  && (>&2 echo -e "Missing environment variable CLOUD_FORMATION_STACK_NAME\n${USAGE}") \
+  && exit 1
+readonly stack_name="${CLOUD_FORMATION_STACK_NAME}-root"
+
+readonly bucket_uri="s3://$(bin/get-stack-output "${stack_name}" 'bucketName')"
+
+echo "Syncing ${local_path} with ${bucket_uri}"
+
+aws s3 sync \
+  --delete \
+  --cache-control 'public, max-age=0' \
+  --exclude '*' \
+  --include '*.html' \
+  "${local_path}" \
+  "${bucket_uri}"
+
+aws s3 sync \
+  --delete \
+  --cache-control "public, max-age=${MEAN_GREGORIAN_YEAR}" \
+  --exclude '*' \
+  --include '*.css' \
+  --include '*.glb' \
+  --include '*.js' \
+  --include '*.json' \
+  --include '*.nojekyll' \
+  --include '*.png' \
+  --include '*.svg' \
+  --include '*.woff' \
+  --include '*.xml' \
+  "${local_path}" \
+  "${bucket_uri}"

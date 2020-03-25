@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+npx webpack --config lambda.webpack.config.js --mode production
