@@ -7,11 +7,16 @@ class TextureLoaderError extends Error {
   }
 }
 
-class TextureLoader extends THREETextureLoader {
+class TextureLoader {
+
+  constructor(args) {
+    // Until THREE supports inheritance of TextureLoader:
+    this._loader = new THREETextureLoader(args)
+  }
 
   load(url, onProgress = () => {}) {
     return new Promise((resolve, reject) => {
-      super.load(url, resolve, onProgress, (error) => {
+      this._loader.load(url, resolve, onProgress, (error) => {
         reject(new TextureLoaderError('TextureLoader: Could not load url.', error))
       })
     })
