@@ -5,8 +5,19 @@ import { TextureLoader, TextureLoaderError } from '~/models/texture-loader.js'
 describe('TextureLoader', () => {
   let loader
 
-  it('extends three.js TextureLoader', () => {
-    expect(TextureLoader.prototype).toBeInstanceOf(THREETextureLoader)
+  describe('constructor(args)', () => {
+    let args, mockLoader
+
+    beforeEach(() => {
+      args = 'mock-args'
+      mockLoader = {}
+      THREETextureLoader.mockImplementation(() => mockLoader)
+    })
+    it('initializes ._loader with args', () => {
+      loader = new TextureLoader(args)
+      expect(THREETextureLoader).toHaveBeenCalledWith(args)
+      expect(loader._loader).toBe(mockLoader)
+    })
   })
 
   describe('load(url)', () => {
@@ -17,7 +28,7 @@ describe('TextureLoader', () => {
       url = 'http://example.com'
     })
     afterEach(() => {
-      expect(THREETextureLoader.prototype.load).toHaveBeenCalledWith(
+      expect(loader._loader.load).toHaveBeenCalledWith(
         url,
         expect.any(Function),
         expect.any(Function),
@@ -27,7 +38,7 @@ describe('TextureLoader', () => {
     describe('when super.load() succeeds', () => {
       it('resolves with a Texture object', async () => {
         let mockTexture = 'mock texture'
-        THREETextureLoader.prototype.load =
+        loader._loader.load =
           jest.fn((url, onLoad, onProgress, onError) => onLoad(mockTexture))
 
         result = loader.load(url)
@@ -37,7 +48,7 @@ describe('TextureLoader', () => {
     describe('when super.load() fails', () => {
       it('rejects with a TextureLoaderError containing the error', async () => {
         let mockError = new Error('mock error')
-        THREETextureLoader.prototype.load =
+        loader._loader.load =
           jest.fn((url, onLoad, onProgress, onError) => onError(mockError))
 
         result = loader.load(url)
