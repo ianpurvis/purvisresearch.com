@@ -21,26 +21,13 @@ export default {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+
   /*
   ** Build configuration
   */
   build: {
     babel: {
-      presets({ isServer }) {
-        return [
-          [ '@nuxt/babel-preset-app', {
-            corejs: 3,
-            targets: isServer ? {
-              node: 'current'
-            } : {
-              chrome: '41',
-              ie: '9'
-            },
-          }]
-        ]
-      },
-      // Polyfill CommonJS modules using 'require' syntax:
-      sourceType: 'unambiguous',
+      configFile: true
     },
     extend (config, { isDev, isClient, loaders }) {
 
