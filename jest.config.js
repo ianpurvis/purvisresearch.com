@@ -37,7 +37,7 @@ module.exports = {
       },
       testEnvironment: 'jsdom',
       testMatch: [
-        '<rootDir>/spec/app/**/*\.spec\.js'
+        '<rootDir>/spec/app/**/*.spec.js'
       ],
     },
     {
@@ -48,7 +48,7 @@ module.exports = {
       },
       testEnvironment: 'node',
       testMatch: [
-        '<rootDir>/spec/lambda/**/*\.spec\.js'
+        '<rootDir>/spec/lambda/**/*.spec.js'
       ]
     },
     {
@@ -59,7 +59,7 @@ module.exports = {
       },
       testEnvironment: 'node',
       testMatch: [
-        '<rootDir>/spec/lib/**/*\.spec\.js'
+        '<rootDir>/spec/lib/**/*.spec.js'
       ]
     },
   ]
