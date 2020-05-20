@@ -26,7 +26,7 @@ module.exports = {
         '**/*.spec.js'
       ],
       env: {
-        jest: true
+        node: true
       },
       extends: [
         'plugin:jest/recommended',
