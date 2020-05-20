@@ -1,11 +1,26 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
-    es6: true,
-    node: true
+    es6: true
+  },
+  extends: 'eslint:recommended',
+  globals: {
+    fetch: 'off',
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly'
   },
   overrides: [
+    {
+      files: [
+        '*.config.js',
+        '.*rc.js',
+        'bin/*.js',
+        'lib/*.js'
+      ],
+      env: {
+        node: true
+      },
+    },
     {
       files: [
         '**/*.spec.js'
@@ -13,31 +28,41 @@ module.exports = {
       env: {
         jest: true
       },
+      extends: [
+        'plugin:jest/recommended',
+        'plugin:jest/style'
+      ],
       plugins: [
         'jest'
+      ]
+    },
+    {
+      files: [
+        '**/*.vue',
       ],
-      rules: {
-        'jest/no-disabled-tests': 'warn',
-        'jest/no-focused-tests': 'error',
-        'jest/no-identical-title': 'error',
-        'jest/prefer-to-have-length': 'warn',
-        'jest/valid-expect': 'error'
-      }
+      extends: [
+        // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
+        // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
+        'plugin:vue/essential',
+      ],
+      env: {
+        node: true
+      },
+      plugins: [
+        'vue'
+      ],
     }
   ],
+  parser: 'babel-eslint',
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module',
+    ecmaVersion: 2018,
+    sourceType: 'module'
   },
-  extends: [
-    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential',
-  ],
-  // required to lint *.vue files
-  plugins: [
-    'vue'
-  ],
-  // add your custom rules here
-  rules: {}
+  root: true,
+  rules: {
+    indent: [ 'error', 2 ],
+    'linebreak-style': [ 'error', 'unix' ],
+    quotes: [ 'error', 'single' ],
+    semi: [ 'error', 'never' ]
+  }
 }
