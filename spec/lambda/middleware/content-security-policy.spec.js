@@ -80,7 +80,7 @@ describe('ContentSecurityPolicy', () => {
           method: 'GET',
           uri: '/'
         }),
-          response = undefined
+        response = undefined
       })
       it('returns the unmodified request', async () => {
         result = await subject.call({ request, response })
