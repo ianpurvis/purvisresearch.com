@@ -15,7 +15,7 @@
     "pixi-particles": "^4.2.1",
     "pixi.js": "^5.2.4",
     "stats.js": "^0.17.0",
-    "three": "^0.115.0",
+    "three": "^0.116.1",
     "vue-tight": "^1.0.2"
   },
   "devDependencies": {
