@@ -28,6 +28,7 @@ describe('TextureLoader', () => {
       url = 'http://example.com'
     })
     afterEach(() => {
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(loader._loader.load).toHaveBeenCalledWith(
         url,
         expect.any(Function),

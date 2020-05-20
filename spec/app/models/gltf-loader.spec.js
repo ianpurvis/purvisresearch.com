@@ -17,6 +17,7 @@ describe('GLTFLoader', () => {
       data = 'mockData'
     })
     afterEach(() => {
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(THREEGLTFLoader.prototype.parse).toHaveBeenCalledWith(
         data,
         '/',
