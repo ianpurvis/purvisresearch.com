@@ -2,11 +2,8 @@ import {
   Color,
   DoubleSide,
   LineSegments,
-  Material,
   MathUtils,
-  Mesh,
   Spherical,
-  Vector2,
   Vector3,
   WireframeGeometry,
 } from 'three'
@@ -76,7 +73,7 @@ export default {
         const animation = {
           startTime: this.elapsedTime,
           duration: duration,
-          tick: (t, d) => {},
+          tick: () => {},
           resolve: resolve,
           reject: reject
         }

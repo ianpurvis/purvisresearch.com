@@ -75,7 +75,7 @@ export default {
         this.animations.push({
           startTime: this.elapsedTime,
           duration: Number.MAX_VALUE,
-          tick: (t, d) => {
+          tick: (t) => {
             object.x = oscillator.sine(t)
           },
           resolve: resolve,

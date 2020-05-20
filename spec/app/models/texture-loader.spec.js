@@ -40,7 +40,7 @@ describe('TextureLoader', () => {
       it('resolves with a Texture object', async () => {
         let mockTexture = 'mock texture'
         loader._loader.load =
-          jest.fn((url, onLoad, onProgress, onError) => onLoad(mockTexture))
+          jest.fn((url, onLoad) => onLoad(mockTexture))
 
         result = loader.load(url)
         await expect(result).resolves.toBe(mockTexture)

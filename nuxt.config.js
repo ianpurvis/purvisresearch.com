@@ -29,7 +29,7 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isDev, isClient, loaders }) {
+    extend (config, { isDev, isClient }) {
 
       if (isClient && !isProduction) {
         config.devtool = 'inline-cheap-module-source-map'
@@ -161,7 +161,7 @@ export default {
   ],
 
   router: {
-    extendRoutes (routes, resolve) {
+    extendRoutes(routes) {
       routes.forEach(route => {
         if (route.path === '/') {
           route.alias = '/index.html'

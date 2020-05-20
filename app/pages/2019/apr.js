@@ -20,7 +20,6 @@ import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
 import { Organization } from '~/models/organization.js'
-import { Random } from '~/models/random.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 import tatami from '~/assets/images/2019/apr/tatami-bw.png'
 import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
@@ -88,7 +87,7 @@ export default {
         const animation = {
           startTime: this.elapsedTime,
           duration: duration,
-          tick: (t, d) => {},
+          tick: () => {},
           resolve: resolve,
           reject: reject
         }
@@ -290,7 +289,7 @@ export default {
       this.animations.push({
         startTime: this.clock.elapsedTime,
         duration: 60 * 60 * 24,
-        tick: (t, d) => {
+        tick: () => {
           let {aspect} = this.frame()
           Object.assign(this.camera, {
             left: targetSize.x * aspect / -2,

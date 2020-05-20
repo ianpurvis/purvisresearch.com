@@ -25,8 +25,6 @@ describe('animatable', () => {
     })
   })
   describe('methods', () => {
-    let result
-
     describe('animate()', () => {
       let mockAnimationFrameRequestId
 
