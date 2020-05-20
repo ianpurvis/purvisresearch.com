@@ -8,6 +8,6 @@ describe('oct.vue', () => {
     wrapper = shallowMount(Component, {
       stubs: ['nuxt-link']
     })
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    expect(wrapper.exists()).toBeTruthy()
   })
 })
