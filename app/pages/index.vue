@@ -21,6 +21,7 @@
         </ul>
       </div>
       <div class="boxx" lang="ja">
+        <!-- eslint-disable-next-line no-irregular-whitespace -->
         <h2>イアン　パービス</h2>
         <ul class="snake-list skills" v-tight>
           <li>スタートアップ<span class="underscore">&#x3000;</span>テクノロジー</li>
