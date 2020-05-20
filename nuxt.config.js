@@ -36,7 +36,7 @@ export default {
       }
 
       config.node = {
-        fs: "empty"
+        fs: 'empty'
       }
 
       // Override image loader to:

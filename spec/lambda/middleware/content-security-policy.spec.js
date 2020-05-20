@@ -38,10 +38,10 @@ describe('ContentSecurityPolicy', () => {
           expect(result.response).toMatchObject(response)
           expect(result.response).toMatchObject({
             headers: {
-              "content-security-policy": [
+              'content-security-policy': [
                 {
-                  "key": "Content-Security-Policy",
-                  "value": "mockFormattedPolicy"
+                  'key': 'Content-Security-Policy',
+                  'value': 'mockFormattedPolicy'
                 },
               ],
             }

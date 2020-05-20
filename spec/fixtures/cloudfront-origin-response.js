@@ -1,34 +1,34 @@
 export default {
-  "Records": [
+  'Records': [
     {
-      "cf": {
-        "config": {
-          "distributionId": "EXAMPLE"
+      'cf': {
+        'config': {
+          'distributionId': 'EXAMPLE'
         },
-        "request": {
-          "method": "GET",
-          "uri": "/"
+        'request': {
+          'method': 'GET',
+          'uri': '/'
         },
-        "response": {
-          "status": "200",
-          "statusDescription": "OK",
-          "headers": {
-            "vary": [
+        'response': {
+          'status': '200',
+          'statusDescription': 'OK',
+          'headers': {
+            'vary': [
               {
-                "key": "Vary",
-                "value": "*"
+                'key': 'Vary',
+                'value': '*'
               }
             ],
-            "last-modified": [
+            'last-modified': [
               {
-                "key": "Last-Modified",
-                "value": "2016-11-25"
+                'key': 'Last-Modified',
+                'value': '2016-11-25'
               }
             ],
-            "x-amz-meta-last-modified": [
+            'x-amz-meta-last-modified': [
               {
-                "key": "X-Amz-Meta-Last-Modified",
-                "value": "2016-01-01"
+                'key': 'X-Amz-Meta-Last-Modified',
+                'value': '2016-01-01'
               }
             ]
           }

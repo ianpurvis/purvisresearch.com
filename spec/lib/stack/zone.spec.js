@@ -19,8 +19,8 @@ describe('ZoneStack', () => {
     })
     it('synthesizes a hosted zone', () => {
       const zoneName = `${props.domainName}.`
-      expect(stack).toHaveResource("AWS::Route53::HostedZone", {
-        "Name": zoneName
+      expect(stack).toHaveResource('AWS::Route53::HostedZone', {
+        'Name': zoneName
       })
     })
   })

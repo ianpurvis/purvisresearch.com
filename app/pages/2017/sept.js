@@ -6,42 +6,42 @@ export default {
   created() {
     // Non-reactive data:
     this.canonicalUrl = `${Organization.default.url}/2017/sept.html`
-    this.description = "An emoji particle flow in WebGL."
+    this.description = 'An emoji particle flow in WebGL.'
     this.emitter = null
     this.jsonld = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [{
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'purvis research',
+        'item': Organization.default.url
       },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "sept 2017",
-        "item": this.canonicalUrl
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'sept 2017',
+        'item': this.canonicalUrl
       }]
     },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
-    this.title = "sept 2017 - purvis research"
+    this.title = 'sept 2017 - purvis research'
   },
   head() {
     return {
       title: this.title,
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
-        { property:"og:description", content: this.description },
-        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2017/sept.png")}` },
-        { property:"og:image:height", content:"859" },
-        { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Sept 2017" },
-        { property:"og:url", content: this.canonicalUrl },
-        { name:"twitter:card", content:"summary_large_image" },
+        { property:'og:description', content: this.description },
+        { property:'og:image', content: `${Organization.default.url}${require('~/assets/images/2017/sept.png')}` },
+        { property:'og:image:height', content:'859' },
+        { property:'og:image:width', content:'1646' },
+        { property:'og:title', content:'Sept 2017' },
+        { property:'og:url', content: this.canonicalUrl },
+        { name:'twitter:card', content:'summary_large_image' },
       ],
       link: [
-        { rel: "canonical", href: this.canonicalUrl }
+        { rel: 'canonical', href: this.canonicalUrl }
       ],
       script: [
         { type: 'application/ld+json', json: this.jsonld }
@@ -62,7 +62,7 @@ export default {
         import('pixi-particles')
       ])).then(([{ RenderTexture, Text }, { Emitter }]) => {
         Array
-          .from("💾📀")
+          .from('💾📀')
           .map(emoji => new Text(emoji, {
             fontSize: '32px',
           }))
@@ -100,7 +100,7 @@ export default {
               }
             ],
           },
-          spawnType: "rect",
+          spawnType: 'rect',
           startRotation: {
             min: -5,
             max: 5

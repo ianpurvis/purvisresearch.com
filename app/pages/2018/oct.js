@@ -30,39 +30,39 @@ export default {
       new Color(0xffff00)
     ]
     this.canonicalUrl = `${Organization.default.url}/2018/oct.html`
-    this.description = "Screen printing a 3D scan with WebGL."
+    this.description = 'Screen printing a 3D scan with WebGL.'
     this.jsonld = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [{
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'purvis research',
+        'item': Organization.default.url
       },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "oct 2018",
-        "item": this.canonicalUrl
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'oct 2018',
+        'item': this.canonicalUrl
       }]
     },
-    this.title = "oct 2018 - purvis research"
+    this.title = 'oct 2018 - purvis research'
   },
   head() {
     return {
       title: this.title,
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
-        { property:"og:description", content: this.description },
-        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2018/oct.png")}` },
-        { property:"og:image:height", content:"859" },
-        { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Oct 2018" },
-        { property:"og:url", content: this.canonicalUrl },
-        { name:"twitter:card", content:"summary_large_image" },
+        { property:'og:description', content: this.description },
+        { property:'og:image', content: `${Organization.default.url}${require('~/assets/images/2018/oct.png')}` },
+        { property:'og:image:height', content:'859' },
+        { property:'og:image:width', content:'1646' },
+        { property:'og:title', content:'Oct 2018' },
+        { property:'og:url', content: this.canonicalUrl },
+        { name:'twitter:card', content:'summary_large_image' },
       ],
       link: [
-        { rel: "canonical", href: this.canonicalUrl }
+        { rel: 'canonical', href: this.canonicalUrl }
       ],
       script: [
         { type: 'application/ld+json', json: this.jsonld }
