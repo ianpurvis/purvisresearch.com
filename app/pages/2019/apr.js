@@ -15,6 +15,7 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
+import ogImagePath from '~/assets/images/2019/apr.png'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
@@ -66,7 +67,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:'og:description', content: this.description },
-        { property:'og:image', content: `${Organization.default.url}${require('~/assets/images/2019/apr.png')}` },
+        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
         { property:'og:title', content:'Apr 2019' },

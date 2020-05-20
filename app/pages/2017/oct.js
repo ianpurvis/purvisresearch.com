@@ -1,3 +1,4 @@
+import ogImagePath from '~/assets/images/2017/oct.png'
 import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
@@ -35,7 +36,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:'og:description', content: this.description },
-        { property:'og:image', content: `${Organization.default.url}${require('~/assets/images/2017/oct.png')}` },
+        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
         { property:'og:title', content:'Oct 2017' },

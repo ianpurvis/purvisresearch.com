@@ -5,6 +5,7 @@ import {
   TextBufferGeometry,
   Vector3
 } from 'three'
+import ogImagePath from '~/assets/images/2017/nov.png'
 import Inconsolata from '~/assets/models/Inconsolata_Regular.json'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
@@ -45,7 +46,7 @@ export default {
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
         { property:'og:description', content: this.description },
-        { property:'og:image', content: `${Organization.default.url}${require('~/assets/images/2017/nov.png')}` },
+        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
         { property:'og:title', content:'Nov 2017' },
