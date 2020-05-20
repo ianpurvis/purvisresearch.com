@@ -282,7 +282,7 @@ describe('pixi-demo', () => {
           }
         })
         it('updates delta time', () => {
-          [1,2].forEach(i => {
+          [1,2].forEach(() => {
             wrapper.vm.update()
             expect(wrapper.vm.deltaTime).toBe(deltaTime)
           })

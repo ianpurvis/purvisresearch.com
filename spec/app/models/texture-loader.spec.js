@@ -28,6 +28,7 @@ describe('TextureLoader', () => {
       url = 'http://example.com'
     })
     afterEach(() => {
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(loader._loader.load).toHaveBeenCalledWith(
         url,
         expect.any(Function),
@@ -39,7 +40,7 @@ describe('TextureLoader', () => {
       it('resolves with a Texture object', async () => {
         let mockTexture = 'mock texture'
         loader._loader.load =
-          jest.fn((url, onLoad, onProgress, onError) => onLoad(mockTexture))
+          jest.fn((url, onLoad) => onLoad(mockTexture))
 
         result = loader.load(url)
         await expect(result).resolves.toBe(mockTexture)

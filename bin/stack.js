@@ -29,6 +29,6 @@ const rootStack = new RootStack(app, `${CLOUD_FORMATION_STACK_NAME}-root`, {
   lambdaPath: 'dist/lambda'
 })
 
-const wwwStack = new WwwStack(app, `${CLOUD_FORMATION_STACK_NAME}-www`, {
+new WwwStack(app, `${CLOUD_FORMATION_STACK_NAME}-www`, {
   rootStack
 })

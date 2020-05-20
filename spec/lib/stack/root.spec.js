@@ -24,89 +24,89 @@ describe('RootStack', () => {
       stack = new RootStack(app, 'TestStack', props)
     })
     it('synthesizes an s3 bucket', () => {
-      expect(stack).toHaveResource("AWS::S3::Bucket", {
-        "CorsConfiguration": {
-          "CorsRules": [
+      expect(stack).toHaveResource('AWS::S3::Bucket', {
+        'CorsConfiguration': {
+          'CorsRules': [
             {
-              "AllowedHeaders": [
-                "*"
+              'AllowedHeaders': [
+                '*'
               ],
-              "AllowedMethods": [
-                "GET",
-                "HEAD"
+              'AllowedMethods': [
+                'GET',
+                'HEAD'
               ],
-              "AllowedOrigins": [
-                "*"
+              'AllowedOrigins': [
+                '*'
               ],
-              "MaxAge": 3000
+              'MaxAge': 3000
             }
           ]
         },
-        "PublicAccessBlockConfiguration": {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true
+        'PublicAccessBlockConfiguration': {
+          'BlockPublicAcls': true,
+          'BlockPublicPolicy': true,
+          'IgnorePublicAcls': true,
+          'RestrictPublicBuckets': true
         }
       })
     })
     it('synthesizes a cloudfront distribution', () => {
-      expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
-        "DistributionConfig": {
-          "Aliases": [
+      expect(stack).toHaveResource('AWS::CloudFront::Distribution', {
+        'DistributionConfig': {
+          'Aliases': [
             zoneStack.hostedZone.zoneName
           ],
-          "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
+          'DefaultCacheBehavior': {
+            'AllowedMethods': [
+              'GET',
+              'HEAD'
             ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
+            'CachedMethods': [
+              'GET',
+              'HEAD'
             ],
-            "Compress": true,
-            "ForwardedValues": {
-              "QueryString": true
+            'Compress': true,
+            'ForwardedValues': {
+              'QueryString': true
             },
-            "LambdaFunctionAssociations": [
+            'LambdaFunctionAssociations': [
               {
-                "EventType": "origin-request",
-                "LambdaFunctionARN": {
-                  "Ref": "Version6A868472"
+                'EventType': 'origin-request',
+                'LambdaFunctionARN': {
+                  'Ref': 'Version6A868472'
                 }
               },
               {
-                "EventType": "origin-response",
-                "LambdaFunctionARN": {
-                  "Ref": "Version6A868472"
+                'EventType': 'origin-response',
+                'LambdaFunctionARN': {
+                  'Ref': 'Version6A868472'
                 }
               }
             ],
-            "TargetOriginId": "origin1",
-            "ViewerProtocolPolicy": "redirect-to-https"
+            'TargetOriginId': 'origin1',
+            'ViewerProtocolPolicy': 'redirect-to-https'
           },
-          "DefaultRootObject": "index.html",
-          "Enabled": true,
-          "HttpVersion": "http2",
-          "IPV6Enabled": true,
-          "Origins": [
+          'DefaultRootObject': 'index.html',
+          'Enabled': true,
+          'HttpVersion': 'http2',
+          'IPV6Enabled': true,
+          'Origins': [
             {
-              "DomainName": {
-                "Fn::GetAtt": [
-                  "Bucket83908E77",
-                  "RegionalDomainName"
+              'DomainName': {
+                'Fn::GetAtt': [
+                  'Bucket83908E77',
+                  'RegionalDomainName'
                 ]
               },
-              "Id": "origin1",
-              "S3OriginConfig": {
-                "OriginAccessIdentity": {
-                  "Fn::Join": [
-                    "",
+              'Id': 'origin1',
+              'S3OriginConfig': {
+                'OriginAccessIdentity': {
+                  'Fn::Join': [
+                    '',
                     [
-                      "origin-access-identity/cloudfront/",
+                      'origin-access-identity/cloudfront/',
                       {
-                        "Ref": "OriginAccessIdentityDF1E3CAC"
+                        'Ref': 'OriginAccessIdentityDF1E3CAC'
                       }
                     ]
                   ]
@@ -114,30 +114,30 @@ describe('RootStack', () => {
               }
             }
           ],
-          "PriceClass": "PriceClass_All",
-          "ViewerCertificate": {
-            "AcmCertificateArn": {
-              "Fn::GetAtt": [
-                "CertificateCertificateRequestorResource2890C6B7",
-                "Arn"
+          'PriceClass': 'PriceClass_All',
+          'ViewerCertificate': {
+            'AcmCertificateArn': {
+              'Fn::GetAtt': [
+                'CertificateCertificateRequestorResource2890C6B7',
+                'Arn'
               ]
             },
-            "MinimumProtocolVersion": "TLSv1.1_2016",
-            "SslSupportMethod": "sni-only"
+            'MinimumProtocolVersion': 'TLSv1.1_2016',
+            'SslSupportMethod': 'sni-only'
           }
         }
       })
     })
     it('synthesizes a lambda function', () => {
-      expect(stack).toHaveResource("AWS::Lambda::Function", {
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "FunctionServiceRole675BB04A",
-            "Arn"
+      expect(stack).toHaveResource('AWS::Lambda::Function', {
+        'Handler': 'index.handler',
+        'Role': {
+          'Fn::GetAtt': [
+            'FunctionServiceRole675BB04A',
+            'Arn'
           ]
         },
-        "Runtime": "nodejs12.x"
+        'Runtime': 'nodejs12.x'
       })
     })
   })

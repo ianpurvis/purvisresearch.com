@@ -33,94 +33,94 @@ describe('WwwStack', () => {
     })
     it('synthesizes an s3 bucket for www redirection', () => {
       const rule = rootStack.corsRules[0]
-      expect(stack).toHaveResource("AWS::S3::Bucket", {
-        "CorsConfiguration": {
-          "CorsRules": [
+      expect(stack).toHaveResource('AWS::S3::Bucket', {
+        'CorsConfiguration': {
+          'CorsRules': [
             {
-              "AllowedMethods": rule.allowedMethods,
-              "AllowedOrigins": rule.allowedOrigins
+              'AllowedMethods': rule.allowedMethods,
+              'AllowedOrigins': rule.allowedOrigins
             }
           ]
         },
-        "WebsiteConfiguration": {
-          "RedirectAllRequestsTo": {
-            "HostName": rootStack.hostName,
-            "Protocol": "https"
+        'WebsiteConfiguration': {
+          'RedirectAllRequestsTo': {
+            'HostName': rootStack.hostName,
+            'Protocol': 'https'
           }
         }
       })
     })
     it('synthesizes a cloudfront distribution for www redirection', () => {
       const domainName = `www.${rootStack.hostName}`
-      expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
-        "DistributionConfig": {
-          "Aliases": [
+      expect(stack).toHaveResource('AWS::CloudFront::Distribution', {
+        'DistributionConfig': {
+          'Aliases': [
             domainName
           ],
-          "DefaultCacheBehavior": {
-            "AllowedMethods": [
-              "GET",
-              "HEAD"
+          'DefaultCacheBehavior': {
+            'AllowedMethods': [
+              'GET',
+              'HEAD'
             ],
-            "CachedMethods": [
-              "GET",
-              "HEAD"
+            'CachedMethods': [
+              'GET',
+              'HEAD'
             ],
-            "Compress": true,
-            "ForwardedValues": {
-              "Cookies": {
-                "Forward": "none"
+            'Compress': true,
+            'ForwardedValues': {
+              'Cookies': {
+                'Forward': 'none'
               },
-              "QueryString": false
+              'QueryString': false
             },
-            "TargetOriginId": "origin1",
-            "ViewerProtocolPolicy": "redirect-to-https"
+            'TargetOriginId': 'origin1',
+            'ViewerProtocolPolicy': 'redirect-to-https'
           },
-          "DefaultRootObject": "",
-          "Enabled": true,
-          "HttpVersion": "http2",
-          "IPV6Enabled": true,
-          "Origins": [
+          'DefaultRootObject': '',
+          'Enabled': true,
+          'HttpVersion': 'http2',
+          'IPV6Enabled': true,
+          'Origins': [
             {
-              "CustomOriginConfig": {
-                "HTTPPort": 80,
-                "HTTPSPort": 443,
-                "OriginKeepaliveTimeout": 5,
-                "OriginProtocolPolicy": "http-only",
-                "OriginReadTimeout": 30,
-                "OriginSSLProtocols": [
-                  "TLSv1.2"
+              'CustomOriginConfig': {
+                'HTTPPort': 80,
+                'HTTPSPort': 443,
+                'OriginKeepaliveTimeout': 5,
+                'OriginProtocolPolicy': 'http-only',
+                'OriginReadTimeout': 30,
+                'OriginSSLProtocols': [
+                  'TLSv1.2'
                 ]
               },
-              "DomainName": {
-                "Fn::Select": [
+              'DomainName': {
+                'Fn::Select': [
                   2,
                   {
-                    "Fn::Split": [
-                      "/",
+                    'Fn::Split': [
+                      '/',
                       {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "WebsiteURL"
+                        'Fn::GetAtt': [
+                          'Bucket83908E77',
+                          'WebsiteURL'
                         ]
                       }
                     ]
                   }
                 ]
               },
-              "Id": "origin1"
+              'Id': 'origin1'
             }
           ],
-          "PriceClass": "PriceClass_All",
-          "ViewerCertificate": {
-            "AcmCertificateArn": {
-              "Fn::GetAtt": [
-                "CertificateCertificateRequestorResource2890C6B7",
-                "Arn"
+          'PriceClass': 'PriceClass_All',
+          'ViewerCertificate': {
+            'AcmCertificateArn': {
+              'Fn::GetAtt': [
+                'CertificateCertificateRequestorResource2890C6B7',
+                'Arn'
               ]
             },
-            "MinimumProtocolVersion": "TLSv1.1_2016",
-            "SslSupportMethod": "sni-only"
+            'MinimumProtocolVersion': 'TLSv1.1_2016',
+            'SslSupportMethod': 'sni-only'
           }
         }
       })

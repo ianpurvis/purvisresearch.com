@@ -8,7 +8,7 @@ export default {
     handleKeyup(event) {
       if (event.defaultPrevented) return
       switch (event.key) {
-        case 'd': this.toggleDebugMode()
+      case 'd': this.toggleDebugMode()
       }
     },
     toggleDebugMode() {

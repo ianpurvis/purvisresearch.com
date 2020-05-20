@@ -15,11 +15,11 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
+import ogImagePath from '~/assets/images/2019/apr.png'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
 import { Organization } from '~/models/organization.js'
-import { Random } from '~/models/random.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 import tatami from '~/assets/images/2019/apr/tatami-bw.png'
 import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
@@ -42,39 +42,39 @@ export default {
     // Non-reactive data:
     this.camera = new OrthographicCamera()
     this.canonicalUrl = `${Organization.default.url}/2019/apr.html`
-    this.description = "Surreal television with WebRTC and WebGL."
+    this.description = 'Surreal television with WebRTC and WebGL.'
     this.jsonld = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [{
-        "@type": "ListItem",
-        "position": 1,
-        "name": "purvis research",
-        "item": Organization.default.url
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [{
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'purvis research',
+        'item': Organization.default.url
       },{
-        "@type": "ListItem",
-        "position": 2,
-        "name": "apr 2019",
-        "item": this.canonicalUrl
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'apr 2019',
+        'item': this.canonicalUrl
       }]
     },
-    this.title = "apr 2019 - purvis research"
+    this.title = 'apr 2019 - purvis research'
   },
   head() {
     return {
       title: this.title,
       meta: [
         { name: 'description', content: this.description, hid: 'description' },
-        { property:"og:description", content: this.description },
-        { property:"og:image", content: `${Organization.default.url}${require("~/assets/images/2019/apr.png")}` },
-        { property:"og:image:height", content:"859" },
-        { property:"og:image:width", content:"1646" },
-        { property:"og:title", content:"Apr 2019" },
-        { property:"og:url", content: this.canonicalUrl },
-        { name:"twitter:card", content:"summary_large_image" },
+        { property:'og:description', content: this.description },
+        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
+        { property:'og:image:height', content:'859' },
+        { property:'og:image:width', content:'1646' },
+        { property:'og:title', content:'Apr 2019' },
+        { property:'og:url', content: this.canonicalUrl },
+        { name:'twitter:card', content:'summary_large_image' },
       ],
       link: [
-        { rel: "canonical", href: this.canonicalUrl }
+        { rel: 'canonical', href: this.canonicalUrl }
       ],
       script: [
         { type: 'application/ld+json', json: this.jsonld }
@@ -87,7 +87,7 @@ export default {
         const animation = {
           startTime: this.elapsedTime,
           duration: duration,
-          tick: (t, d) => {},
+          tick: () => {},
           resolve: resolve,
           reject: reject
         }
@@ -289,7 +289,7 @@ export default {
       this.animations.push({
         startTime: this.clock.elapsedTime,
         duration: 60 * 60 * 24,
-        tick: (t, d) => {
+        tick: () => {
           let {aspect} = this.frame()
           Object.assign(this.camera, {
             left: targetSize.x * aspect / -2,

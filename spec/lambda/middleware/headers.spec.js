@@ -29,10 +29,10 @@ describe('Headers', () => {
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
-            "referrer-policy": [
+            'referrer-policy': [
               {
-                "key": "Referrer-Policy",
-                "value": "no-referrer-when-downgrade",
+                'key': 'Referrer-Policy',
+                'value': 'no-referrer-when-downgrade',
               },
             ],
           }
@@ -43,10 +43,10 @@ describe('Headers', () => {
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
-            "strict-transport-security": [
+            'strict-transport-security': [
               {
-                "key": "Strict-Transport-Security",
-                "value": "max-age=31556952; includeSubdomains; preload",
+                'key': 'Strict-Transport-Security',
+                'value': 'max-age=31556952; includeSubdomains; preload',
               },
             ],
           }
@@ -57,10 +57,10 @@ describe('Headers', () => {
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
-            "x-content-type-options": [
+            'x-content-type-options': [
               {
-                "key": "X-Content-Type-Options",
-                "value": "nosniff",
+                'key': 'X-Content-Type-Options',
+                'value': 'nosniff',
               },
             ],
           }
@@ -71,10 +71,10 @@ describe('Headers', () => {
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
-            "x-frame-options": [
+            'x-frame-options': [
               {
-                "key": "X-Frame-Options",
-                "value": "DENY",
+                'key': 'X-Frame-Options',
+                'value': 'DENY',
               },
             ],
           }
@@ -85,10 +85,10 @@ describe('Headers', () => {
         expect(result.response).toMatchObject({
           status: '200',
           headers: {
-            "x-xss-protection": [
+            'x-xss-protection': [
               {
-                "key": "X-XSS-Protection",
-                "value": "1; mode=block",
+                'key': 'X-XSS-Protection',
+                'value': '1; mode=block',
               },
             ],
           }
@@ -101,7 +101,7 @@ describe('Headers', () => {
           method: 'GET',
           uri: '/'
         }),
-          response = undefined
+        response = undefined
       })
       it('returns the unmodified request', async () => {
         result = await subject.call({ request, response })

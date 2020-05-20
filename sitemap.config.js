@@ -3,12 +3,12 @@ export default {
     '/404',
   ],
   filter: ({ routes }) =>
-  routes.map(({url, ...attributes}) =>
-    ({
-      url: (url === '/') ? String() : `${url}.html`,
-      ...attributes
-    })
-  ),
+    routes.map(({url, ...attributes}) =>
+      ({
+        url: (url === '/') ? String() : `${url}.html`,
+        ...attributes
+      })
+    ),
   hostname: 'https://purvisresearch.com',
   routes: [{
     url: '/',

@@ -56,7 +56,7 @@ class BezierTexture {
     })
 
     return Promise.resolve(
-      import(/* webpackMode: "eager" */"@pixi/graphics"),
+      import(/* webpackMode: "eager" */'@pixi/graphics'),
     ).then(({Graphics}) => {
 
       let graphics = new Graphics()

@@ -4,7 +4,7 @@ export default {
   },
   data() {
     return {
-      title: "page not found - purvis research"
+      title: 'page not found - purvis research'
     }
   },
   head() {
@@ -14,12 +14,12 @@ export default {
   },
   methods: {
     fitHorizontal(element) {
-      element.classList.remove("fit-vertical")
-      element.classList.add("fit-horizontal")
+      element.classList.remove('fit-vertical')
+      element.classList.add('fit-horizontal')
     },
     fitVertical(element) {
-      element.classList.remove("fit-horizontal")
-      element.classList.add("fit-vertical")
+      element.classList.remove('fit-horizontal')
+      element.classList.add('fit-vertical')
     },
     layoutAspects() {
       let aspectFunc
@@ -28,7 +28,7 @@ export default {
       } else {
         aspectFunc = this.fitVertical
       }
-      document.querySelectorAll(".aspect").forEach(aspectFunc)
+      document.querySelectorAll('.aspect').forEach(aspectFunc)
     }
   },
   mounted() {

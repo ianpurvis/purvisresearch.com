@@ -17,6 +17,7 @@ describe('GLTFLoader', () => {
       data = 'mockData'
     })
     afterEach(() => {
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(THREEGLTFLoader.prototype.parse).toHaveBeenCalledWith(
         data,
         '/',
@@ -28,7 +29,7 @@ describe('GLTFLoader', () => {
       it('resolves with a GLTF object', async () => {
         let mockGLTF = 'mock gltf'
         THREEGLTFLoader.prototype.parse =
-          jest.fn((data, path, onLoad, onError) => onLoad(mockGLTF))
+          jest.fn((data, path, onLoad) => onLoad(mockGLTF))
 
         result = loader.parse(data)
         await expect(result).resolves.toBe(mockGLTF)

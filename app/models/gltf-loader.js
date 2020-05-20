@@ -1,4 +1,3 @@
-import { DRACOLoader } from '~/models/draco-loader.js'
 import { GLTFLoader as THREEGLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 
