@@ -14,8 +14,8 @@ module.exports = {
       files: [
         '*.config.js',
         '.*rc.js',
-        'bin/*.js',
-        'lib/*.js'
+        'bin/**/*.js',
+        'lib/**/*.js'
       ],
       env: {
         node: true
