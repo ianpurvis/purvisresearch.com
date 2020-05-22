@@ -30,7 +30,7 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isDev, isClient }) {
+    extend (config, { isClient }) {
 
       if (isClient && !isProduction) {
         config.devtool = 'inline-cheap-module-source-map'
@@ -122,16 +122,6 @@ export default {
         ],
         exclude: /(node_modules)/
       })
-
-      if (isDev && isClient) {
-        // Run ESLint on save
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
 
       const workerPlugin = new WorkerPlugin({
         globalObject: 'self'
