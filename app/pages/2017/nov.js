@@ -12,10 +12,11 @@ import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
+import { ExploderPhysicsWorker } from '~/workers/exploder-physics-worker.js'
 
 export default {
   beforeDestroy() {
-    this.worker.terminate()
+    this.physicsWorker.terminate()
   },
   created() {
     // Non-reactive data:
@@ -108,8 +109,6 @@ export default {
       Object.assign(this, { meshes })
     },
     loadPhysics() {
-      this.worker = new Worker('~/workers/exploder-physics-worker.js', { type:'module' })
-      this.worker.onmessage = this.onmessage.bind(this)
       const size = new Vector3()
       const bodies = this.meshes.map(mesh => {
         mesh.geometry.boundingBox.getSize(size)
@@ -139,13 +138,7 @@ export default {
       //   size
       // }
       // bodies.push(blast)
-      this.worker.postMessage({ command: 'load', args: { bodies }})
-    },
-    onmessage({ data: { event, args }}) {
-      if (this[event]) this[event](args)
-    },
-    onload() {
-      this.workerIsLoaded = true
+      this.physicsWorker.load(bodies)
     },
     onstep({ bodies }) {
       for (let i = 0, mesh, body; i < this.meshes.length; i++) {
@@ -157,17 +150,17 @@ export default {
       }
     },
     update() {
-      if (!this.workerIsLoaded) return
       ThreeDemo.methods.update.call(this)
-      this.worker.postMessage({ command: 'step', args: {
-        deltaTime: this.deltaTime * this.speedOfLife
-      }})
+      if (!this.physicsWorker.isReady) return
+      this.physicsWorker.step(this.deltaTime * this.speedOfLife)
     },
   },
   mixins: [
     ThreeDemo,
   ],
   mounted() {
+    this.physicsWorker = new ExploderPhysicsWorker()
+    this.physicsWorker.onstep = this.onstep.bind(this)
     this.load().then(this.layout).catch(this.logError)
   }
 }

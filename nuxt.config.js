@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import Path from 'path'
 import sitemapConfig from './sitemap.config.js'
-import WorkerPlugin from 'worker-plugin'
 const isProduction = (process.env.NODE_ENV === 'production')
 
 function name(file) {
@@ -39,6 +38,13 @@ export default {
       config.node = {
         fs: 'empty'
       }
+
+      // Load web-workers
+      config.module.rules.push({
+        test: /\.worker\.js$/,
+        loader: 'worker-loader',
+        exclude: /(node_modules)/
+      })
 
       // Override image loader to:
       // - match ico files
@@ -122,11 +128,6 @@ export default {
         ],
         exclude: /(node_modules)/
       })
-
-      const workerPlugin = new WorkerPlugin({
-        globalObject: 'self'
-      })
-      config.plugins.push(workerPlugin)
     },
     filenames: {
       app: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
