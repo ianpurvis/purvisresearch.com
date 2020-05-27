@@ -102,9 +102,10 @@ export default {
           Random.rand({ min: -blastRadius, max: blastRadius }),
         )
         mesh.scale.setScalar(Random.rand({ min: 0.25, max: 1 }))
-        // mesh.visible = false
         this.scene.add(mesh)
       })
+
+      this.scene.visible = false
 
       Object.assign(this, { meshes })
     },
@@ -146,8 +147,8 @@ export default {
         body = bodies[i]
         mesh.position.copy(body.position)
         mesh.quaternion.copy(body.quaternion)
-        mesh.visible = true
       }
+      this.scene.visible = true
     },
     update() {
       ThreeDemo.methods.update.call(this)
