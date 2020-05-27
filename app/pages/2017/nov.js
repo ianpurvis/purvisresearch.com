@@ -1,14 +1,12 @@
 import {
-  Font,
+  BufferAttribute,
+  BufferGeometry,
   LessDepth,
   MathUtils,
   Mesh,
   MeshNormalMaterial,
-  TextBufferGeometry,
-  Vector3,
 } from 'three'
 import ogImagePath from '~/assets/images/2017/nov.png'
-import Inconsolata from '~/assets/models/Inconsolata_Regular.json'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
 import { ExploderPhysicsWorker } from '~/workers/exploder-physics-worker.js'
@@ -69,93 +67,33 @@ export default {
     },
     async load() {
       await ThreeDemo.methods.load.call(this)
-      this.loadGraphics()
-      this.loadPhysics()
+      this.physicsWorker.load()
     },
-    loadGraphics() {
-      const blastRadius = 60
-      const font = new Font(Inconsolata)
-      const characters = Array.from('abcdefghijklmnopqrstuvwxyz0123456789')
-      const geometries = characters.map(character => new TextBufferGeometry(character, { font }))
-      geometries.forEach(geometry => {
-        geometry.center()
-        geometry.computeBoundingBox()
-      })
+    onload({ positions, normals }) {
+      const geometry = new BufferGeometry()
+      geometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3))
+      geometry.setAttribute('normal', new BufferAttribute(new Float32Array(normals), 3))
       const material = new MeshNormalMaterial({
         depthFunc: LessDepth,
+        flatShading: true,
         opacity: 0.7,
         transparent: false,
         wireframe: true,
       })
-      const meshes = geometries.map(geometry => new Mesh(geometry, material))
-      meshes.forEach(mesh => {
-        mesh.rotation.set(
-          MathUtils.degToRad(MathUtils.randInt(0, 360)),
-          MathUtils.degToRad(MathUtils.randInt(0, 360)),
-          MathUtils.degToRad(MathUtils.randInt(0, 360)),
-        )
-        mesh.position.set(
-          MathUtils.randInt(-blastRadius, blastRadius),
-          MathUtils.randInt(-blastRadius, blastRadius),
-          MathUtils.randInt(-blastRadius, blastRadius),
-        )
-        mesh.scale.setScalar(MathUtils.randFloat(0.25, 1))
-        this.scene.add(mesh)
-      })
+      const mesh = new Mesh(geometry, material)
 
-      this.scene.visible = false
+      this.scene.add(mesh)
 
-      Object.assign(this, { meshes })
+      Object.assign(this, { mesh, positions, normals })
     },
-    loadPhysics() {
-      const size = new Vector3()
-      const bodies = this.meshes.map(mesh => {
-        mesh.geometry.boundingBox.getSize(size)
-        return {
-          collisionFilterGroup: 2,
-          collisionFilterMask: 1,
-          mass: mesh.scale.x,
-          position: {
-            x: mesh.position.x,
-            y: mesh.position.y,
-            z: mesh.position.z,
-          },
-          quaternion: {
-            x: mesh.quaternion.x,
-            y: mesh.quaternion.y,
-            z: mesh.quaternion.z,
-            w: mesh.quaternion.w,
-          },
-          size
-        }
-      })
-      // size.setScalar(60)
-      // const blast = {
-      //   collisionFilterGroup: 1,
-      //   collisionFilterMask: 2,
-      //   mass: 10000,
-      //   size
-      // }
-      // bodies.push(blast)
-
-      this.positions = new Float32Array(bodies.length * 3)
-      this.quaternions = new Float32Array(bodies.length * 4)
-      this.physicsWorker.load(bodies)
-    },
-    onstep({ positions, quaternions }) {
-      for (let i = 0, mesh; i < this.meshes.length; i++) {
-        mesh = this.meshes[i]
-        mesh.position.x = positions[i*3+0]
-        mesh.position.y = positions[i*3+1]
-        mesh.position.z = positions[i*3+2]
-        mesh.quaternion.x = quaternions[i*4+0]
-        mesh.quaternion.y = quaternions[i*4+1]
-        mesh.quaternion.z = quaternions[i*4+2]
-        mesh.quaternion.w = quaternions[i*4+3]
-      }
-      this.positions = positions
-      this.quaternions = quaternions
+    onstep({ positions, normals }) {
+      this.mesh.geometry.attributes.position.set(positions)
+      this.mesh.geometry.attributes.position.needsUpdate = true
+      this.mesh.geometry.attributes.normal.set(normals)
+      this.mesh.geometry.attributes.normal.needsUpdate = true
       this.scene.visible = true
+
+      Object.assign(this, { positions, normals })
     },
     update() {
       ThreeDemo.methods.update.call(this)
@@ -163,7 +101,7 @@ export default {
       this.physicsWorker.step(
         this.deltaTime * this.speedOfLife,
         this.positions,
-        this.quaternions
+        this.normals
       )
     },
   },
@@ -173,6 +111,7 @@ export default {
   mounted() {
     this.physicsWorker = new ExploderPhysicsWorker()
     this.physicsWorker.onstep = this.onstep.bind(this)
+    this.physicsWorker.onload = this.onload.bind(this)
     this.load().then(this.layout).catch(this.logError)
   }
 }

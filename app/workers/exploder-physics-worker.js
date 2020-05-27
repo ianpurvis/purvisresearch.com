@@ -9,21 +9,21 @@ class ExploderPhysicsWorker extends _ExploderPhysicsWorker {
     // As a workaround, assign instance functions and props directly:
     Object.assign(this, {
       isReady: false,
-      load(bodies) {
-        this.postMessage({ name: 'load', args: { bodies }})
+      load() {
+        this.postMessage({ name: 'load' })
       },
-      step(deltaTime, positions, quaternions) {
+      step(deltaTime, positions, normals) {
         this.isReady = false
         this.postMessage({
           name: 'step',
           args: {
             deltaTime,
             positions,
-            quaternions
+            normals
           }
         },[
           positions.buffer,
-          quaternions.buffer
+          normals.buffer,
         ])
       },
       onload() {},
