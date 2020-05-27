@@ -87,7 +87,6 @@ export default {
         opacity: 0.7,
         transparent: false,
         wireframe: true,
-        wireframeLinewidth: 2.0,
       })
       const meshes = geometries.map(geometry => new Mesh(geometry, material))
       meshes.forEach(mesh => {
