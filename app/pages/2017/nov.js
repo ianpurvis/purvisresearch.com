@@ -1,6 +1,7 @@
 import {
   Font,
   LessDepth,
+  MathUtils,
   Mesh,
   MeshNormalMaterial,
   TextBufferGeometry,
@@ -9,9 +10,7 @@ import {
 import ogImagePath from '~/assets/images/2017/nov.png'
 import Inconsolata from '~/assets/models/Inconsolata_Regular.json'
 import ThreeDemo from '~/mixins/three-demo.js'
-import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
-import { Random } from '~/models/random.js'
 import { ExploderPhysicsWorker } from '~/workers/exploder-physics-worker.js'
 
 export default {
@@ -65,7 +64,7 @@ export default {
   methods: {
     layout() {
       this.camera.far = 10000
-      this.camera.position.z = Random.rand({ min: 100, max: 150 })
+      this.camera.position.z = MathUtils.randInt(100, 150)
       this.camera.updateProjectionMatrix()
     },
     async load() {
@@ -91,16 +90,16 @@ export default {
       const meshes = geometries.map(geometry => new Mesh(geometry, material))
       meshes.forEach(mesh => {
         mesh.rotation.set(
-          Random.rand({ max: 360 }) * DEGREES_TO_RADIANS,
-          Random.rand({ max: 360 }) * DEGREES_TO_RADIANS,
-          Random.rand({ max: 360 }) * DEGREES_TO_RADIANS,
+          MathUtils.degToRad(MathUtils.randInt(0, 360)),
+          MathUtils.degToRad(MathUtils.randInt(0, 360)),
+          MathUtils.degToRad(MathUtils.randInt(0, 360)),
         )
         mesh.position.set(
-          Random.rand({ min: -blastRadius, max: blastRadius }),
-          Random.rand({ min: -blastRadius, max: blastRadius }),
-          Random.rand({ min: -blastRadius, max: blastRadius }),
+          MathUtils.randInt(-blastRadius, blastRadius),
+          MathUtils.randInt(-blastRadius, blastRadius),
+          MathUtils.randInt(-blastRadius, blastRadius),
         )
-        mesh.scale.setScalar(Random.rand({ min: 0.25, max: 1 }))
+        mesh.scale.setScalar(MathUtils.randFloat(0.25, 1))
         this.scene.add(mesh)
       })
 
