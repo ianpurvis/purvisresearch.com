@@ -69,16 +69,31 @@ class ExploderPhysicsWorker {
     this.scope.postMessage({ name: 'onload', args: {} })
   }
 
-  step({ deltaTime }) {
+  step({ deltaTime, positions, quaternions }) {
     this.world.step(deltaTime)
     // this.world.step(1/240, deltaTime, 10)
 
-    const bodies = this.world.bodies.map(body => ({
-      position: body.position,
-      quaternion: body.quaternion
-    }))
+    for (let i = 0, body; i < this.world.bodies.length; i++) {
+      body = this.world.bodies[i]
+      positions[i*3+0] = body.position.x
+      positions[i*3+1] = body.position.y
+      positions[i*3+2] = body.position.z
+      quaternions[i*4+0] = body.quaternion.x
+      quaternions[i*4+1] = body.quaternion.y
+      quaternions[i*4+2] = body.quaternion.z
+      quaternions[i*4+3] = body.quaternion.w
+    }
 
-    this.scope.postMessage({ name: 'onstep', args: { bodies }})
+    this.scope.postMessage({
+      name: 'onstep',
+      args: {
+        positions,
+        quaternions,
+      }
+    }, [
+      positions.buffer,
+      quaternions.buffer
+    ])
   }
 }
 

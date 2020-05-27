@@ -137,21 +137,34 @@ export default {
       //   size
       // }
       // bodies.push(blast)
+
+      this.positions = new Float32Array(bodies.length * 3)
+      this.quaternions = new Float32Array(bodies.length * 4)
       this.physicsWorker.load(bodies)
     },
-    onstep({ bodies }) {
-      for (let i = 0, mesh, body; i < this.meshes.length; i++) {
+    onstep({ positions, quaternions }) {
+      for (let i = 0, mesh; i < this.meshes.length; i++) {
         mesh = this.meshes[i]
-        body = bodies[i]
-        mesh.position.copy(body.position)
-        mesh.quaternion.copy(body.quaternion)
+        mesh.position.x = positions[i*3+0]
+        mesh.position.y = positions[i*3+1]
+        mesh.position.z = positions[i*3+2]
+        mesh.quaternion.x = quaternions[i*4+0]
+        mesh.quaternion.y = quaternions[i*4+1]
+        mesh.quaternion.z = quaternions[i*4+2]
+        mesh.quaternion.w = quaternions[i*4+3]
       }
+      this.positions = positions
+      this.quaternions = quaternions
       this.scene.visible = true
     },
     update() {
       ThreeDemo.methods.update.call(this)
       if (!this.physicsWorker.isReady) return
-      this.physicsWorker.step(this.deltaTime * this.speedOfLife)
+      this.physicsWorker.step(
+        this.deltaTime * this.speedOfLife,
+        this.positions,
+        this.quaternions
+      )
     },
   },
   mixins: [

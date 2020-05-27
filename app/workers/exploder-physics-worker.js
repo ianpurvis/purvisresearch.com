@@ -12,9 +12,19 @@ class ExploderPhysicsWorker extends _ExploderPhysicsWorker {
       load(bodies) {
         this.postMessage({ name: 'load', args: { bodies }})
       },
-      step(deltaTime) {
+      step(deltaTime, positions, quaternions) {
         this.isReady = false
-        this.postMessage({ name: 'step', args: { deltaTime }})
+        this.postMessage({
+          name: 'step',
+          args: {
+            deltaTime,
+            positions,
+            quaternions
+          }
+        },[
+          positions.buffer,
+          quaternions.buffer
+        ])
       },
       onload() {},
       onmessage({ data: { name, args }}) {
