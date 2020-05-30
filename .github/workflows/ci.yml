@@ -8,7 +8,8 @@ jobs:
       CI: true
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - name: Checking out ${{ github.sha }}
+      uses: actions/checkout@v2
     - name: Set up node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
