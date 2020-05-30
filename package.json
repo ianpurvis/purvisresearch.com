@@ -48,7 +48,7 @@
     "frack-loader": "^1.0.0",
     "jest": "^26.0.1",
     "lighthouse": "^6.0.0",
-    "lint-staged": "^10.2.6",
+    "lint-staged": "^10.2.7",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
     "raw-loader": "^4.0.1",
