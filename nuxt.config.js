@@ -5,7 +5,7 @@ const isProduction = (process.env.NODE_ENV === 'production')
 
 function name(file) {
   const imagePath = Path.relative('app/assets/images', Path.dirname(file))
-  return Path.join('img', imagePath, '[name].[ext]?[hash:7]')
+  return Path.join('img', imagePath, '[name].[ext]?[contenthash:7]')
 }
 
 export default {
@@ -111,7 +111,7 @@ export default {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash:7].[ext]'
+              name: '[name].[contenthash:7].[ext]'
             }
           },{
             loader: 'extract-loader'
@@ -133,8 +133,8 @@ export default {
       }
     },
     filenames: {
-      app: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
-      chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[chunkhash].js',
+      app: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
+      chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
       css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css'
     },
     publicPath: '/_/',
