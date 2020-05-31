@@ -149,7 +149,7 @@ export default {
     subFolders: false
   },
 
-  modern: true,
+  modern: 'client',
 
   modules: [
     '@nuxtjs/google-analytics',
