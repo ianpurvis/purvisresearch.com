@@ -14,6 +14,17 @@ module.exports = (api) => {
       }]
     ]
     break
+  case 'modern':
+    presets = [
+      ['@nuxt/babel-preset-app-edge', {
+        bugfixes: true,
+        corejs: 3,
+        targets: {
+          esmodules: true
+        }
+      }]
+    ]
+    break
   case 'server':
     presets = [
       ['@nuxt/babel-preset-app', {
