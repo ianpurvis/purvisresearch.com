@@ -154,6 +154,8 @@ export default {
     subFolders: false
   },
 
+  modern: true,
+
   modules: [
     '@nuxtjs/google-analytics',
     '@nuxtjs/sentry',
