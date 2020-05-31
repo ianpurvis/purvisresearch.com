@@ -132,11 +132,6 @@ export default {
         })
       }
     },
-    filenames: {
-      app: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
-      chunk: ({ isDev }) => isDev ? '[name].js' : 'js/[contenthash].js',
-      css: ({ isDev }) => isDev ? '[name].css' : 'css/[contenthash].css'
-    },
     publicPath: '/_/',
     // Transpile npm packages lacking ES5 compatibility:
     transpile: [
