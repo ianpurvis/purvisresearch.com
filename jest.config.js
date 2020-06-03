@@ -12,6 +12,8 @@ const defaults = {
     'json',
     'vue',
   ],
+  testEnvironment: 'node',
+  testRunner: 'jest-circus/runner',
   transform: {
     '^.+\\.vue$': 'vue-jest',
     '^.+\\.js$': 'babel-jest'
@@ -46,10 +48,9 @@ module.exports = {
       moduleNameMapper: {
         '~(.*)$': '<rootDir>/$1',
       },
-      testEnvironment: 'node',
       testMatch: [
         '<rootDir>/spec/lambda/**/*.spec.js'
-      ]
+      ],
     },
     {
       ...defaults,
@@ -57,10 +58,9 @@ module.exports = {
       moduleNameMapper: {
         '~(.*)$': '<rootDir>/$1',
       },
-      testEnvironment: 'node',
       testMatch: [
         '<rootDir>/spec/lib/**/*.spec.js'
-      ]
+      ],
     },
   ]
 }
