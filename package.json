@@ -47,6 +47,7 @@
     "extract-loader": "^2.0.1",
     "frack-loader": "^1.0.0",
     "jest": "^26.0.1",
+    "jest-circus": "^26.0.1",
     "lighthouse": "^6.0.0",
     "lint-staged": "^10.2.7",
     "node-sass": "^4.14.1",
