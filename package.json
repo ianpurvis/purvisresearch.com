@@ -27,7 +27,7 @@
     "@aws-cdk/core": "^1.42.0",
     "@babel/preset-env": "^7.10.2",
     "@babel/runtime-corejs3": "^7.10.2",
-    "@nuxt/babel-preset-app-edge": "^2.13.0-26519060.8933d375",
+    "@nuxt/babel-preset-app-edge": "^2.13.0-26521941.b45f2847",
     "@nuxtjs/sitemap": "^2.3.1",
     "@vue/test-utils": "^1.0.3",
     "arraybuffer-loader": "^1.0.8",
