@@ -25,9 +25,9 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isClient, isDev }) {
+    extend (config, { isClient, isDev, isModern }) {
 
-      const { other } =
+      const { chunk, other } =
         this.buildContext.options.build.filenames
 
       if (isClient && isDev) {
@@ -37,6 +37,16 @@ export default {
       config.node = {
         fs: 'empty'
       }
+
+      // Load web-workers
+      config.module.rules.push({
+        test: /\.worker\.js$/,
+        loader: 'worker-loader',
+        options: {
+          name: chunk({ isDev, isModern })
+        },
+        exclude: /(node_modules)/
+      })
 
       // Load glb models as arraybuffer
       config.module.rules.push({
