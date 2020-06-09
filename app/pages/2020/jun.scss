@@ -1,0 +1,19 @@
+@charset "utf-8";
+@import '~assets/stylesheets/graphix';
+
+$gold-color: #ffd700;
+$text-color: #363636;
+
+main {
+  color: $gold-color;
+}
+
+a {
+  &:hover {
+    color: $text-color;
+  }
+
+  &:not(:hover) {
+    color: $gold-color;
+  }
+}
