@@ -5,10 +5,18 @@ class FlagPhysicsWorker {
   constructor(scope) {
     this.scope = scope
     this.scope.onmessage = this.onmessage.bind(this)
+    this.flagBody = {}
   }
 
-  async load() {
+  async load(flagBody) {
     await loadAmmo()
+    const { FlagPhysicsWorld } = await import(
+      /* webpackMode: "eager" */
+      '~/models/flag-physics-world.js'
+    )
+    this.world = new FlagPhysicsWorld()
+    this.world.loadFlagBody(flagBody)
+    this.flagBody = flagBody
     this.scope.postMessage({ name: 'onload' })
   }
 
@@ -17,8 +25,9 @@ class FlagPhysicsWorker {
   }
 
   step({ deltaTime }) {
-    console.log(`Stepped: ${ deltaTime }`)
-    this.scope.postMessage({ name: 'onstep' })
+    this.world.update(deltaTime)
+    this.world.serialize(this.flagBody)
+    this.scope.postMessage({ name: 'onstep', args: this.flagBody })
   }
 }
 

@@ -6,9 +6,11 @@ import {
 // import ogImagePath from '~/assets/images/2019/apr.png'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
+import { FlagPhysicsWorker } from '~/workers/flag-physics-worker.js'
 
 export default {
   beforeDestroy() {
+    this.physicsWorker.terminate()
   },
   created() {
     // Non-reactive data:
@@ -58,6 +60,7 @@ export default {
       await ThreeDemo.methods.load.call(this)
       this.loadFlag()
       this.loadCamera()
+      this.loadPhysics()
     },
     loadCamera() {
       this.camera.far = 100
@@ -80,14 +83,30 @@ export default {
 
       Object.assign(this, { mesh })
     },
+    loadPhysics() {
+      const flagBody = {
+        vertices: this.mesh.geometry.attributes.position.array,
+        triangles: this.mesh.geometry.index.array
+      }
+      this.physicsWorker.load(flagBody)
+    },
+    onstep({ vertices }) {
+      this.mesh.geometry.attributes.position.set(vertices)
+      this.mesh.geometry.attributes.position.needsUpdate = true
+    },
     update() {
       ThreeDemo.methods.update.call(this)
+      if (this.physicsWorker.isReady)
+        this.physicsWorker.step(this.deltaTime)
     },
   },
   mixins: [
     ThreeDemo,
   ],
   mounted() {
+    this.physicsWorker = new FlagPhysicsWorker()
+    this.physicsWorker.onstep = this.onstep.bind(this)
+    this.physicsWorker.onerror = this.logError
     this.load().catch(this.logError)
   }
 }
