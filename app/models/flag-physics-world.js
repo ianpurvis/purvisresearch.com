@@ -32,7 +32,7 @@ class FlagPhysicsWorld {
     })
   }
 
-  loadFlagBody(attributes) {
+  loadFlag(attributes) {
     const { physicsWorld } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     const flagBody = new FlagPhysicsBody({ ...attributes, softBodyWorldInfo })
@@ -40,8 +40,8 @@ class FlagPhysicsWorld {
     Object.assign(this, { flagBody })
   }
 
-  serialize(buffer) {
-    this.flagBody.serialize(buffer)
+  saveFlag(target) {
+    this.flagBody.serialize(target)
   }
 
   destroy() {

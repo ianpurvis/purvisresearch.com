@@ -5,29 +5,42 @@ class FlagPhysicsWorker {
   constructor(scope) {
     this.scope = scope
     this.scope.onmessage = this.onmessage.bind(this)
-    this.flagBody = {}
   }
 
-  async load(flagBody) {
+  async load({ vertices, triangles }) {
     await loadAmmo()
-    const { FlagPhysicsWorld } = await import(
-      /* webpackMode: "eager" */
-      '~/models/flag-physics-world.js'
-    )
+    const { FlagPhysicsWorld } =
+      await import(/* webpackMode: "eager" */'~/models/flag-physics-world.js')
+
     this.world = new FlagPhysicsWorld()
-    this.world.loadFlagBody(flagBody)
-    this.flagBody = flagBody
-    this.scope.postMessage({ name: 'onload' })
+    this.world.loadFlag({ vertices, triangles })
+    this.scope.postMessage({
+      name: 'onload',
+      args: {
+        vertices,
+        triangles
+      }
+    }, [
+      vertices.buffer,
+      triangles.buffer
+    ])
   }
 
   onmessage({ data: { name, args }}) {
     this[name](args)
   }
 
-  step({ deltaTime }) {
+  step({ deltaTime, vertices }) {
     this.world.update(deltaTime)
-    this.world.serialize(this.flagBody)
-    this.scope.postMessage({ name: 'onstep', args: this.flagBody })
+    this.world.saveFlag({ vertices })
+    this.scope.postMessage({
+      name: 'onstep',
+      args: {
+        vertices
+      }
+    }, [
+      vertices.buffer
+    ])
   }
 }
 

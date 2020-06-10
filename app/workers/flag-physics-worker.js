@@ -11,11 +11,28 @@ class FlagPhysicsWorker extends _FlagPhysicsWorker {
       isReady: false,
       load({ vertices, triangles }) {
         this.isReady = false
-        this.postMessage({ name: 'load', args: { vertices, triangles } })
+        this.postMessage({
+          name: 'load',
+          args: {
+            vertices,
+            triangles
+          }
+        }, [
+          vertices.buffer,
+          triangles.buffer
+        ])
       },
-      step(deltaTime) {
+      step({ deltaTime, vertices }) {
         this.isReady = false
-        this.postMessage({ name: 'step', args: { deltaTime } })
+        this.postMessage({
+          name: 'step',
+          args: {
+            deltaTime,
+            vertices
+          }
+        }, [
+          vertices.buffer
+        ])
       },
       onload() {},
       onmessage({ data: { name, args }}) {

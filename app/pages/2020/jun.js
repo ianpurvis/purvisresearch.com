@@ -56,6 +56,7 @@ export default {
     }
   },
   methods: {
+    ...ThreeDemo.methods,
     async load() {
       await ThreeDemo.methods.load.call(this)
       this.loadFlag()
@@ -84,29 +85,42 @@ export default {
       Object.assign(this, { mesh })
     },
     loadPhysics() {
-      const flagBody = {
+      this.physicsWorker.load({
         vertices: this.mesh.geometry.attributes.position.array,
         triangles: this.mesh.geometry.index.array
-      }
-      this.physicsWorker.load(flagBody)
+      })
+    },
+    onload({ vertices, triangles }) {
+      this.mesh.geometry.attributes.position.array = vertices
+      this.mesh.geometry.index.array = triangles
+      window.requestAnimationFrame(this.update)
     },
     onstep({ vertices }) {
-      this.mesh.geometry.attributes.position.set(vertices)
+      this.mesh.geometry.attributes.position.array = vertices
       this.mesh.geometry.attributes.position.needsUpdate = true
+      window.requestAnimationFrame(this.update)
+    },
+    startAnimating() {
+      this.clock.start()
     },
     update() {
-      ThreeDemo.methods.update.call(this)
-      if (this.physicsWorker.isReady)
-        this.physicsWorker.step(this.deltaTime)
+      this.deltaTime = this.clock.getDelta() * this.speedOfLife
+      this.elapsedTime += this.deltaTime
+      this.render()
+      this.physicsWorker.step({
+        deltaTime: this.deltaTime,
+        vertices: this.mesh.geometry.attributes.position.array,
+      })
     },
   },
   mixins: [
-    ThreeDemo,
+    ThreeDemo
   ],
   mounted() {
     this.physicsWorker = new FlagPhysicsWorker()
+    this.physicsWorker.onload = this.onload.bind(this)
     this.physicsWorker.onstep = this.onstep.bind(this)
-    this.physicsWorker.onerror = this.logError
+    this.physicsWorker.onerror = this.logError.bind(this)
     this.load().catch(this.logError)
   }
 }
