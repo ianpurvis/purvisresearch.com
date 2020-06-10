@@ -25,9 +25,9 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isClient, isDev, isModern }) {
+    extend(config, { isClient, isDev, isModern }) {
 
-      const { chunk, other } =
+      const { chunk, other, wasm } =
         this.buildContext.options.build.filenames
 
       if (isClient && isDev) {
@@ -101,6 +101,16 @@ export default {
         ],
         exclude: /(node_modules)/
       })
+
+      config.module.rules.push({
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        include: /(node_modules)\/ammo.js/,
+        loaders: 'file-loader',
+        options: {
+          name: wasm({ isDev, isModern })
+        },
+      })
     },
     filenames: {
       img: ({ isDev }) =>
@@ -113,6 +123,9 @@ export default {
       other: ({ isDev }) => isDev
         ? '[name].[ext]'
         : '[name].[contenthash:7].[ext]',
+      wasm: ({ isDev, isModern }) => isDev
+        ? `${isModern ? 'modern-' : ''}[name].[ext]`
+        : 'wasm/[contenthash:7].[ext]'
     },
     loaders: {
       imgUrl: {
