@@ -85,7 +85,13 @@ export default {
       Object.assign(this, { mesh })
     },
     loadPhysics() {
-      this.physicsWorker.load({
+      const physicsWorker = new FlagPhysicsWorker()
+      physicsWorker.onload = this.onload.bind(this)
+      physicsWorker.onstep = this.onstep.bind(this)
+      physicsWorker.onerror = this.logError.bind(this)
+      Object.assign(this, { physicsWorker })
+
+      physicsWorker.load({
         vertices: this.mesh.geometry.attributes.position.array,
         triangles: this.mesh.geometry.index.array
       })
@@ -117,10 +123,6 @@ export default {
     ThreeDemo
   ],
   mounted() {
-    this.physicsWorker = new FlagPhysicsWorker()
-    this.physicsWorker.onload = this.onload.bind(this)
-    this.physicsWorker.onstep = this.onstep.bind(this)
-    this.physicsWorker.onerror = this.logError.bind(this)
     this.load().catch(this.logError)
   }
 }
