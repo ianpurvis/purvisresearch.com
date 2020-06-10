@@ -1,4 +1,4 @@
-import logoUrl from '~/assets/images/qr-logo-bw-256x256.png?as=file'
+import logoUrl from '~/assets/images/qr-logo-bw-256x256.png'
 
 class Organization {
   constructor(attributes) {

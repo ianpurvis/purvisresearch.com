@@ -1,12 +1,7 @@
 import 'dotenv/config'
-import Path from 'path'
+import { dirname, relative } from 'path'
 import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
-
-function name(file) {
-  const imagePath = Path.relative('app/assets/images', Path.dirname(file))
-  return Path.join('img', imagePath, '[name].[ext]?[contenthash:7]')
-}
 
 export default {
   /*
@@ -17,6 +12,7 @@ export default {
       { rel: 'preconnect', href: 'https://www.google-analytics.com' }
     ]
   },
+
   /*
   ** Customize the progress bar color
   */
@@ -29,7 +25,10 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isClient }) {
+    extend (config, { isClient, isDev }) {
+
+      const { other } =
+        this.buildContext.options.build.filenames
 
       if (isClient && !isProduction) {
         config.devtool = 'inline-cheap-module-source-map'
@@ -38,35 +37,6 @@ export default {
       config.node = {
         fs: 'empty'
       }
-
-      // Override image loader to:
-      // - match ico files
-      // - force loading via file loader through the as=file resource query
-      config.module.rules = config.module.rules
-        .reduce((memo, rule) => {
-          if (String(rule.test) === String(/\.(png|jpe?g|gif|svg|webp)$/i)) {
-            rule = {
-              test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
-              oneOf: [
-                {
-                  resourceQuery: /as=file/,
-                  loader: 'file-loader',
-                  options: {
-                    name
-                  }
-                },
-                {
-                  ...rule.use[0],
-                  options: {
-                    ...rule.use[0].options,
-                    name
-                  }
-                }
-              ]
-            }
-          }
-          return memo.concat(rule)
-        }, [])
 
       // Load glb models as arraybuffer
       config.module.rules.push({
@@ -111,7 +81,7 @@ export default {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[contenthash:7].[ext]'
+              name: other({ isDev })
             }
           },{
             loader: 'extract-loader'
@@ -121,6 +91,23 @@ export default {
         ],
         exclude: /(node_modules)/
       })
+    },
+    filenames: {
+      img: ({ isDev }) =>
+        (resourcePath) => {
+          const nestedPath = relative('app/assets/images', dirname(resourcePath))
+          return isDev
+            ? '[path][name].[ext]'
+            : `img${nestedPath}/[name].[ext]?[contenthash:7]`
+        },
+      other: ({ isDev }) => isDev
+        ? '[name].[ext]'
+        : '[name].[contenthash:7].[ext]',
+    },
+    loaders: {
+      imgUrl: {
+        limit: 0 // Never transform files into data urls
+      }
     },
     publicPath: '/_/',
     // Transpile npm packages lacking ES5 compatibility:
