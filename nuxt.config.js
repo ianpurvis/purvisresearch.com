@@ -30,7 +30,7 @@ export default {
       const { other } =
         this.buildContext.options.build.filenames
 
-      if (isClient && !isProduction) {
+      if (isClient && isDev) {
         config.devtool = 'inline-cheap-module-source-map'
       }
 
