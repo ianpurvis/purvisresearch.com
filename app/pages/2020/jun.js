@@ -1,4 +1,5 @@
 import {
+  DynamicDrawUsage,
   Mesh,
   MeshBasicMaterial,
   PlaneBufferGeometry,
@@ -97,8 +98,11 @@ export default {
       })
     },
     onload({ vertices, triangles }) {
-      this.mesh.geometry.attributes.position.array = vertices
       this.mesh.geometry.index.array = triangles
+      this.mesh.geometry.attributes.position.array = vertices
+      // Optimize usage for stepped drawing:
+      this.mesh.geometry.attributes.position.usage = DynamicDrawUsage
+      this.mesh.geometry.attributes.position.needsUpdate = true
       window.requestAnimationFrame(this.update)
     },
     onstep({ vertices }) {
