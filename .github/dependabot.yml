@@ -11,12 +11,3 @@ updates:
   - dependency-name: extract-loader
     versions:
     - "> 2.0.1"
-  - dependency-name: memory-fs
-    versions:
-    - ">= 0.5.a, < 0.6"
-  - dependency-name: nuxt-jsonld
-    versions:
-    - "> 1.4.3, < 1.5"
-  - dependency-name: vue-jest
-    versions:
-    - ">= 5.0.a, < 5.1"
