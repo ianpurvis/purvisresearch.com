@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.3.0",
-    "@nuxtjs/sentry": "^4.0.3",
+    "@nuxtjs/sentry": "^4.1.2",
     "@pixi/unsafe-eval": "^5.2.4",
     "bulma": "^0.8.2",
     "d3-ease": "^1.0.6",
