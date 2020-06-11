@@ -25,14 +25,10 @@ export default {
     babel: {
       configFile: true
     },
-    extend(config, { isClient, isDev, isModern }) {
+    extend(config, context) {
 
       const { chunk, other, wasm } =
         this.buildContext.options.build.filenames
-
-      if (isClient && isDev) {
-        config.devtool = 'inline-cheap-module-source-map'
-      }
 
       config.node = {
         fs: 'empty'
@@ -43,7 +39,7 @@ export default {
         test: /\.worker\.js$/,
         loader: 'worker-loader',
         options: {
-          name: chunk({ isDev, isModern })
+          name: chunk(context)
         },
         exclude: /(node_modules)/
       })
@@ -91,7 +87,7 @@ export default {
           {
             loader: 'file-loader',
             options: {
-              name: other({ isDev })
+              name: other(context)
             }
           },{
             loader: 'extract-loader'
@@ -108,7 +104,7 @@ export default {
         include: /(node_modules)\/ammo.js/,
         loaders: 'file-loader',
         options: {
-          name: wasm({ isDev, isModern })
+          name: wasm(context)
         },
       })
     },
