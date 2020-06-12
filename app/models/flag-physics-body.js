@@ -22,9 +22,9 @@ class FlagPhysicsBody extends Ammo.btSoftBody {
     this.setActivationState(DISABLE_DEACTIVATION)
 
     Object.assign(this.m_cfg, {
-      piterations: 10,  // position solver iterations
-      kDP: 1.0,         // damping
-      kDF: 1.0,         // dynamic friction
+      piterations: 1,  // position solver iterations
+      viterations: 1,  // velocity solver iterations
+      timescale: 0.1
     })
 
     Ammo.destroy(softBodyHelpers)
