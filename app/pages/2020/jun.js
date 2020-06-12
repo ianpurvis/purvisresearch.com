@@ -1,7 +1,9 @@
 import {
+  DirectionalLight,
+  DoubleSide,
   DynamicDrawUsage,
   Mesh,
-  MeshBasicMaterial,
+  MeshLambertMaterial,
   PlaneBufferGeometry,
 } from 'three'
 // import ogImagePath from '~/assets/images/2019/apr.png'
@@ -63,6 +65,7 @@ export default {
       this.loadFlag()
       this.loadCamera()
       this.loadPhysics()
+      this.loadLights()
     },
     loadCamera() {
       this.camera.far = 100
@@ -75,15 +78,20 @@ export default {
         widthSegments: 25,
         heightSegments: 13,
       }))
-      const material = new MeshBasicMaterial({
+      const material = new MeshLambertMaterial({
         color: 0xFF0000,
-        wireframe: true,
+        side: DoubleSide,
       })
       const mesh = new Mesh(geometry, material)
 
       this.scene.add(mesh)
 
       Object.assign(this, { mesh })
+    },
+    loadLights() {
+      const directionalLight = new DirectionalLight()
+      directionalLight.position.set(0, 0, 1)
+      this.scene.add(directionalLight)
     },
     loadPhysics() {
       const physicsWorker = new FlagPhysicsWorker()
