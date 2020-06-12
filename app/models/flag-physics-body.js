@@ -18,6 +18,7 @@ class FlagPhysicsBody extends Ammo.btSoftBody {
 
     // Scale must come before transform:
     this.setTotalMass(mass)
+    this.generateBendingConstraints(2)
     this.setActivationState(DISABLE_DEACTIVATION)
 
     Object.assign(this.m_cfg, {
