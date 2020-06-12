@@ -35,24 +35,25 @@ class FlagPhysicsWorld {
   loadFlag(attributes) {
     const { physicsWorld } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
-    const flagBody = new FlagPhysicsBody({ ...attributes, softBodyWorldInfo })
-    physicsWorld.addSoftBody(flagBody)
-    Object.assign(this, { flagBody })
+    const flag = new FlagPhysicsBody({ ...attributes, mass: 10, softBodyWorldInfo })
+    physicsWorld.addSoftBody(flag)
+    Object.assign(this, { flag })
   }
 
   saveFlag(target) {
-    this.flagBody.serialize(target)
+    this.flag.serialize(target)
   }
 
   destroy() {
     // Destroy references from top down:
+    this.physicsWorld.removeSoftBody(this.flag)
+    Ammo.destroy(this.flag)
     Ammo.destroy(this.physicsWorld)
     Ammo.destroy(this.softBodySolver)
     Ammo.destroy(this.solver)
     Ammo.destroy(this.broadphase)
     Ammo.destroy(this.dispatcher)
     Ammo.destroy(this.collisionConfiguration)
-    Ammo.destroy(this.flagBody)
   }
 
   update(deltaTime) {
