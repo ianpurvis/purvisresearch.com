@@ -1,5 +1,6 @@
 /* global Ammo */
 import { FlagPhysicsBody } from '~/models/flag-physics-body.js'
+import { FlagPhysicsWind } from '~/models/flag-physics-wind.js'
 
 class FlagPhysicsWorld {
 
@@ -22,6 +23,9 @@ class FlagPhysicsWorld {
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     softBodyWorldInfo.set_m_gravity(gravity)
 
+    const wind = new FlagPhysicsWind()
+    wind.velocity.setValue(0, 0, -1)
+
     Object.assign(this, {
       broadphase,
       collisionConfiguration,
@@ -29,13 +33,14 @@ class FlagPhysicsWorld {
       physicsWorld,
       solver,
       softBodySolver,
+      wind
     })
   }
 
   loadFlag(attributes) {
     const { physicsWorld } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
-    const flag = new FlagPhysicsBody({ ...attributes, mass: 10, softBodyWorldInfo })
+    const flag = new FlagPhysicsBody({ ...attributes, softBodyWorldInfo })
     physicsWorld.addSoftBody(flag)
     Object.assign(this, { flag })
   }
@@ -46,6 +51,7 @@ class FlagPhysicsWorld {
 
   destroy() {
     // Destroy references from top down:
+    this.wind.destroy()
     this.physicsWorld.removeSoftBody(this.flag)
     Ammo.destroy(this.flag)
     Ammo.destroy(this.physicsWorld)
@@ -57,6 +63,8 @@ class FlagPhysicsWorld {
   }
 
   update(deltaTime) {
+    this.wind.update(deltaTime)
+    this.wind.applyToSoftBody(this.flag)
     this.physicsWorld.stepSimulation(deltaTime)
   }
 }
