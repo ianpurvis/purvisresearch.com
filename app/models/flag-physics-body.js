@@ -30,16 +30,19 @@ class FlagPhysicsBody extends Ammo.btSoftBody {
     Ammo.destroy(softBodyHelpers)
   }
 
-  serialize({ vertices }) {
+  serialize({ vertices, normals }) {
     for (
-      let i = 0, j = 0, size = this.m_nodes.size(), vertex;
+      let i = 0, j = 0, size = this.m_nodes.size(), node;
       i < size;
       i++, j += 3
     ) {
-      vertex = this.m_nodes.at(i).m_x
-      vertices[j+0] = vertex.x()
-      vertices[j+1] = vertex.y()
-      vertices[j+2] = vertex.z()
+      node = this.m_nodes.at(i)
+      vertices[j+0] = node.m_x.x()
+      vertices[j+1] = node.m_x.y()
+      vertices[j+2] = node.m_x.z()
+      normals[j+0] = node.m_n.x()
+      normals[j+1] = node.m_n.y()
+      normals[j+2] = node.m_n.z()
     }
   }
 }

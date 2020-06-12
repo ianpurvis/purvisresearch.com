@@ -102,12 +102,15 @@ export default {
       this.mesh.geometry.attributes.position.array = vertices
       // Optimize usage for stepped drawing:
       this.mesh.geometry.attributes.position.usage = DynamicDrawUsage
+      this.mesh.geometry.attributes.normal.usage = DynamicDrawUsage
       this.mesh.geometry.attributes.position.needsUpdate = true
       window.requestAnimationFrame(this.update)
     },
-    onstep({ vertices }) {
+    onstep({ vertices, normals }) {
       this.mesh.geometry.attributes.position.array = vertices
       this.mesh.geometry.attributes.position.needsUpdate = true
+      this.mesh.geometry.attributes.normal.array = normals
+      this.mesh.geometry.attributes.normal.needsUpdate = true
       window.requestAnimationFrame(this.update)
     },
     startAnimating() {
@@ -120,6 +123,7 @@ export default {
       this.physicsWorker.step({
         deltaTime: this.deltaTime,
         vertices: this.mesh.geometry.attributes.position.array,
+        normals: this.mesh.geometry.attributes.normal.array,
       })
     },
   },
