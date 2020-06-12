@@ -17,7 +17,7 @@ class FlagPhysicsWorld {
       softBodySolver
     )
 
-    const gravity = new Ammo.btVector3(0, -9.8, 0)
+    const gravity = new Ammo.btVector3(0, 0, 0)
     physicsWorld.setGravity(gravity)
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     softBodyWorldInfo.set_m_gravity(gravity)
