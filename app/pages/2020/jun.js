@@ -1,14 +1,15 @@
 import {
-  DirectionalLight,
   DoubleSide,
   DynamicDrawUsage,
   Mesh,
-  MeshLambertMaterial,
+  MeshBasicMaterial,
   PlaneBufferGeometry,
 } from 'three'
 // import ogImagePath from '~/assets/images/2019/apr.png'
+import billImagePath from '~/assets/images/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
+import { TextureLoader } from '~/models/texture-loader.js'
 import { FlagPhysicsWorker } from '~/workers/flag-physics-worker.js'
 
 export default {
@@ -62,36 +63,32 @@ export default {
     ...ThreeDemo.methods,
     async load() {
       await ThreeDemo.methods.load.call(this)
-      this.loadFlag()
+      await this.loadBill()
       this.loadCamera()
       this.loadPhysics()
-      this.loadLights()
     },
     loadCamera() {
       this.camera.far = 100
       this.camera.position.z = 10
     },
-    loadFlag() {
-      const geometry = new PlaneBufferGeometry(...Object.values({
-        width: 19,
-        height: 10,
-        widthSegments: 25,
-        heightSegments: 13,
-      }))
-      const material = new MeshLambertMaterial({
-        color: 0xFF0000,
+    async loadBill() {
+      const textureLoader = new TextureLoader()
+      const billTexture = await textureLoader.load(billImagePath)
+      const material = new MeshBasicMaterial({
+        map: billTexture,
         side: DoubleSide,
       })
+      const geometry = new PlaneBufferGeometry(...Object.values({
+        width: 15.61, // 156.1mm / 1000 mm per m * 100 scale
+        height: 6.63, // 66.3mm / 1000 mm per m * 100 scale
+        widthSegments: 15,
+        heightSegments: 6,
+      }))
       const mesh = new Mesh(geometry, material)
 
       this.scene.add(mesh)
 
       Object.assign(this, { mesh })
-    },
-    loadLights() {
-      const directionalLight = new DirectionalLight()
-      directionalLight.position.set(0, 0, 1)
-      this.scene.add(directionalLight)
     },
     loadPhysics() {
       const physicsWorker = new FlagPhysicsWorker()
@@ -101,7 +98,7 @@ export default {
       Object.assign(this, { physicsWorker })
 
       physicsWorker.load({
-        mass: 1.0,
+        mass: 0.1, // 1g / 1000 g per kg * 100 scale
         vertices: this.mesh.geometry.attributes.position.array,
         triangles: this.mesh.geometry.index.array
       })
