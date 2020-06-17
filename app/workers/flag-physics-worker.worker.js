@@ -7,13 +7,13 @@ class FlagPhysicsWorker {
     this.scope.onmessage = this.onmessage.bind(this)
   }
 
-  async load({ vertices, triangles }) {
+  async load({ mass, vertices, triangles }) {
     await loadAmmo()
     const { FlagPhysicsWorld } =
       await import(/* webpackMode: "eager" */'~/models/flag-physics-world.js')
 
     this.world = new FlagPhysicsWorld()
-    this.world.loadFlag({ vertices, triangles })
+    this.world.loadFlag({ mass, vertices, triangles })
     this.scope.postMessage({
       name: 'onload',
       args: {

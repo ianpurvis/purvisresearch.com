@@ -3,7 +3,7 @@ const DISABLE_DEACTIVATION = 4
 
 class FlagPhysicsBody extends Ammo.btSoftBody {
 
-  constructor({ mass = 1.0, vertices, triangles, softBodyWorldInfo }) {
+  constructor({ mass, vertices, triangles, softBodyWorldInfo }) {
     super()
 
     const softBodyHelpers = new Ammo.btSoftBodyHelpers()

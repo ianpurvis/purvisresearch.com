@@ -9,11 +9,12 @@ class FlagPhysicsWorker extends _FlagPhysicsWorker {
     // As a workaround, assign instance functions and props directly:
     Object.assign(this, {
       isReady: false,
-      load({ vertices, triangles }) {
+      load({ mass, vertices, triangles }) {
         this.isReady = false
         this.postMessage({
           name: 'load',
           args: {
+            mass,
             vertices,
             triangles
           }

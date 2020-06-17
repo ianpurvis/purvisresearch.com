@@ -101,6 +101,7 @@ export default {
       Object.assign(this, { physicsWorker })
 
       physicsWorker.load({
+        mass: 1.0,
         vertices: this.mesh.geometry.attributes.position.array,
         triangles: this.mesh.geometry.index.array
       })
