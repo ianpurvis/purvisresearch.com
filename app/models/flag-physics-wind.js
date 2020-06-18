@@ -24,10 +24,13 @@ class FlagPhysicsWind {
       node = body.m_nodes.at(i)
 
       this.force.setValue(
-        this.velocity.x(),
-        this.velocity.y(),
-        this.velocity.z()
+        node.m_n.x(),
+        node.m_n.y(),
+        node.m_n.z()
       )
+
+      impact = node.m_n.dot(this.velocity)
+      this.force.op_mul(impact)
 
       noise = this.noiseMaker.noise3d(
         node.m_x.x(),
@@ -35,9 +38,6 @@ class FlagPhysicsWind {
         this.deltaTime
       )
       this.force.op_mul(noise)
-
-      impact = Math.abs(this.force.dot(node.m_n))
-      this.force.op_mul(impact)
 
       body.addForce(this.force, i)
     }
