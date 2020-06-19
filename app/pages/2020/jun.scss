@@ -1,19 +1,17 @@
 @charset "utf-8";
 @import '~assets/stylesheets/graphix';
 
-$gold-color: #ffd700;
-$text-color: #363636;
+$dollar-green-color: #293132;
+$dollar-mint-color: #c5cea9;
+$hover-color: $dollar-mint-color;
+$text-color: $dollar-green-color;
 
 main {
-  color: $gold-color;
+  color: $text-color;
 }
 
 a {
-  &:hover {
-    color: $text-color;
-  }
-
-  &:not(:hover) {
-    color: $gold-color;
+  &:not(.inherit-color):not(:hover) {
+    color: $hover-color;
   }
 }
