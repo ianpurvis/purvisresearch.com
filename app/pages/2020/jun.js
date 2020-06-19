@@ -82,6 +82,7 @@ export default {
         15,     // widthSegments
         6,      // heightSegments
       )
+      geometry.deleteAttribute('normal')
       const textureLoader = new TextureLoader()
       const billTexture = await textureLoader.load(billImagePath)
       const material = new MeshBasicMaterial({
