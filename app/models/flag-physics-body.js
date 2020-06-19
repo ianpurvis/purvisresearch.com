@@ -1,5 +1,8 @@
 /* global Ammo */
 const DISABLE_DEACTIVATION = 4
+const CL_RS = 0x0002
+const CL_SS = 0x0020
+const CL_SELF = 0x0040
 
 class FlagPhysicsBody extends Ammo.btSoftBody {
 
@@ -7,21 +10,23 @@ class FlagPhysicsBody extends Ammo.btSoftBody {
     super()
 
     const softBodyHelpers = new Ammo.btSoftBodyHelpers()
+    const triangleCount = triangles.length / 3
     const body = softBodyHelpers.CreateFromTriMesh(
       softBodyWorldInfo,
       vertices,
       triangles,
-      triangles.length / 3,
+      triangleCount,
       false
     )
     Object.assign(this, body)
 
-    // Scale must come before transform:
     this.setTotalMass(mass)
     this.generateBendingConstraints(2)
+    this.generateClusters(triangleCount / 6)
     this.setActivationState(DISABLE_DEACTIVATION)
 
     Object.assign(this.m_cfg, {
+      collisions: CL_SS | CL_RS | CL_SELF,
       piterations: 1,  // position solver iterations
       viterations: 1,  // velocity solver iterations
       timescale: 0.1
