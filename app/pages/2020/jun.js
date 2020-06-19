@@ -12,6 +12,10 @@ import { Organization } from '~/models/organization.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 import { FlagPhysicsWorker } from '~/workers/flag-physics-worker.js'
 
+const Colors = {
+  pink: 0xFFC0CB
+}
+
 export default {
   beforeDestroy() {
     this.physicsWorker.terminate()
@@ -72,23 +76,32 @@ export default {
       this.camera.position.z = 10
     },
     async loadBill() {
+      const geometry = new PlaneBufferGeometry(
+        15.61,  // width = 156.1mm / 1000 mm per m * 100 scale
+        6.63,   // height = 66.3mm / 1000 mm per m * 100 scale
+        15,     // widthSegments
+        6,      // heightSegments
+      )
       const textureLoader = new TextureLoader()
       const billTexture = await textureLoader.load(billImagePath)
       const material = new MeshBasicMaterial({
         map: billTexture,
         side: DoubleSide,
       })
-      const geometry = new PlaneBufferGeometry(...Object.values({
-        width: 15.61, // 156.1mm / 1000 mm per m * 100 scale
-        height: 6.63, // 66.3mm / 1000 mm per m * 100 scale
-        widthSegments: 15,
-        heightSegments: 6,
-      }))
       const mesh = new Mesh(geometry, material)
+      const wireframeMaterial = new MeshBasicMaterial({
+        color: Colors.pink,
+        side: DoubleSide,
+        wireframe: true,
+      })
+      const wireframe = new Mesh(geometry, wireframeMaterial)
 
-      this.scene.add(mesh)
+      this.scene.add(mesh, wireframe)
 
-      Object.assign(this, { mesh })
+      Object.assign(this, {
+        mesh,
+        wireframe
+      })
     },
     loadPhysics() {
       const physicsWorker = new FlagPhysicsWorker()
