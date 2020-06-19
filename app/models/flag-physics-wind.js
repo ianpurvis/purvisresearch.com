@@ -13,7 +13,6 @@ class FlagPhysicsWind {
     // For applyToSoftBody:
     this.centroid = new Ammo.btVector3()
     this.force = new Ammo.btVector3()
-    this.noise = 0
   }
 
   destroy() {
@@ -36,6 +35,7 @@ class FlagPhysicsWind {
         face.get_m_normal().y(),
         face.get_m_normal().z()
       )
+      this.force.op_mul(1 / (this.force.length() || 1)) // safe normalize
       this.force.op_mul(face.get_m_normal().dot(this.velocity))
 
       // Find centroid of face
