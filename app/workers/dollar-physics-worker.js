@@ -1,6 +1,6 @@
-import _FlagPhysicsWorker from './flag-physics-worker.worker.js'
+import _DollarPhysicsWorker from './dollar-physics-worker.worker.js'
 
-class FlagPhysicsWorker extends _FlagPhysicsWorker {
+class DollarPhysicsWorker extends _DollarPhysicsWorker {
 
   constructor() {
     super()
@@ -45,4 +45,4 @@ class FlagPhysicsWorker extends _FlagPhysicsWorker {
   }
 }
 
-export { FlagPhysicsWorker }
+export { DollarPhysicsWorker }

@@ -10,7 +10,7 @@ import billImagePath from '~/assets/images/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
 import { TextureLoader } from '~/models/texture-loader.js'
-import { FlagPhysicsWorker } from '~/workers/flag-physics-worker.js'
+import { DollarPhysicsWorker } from '~/workers/dollar-physics-worker.js'
 
 const Colors = {
   pink: 0xFFC0CB
@@ -105,7 +105,7 @@ export default {
       })
     },
     loadPhysics() {
-      const physicsWorker = new FlagPhysicsWorker()
+      const physicsWorker = new DollarPhysicsWorker()
       physicsWorker.onload = this.onload.bind(this)
       physicsWorker.onstep = this.onstep.bind(this)
       physicsWorker.onerror = this.logError.bind(this)

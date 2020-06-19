@@ -1,8 +1,8 @@
 /* global Ammo */
-import { FlagPhysicsBody } from '~/models/flag-physics-body.js'
-import { FlagPhysicsWind } from '~/models/flag-physics-wind.js'
+import { Bill } from './bill.js'
+import { Wind } from './wind.js'
 
-class FlagPhysicsWorld {
+class World {
 
   constructor() {
     const collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration()
@@ -23,7 +23,7 @@ class FlagPhysicsWorld {
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     softBodyWorldInfo.set_m_gravity(gravity)
 
-    const wind = new FlagPhysicsWind()
+    const wind = new Wind()
     wind.velocity.setValue(0, 0, -1)
     wind.timeScale = 1/6
 
@@ -38,20 +38,20 @@ class FlagPhysicsWorld {
     })
   }
 
-  loadFlag(attributes) {
+  loadBill(attributes) {
     const { physicsWorld, wind } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
-    const flag = new FlagPhysicsBody({ ...attributes, softBodyWorldInfo })
-    physicsWorld.addSoftBody(flag)
-    wind.bodies.push(flag)
-    Object.assign(this, { flag })
+    const bill = new Bill({ ...attributes, softBodyWorldInfo })
+    physicsWorld.addSoftBody(bill)
+    wind.bodies.push(bill)
+    Object.assign(this, { bill })
   }
 
   destroy() {
     // Destroy references from top down:
     this.wind.destroy()
-    this.physicsWorld.removeSoftBody(this.flag)
-    Ammo.destroy(this.flag)
+    this.physicsWorld.removeSoftBody(this.bill)
+    Ammo.destroy(this.bill)
     Ammo.destroy(this.physicsWorld)
     Ammo.destroy(this.softBodySolver)
     Ammo.destroy(this.solver)
@@ -66,4 +66,4 @@ class FlagPhysicsWorld {
   }
 }
 
-export { FlagPhysicsWorld }
+export { World }

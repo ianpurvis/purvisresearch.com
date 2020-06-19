@@ -4,7 +4,7 @@ const CL_RS = 0x0002
 const CL_SS = 0x0020
 const CL_SELF = 0x0040
 
-class FlagPhysicsBody extends Ammo.btSoftBody {
+class Bill extends Ammo.btSoftBody {
 
   constructor({ mass, vertices, triangles, softBodyWorldInfo }) {
     super()
@@ -49,4 +49,4 @@ class FlagPhysicsBody extends Ammo.btSoftBody {
   }
 }
 
-export { FlagPhysicsBody }
+export { Bill }

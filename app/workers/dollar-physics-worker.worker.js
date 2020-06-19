@@ -1,6 +1,6 @@
 import { loadAmmo } from '~/shims/ammo.js'
 
-class FlagPhysicsWorker {
+class DollarPhysicsWorker {
 
   constructor(scope) {
     this.scope = scope
@@ -9,11 +9,11 @@ class FlagPhysicsWorker {
 
   async load({ mass, vertices, triangles }) {
     await loadAmmo()
-    const { FlagPhysicsWorld } =
-      await import(/* webpackMode: "eager" */'~/models/flag-physics-world.js')
+    const { World } =
+      await import(/* webpackMode: "eager" */'~/models/dollar-physics/world.js')
 
-    this.world = new FlagPhysicsWorld()
-    this.world.loadFlag({ mass, vertices, triangles })
+    this.world = new World()
+    this.world.loadBill({ mass, vertices, triangles })
     this.scope.postMessage({
       name: 'onload',
       args: {
@@ -32,7 +32,7 @@ class FlagPhysicsWorker {
 
   step({ deltaTime, vertices }) {
     this.world.update(deltaTime)
-    this.world.flag.extractVertices(vertices)
+    this.world.bill.extractVertices(vertices)
     this.scope.postMessage({
       name: 'onstep',
       args: {
@@ -44,4 +44,4 @@ class FlagPhysicsWorker {
   }
 }
 
-new FlagPhysicsWorker(self)
+new DollarPhysicsWorker(self)

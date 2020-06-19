@@ -3,7 +3,7 @@ import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
 
 const ONE_THIRD = 1/3
 
-class FlagPhysicsWind {
+class Wind {
 
   constructor() {
     this.bodies = []
@@ -74,4 +74,4 @@ class FlagPhysicsWind {
   }
 }
 
-export { FlagPhysicsWind }
+export { Wind }
