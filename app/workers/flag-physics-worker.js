@@ -23,18 +23,16 @@ class FlagPhysicsWorker extends _FlagPhysicsWorker {
           triangles.buffer
         ])
       },
-      step({ deltaTime, vertices, normals }) {
+      step({ deltaTime, vertices }) {
         this.isReady = false
         this.postMessage({
           name: 'step',
           args: {
             deltaTime,
             vertices,
-            normals
           }
         }, [
           vertices.buffer,
-          normals.buffer
         ])
       },
       onload() {},

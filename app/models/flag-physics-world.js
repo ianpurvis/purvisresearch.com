@@ -45,10 +45,6 @@ class FlagPhysicsWorld {
     Object.assign(this, { flag })
   }
 
-  saveFlag(target) {
-    this.flag.serialize(target)
-  }
-
   destroy() {
     // Destroy references from top down:
     this.wind.destroy()

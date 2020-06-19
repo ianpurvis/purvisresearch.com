@@ -30,18 +30,16 @@ class FlagPhysicsWorker {
     this[name](args)
   }
 
-  step({ deltaTime, vertices, normals }) {
+  step({ deltaTime, vertices }) {
     this.world.update(deltaTime)
-    this.world.saveFlag({ vertices, normals })
+    this.world.flag.extractVertices(vertices)
     this.scope.postMessage({
       name: 'onstep',
       args: {
         vertices,
-        normals
       }
     }, [
       vertices.buffer,
-      normals.buffer
     ])
   }
 }
