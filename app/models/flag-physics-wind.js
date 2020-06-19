@@ -6,8 +6,10 @@ const ONE_THIRD = 1/3
 class FlagPhysicsWind {
 
   constructor() {
-    this.deltaTime = 0
+    this.bodies = []
+    this.elapsedTime = 0
     this.noiseMaker = new SimplexNoise()
+    this.timeScale = 1
     this.velocity = new Ammo.btVector3()
 
     // For applyToSoftBody:
@@ -50,7 +52,7 @@ class FlagPhysicsWind {
       noise = this.noiseMaker.noise3d(
         this.centroid.x(),
         this.centroid.y(),
-        this.deltaTime
+        Math.floor(this.elapsedTime)
       )
       this.force.op_mul(noise)
 
@@ -65,7 +67,10 @@ class FlagPhysicsWind {
   }
 
   update(deltaTime) {
-    this.deltaTime = deltaTime
+    this.elapsedTime += deltaTime * this.timeScale
+    for (let body of this.bodies) {
+      this.applyToSoftBody(body)
+    }
   }
 }
 

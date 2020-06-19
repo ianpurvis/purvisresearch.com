@@ -25,6 +25,7 @@ class FlagPhysicsWorld {
 
     const wind = new FlagPhysicsWind()
     wind.velocity.setValue(0, 0, -1)
+    wind.timeScale = 1/6
 
     Object.assign(this, {
       broadphase,
@@ -38,10 +39,11 @@ class FlagPhysicsWorld {
   }
 
   loadFlag(attributes) {
-    const { physicsWorld } = this
+    const { physicsWorld, wind } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     const flag = new FlagPhysicsBody({ ...attributes, softBodyWorldInfo })
     physicsWorld.addSoftBody(flag)
+    wind.bodies.push(flag)
     Object.assign(this, { flag })
   }
 
@@ -60,7 +62,6 @@ class FlagPhysicsWorld {
 
   update(deltaTime) {
     this.wind.update(deltaTime)
-    this.wind.applyToSoftBody(this.flag)
     this.physicsWorld.stepSimulation(deltaTime)
   }
 }
