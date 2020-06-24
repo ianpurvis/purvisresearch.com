@@ -33,18 +33,18 @@ class Wind {
 
       // Calculate basic force
       this.force.setValue(
-        face.get_m_normal().x(),
-        face.get_m_normal().y(),
-        face.get_m_normal().z()
+        face.m_normal.x(),
+        face.m_normal.y(),
+        face.m_normal.z()
       )
       this.force.op_mul(1 / (this.force.length() || 1)) // safe normalize
-      this.force.op_mul(face.get_m_normal().dot(this.velocity))
+      this.force.op_mul(face.m_normal.dot(this.velocity))
 
       // Find centroid of face
       this.centroid.setValue(0, 0, 0)
       for (j = 0; j < 3; j++) {
         node = face.get_m_n(j)
-        this.centroid.op_add(node.get_m_x())
+        this.centroid.op_add(node.m_x)
       }
       this.centroid.op_mul(ONE_THIRD)
 
@@ -60,8 +60,8 @@ class Wind {
       this.force.op_mul(ONE_THIRD)
       for (j = 0; j < 3; j++) {
         node = face.get_m_n(j)
-        if (node.get_m_im() > 0)
-          node.get_m_f().op_add(this.force)
+        if (node.m_im > 0)
+          node.m_f.op_add(this.force)
       }
     }
   }
