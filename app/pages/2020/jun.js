@@ -85,6 +85,7 @@ export default {
       geometry.deleteAttribute('normal')
       const textureLoader = new TextureLoader()
       const billTexture = await textureLoader.load(billImagePath)
+      billTexture.repeat.y = 0.806640625 // 826px / 1024px padded height
       const material = new MeshBasicMaterial({
         map: billTexture,
         side: DoubleSide,
