@@ -24,7 +24,7 @@ class World {
     softBodyWorldInfo.set_m_gravity(gravity)
 
     const wind = new Wind()
-    wind.velocity.setValue(0, 0, -1)
+    wind.maxVelocity.setZ(0) // Don't blow towards the camera
     wind.timeScale = 1/6
 
     Object.assign(this, {
