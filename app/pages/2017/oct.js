@@ -3,7 +3,7 @@ import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
-import Oscillator from '~/models/oscillator.js'
+import { Oscillator } from '~/models/oscillator.js'
 import { Random } from '~/models/random.js'
 
 export default {
@@ -76,7 +76,7 @@ export default {
           startTime: this.elapsedTime,
           duration: Number.MAX_VALUE,
           tick: (t) => {
-            object.x = oscillator.sine(t)
+            object.x = oscillator.sin(t)
           },
           resolve: resolve,
           reject: reject
