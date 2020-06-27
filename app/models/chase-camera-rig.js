@@ -31,7 +31,7 @@ class ChaseCameraRig extends Object3D {
 
     this._quaternionA.copy(this.camera.quaternion)
     this.camera.lookAt(this._target)
-    this._quaternionA.copy(this.camera.quaternion)
+    this._quaternionB.copy(this.camera.quaternion)
     Quaternion.slerp(
       this._quaternionA,
       this._quaternionB,
