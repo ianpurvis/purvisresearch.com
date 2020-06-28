@@ -8,7 +8,9 @@ import {
 // import ogImagePath from '~/assets/images/2019/apr.png'
 import billImagePath from '~/assets/images/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
+import { ChaseCameraRig } from '~/models/chase-camera-rig.js'
 import { Organization } from '~/models/organization.js'
+import { Oscillator } from '~/models/oscillator.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 import { DollarPhysicsWorker } from '~/workers/dollar-physics-worker.js'
 
@@ -72,8 +74,19 @@ export default {
       this.loadPhysics()
     },
     loadCamera() {
-      this.camera.far = 100
-      this.camera.position.z = 10
+      this.camera.far = 1000
+
+      const cameraRig = new ChaseCameraRig(this.camera, this.mesh)
+      cameraRig.position.z = cameraRig.offset.z = 12
+      this.scene.add(cameraRig)
+
+      const chaseOscillator = new Oscillator({
+        period: 20, // seconds
+        amplitude: 0.1,
+        yshift: 0.65,
+      })
+
+      Object.assign(this, { cameraRig, chaseOscillator })
     },
     async loadBill() {
       const geometry = new PlaneBufferGeometry(
@@ -97,6 +110,8 @@ export default {
         wireframe: true,
       })
       const wireframe = new Mesh(geometry, wireframeMaterial)
+
+      mesh.frustumCulled = wireframe.frustumCulled = false
 
       this.scene.add(mesh, wireframe)
 
@@ -137,7 +152,12 @@ export default {
     update() {
       this.deltaTime = this.clock.getDelta() * this.speedOfLife
       this.elapsedTime += this.deltaTime
+
+      this.cameraRig.smoothing = this.chaseOscillator.cos(this.elapsedTime)
+      this.cameraRig.update(this.deltaTime)
+
       this.render()
+
       this.physicsWorker.step({
         deltaTime: this.deltaTime,
         vertices: this.mesh.geometry.attributes.position.array,
