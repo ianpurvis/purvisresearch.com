@@ -25,6 +25,8 @@ class World {
 
     const wind = new Wind()
     wind.timeScale = 1/6
+    wind.minVelocity.op_mul(0.1)
+    wind.maxVelocity.op_mul(0.1)
 
     Object.assign(this, {
       broadphase,
