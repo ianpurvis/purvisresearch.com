@@ -14,10 +14,6 @@ import { Oscillator } from '~/models/oscillator.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 import { DollarPhysicsWorker } from '~/workers/dollar-physics-worker.js'
 
-const Colors = {
-  pink: 0xFFC0CB
-}
-
 export default {
   beforeDestroy() {
     this.physicsWorker.terminate()
@@ -104,21 +100,11 @@ export default {
         side: DoubleSide,
       })
       const mesh = new Mesh(geometry, material)
-      const wireframeMaterial = new MeshBasicMaterial({
-        color: Colors.pink,
-        side: DoubleSide,
-        wireframe: true,
-      })
-      const wireframe = new Mesh(geometry, wireframeMaterial)
+      mesh.frustumCulled = false
 
-      mesh.frustumCulled = wireframe.frustumCulled = false
+      this.scene.add(mesh)
 
-      this.scene.add(mesh, wireframe)
-
-      Object.assign(this, {
-        mesh,
-        wireframe
-      })
+      Object.assign(this, { mesh })
     },
     loadPhysics() {
       const physicsWorker = new DollarPhysicsWorker()
