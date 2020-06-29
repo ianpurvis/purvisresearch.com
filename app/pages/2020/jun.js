@@ -6,7 +6,7 @@ import {
   PlaneBufferGeometry,
 } from 'three'
 // import ogImagePath from '~/assets/images/2019/apr.png'
-import billImagePath from '~/assets/images/tubman-twenty.jpg'
+import billImagePath from '~/assets/images/2020/jun/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { ChaseCameraRig } from '~/models/chase-camera-rig.js'
 import { Organization } from '~/models/organization.js'
