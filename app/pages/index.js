@@ -12,6 +12,10 @@ export default {
     this.canonicalUrl = Organization.default.url
     this.description = Organization.default.description
     this.experiments = [{
+      title: '2020 Jun',
+      description: 'A Banknote In Simplex Wind',
+      route: '2020/jun.html'
+    },{
       title: '2019 Apr',
       description: 'Surreal WebRTC Television',
       route: '2019/apr.html'
