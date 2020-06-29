@@ -5,7 +5,7 @@ import {
   MeshBasicMaterial,
   PlaneBufferGeometry,
 } from 'three'
-// import ogImagePath from '~/assets/images/2019/apr.png'
+import ogImagePath from '~/assets/images/2020/jun.png'
 import billImagePath from '~/assets/images/2020/jun/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { ChaseCameraRig } from '~/models/chase-camera-rig.js'
@@ -21,7 +21,7 @@ export default {
   created() {
     // Non-reactive data:
     this.canonicalUrl = `${Organization.default.url}/2029/jun.html`
-    this.description = ''
+    this.description = 'A Banknote In Simplex Wind With Ammo.js'
     this.jsonld = {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -37,7 +37,7 @@ export default {
         'item': this.canonicalUrl
       }]
     }
-    this.ogImageUrl = '' //`${Organization.default.url}${ogImagePath}`
+    this.ogImageUrl = `${Organization.default.url}${ogImagePath}`
     this.title = 'jun 2020 - purvis research'
   },
   head() {
