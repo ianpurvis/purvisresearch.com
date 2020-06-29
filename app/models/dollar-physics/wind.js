@@ -1,8 +1,6 @@
 /* global Ammo */
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise.js'
 
-const ONE_THIRD = 1/3
-
 class Wind {
 
   constructor() {
@@ -14,7 +12,7 @@ class Wind {
     this.timeScale = 1
     this.velocity = new Ammo.btVector3()
 
-    // Private recyclables:
+    // Recycled by hitFace:
     this._force = new Ammo.btVector3()
   }
 
@@ -25,26 +23,24 @@ class Wind {
     Ammo.destroy(this._force)
   }
 
-  applyToSoftBody(body) {
-    for (let i = 0, size = body.m_faces.size(), face, j, node; i < size; i++) {
-      face = body.m_faces.at(i)
+  // Hit face with a cheap wind force
+  //  F = normal * area * orthogonal velocity
+  hitFace(face, velocity) {
+    const { _force } = this
+    _force.op_mul(0)
+    _force.op_add(face.m_normal)
+    _force.op_div(_force.length() || 1) // safe normalize
+    _force.op_mul(face.m_ra)
+    _force.op_mul(_force.dot(velocity)) // orthogonality
+    _force.op_div(3)
+    face.get_m_n(0).m_f.op_add(_force)
+    face.get_m_n(1).m_f.op_add(_force)
+    face.get_m_n(2).m_f.op_add(_force)
+  }
 
-      // Calculate basic force
-      this._force.setValue(
-        face.m_normal.x(),
-        face.m_normal.y(),
-        face.m_normal.z()
-      )
-      this._force.op_mul(1 / (this._force.length() || 1)) // safe normalize
-      this._force.op_mul(this._force.dot(this.velocity))
-
-      // Distribute force among face vertices
-      this._force.op_mul(ONE_THIRD)
-      for (j = 0; j < 3; j++) {
-        node = face.get_m_n(j)
-        if (node.m_im > 0)
-          node.m_f.op_add(this._force)
-      }
+  hitSoftBody(body, velocity) {
+    for (let i = 0, size = body.m_faces.size(); i < size; i++) {
+      this.hitFace(body.m_faces.at(i), velocity)
     }
   }
 
@@ -60,7 +56,7 @@ class Wind {
     }
 
     for (let body of this.bodies) {
-      this.applyToSoftBody(body)
+      this.hitSoftBody(body, this.velocity)
     }
   }
 }
