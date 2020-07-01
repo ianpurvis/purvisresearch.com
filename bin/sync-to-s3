@@ -36,6 +36,7 @@ aws s3 sync \
   --exclude '*' \
   --include '*.css' \
   --include '*.glb' \
+  --include '*.jpg' \
   --include '*.js' \
   --include '*.json' \
   --include '*.nojekyll' \
