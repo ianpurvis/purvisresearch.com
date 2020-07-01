@@ -20,7 +20,7 @@ export default {
   },
   created() {
     // Non-reactive data:
-    this.canonicalUrl = `${Organization.default.url}/2029/jul.html`
+    this.canonicalUrl = `${Organization.default.url}/2020/jul.html`
     this.description = 'A Banknote In Simplex Wind With Ammo.js'
     this.jsonld = {
       '@context': 'https://schema.org',
