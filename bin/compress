@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+for wasm in dist/app/_/wasm/*; do
+  gzip --best "${wasm}"
+  mv "${wasm}.gz" "${wasm}"
+done
