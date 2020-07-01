@@ -1,0 +1,17 @@
+@charset "utf-8";
+@import '~assets/stylesheets/graphix';
+
+$dollar-green-color: #293132;
+$dollar-mint-color: #c5cea9;
+$hover-color: $dollar-mint-color;
+$text-color: $dollar-green-color;
+
+main {
+  color: $text-color;
+}
+
+a {
+  &:not(.inherit-color):not(:hover) {
+    color: $hover-color;
+  }
+}

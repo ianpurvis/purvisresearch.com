@@ -8,6 +8,7 @@
     "@nuxtjs/google-analytics": "^2.3.0",
     "@nuxtjs/sentry": "^4.1.2",
     "@pixi/unsafe-eval": "^5.2.4",
+    "ammo.js": "github:ianpurvis/ammo.js#feat/dollar-build",
     "bulma": "^0.9.0",
     "d3-ease": "^1.0.6",
     "draco3dgltf": "^1.3.4",
@@ -59,6 +60,7 @@
     "svgo-loader": "^2.2.1",
     "ttf2woff": "^2.0.2",
     "vue-jest": "^3.0.4",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "worker-loader": "^2.0.0"
   }
 }

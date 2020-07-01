@@ -36,6 +36,7 @@ aws s3 sync \
   --exclude '*' \
   --include '*.css' \
   --include '*.glb' \
+  --include '*.jpg' \
   --include '*.js' \
   --include '*.json' \
   --include '*.nojekyll' \
@@ -43,5 +44,15 @@ aws s3 sync \
   --include '*.svg' \
   --include '*.woff' \
   --include '*.xml' \
+  "${local_path}" \
+  "${bucket_uri}"
+
+aws s3 sync \
+  --delete \
+  --cache-control "public, max-age=${MEAN_GREGORIAN_YEAR}" \
+  --content-encoding "gzip" \
+  --content-type "application/wasm" \
+  --exclude '*' \
+  --include '*.wasm' \
   "${local_path}" \
   "${bucket_uri}"

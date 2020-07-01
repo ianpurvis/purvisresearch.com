@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { dirname, relative } from 'path'
+import { dirname, join, relative } from 'path'
 import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
 
@@ -25,18 +25,24 @@ export default {
     babel: {
       configFile: true
     },
-    extend (config, { isClient, isDev }) {
+    extend(config, context) {
 
-      const { other } =
+      const { chunk, other, wasm } =
         this.buildContext.options.build.filenames
-
-      if (isClient && isDev) {
-        config.devtool = 'inline-cheap-module-source-map'
-      }
 
       config.node = {
         fs: 'empty'
       }
+
+      // Load web-workers
+      config.module.rules.push({
+        test: /\.worker\.js$/,
+        loader: 'worker-loader',
+        options: {
+          name: chunk(context)
+        },
+        exclude: /(node_modules)/
+      })
 
       // Load glb models as arraybuffer
       config.module.rules.push({
@@ -81,7 +87,7 @@ export default {
           {
             loader: 'file-loader',
             options: {
-              name: other({ isDev })
+              name: other(context)
             }
           },{
             loader: 'extract-loader'
@@ -91,6 +97,16 @@ export default {
         ],
         exclude: /(node_modules)/
       })
+
+      config.module.rules.push({
+        test: /\.wasm$/,
+        type: 'javascript/auto',
+        include: /(node_modules)\/ammo.js/,
+        loaders: 'file-loader',
+        options: {
+          name: wasm(context)
+        },
+      })
     },
     filenames: {
       img: ({ isDev }) =>
@@ -98,11 +114,14 @@ export default {
           const nestedPath = relative('app/assets/images', dirname(resourcePath))
           return isDev
             ? '[path][name].[ext]'
-            : `img${nestedPath}/[name].[ext]?[contenthash:7]`
+            : join('img', nestedPath, '[name].[ext]?[contenthash:7]')
         },
       other: ({ isDev }) => isDev
         ? '[name].[ext]'
         : '[name].[contenthash:7].[ext]',
+      wasm: ({ isDev, isModern }) => isDev
+        ? `${isModern ? 'modern-' : ''}[name].[ext]`
+        : 'wasm/[contenthash:7].[ext]'
     },
     loaders: {
       imgUrl: {

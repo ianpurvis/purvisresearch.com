@@ -1,18 +1,27 @@
-export default class Oscillator {
+// See https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
 
-  constructor({
-    amplitude = 50, // pixels
-    period = 10000  // milliseconds
-  }) {
-    this.amplitude = amplitude
-    this.period = period
+const TWO_PI = 2 * Math.PI
+
+class Oscillator {
+
+  constructor(attributes = {}) {
+    Object.assign(this, Oscillator.defaultAttributes, attributes)
   }
 
+  sin(x = 0) {
+    return Math.sin(TWO_PI * (x + this.xshift) / this.period) * this.amplitude + this.yshift
+  }
 
-  // https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
-  sine(
-    time = 0 // milliseconds
-  ) {
-    return this.amplitude * Math.sin((Math.PI*2) * time / this.period)
+  cos(x = 0) {
+    return Math.cos(TWO_PI * (x + this.xshift) / this.period) * this.amplitude + this.yshift
   }
 }
+
+Oscillator.defaultAttributes = {
+  amplitude: 1,
+  period: 1,
+  xshift: 0,
+  yshift: 0
+}
+
+export { Oscillator }
