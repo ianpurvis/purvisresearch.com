@@ -25,7 +25,7 @@
     "@aws-cdk/aws-route53-targets": "^1.45.0",
     "@aws-cdk/aws-s3": "^1.45.0",
     "@aws-cdk/core": "^1.45.0",
-    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-env": "^7.10.4",
     "@babel/runtime-corejs3": "^7.10.2",
     "@nuxt/babel-preset-app-edge": "^2.13.0-26541346.39dd866b",
     "@nuxtjs/sitemap": "^2.3.2",
