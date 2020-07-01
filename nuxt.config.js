@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { dirname, relative } from 'path'
+import { dirname, join, relative } from 'path'
 import sitemapConfig from './sitemap.config.js'
 const isProduction = (process.env.NODE_ENV === 'production')
 
@@ -114,7 +114,7 @@ export default {
           const nestedPath = relative('app/assets/images', dirname(resourcePath))
           return isDev
             ? '[path][name].[ext]'
-            : `img${nestedPath}/[name].[ext]?[contenthash:7]`
+            : join('img', nestedPath, '[name].[ext]?[contenthash:7]')
         },
       other: ({ isDev }) => isDev
         ? '[name].[ext]'
