@@ -6,7 +6,7 @@
         <span>Research</span>
       </nuxt-link>
       <h1 v-tight>
-        <span v-html="snake('Jun 2020')"></span>
+        <span v-html="snake('Jul 2020')"></span>
         <span class="underscore replace-2 nomobile">: </span>
         <canvas ref="canvas">{{ description }}</canvas>
       </h1>
@@ -17,5 +17,5 @@
   </main>
 </template>
 
-<style src="./jun.scss" lang="scss" scoped></style>
-<script src="./jun.js"></script>
+<style src="./jul.scss" lang="scss" scoped></style>
+<script src="./jul.js"></script>

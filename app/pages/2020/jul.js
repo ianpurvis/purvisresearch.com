@@ -5,8 +5,8 @@ import {
   MeshBasicMaterial,
   PlaneBufferGeometry,
 } from 'three'
-import ogImagePath from '~/assets/images/2020/jun.png'
-import billImagePath from '~/assets/images/2020/jun/tubman-twenty.jpg'
+import ogImagePath from '~/assets/images/2020/jul.png'
+import billImagePath from '~/assets/images/2020/jul/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { ChaseCameraRig } from '~/models/chase-camera-rig.js'
 import { Organization } from '~/models/organization.js'
@@ -20,7 +20,7 @@ export default {
   },
   created() {
     // Non-reactive data:
-    this.canonicalUrl = `${Organization.default.url}/2029/jun.html`
+    this.canonicalUrl = `${Organization.default.url}/2029/jul.html`
     this.description = 'A Banknote In Simplex Wind With Ammo.js'
     this.jsonld = {
       '@context': 'https://schema.org',
@@ -33,12 +33,12 @@ export default {
       },{
         '@type': 'ListItem',
         'position': 2,
-        'name': 'jun 2020',
+        'name': 'jul 2020',
         'item': this.canonicalUrl
       }]
     }
     this.ogImageUrl = `${Organization.default.url}${ogImagePath}`
-    this.title = 'jun 2020 - purvis research'
+    this.title = 'jul 2020 - purvis research'
   },
   head() {
     return {
@@ -49,7 +49,7 @@ export default {
         { property:'og:image', content: this.ogImageUrl },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
-        { property:'og:title', content:'Jun 2020' },
+        { property:'og:title', content:'Jul 2020' },
         { property:'og:url', content: this.canonicalUrl },
         { name:'twitter:card', content:'summary_large_image' },
       ],
