@@ -1,10 +1,12 @@
 import {
   BatchRenderer,
   Container,
+  ENV,
   Renderer,
   RenderTexture,
   Text,
   Ticker,
+  settings,
   systems,
 } from 'pixi.js'
 import { install } from '@pixi/unsafe-eval'
@@ -18,6 +20,10 @@ Ticker.shared.autoStart = false
 Ticker.shared.stop()
 Ticker.system.autoStart = false
 Ticker.system.stop()
+
+// WebGL 2 -> 1 fallback seems broken on Safari.
+// As a workaround, prefer WebGL 1:
+settings.PREFER_ENV = ENV.WEBGL
 
 export {
   Container,
