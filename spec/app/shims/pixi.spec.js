@@ -1,9 +1,11 @@
 jest.mock('pixi.js', () => ({
   BatchRenderer: jest.fn(),
+  ENV: {
+    WEBGL: 1
+  },
   Renderer: {
     registerPlugin: jest.fn()
   },
-  systems: jest.fn(),
   Ticker: {
     shared: {
       stop: jest.fn()
@@ -11,11 +13,22 @@ jest.mock('pixi.js', () => ({
     system: {
       stop: jest.fn()
     }
-  }
+  },
+  settings: {
+    PREFER_ENV: 2
+  },
+  systems: jest.fn(),
 }))
 jest.mock('@pixi/unsafe-eval')
 
-import { BatchRenderer, Renderer, systems, Ticker } from 'pixi.js'
+import {
+  BatchRenderer,
+  ENV,
+  Renderer,
+  Ticker,
+  settings,
+  systems,
+} from 'pixi.js'
 import { install } from '@pixi/unsafe-eval'
 
 
@@ -37,5 +50,8 @@ describe('shims/pixi', () => {
   it('disables auto start for Ticker.system', () => {
     expect(Ticker.system).toHaveProperty('autoStart', false)
     expect(Ticker.system.stop).toHaveBeenCalled()
+  })
+  it('configures global settings to prefer WebGL 1', () => {
+    expect(settings.PREFER_ENV).toBe(ENV.WEBGL)
   })
 })
