@@ -142,30 +142,29 @@ export default {
         })
       )
     },
-    load() {
-      return Promise.resolve(
-        ThreeDemo.methods.load.call(this)
-      ).then(() => {
-        let gltfLoader = new GLTFLoader()
-        let dracoLoader = new DRACOLoader()
-        gltfLoader.dracoLoader = dracoLoader
-        return gltfLoader.parse(Basket)
-      }).then(gltf => {
-        this.basket = gltf.scene.children[0]
-        this.basket.position.set(0,0,0)
-        this.basket.geometry.center()
-        this.basket.material.depthTest = false
-        this.basket.material.transparent = true
-        this.scene.add(this.basket)
+    async load() {
+      await ThreeDemo.methods.load.call(this)
 
-        let wireframe = new WireframeGeometry(this.basket.geometry)
-        this.clone = new LineSegments(wireframe)
-        this.clone.rotation.copy(this.basket.rotation)
-        this.clone.material.depthTest = false
-        this.clone.material.side = DoubleSide
-        this.clone.material.transparent = true
-        this.scene.add(this.clone)
-      })
+      const gltfLoader = new GLTFLoader()
+      const dracoLoader = new DRACOLoader()
+      gltfLoader.dracoLoader = dracoLoader
+      const gltf = await gltfLoader.parse(Basket)
+      dracoLoader.dispose()
+
+      this.basket = gltf.scene.children[0]
+      this.basket.position.set(0,0,0)
+      this.basket.geometry.center()
+      this.basket.material.depthTest = false
+      this.basket.material.transparent = true
+      this.scene.add(this.basket)
+
+      let wireframe = new WireframeGeometry(this.basket.geometry)
+      this.clone = new LineSegments(wireframe)
+      this.clone.rotation.copy(this.basket.rotation)
+      this.clone.material.depthTest = false
+      this.clone.material.side = DoubleSide
+      this.clone.material.transparent = true
+      this.scene.add(this.clone)
     },
     transitionOpacity(object, value, duration=1.0) {
       return new Promise((resolve, reject) => {
