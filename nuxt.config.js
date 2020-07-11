@@ -9,10 +9,7 @@ import sitemap from './config/sitemap.js'
 
 export default async () => {
 
-  const env = {
-    ...process.env,
-    isProduction: (process.env.NODE_ENV === 'production')
-  }
+  const env = { ...process.env }
 
   const factories = [
     base,

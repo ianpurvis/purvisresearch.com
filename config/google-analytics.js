@@ -1,4 +1,4 @@
-export default ({ isProduction, GOOGLE_ANALYTICS_ID }) => ({
+export default ({ GOOGLE_ANALYTICS_ID, NODE_ENV }) => ({
 
   head: {
     link: [{
@@ -13,8 +13,8 @@ export default ({ isProduction, GOOGLE_ANALYTICS_ID }) => ({
       {
         id: GOOGLE_ANALYTICS_ID,
         debug: {
-          enabled: !isProduction,
-          sendHitTask: isProduction
+          enabled: NODE_ENV === 'development',
+          sendHitTask: NODE_ENV === 'production'
         }
       }
     ]

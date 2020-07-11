@@ -1,4 +1,4 @@
-export default ({ isProduction }) => ({
+export default ({ NODE_ENV }) => ({
   modules: [
     [
       '@nuxtjs/sentry',
@@ -14,7 +14,7 @@ export default ({ isProduction }) => ({
           }
         },
         disableServerSide: true,
-        initialize: isProduction,
+        initialize: NODE_ENV === 'production',
       }
     ]
   ]
