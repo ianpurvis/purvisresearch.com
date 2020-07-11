@@ -1,4 +1,4 @@
-export default ({ isProduction }) => ({
+export default ({ isProduction, GOOGLE_ANALYTICS_ID }) => ({
 
   head: {
     link: [{
@@ -11,7 +11,7 @@ export default ({ isProduction }) => ({
     [
       '@nuxtjs/google-analytics',
       {
-        id: 'UA-106821101-1',
+        id: GOOGLE_ANALYTICS_ID,
         debug: {
           enabled: !isProduction,
           sendHitTask: isProduction
