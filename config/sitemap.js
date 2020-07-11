@@ -50,6 +50,12 @@ export default () => ({
             url: '/_/img/2019/apr.png',
             title: 'Apr 2019: Surreal television with WebRTC and WebGL | Purvis Research',
           }]
+        }, {
+          url: '/2020/jul',
+          img: [{
+            url: '/_/img/2020/jul.png',
+            title: 'Jul 2020: A Banknote in Simplex Wind | Purvis Research',
+          }]
         }]
       }
     ]
