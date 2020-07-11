@@ -101,10 +101,10 @@ export default async () => ({
             : join('img', nestedPath, '[name].[ext]?[contenthash:7]')
         },
       other: ({ isDev }) => isDev
-        ? '[name].[ext]'
+        ? '[path][name].[ext]'
         : '[name].[contenthash:7].[ext]',
-      wasm: ({ isDev, isModern }) => isDev
-        ? `${isModern ? 'modern-' : ''}[name].[ext]`
+      wasm: ({ isDev }) => isDev
+        ? '[path][name].[ext]'
         : 'wasm/[contenthash:7].[ext]'
     },
 
