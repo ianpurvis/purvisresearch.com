@@ -1,20 +1,22 @@
-export default (config, { isProduction }) => {
+export default ({ isProduction }) => ({
 
-  config.head = {
-    link: [
-      { rel: 'preconnect', href: 'https://www.google-analytics.com' }
-    ]
-  }
+  head: {
+    link: [{
+      href: 'https://www.google-analytics.com',
+      rel: 'preconnect'
+    }]
+  },
 
-  const googleAnalytics = [
-    '@nuxtjs/google-analytics', {
-      id: 'UA-106821101-1',
-      debug: {
-        enabled: !isProduction,
-        sendHitTask: isProduction
+  modules: [
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-106821101-1',
+        debug: {
+          enabled: !isProduction,
+          sendHitTask: isProduction
+        }
       }
-    }
+    ]
   ]
-
-  config.modules = [ ...config.modules || [], googleAnalytics ]
-}
+})

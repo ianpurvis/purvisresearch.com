@@ -1,5 +1,5 @@
-export default config => {
-  config.router = {
+export default () => ({
+  router: {
     extendRoutes(routes) {
       routes.forEach(route => {
         if (route.path === '/') {
@@ -12,4 +12,4 @@ export default config => {
       return routes
     }
   }
-}
+})

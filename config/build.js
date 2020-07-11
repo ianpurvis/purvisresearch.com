@@ -1,8 +1,8 @@
 import { dirname, join, relative } from 'path'
 
-export default async config => {
+export default async () => ({
 
-  config.build = {
+  build: {
 
     babel: {
       configFile: true
@@ -122,4 +122,4 @@ export default async config => {
       /^three\/examples\/jsm/
     ],
   }
-}
+})

@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import deepmerge from 'deepmerge'
 import base from './config/base.js'
 import build from './config/build.js'
 import googleAnalytics from './config/google-analytics.js'
@@ -13,9 +14,7 @@ export default async () => {
     isProduction: (process.env.NODE_ENV === 'production')
   }
 
-  const config = {}
-
-  const adapters = [
+  const factories = [
     base,
     build,
     router,
@@ -24,7 +23,10 @@ export default async () => {
     sitemap,
   ]
 
-  for (let adapter of adapters) await adapter(config, env)
+  let config = {}
+  for (let factory of factories) {
+    config = deepmerge(config, await factory(env))
+  }
 
   return config
 }
