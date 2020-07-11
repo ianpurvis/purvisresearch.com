@@ -22,7 +22,7 @@ export default async () => {
 
   let config = {}
   for (let factory of factories) {
-    config = deepmerge(config, await factory(env))
+    config = deepmerge(config, await factory(env) || {})
   }
 
   return config

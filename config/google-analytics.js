@@ -1,22 +1,22 @@
-export default ({ GOOGLE_ANALYTICS_ID, NODE_ENV }) => ({
+export default ({ GOOGLE_ANALYTICS_ID, NODE_ENV }) => {
 
-  head: {
-    link: [{
-      href: 'https://www.google-analytics.com',
-      rel: 'preconnect'
-    }]
-  },
+  const disabled = (NODE_ENV !== 'production')
 
-  modules: [
-    [
-      '@nuxtjs/google-analytics',
-      {
-        id: GOOGLE_ANALYTICS_ID,
-        debug: {
-          enabled: NODE_ENV === 'development',
-          sendHitTask: NODE_ENV === 'production'
+  return {
+    head: disabled ? {} : {
+      link: [{
+        href: 'https://www.google-analytics.com',
+        rel: 'preconnect'
+      }]
+    },
+    modules: [
+      [
+        '@nuxtjs/google-analytics',
+        {
+          disabled,
+          id: GOOGLE_ANALYTICS_ID
         }
-      }
+      ]
     ]
-  ]
-})
+  }
+}
