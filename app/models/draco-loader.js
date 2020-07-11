@@ -1,33 +1,26 @@
 import { DRACOLoader as THREEDRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import DracoDecoderModule from 'draco3dgltf/draco_decoder_gltf_nodejs.js'
-
+import decoderModuleSource from '~/assets/lib/draco/draco_wasm_wrapper.js'
+import decoderWasmPath from '~/assets/lib/draco/draco_decoder.wasm'
 
 class DRACOLoader extends THREEDRACOLoader {
 
-  _compileWorkerSource() {
-    let workerSource = [
-      '/* draco decoder */',
-      // The worker expecta a global DracoDecoderModule:
-      `DracoDecoderModule = ${DracoDecoderModule.toString()}`,
-      '/* worker */',
-      this._extractSourceFromFunction(DRACOLoader.DRACOWorker)
-    ].join('\n')
-    return workerSource
-  }
+  // Overridden to use a webpacked decoder.
+  // Rather than preloading the wasmBinary and sending via the init message,
+  // shim the Emscripten module function to fetch it via locateFile:
+  async _initDecoder() {
+    const workerSource = `
+      ${decoderModuleSource}
 
-  _extractSourceFromFunction(functi0n) {
-    let source = functi0n.toString()
-    // Unpack worker source so that it can be immediately executed:
-    source = source.substring(source.indexOf('{') + 1, source.lastIndexOf('}'))
-    return source
-  }
+      var _DracoDecoderModule = DracoDecoderModule
+      DracoDecoderModule = (config) => {
+        config.locateFile = () => self.origin + '${decoderWasmPath}';
+        return _DracoDecoderModule(config);
+      };
 
-  // Overridden to use webpacked decoder
-  _initDecoder() {
-    let workerSource = this._compileWorkerSource()
-    let workerSourceBlob = new Blob([workerSource])
+      (${DRACOLoader.DRACOWorker}).call(self);
+    `
+    const workerSourceBlob = new Blob([ workerSource ])
     this.workerSourceURL = URL.createObjectURL(workerSourceBlob)
-    return Promise.resolve()
   }
 }
 

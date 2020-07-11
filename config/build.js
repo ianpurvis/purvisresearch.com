@@ -84,11 +84,16 @@ export default async () => ({
       config.module.rules.push({
         test: /\.wasm$/,
         type: 'javascript/auto',
-        include: /(node_modules)\/ammo.js/,
         loader: 'file-loader',
         options: {
           name: wasm(context)
-        },
+        }
+      })
+
+      config.module.rules.push({
+        test: /draco_wasm_wrapper\.js$/,
+        type: 'javascript/auto',
+        loader: 'raw-loader'
       })
     },
 
