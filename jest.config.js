@@ -35,6 +35,7 @@ module.exports = {
         '\\.(mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/spec/mocks/file-mock.js',
         '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
         '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
+        'draco/(.*)$': '<rootDir>/lib/draco/$1',
         '~(.*)$': '<rootDir>/app/$1',
       },
       testEnvironment: 'jsdom',

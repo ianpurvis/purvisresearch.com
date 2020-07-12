@@ -1,8 +1,8 @@
+jest.mock('draco/draco_wasm_wrapper.js', () => 'mock-source')
 jest.mock('three/examples/jsm/loaders/DRACOLoader.js')
-jest.mock('~/assets/lib/draco/draco_wasm_wrapper.js', () => 'mock-source')
+import decoderModuleSource from 'draco/draco_wasm_wrapper.js'
+import decoderWasmPath from 'draco/draco_decoder.wasm'
 import { DRACOLoader as THREEDRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import decoderModuleSource from '~/assets/lib/draco/draco_wasm_wrapper.js'
-import decoderWasmPath from '~/assets/lib/draco/draco_decoder.wasm'
 import { DRACOLoader } from '~/models/draco-loader.js'
 
 describe('DRACOLoader', () => {

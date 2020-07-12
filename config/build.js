@@ -1,6 +1,6 @@
 import { dirname, join, relative } from 'path'
 
-export default async () => ({
+export default ({ baseDir }) => ({
 
   build: {
 
@@ -13,9 +13,13 @@ export default async () => ({
       const { chunk, other, wasm } =
         this.buildContext.options.build.filenames
 
+      config.context = baseDir
+
       config.node = {
         fs: 'empty'
       }
+
+      config.resolve.modules.unshift('lib')
 
       // Load web-workers
       config.module.rules.push({
