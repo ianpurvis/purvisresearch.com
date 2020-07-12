@@ -94,10 +94,11 @@ export default ({ baseDir }) => ({
         }
       })
 
+      // Load draco decoder module in the raw:
       config.module.rules.push({
-        test: /draco_wasm_wrapper\.js$/,
-        type: 'javascript/auto',
-        loader: 'raw-loader'
+        test: /\.js$/,
+        loader: 'raw-loader',
+        include: /lib\/draco/
       })
     },
 

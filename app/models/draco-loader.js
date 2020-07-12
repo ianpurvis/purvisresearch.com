@@ -1,6 +1,6 @@
+import decoderModuleSource from 'draco/decoder-worker-fixed16mb.js'
+import decoderWasmPath from 'draco/decoder-worker-fixed16mb.wasm'
 import { DRACOLoader as THREEDRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import decoderModuleSource from 'draco/draco_wasm_wrapper.js'
-import decoderWasmPath from 'draco/draco_decoder.wasm'
 
 class DRACOLoader extends THREEDRACOLoader {
 
