@@ -5,6 +5,7 @@ const transformPatterns = [
 
 const defaults = {
   coveragePathIgnorePatterns: [
+    'lib/draco/.*',
     'spec/.*'
   ],
   moduleFileExtensions: [
