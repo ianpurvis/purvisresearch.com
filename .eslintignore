@@ -1,1 +1,6 @@
-.gitignore
+cdk.out
+coverage
+dist
+lib/draco
+node_modules
+.nuxt

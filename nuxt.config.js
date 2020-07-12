@@ -9,7 +9,7 @@ import sitemap from './config/sitemap.js'
 
 export default async () => {
 
-  const env = { ...process.env }
+  const env = { ...process.env, baseDir: __dirname }
 
   const factories = [
     base,

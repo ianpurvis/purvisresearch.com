@@ -1,6 +1,6 @@
 import { dirname, join, relative } from 'path'
 
-export default async () => ({
+export default ({ baseDir }) => ({
 
   build: {
 
@@ -13,9 +13,13 @@ export default async () => ({
       const { chunk, other, wasm } =
         this.buildContext.options.build.filenames
 
+      config.context = baseDir
+
       config.node = {
         fs: 'empty'
       }
+
+      config.resolve.modules.unshift('lib')
 
       // Load web-workers
       config.module.rules.push({
@@ -84,11 +88,17 @@ export default async () => ({
       config.module.rules.push({
         test: /\.wasm$/,
         type: 'javascript/auto',
-        include: /(node_modules)\/ammo.js/,
         loader: 'file-loader',
         options: {
           name: wasm(context)
-        },
+        }
+      })
+
+      // Load draco decoder module in the raw:
+      config.module.rules.push({
+        test: /\.js$/,
+        loader: 'raw-loader',
+        include: /lib\/draco/
       })
     },
 
@@ -101,10 +111,10 @@ export default async () => ({
             : join('img', nestedPath, '[name].[ext]?[contenthash:7]')
         },
       other: ({ isDev }) => isDev
-        ? '[name].[ext]'
+        ? '[path][name].[ext]'
         : '[name].[contenthash:7].[ext]',
-      wasm: ({ isDev, isModern }) => isDev
-        ? `${isModern ? 'modern-' : ''}[name].[ext]`
+      wasm: ({ isDev }) => isDev
+        ? '[path][name].[ext]'
         : 'wasm/[contenthash:7].[ext]'
     },
 
