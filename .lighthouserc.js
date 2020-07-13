@@ -13,7 +13,6 @@ module.exports = {
       }
     },
     collect: {
-      headful: true,
       numberOfRuns: 1,
       staticDistDir: 'dist/app',
       url: [
