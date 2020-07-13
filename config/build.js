@@ -34,7 +34,10 @@ export default ({ baseDir }) => ({
       // Load glb models as arraybuffer
       config.module.rules.push({
         test: /\.glb$/,
-        loader: 'arraybuffer-loader',
+        loader: 'file-loader',
+        options: {
+          name: other(context)
+        },
         exclude: /(node_modules)/
       })
 
