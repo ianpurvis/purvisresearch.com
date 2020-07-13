@@ -1,5 +1,17 @@
 module.exports = {
   ci: {
+    assert: {
+      preset: 'lighthouse:no-pwa',
+      assertions: {
+        'canonical': 'warn',
+        'color-contrast': 'warn',
+        'errors-in-console': 'warn',
+        'font-display': 'warn',
+        'tap-targets': 'warn',
+        'unused-javascript': 'warn',
+        'uses-rel-preconnect': 'warn',
+      }
+    },
     collect: {
       headful: true,
       numberOfRuns: 1,
