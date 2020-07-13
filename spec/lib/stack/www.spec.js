@@ -82,6 +82,8 @@ describe('WwwStack', () => {
           'IPV6Enabled': true,
           'Origins': [
             {
+              'ConnectionAttempts': 3,
+              'ConnectionTimeout': 10,
               'CustomOriginConfig': {
                 'HTTPPort': 80,
                 'HTTPSPort': 443,
