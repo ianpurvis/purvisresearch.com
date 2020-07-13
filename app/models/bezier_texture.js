@@ -29,7 +29,7 @@ class BezierCurve {
 
 class BezierTexture {
 
-  static create(color, height, width) {
+  static async create(color, height, width) {
 
     let lineWidth = rand({max: 25, min: 1}) // pixels
     let lineSpace = rand({max: 15}) // pixels
@@ -55,33 +55,30 @@ class BezierTexture {
       })
     })
 
-    return Promise.resolve(
-      import(/* webpackMode: "eager" */'@pixi/graphics'),
-    ).then(({Graphics}) => {
+    const { Graphics } = await import(/* webpackMode: "eager" */'@pixi/graphics')
 
-      let graphics = new Graphics()
-      graphics.lineStyle(lineWidth, color, lineAlpha)
+    let graphics = new Graphics()
+    graphics.lineStyle(lineWidth, color, lineAlpha)
 
-      let offset, clone
-      for (var i = 0; i < lineCount; i++) {
-        offset = new Point({
-          x: i * (lineWidth + lineSpace)
-        })
-        clone = bezier.translate(offset)
+    let offset, clone
+    for (var i = 0; i < lineCount; i++) {
+      offset = new Point({
+        x: i * (lineWidth + lineSpace)
+      })
+      clone = bezier.translate(offset)
 
-        graphics.moveTo(
-          clone.start.x,
-          clone.start.y
-        )
-        graphics.bezierCurveTo(
-          clone.controlOne.x,  clone.controlOne.y,
-          clone.controlTwo.x,  clone.controlTwo.y,
-          clone.end.x,         clone.end.y
-        )
-      }
+      graphics.moveTo(
+        clone.start.x,
+        clone.start.y
+      )
+      graphics.bezierCurveTo(
+        clone.controlOne.x,  clone.controlOne.y,
+        clone.controlTwo.x,  clone.controlTwo.y,
+        clone.end.x,         clone.end.y
+      )
+    }
 
-      return graphics
-    })
+    return graphics
   }
 }
 

@@ -27,24 +27,21 @@ export default {
         aspect: width / height,
       }
     },
-    load() {
-      return Promise.resolve().then(() => {
-        WebGL.assertWebGLAvailable(this.$refs.canvas)
-        return import('~/shims/pixi.js')
-      }).then(({ Container, Renderer, Ticker }) => {
-        let { height, width } = this.frame()
-        let pixelRatio = Math.max(window.devicePixelRatio, 2)
-        this.renderer = new Renderer({
-          height: height,
-          resolution: pixelRatio,
-          transparent: true,
-          view: this.$refs.canvas,
-          width: width,
-        })
-        this.clock = new Ticker()
-        this.scene = new Container()
-        this.startAnimating()
+    async load() {
+      WebGL.assertWebGLAvailable(this.$refs.canvas)
+      const { Container, Renderer, Ticker } = await import('~/shims/pixi.js')
+      let { height, width } = this.frame()
+      let pixelRatio = Math.max(window.devicePixelRatio, 2)
+      this.renderer = new Renderer({
+        height: height,
+        resolution: pixelRatio,
+        transparent: true,
+        view: this.$refs.canvas,
+        width: width,
       })
+      this.clock = new Ticker()
+      this.scene = new Container()
+      this.startAnimating()
     },
     logError(error) {
       if (error instanceof WebGL.WebGLNotAvailableError) {

@@ -14,7 +14,7 @@ class TextureLoader {
     this._loader = new THREETextureLoader(args)
   }
 
-  load(url, onProgress = () => {}) {
+  async load(url, onProgress = () => {}) {
     return new Promise((resolve, reject) => {
       this._loader.load(url, resolve, onProgress, (error) => {
         reject(new TextureLoaderError('TextureLoader: Could not load url.', error))

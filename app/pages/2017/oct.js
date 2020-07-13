@@ -52,24 +52,21 @@ export default {
     }
   },
   methods: {
-    load() {
-      return Promise.resolve(
-        PixiDemo.methods.load.call(this)
-      ).then(() => {
-        let { height, width } = this.frame()
-        return Promise.all([
-          BezierTexture.create('0xff0000', height, width),
-          BezierTexture.create('0x00ff00', height, width),
-          BezierTexture.create('0x0000ff', height, width)
-        ])
-      }).then(textures => {
-        textures
-          .sort(Random.comparison)
-          .forEach(texture => this.scene.addChild(texture))
-        this.textures = textures
-      })
+    async load() {
+      await PixiDemo.methods.load.call(this)
+
+      let { height, width } = this.frame()
+      const textures = await Promise.all([
+        BezierTexture.create('0xff0000', height, width),
+        BezierTexture.create('0x00ff00', height, width),
+        BezierTexture.create('0x0000ff', height, width)
+      ])
+      textures
+        .sort(Random.comparison)
+        .forEach(texture => this.scene.addChild(texture))
+      this.textures = textures
     },
-    oscillatePosition(object, { amplitude, period }) {
+    async oscillatePosition(object, { amplitude, period }) {
       return new Promise((resolve, reject) => {
         const oscillator = new Oscillator({ amplitude, period })
         this.animations.push({
@@ -90,14 +87,19 @@ export default {
   mixins: [
     PixiDemo,
   ],
-  mounted() {
-    this.load().then(() => {
-      this.textures.slice(-2).forEach(texture => {
-        this.oscillatePosition(texture, {
+  async mounted() {
+    try {
+      await this.load()
+      const oscillations = this.textures
+        .slice(-2)
+        .map(texture => this.oscillatePosition(texture, {
           amplitude: 50, // pixels
           period: Random.rand({ min: 50, max: 100 }) * SECONDS_TO_MILLISECONDS
-        })
-      })
-    }).catch(this.logError)
+        }))
+      await Promise.all(oscillations)
+    }
+    catch(error) {
+      this.logError(error)
+    }
   }
 }
