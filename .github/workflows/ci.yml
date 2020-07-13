@@ -39,7 +39,9 @@ jobs:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         bin/codecov --disable=gcov --file=coverage/coverage-final.json
-    - name: Lighthouse
+    - name: Analyze
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
       run: bin/lhci autorun
     strategy:
       matrix:
