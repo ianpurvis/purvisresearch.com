@@ -48,20 +48,18 @@ export default {
         safeDispose(this.renderer)
       }
     },
-    load() {
-      return Promise.resolve().then(() => {
-        WebGL.assertWebGLAvailable(this.$refs.canvas)
-        this.renderer = new WebGLRenderer({
-          alpha: true,
-          antialias: false,
-          canvas: this.$refs.canvas,
-        })
-        let pixelRatio = Math.max(window.devicePixelRatio, 2)
-        this.renderer.setPixelRatio(pixelRatio)
-        let { height, width } = this.frame()
-        this.renderer.setSize(width, height, false)
-        this.startAnimating()
+    async load() {
+      WebGL.assertWebGLAvailable(this.$refs.canvas)
+      this.renderer = new WebGLRenderer({
+        alpha: true,
+        antialias: false,
+        canvas: this.$refs.canvas,
       })
+      let pixelRatio = Math.max(window.devicePixelRatio, 2)
+      this.renderer.setPixelRatio(pixelRatio)
+      let { height, width } = this.frame()
+      this.renderer.setSize(width, height, false)
+      this.startAnimating()
     },
     logError(error) {
       if (error instanceof WebGL.WebGLNotAvailableError) {

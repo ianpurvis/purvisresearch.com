@@ -68,7 +68,7 @@ export default {
     }
   },
   methods: {
-    delay(duration) {
+    async delay(duration) {
       return new Promise((resolve, reject) => {
         const animation = {
           startTime: this.elapsedTime,
@@ -80,7 +80,7 @@ export default {
         this.animations.push(animation)
       })
     },
-    fadeIn(duration) {
+    async fadeIn(duration) {
       const basketOpacity = Random.rand({min: 0.25, max: 0.90})
       const cloneOpacity = Random.rand({min: 0.25, max: 0.90})
       return Promise.all([
@@ -88,7 +88,7 @@ export default {
         this.transitionOpacity(this.clone, cloneOpacity, duration),
       ])
     },
-    fadeOut(duration) {
+    async fadeOut(duration) {
       const basketDuration = duration * this.basket.material.opacity
       const cloneDuration = duration * this.clone.material.opacity
       return Promise.all([
@@ -166,7 +166,7 @@ export default {
       this.clone.material.transparent = true
       this.scene.add(this.clone)
     },
-    transitionOpacity(object, value, duration=1.0) {
+    async transitionOpacity(object, value, duration=1.0) {
       return new Promise((resolve, reject) => {
         const opacity = object.material.opacity
         const animation = {
@@ -190,17 +190,19 @@ export default {
   mixins: [
     ThreeDemo,
   ],
-  mounted() {
-    this.load()
-      .then(async () => {
-        while (this.clock.running) {
-          this.layout()
-          await this.fadeIn(0.1)
-            .then(() => this.fadeOut(24))
-            .then(() => this.delay(2))
-        }
-      })
-      .catch(this.logError)
+  async mounted() {
+    try {
+      await this.load()
+      while (this.clock.running) {
+        this.layout()
+        await this.fadeIn(0.1)
+        await this.fadeOut(24)
+        await this.delay(2)
+      }
+    }
+    catch (exception) {
+      this.logError(exception)
+    }
   }
 }
 

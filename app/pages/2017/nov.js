@@ -66,51 +66,49 @@ export default {
       this.camera.far = 10000
       this.camera.position.z = Random.rand({min: 100, max: 150})
     },
-    load() {
-      return Promise.resolve(
-        ThreeDemo.methods.load.call(this)
-      ).then(() => {
-        this.particles = this.alphabet.map(character => {
-          let geometry = new TextBufferGeometry(character, {
-            font: this.font
-          })
-          geometry.center()
+    async load() {
+      await ThreeDemo.methods.load.call(this)
 
-          let material = new MeshNormalMaterial({
-            depthFunc: LessDepth,
-            opacity: 0.7,
-            transparent: false,
-            wireframe: true,
-            wireframeLinewidth: 2.0,
-          })
+      this.particles = this.alphabet.map(character => {
+        let geometry = new TextBufferGeometry(character, {
+          font: this.font
+        })
+        geometry.center()
 
-          let particle = new Particle(geometry, material)
-
-          let blastRadius = 60
-          let acceleration = new Vector3(
-            Random.rand({min: -blastRadius, max: blastRadius}),
-            Random.rand({min: -blastRadius, max: blastRadius}),
-            Random.rand({min: -blastRadius, max: blastRadius})
-          )
-          particle.acceleration = acceleration
-          // Give each particle a jump start:
-          particle.position.copy(acceleration)
-
-          let mass = Random.rand({min: 0.25, max: 1})
-          particle.mass = mass
-          particle.scale.setScalar(mass)
-
-          particle.rotation.set(
-            Random.rand({max: 2 * Math.PI}),
-            Random.rand({max: 2 * Math.PI}),
-            Random.rand({max: 2 * Math.PI})
-          )
-
-          return particle
+        let material = new MeshNormalMaterial({
+          depthFunc: LessDepth,
+          opacity: 0.7,
+          transparent: false,
+          wireframe: true,
+          wireframeLinewidth: 2.0,
         })
 
-        this.scene.add(...this.particles)
+        let particle = new Particle(geometry, material)
+
+        let blastRadius = 60
+        let acceleration = new Vector3(
+          Random.rand({min: -blastRadius, max: blastRadius}),
+          Random.rand({min: -blastRadius, max: blastRadius}),
+          Random.rand({min: -blastRadius, max: blastRadius})
+        )
+        particle.acceleration = acceleration
+        // Give each particle a jump start:
+        particle.position.copy(acceleration)
+
+        let mass = Random.rand({min: 0.25, max: 1})
+        particle.mass = mass
+        particle.scale.setScalar(mass)
+
+        particle.rotation.set(
+          Random.rand({max: 2 * Math.PI}),
+          Random.rand({max: 2 * Math.PI}),
+          Random.rand({max: 2 * Math.PI})
+        )
+
+        return particle
       })
+
+      this.scene.add(...this.particles)
     },
     update() {
       ThreeDemo.methods.update.call(this)
@@ -120,8 +118,14 @@ export default {
   mixins: [
     ThreeDemo,
   ],
-  mounted() {
-    this.load().then(this.layout).catch(this.logError)
+  async mounted() {
+    try {
+      await this.load()
+      await this.layout()
+    }
+    catch(error) {
+      this.logError(error)
+    }
   }
 }
 

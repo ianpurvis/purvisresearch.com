@@ -3,7 +3,7 @@ import { GLTFLoader as THREEGLTFLoader } from 'three/examples/jsm/loaders/GLTFLo
 
 class GLTFLoader extends THREEGLTFLoader {
 
-  parse(data, path = '/') {
+  async parse(data, path = '/') {
     return new Promise((resolve, reject) => {
       super.parse(data, path, resolve, reject)
     })

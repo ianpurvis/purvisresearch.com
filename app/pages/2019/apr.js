@@ -82,7 +82,7 @@ export default {
     }
   },
   methods: {
-    delay(duration) {
+    async delay(duration) {
       return new Promise((resolve, reject) => {
         const animation = {
           startTime: this.elapsedTime,
@@ -98,51 +98,50 @@ export default {
       let userAgent = window.navigator.userAgent
       return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
     },
-    load() {
-      return Promise
-        .resolve(ThreeDemo.methods.load.call(this))
-        .then(this.loadCamera)
-        .then(this.loadAmbientLight)
-        .then(this.loadSubfloor)
-        .then(this.loadFloor)
-        .then(() => Promise.all([
-          this.loadNekoTV(),
-          this.loadScreen(),
-        ]))
-        .then(this.loadMonsterTV)
-        .then(this.loadScreenLight)
-        .then(this.loadMonsterLight)
+    async load() {
+      await ThreeDemo.methods.load.call(this)
+      await this.loadCamera()
+      await this.loadAmbientLight()
+      await this.loadSubfloor()
+      await this.loadFloor()
+      await Promise.all([
+        this.loadNekoTV(),
+        this.loadScreen(),
+      ])
+      await this.loadMonsterTV()
+      await this.loadScreenLight()
+      await this.loadMonsterLight()
     },
     loadCamera() {
       this.camera.position.setScalar(3)
       this.camera.lookAt(this.scene.position)
       this.track()
     },
-    loadFloor() {
-      return Promise.all([
-        new TextureLoader().load(tatami),
-        new TextureLoader().load(tatamiAlpha)
-      ]).then(([map, alphaMap]) => {
-        [map, alphaMap].forEach(m => {
-          m.wrapS = RepeatWrapping
-          m.wrapT = RepeatWrapping
-          m.repeat.set(9, 9)
-        })
-        let material = new MeshPhongMaterial({
-          alphaMap: alphaMap,
-          color: Colors.whitesmoke,
-          emissive: Colors.black,
-          map: map,
-          opacity: 0.0,
-          transparent: true,
-        })
-        let geometry = new PlaneGeometry(9, 9)
-        geometry.rotateX(-90 * DEGREES_TO_RADIANS)
-        this.floor = new Mesh(geometry, material)
-        this.scene.add(this.floor)
-        this.floor.position.set(0.11, 0, 0)
-        return this.transitionOpacity(this.floor, 1.0)
+    async loadFloor() {
+      const loader = new TextureLoader()
+      const [ map, alphaMap ] = await Promise.all([
+        loader.load(tatami),
+        loader.load(tatamiAlpha)
+      ])
+      ;[ map, alphaMap ].forEach(m => {
+        m.wrapS = RepeatWrapping
+        m.wrapT = RepeatWrapping
+        m.repeat.set(9, 9)
       })
+      let material = new MeshPhongMaterial({
+        alphaMap: alphaMap,
+        color: Colors.whitesmoke,
+        emissive: Colors.black,
+        map: map,
+        opacity: 0.0,
+        transparent: true,
+      })
+      let geometry = new PlaneGeometry(9, 9)
+      geometry.rotateX(-90 * DEGREES_TO_RADIANS)
+      this.floor = new Mesh(geometry, material)
+      this.scene.add(this.floor)
+      this.floor.position.set(0.11, 0, 0)
+      return this.transitionOpacity(this.floor, 1.0)
     },
     loadSubfloor() {
       let material = new MeshPhongMaterial({
@@ -179,50 +178,46 @@ export default {
       this.scene.add(light)
       this.monsterLight = light
     },
-    loadMonsterTV() {
-      return Promise.resolve(
-        new TextureLoader().load(monster)
-      ).then(texture => {
-        let material = new MeshPhongMaterial({
-          color: Colors.whitesmoke,
-          emissive: Colors.black,
-          depthTest: false,
-          map: texture,
-          shininess: 0.0,
-          transparent: true,
-          opacity: 0.0,
-        })
-        let geometry = new PlaneGeometry(2, 2)
-        let tv = new Mesh(geometry, material)
-        // Simulate sprite rendering:
-        tv.lookAt(this.camera.position)
-        tv.position.lerp(this.camera.position, 0.5)
-        this.scene.add(tv)
-        this.monsterTV = tv
+    async loadMonsterTV() {
+      const loader = new TextureLoader()
+      const texture = await loader.load(monster)
+      let material = new MeshPhongMaterial({
+        color: Colors.whitesmoke,
+        emissive: Colors.black,
+        depthTest: false,
+        map: texture,
+        shininess: 0.0,
+        transparent: true,
+        opacity: 0.0,
       })
+      let geometry = new PlaneGeometry(2, 2)
+      let tv = new Mesh(geometry, material)
+      // Simulate sprite rendering:
+      tv.lookAt(this.camera.position)
+      tv.position.lerp(this.camera.position, 0.5)
+      this.scene.add(tv)
+      this.monsterTV = tv
     },
-    loadNekoTV() {
-      return Promise.resolve(
-        new TextureLoader().load(neko)
-      ).then(texture => {
-        let material = new MeshPhongMaterial({
-          color: Colors.whitesmoke,
-          emissive: Colors.black,
-          depthTest: false,
-          map: texture,
-          shininess: 0.0,
-          transparent: true,
-          opacity: 0.0,
-        })
-        let geometry = new PlaneGeometry(2, 2)
-        let tv = new Mesh(geometry, material)
-        // Simulate sprite rendering:
-        tv.lookAt(this.camera.position)
-        tv.position.lerp(this.camera.position, 0.5)
-        this.scene.add(tv)
-        this.nekoTV = tv
-        return this.transitionOpacity(tv, 1.0)
+    async loadNekoTV() {
+      const loader = new TextureLoader()
+      const texture = await loader.load(neko)
+      let material = new MeshPhongMaterial({
+        color: Colors.whitesmoke,
+        emissive: Colors.black,
+        depthTest: false,
+        map: texture,
+        shininess: 0.0,
+        transparent: true,
+        opacity: 0.0,
       })
+      let geometry = new PlaneGeometry(2, 2)
+      let tv = new Mesh(geometry, material)
+      // Simulate sprite rendering:
+      tv.lookAt(this.camera.position)
+      tv.position.lerp(this.camera.position, 0.5)
+      this.scene.add(tv)
+      this.nekoTV = tv
+      return this.transitionOpacity(tv, 1.0)
     },
     loadScreen() {
       let texture = new VideoTexture(this.$refs.video)
@@ -259,7 +254,7 @@ export default {
       this.scene.add(light)
       this.screenLight = light
     },
-    startVideo() {
+    async startVideo() {
       let constraints = {
         audio: false,
         video: true,
@@ -269,15 +264,14 @@ export default {
           aspectRatio: { ideal: 16/9 }
         }
       }
-      return Promise.resolve(
-        window.navigator.mediaDevices.getUserMedia(constraints)
-      ).then(stream => {
+      try {
+        const stream = await window.navigator.mediaDevices.getUserMedia(constraints)
         stream.getTracks().forEach(track => console.debug(track.getSettings()))
         if (this._isDestroyed || this._isBeingDestroyed) return
         this.$refs.video.srcObject = stream
-      }).catch(error => {
+      } catch (error) {
         console.warn(`Could not acquire device camera (${error.message})`)
-      })
+      }
     },
     stopVideo() {
       let stream = this.$refs.video.srcObject
@@ -303,7 +297,7 @@ export default {
         },
       })
     },
-    transitionIntensity(light, value, duration=1.0) {
+    async transitionIntensity(light, value, duration=1.0) {
       return new Promise((resolve, reject) => {
         let intensity = light.intensity
         this.animations.push({
@@ -317,7 +311,7 @@ export default {
         })
       })
     },
-    transitionOpacity(object, value, duration=1.0) {
+    async transitionOpacity(object, value, duration=1.0) {
       return new Promise((resolve, reject) => {
         let opacity = object.material.opacity
         this.animations.push({
@@ -331,18 +325,19 @@ export default {
         })
       })
     },
-    transitionToNight() {
-      return Promise.all([
+    async transitionToNight() {
+      await Promise.all([
         this.transitionOpacity(this.subfloor, 1.0, 8.0),
         this.transitionIntensity(this.ambientLight, 0.0, 8.0)
-      ]).then(() => Promise.all([
+      ])
+      await Promise.all([
         this.transitionIntensity(this.screenLight, 1.0, 4.0),
         this.transitionOpacity(this.nekoTV, 0.0, 5.0),
         this.transitionOpacity(this.monsterTV, 1.0, 5.0),
-      ]))
+      ])
     },
-    transitionToDay() {
-      return Promise.all([
+    async transitionToDay() {
+      await Promise.all([
         this.transitionIntensity(this.screenLight, 0.0, 4.0),
         this.delay(2).then(() => Promise.all([
           this.transitionOpacity(this.nekoTV, 1.0, 5.0),
@@ -361,19 +356,21 @@ export default {
   mixins: [
     ThreeDemo,
   ],
-  mounted() {
-    this.load()
-      .then(this.startVideo)
-      .then(async () => {
-        while (this.clock.running) {
-          await this.delay(3.0)
-            .then(this.transitionToNight)
-            .then(() => this.transitionIntensity(this.monsterLight, 0.9, 5.0))
-            .then(() => this.delay(3.0))
-            .then(() => this.transitionIntensity(this.monsterLight, 0.0, 6.0))
-            .then(this.transitionToDay)
-        }
-      })
-      .catch(this.logError)
+  async mounted() {
+    try {
+      await this.load()
+      await this.startVideo()
+      while (this.clock.running) {
+        await this.delay(3.0)
+        await this.transitionToNight()
+        await this.transitionIntensity(this.monsterLight, 0.9, 5.0)
+        await this.delay(3.0)
+        await this.transitionIntensity(this.monsterLight, 0.0, 6.0)
+        await this.transitionToDay()
+      }
+    }
+    catch (error) {
+      this.logError(error)
+    }
   }
 }

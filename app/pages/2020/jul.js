@@ -153,7 +153,7 @@ export default {
   mixins: [
     ThreeDemo
   ],
-  mounted() {
-    this.load().catch(this.logError)
+  async mounted() {
+    await this.load().catch(this.logError)
   }
 }
