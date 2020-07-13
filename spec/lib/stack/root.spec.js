@@ -92,6 +92,8 @@ describe('RootStack', () => {
           'IPV6Enabled': true,
           'Origins': [
             {
+              'ConnectionAttempts': 3,
+              'ConnectionTimeout': 10,
               'DomainName': {
                 'Fn::GetAtt': [
                   'Bucket83908E77',
