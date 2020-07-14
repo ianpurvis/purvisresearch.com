@@ -1,4 +1,4 @@
-import ogImagePath from '~/assets/images/2017/oct.png'
+import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
 import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'

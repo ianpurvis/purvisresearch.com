@@ -1,4 +1,4 @@
-import ogImagePath from '~/assets/images/index.png'
+import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
 import Graphix from '~/mixins/graphix.js'
 import { Organization } from '~/models/organization.js'

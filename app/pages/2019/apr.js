@@ -17,7 +17,7 @@ import {
 } from 'd3-ease'
 import monsterTexturePath from '~/assets/images/2019/apr/monster-bw.png'
 import nekoTexturePath from '~/assets/images/2019/apr/neko-bw.png'
-import ogImagePath from '~/assets/images/2019/apr.png'
+import ogImagePath from '~/assets/images/2019/apr/surreal-television-with-webrtc-and-webgl.png'
 import tatamiAlphaTexturePath from '~/assets/images/2019/apr/tatami-alpha.png'
 import tatamiTexturePath from '~/assets/images/2019/apr/tatami-bw.png'
 import ThreeDemo from '~/mixins/three-demo.js'
