@@ -9,39 +9,39 @@ describe('GLTFLoader', () => {
     expect(GLTFLoader.prototype).toBeInstanceOf(THREEGLTFLoader)
   })
 
-  describe('parse(data)', () => {
-    let data, result
+  describe('load(url)', () => {
+    let url, result
 
     beforeEach(() => {
       loader = new GLTFLoader()
-      data = 'mockData'
+      url = 'http://example.com/mock-file'
     })
     afterEach(() => {
       // eslint-disable-next-line jest/no-standalone-expect
-      expect(THREEGLTFLoader.prototype.parse).toHaveBeenCalledWith(
-        data,
-        '/',
+      expect(THREEGLTFLoader.prototype.load).toHaveBeenCalledWith(
+        url,
         expect.any(Function),
+        undefined,
         expect.any(Function)
       )
     })
-    describe('when super.parse() succeeds', () => {
+    describe('when super.load() succeeds', () => {
       it('resolves with a GLTF object', async () => {
         let mockGLTF = 'mock gltf'
-        THREEGLTFLoader.prototype.parse =
-          jest.fn((data, path, onLoad) => onLoad(mockGLTF))
+        THREEGLTFLoader.prototype.load =
+          jest.fn((url, onLoad) => onLoad(mockGLTF))
 
-        result = loader.parse(data)
+        result = loader.load(url)
         await expect(result).resolves.toBe(mockGLTF)
       })
     })
-    describe('when super.parse() fails', () => {
+    describe('when super.load() fails', () => {
       it('rejects with the error', async () => {
         let mockError = new Error('mock error')
-        THREEGLTFLoader.prototype.parse =
-          jest.fn((data, path, onLoad, onError) => onError(mockError))
+        THREEGLTFLoader.prototype.load =
+          jest.fn((url, onLoad, onProgress, onError) => onError(mockError))
 
-        result = loader.parse(data)
+        result = loader.load(url)
         await expect(result).rejects.toThrow(mockError)
       })
     })
