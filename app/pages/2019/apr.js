@@ -15,16 +15,16 @@ import {
   easeBackInOut,
   easeQuadIn,
 } from 'd3-ease'
+import monsterTexturePath from '~/assets/images/2019/apr/monster-bw.png'
+import nekoTexturePath from '~/assets/images/2019/apr/neko-bw.png'
 import ogImagePath from '~/assets/images/2019/apr.png'
+import tatamiAlphaTexturePath from '~/assets/images/2019/apr/tatami-alpha.png'
+import tatamiTexturePath from '~/assets/images/2019/apr/tatami-bw.png'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import HalftoneMaterial from '~/models/halftone_material.js'
 import { Organization } from '~/models/organization.js'
 import { TextureLoader } from '~/models/texture-loader.js'
-import tatami from '~/assets/images/2019/apr/tatami-bw.png'
-import tatamiAlpha from '~/assets/images/2019/apr/tatami-alpha.png'
-import neko from '~/assets/images/2019/apr/neko-bw.png'
-import monster from '~/assets/images/2019/apr/monster-bw.png'
 
 const Colors = {
   black: 0x000000,
@@ -120,8 +120,8 @@ export default {
     async loadFloor() {
       const loader = new TextureLoader()
       const [ map, alphaMap ] = await Promise.all([
-        loader.load(tatami),
-        loader.load(tatamiAlpha)
+        loader.load(tatamiTexturePath),
+        loader.load(tatamiAlphaTexturePath)
       ])
       ;[ map, alphaMap ].forEach(m => {
         m.wrapS = RepeatWrapping
@@ -180,7 +180,7 @@ export default {
     },
     async loadMonsterTV() {
       const loader = new TextureLoader()
-      const texture = await loader.load(monster)
+      const texture = await loader.load(monsterTexturePath)
       let material = new MeshPhongMaterial({
         color: Colors.whitesmoke,
         emissive: Colors.black,
@@ -200,7 +200,7 @@ export default {
     },
     async loadNekoTV() {
       const loader = new TextureLoader()
-      const texture = await loader.load(neko)
+      const texture = await loader.load(nekoTexturePath)
       let material = new MeshPhongMaterial({
         color: Colors.whitesmoke,
         emissive: Colors.black,

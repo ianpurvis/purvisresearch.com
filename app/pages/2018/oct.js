@@ -8,13 +8,13 @@ import {
   WireframeGeometry,
 } from 'three'
 import ogImagePath from '~/assets/images/2018/oct.png'
+import basketPath from '~/assets/models/basket.draco.glb'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
 import { DRACOLoader } from '~/models/draco-loader.js'
 import { Organization } from '~/models/organization.js'
 import { Random } from '~/models/random.js'
-import Basket from '~/assets/models/basket.draco.glb'
 
 const BASKET_RADIUS = 64 // Pre-computed from basket.geometry.boundingSphere.radius
 
@@ -148,7 +148,7 @@ export default {
       const gltfLoader = new GLTFLoader()
       const dracoLoader = new DRACOLoader()
       gltfLoader.dracoLoader = dracoLoader
-      const gltf = await gltfLoader.parse(Basket)
+      const gltf = await gltfLoader.load(basketPath)
       dracoLoader.dispose()
 
       this.basket = gltf.scene.children[0]
