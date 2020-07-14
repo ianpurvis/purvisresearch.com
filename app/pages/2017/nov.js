@@ -5,7 +5,7 @@ import {
   TextBufferGeometry,
   Vector3
 } from 'three'
-import ogImagePath from '~/assets/images/2017/nov.png'
+import ogImagePath from '~/assets/images/2017/nov/a-3d-character-exploder-in-webgl.png'
 import Inconsolata from '~/assets/models/Inconsolata_Regular.json'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { Organization } from '~/models/organization.js'
@@ -38,7 +38,7 @@ export default {
     },
     this.particles = []
     this.speedOfLife = 0.4 // Slow motion
-    this.title = 'nov 2017 - purvis research'
+    this.title = 'Nov 2017: A 3D Character Exploder in WebGL | Purvis Research'
   },
   head () {
     return {

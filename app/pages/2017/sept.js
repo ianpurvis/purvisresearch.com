@@ -1,4 +1,4 @@
-import ogImagePath from '~/assets/images/2017/sept.png'
+import ogImagePath from '~/assets/images/2017/sept/an-emoji-particle-flow-in-webgl.png'
 import PixiDemo from '~/mixins/pixi-demo.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
@@ -26,7 +26,7 @@ export default {
     },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
-    this.title = 'sept 2017 - purvis research'
+    this.title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
   },
   head() {
     return {

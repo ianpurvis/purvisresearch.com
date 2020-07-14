@@ -7,7 +7,7 @@ import {
   Vector3,
   WireframeGeometry,
 } from 'three'
-import ogImagePath from '~/assets/images/2018/oct.png'
+import ogImagePath from '~/assets/images/2018/oct/screenprinting-a-3d-scan-with-webgl.png'
 import basketPath from '~/assets/models/basket.draco.glb'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
@@ -44,7 +44,7 @@ export default {
         'item': this.canonicalUrl
       }]
     },
-    this.title = 'oct 2018 - purvis research'
+    this.title = 'Oct 2018: Screen Printing a 3D Scan With WebGL | Purvis Research'
   },
   head() {
     return {

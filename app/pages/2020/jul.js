@@ -5,7 +5,7 @@ import {
   MeshBasicMaterial,
   PlaneBufferGeometry,
 } from 'three'
-import ogImagePath from '~/assets/images/2020/jul.png'
+import ogImagePath from '~/assets/images/2020/jul/a-banknote-in-simplex-wind.png'
 import billImagePath from '~/assets/images/2020/jul/tubman-twenty.jpg'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { ChaseCameraRig } from '~/models/chase-camera-rig.js'
@@ -38,7 +38,7 @@ export default {
       }]
     }
     this.ogImageUrl = `${Organization.default.url}${ogImagePath}`
-    this.title = 'jul 2020 - purvis research'
+    this.title = 'Jul 2020: A Banknote in Simplex Wind | Purvis Research'
   },
   head() {
     return {

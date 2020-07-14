@@ -1,4 +1,4 @@
-import ogImagePath from '~/assets/images/2017/oct.png'
+import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
 import PixiDemo from '~/mixins/pixi-demo.js'
 import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
@@ -28,7 +28,7 @@ export default {
     },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
-    this.title = 'oct 2017 - purvis research'
+    this.title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
   },
   head () {
     return {
