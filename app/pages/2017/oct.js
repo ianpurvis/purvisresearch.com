@@ -28,7 +28,7 @@ export default {
     },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
-    this.title = 'oct 2017 - purvis research'
+    this.title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
   },
   head () {
     return {

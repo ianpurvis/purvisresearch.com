@@ -44,7 +44,7 @@ export default {
         'item': this.canonicalUrl
       }]
     },
-    this.title = 'oct 2018 - purvis research'
+    this.title = 'Oct 2018: Screen Printing a 3D Scan With WebGL | Purvis Research'
   },
   head() {
     return {

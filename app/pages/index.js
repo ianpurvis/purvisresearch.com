@@ -46,7 +46,7 @@ export default {
         'item': Organization.default.url
       }]
     }
-    this.title = 'purvis research'
+    this.title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
   },
   head() {
     return {

@@ -26,7 +26,7 @@ export default {
     },
     this.speedOfLife = 0.4 // Slow-motion
     this.textures = []
-    this.title = 'sept 2017 - purvis research'
+    this.title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
   },
   head() {
     return {

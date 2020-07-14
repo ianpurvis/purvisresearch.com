@@ -38,7 +38,7 @@ export default {
       }]
     }
     this.ogImageUrl = `${Organization.default.url}${ogImagePath}`
-    this.title = 'jul 2020 - purvis research'
+    this.title = 'Jul 2020: A Banknote in Simplex Wind | Purvis Research'
   },
   head() {
     return {

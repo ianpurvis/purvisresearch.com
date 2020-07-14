@@ -38,7 +38,7 @@ export default {
     },
     this.particles = []
     this.speedOfLife = 0.4 // Slow motion
-    this.title = 'nov 2017 - purvis research'
+    this.title = 'Nov 2017: A 3D Character Exploder in WebGL | Purvis Research'
   },
   head () {
     return {

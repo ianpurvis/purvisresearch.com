@@ -58,7 +58,7 @@ export default {
         'item': this.canonicalUrl
       }]
     },
-    this.title = 'apr 2019 - purvis research'
+    this.title = 'Apr 2019: Surreal Television With WebRTC and WebGL | Purvis Research'
   },
   head() {
     return {
