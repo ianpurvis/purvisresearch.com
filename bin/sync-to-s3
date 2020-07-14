@@ -13,10 +13,10 @@ set +o allexport
   && exit 1
 readonly local_path="$1"
 
-[ -z "${CLOUD_FORMATION_STACK_NAME+x}" ] \
-  && (>&2 echo -e "Missing environment variable CLOUD_FORMATION_STACK_NAME\n${USAGE}") \
+[ -z "${CDK_STACK_NAMESPACE+x}" ] \
+  && (>&2 echo -e "Missing environment variable CDK_STACK_NAMESPACE\n${USAGE}") \
   && exit 1
-readonly stack_name="${CLOUD_FORMATION_STACK_NAME}-root"
+readonly stack_name="${CDK_STACK_NAMESPACE}-root"
 
 readonly bucket_uri="s3://$(bin/get-stack-output "${stack_name}" 'bucketName')"
 
