@@ -1,6 +1,5 @@
 import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
 import PixiDemo from '~/mixins/pixi-demo.js'
-import { BezierTexture } from '~/models/bezier_texture.js'
 import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
 import { Organization } from '~/models/organization.js'
 import { Oscillator } from '~/models/oscillator.js'
@@ -54,16 +53,20 @@ export default {
   methods: {
     async load() {
       await PixiDemo.methods.load.call(this)
-
-      let { height, width } = this.frame()
-      const textures = await Promise.all([
-        BezierTexture.create('0xff0000', height, width),
-        BezierTexture.create('0x00ff00', height, width),
-        BezierTexture.create('0x0000ff', height, width)
-      ])
-      textures
+      const { BezierTexture } =
+        await import(/* webpackMode: "eager" */'~/models/bezier_texture.js')
+      const { height, width } = this.frame()
+      const colors = [
+        '0xff0000',
+        '0x00ff00',
+        '0x0000ff'
+      ]
+      const textures = colors
+        .map(color => BezierTexture.create(color, height, width))
         .sort(Random.comparison)
-        .forEach(texture => this.scene.addChild(texture))
+
+      textures.forEach(texture => this.scene.addChild(texture))
+
       this.textures = textures
     },
     async oscillatePosition(object, { amplitude, period }) {

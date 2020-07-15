@@ -2,6 +2,7 @@ import {
   BatchRenderer,
   Container,
   ENV,
+  Graphics,
   Renderer,
   RenderTexture,
   Text,
@@ -27,6 +28,7 @@ settings.PREFER_ENV = ENV.WEBGL
 
 export {
   Container,
+  Graphics,
   Renderer,
   RenderTexture,
   Text,
