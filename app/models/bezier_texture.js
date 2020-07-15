@@ -1,3 +1,4 @@
+import { Graphics } from '~/shims/pixi.js'
 import { Random } from '~/models/random.js'
 
 // Alias Random.rand as rand
@@ -29,7 +30,7 @@ class BezierCurve {
 
 class BezierTexture {
 
-  static async create(color, height, width) {
+  static create(color, height, width) {
 
     let lineWidth = rand({max: 25, min: 1}) // pixels
     let lineSpace = rand({max: 15}) // pixels
@@ -55,7 +56,6 @@ class BezierTexture {
       })
     })
 
-    const { Graphics } = await import('~/shims/pixi.js')
 
     let graphics = new Graphics()
     graphics.lineStyle(lineWidth, color, lineAlpha)
