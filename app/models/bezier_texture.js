@@ -55,7 +55,7 @@ class BezierTexture {
       })
     })
 
-    const { Graphics } = await import(/* webpackMode: "eager" */'@pixi/graphics')
+    const { Graphics } = await import('~/shims/pixi.js')
 
     let graphics = new Graphics()
     graphics.lineStyle(lineWidth, color, lineAlpha)
