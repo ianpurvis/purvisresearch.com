@@ -30,7 +30,8 @@ const DEFAULT_POLICY = `
     'none';
   script-src
     'self'
-    'sha256-V/WaLGhSS+tTPAMDVjFgErm2VGPm+tNBC1rdDJHVkZ0='
+    'unsafe-eval'
+    'unsafe-inline'
     https://www.google-analytics.com
     https://sentry.io;
   style-src

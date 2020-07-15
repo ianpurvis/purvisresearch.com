@@ -9,26 +9,26 @@ const {
 } = require('../lib/stack')
 
 const {
-  ROUTE53_DOMAIN,
-  CLOUD_FORMATION_STACK_NAME
+  CDK_ROUTE53_DOMAIN,
+  CDK_STACK_NAMESPACE
 } = process.env
 
-if (!ROUTE53_DOMAIN)
-  throw new Error("Missing environment variable 'ROUTE53_DOMAIN'")
-if (!CLOUD_FORMATION_STACK_NAME)
-  throw new Error("Missing environment variable 'CLOUD_FORMATION_STACK_NAME'")
+if (!CDK_ROUTE53_DOMAIN)
+  throw new Error("Missing environment variable 'CDK_ROUTE53_DOMAIN'")
+if (!CDK_STACK_NAMESPACE)
+  throw new Error("Missing environment variable 'CDK_STACK_NAMESPACE'")
 
 const app = new cdk.App()
 
-const zoneStack = new ZoneStack(app, `${CLOUD_FORMATION_STACK_NAME}-zone`, {
-  domainName: ROUTE53_DOMAIN
+const zoneStack = new ZoneStack(app, `${CDK_STACK_NAMESPACE}-zone`, {
+  domainName: CDK_ROUTE53_DOMAIN
 })
 
-const rootStack = new RootStack(app, `${CLOUD_FORMATION_STACK_NAME}-root`, {
+const rootStack = new RootStack(app, `${CDK_STACK_NAMESPACE}-root`, {
   zoneStack,
   lambdaPath: 'dist/lambda'
 })
 
-new WwwStack(app, `${CLOUD_FORMATION_STACK_NAME}-www`, {
+new WwwStack(app, `${CDK_STACK_NAMESPACE}-www`, {
   rootStack
 })
