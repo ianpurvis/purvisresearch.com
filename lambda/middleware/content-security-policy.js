@@ -30,6 +30,7 @@ const DEFAULT_POLICY = `
     'none';
   script-src
     'self'
+    'unsafe-eval'
     'unsafe-inline'
     https://www.google-analytics.com
     https://sentry.io;
