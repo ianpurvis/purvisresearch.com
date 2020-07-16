@@ -42,6 +42,8 @@ jobs:
     - name: Analyze
       env:
         LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
+        LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
       run: bin/lhci autorun
     strategy:
       matrix:
