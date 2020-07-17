@@ -9,13 +9,17 @@ jobs:
       CI: true
     runs-on: ubuntu-latest
     steps:
-    - name: Lighthouse
+    - name: Set up node
+      uses: actions/setup-node@v2-beta
+    - name: Install @lhci/cli
+      run: npm i @lhci/cli
+    - name: Collect
       env:
         LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
         LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-      run: |
-        bin/lhci collect
-        bin/lhci upload
-    strategy:
-      matrix:
-        node-version: [14.x]
+      run: npx lhci collect
+    - name: Upload
+      env:
+        LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
+        LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+      run: npx lhci upload
