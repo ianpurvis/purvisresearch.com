@@ -2,6 +2,7 @@ name: nightly
 on:
   schedule:
     - cron: '0 1 * * 2-6' # M-F 8pm CST
+  workflow_dispatch:
 jobs:
   build:
     env:
