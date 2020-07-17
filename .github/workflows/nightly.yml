@@ -4,48 +4,24 @@ on:
     - cron: '0 1 * * 2-6' # M-F 8pm CST
   workflow_dispatch:
 jobs:
-  build:
+  analyze:
     env:
       CI: true
     runs-on: ubuntu-latest
     steps:
     - name: Check out ${{ github.sha }}
       uses: actions/checkout@v2
-    - name: Set up node ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - id: cache
-      name: Fetch cached node modules
-      uses: actions/cache@v2
-      with:
-        path: node_modules
-        key: node-modules-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
-        restore-keys: node-modules-${{ matrix.node-version }}-
-    - name: Install npm packages
-      run: npm ci
-      if: steps.cache.outputs.cache-hit != 'true'
-    - name: Lint
-      run: |
-        bin/eslint
-        bin/stylelint
-    - name: Build
-      run: |
-        bin/build
-    - name: Test
-      run: |
-        bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'
-    - name: Report to Codecov.io
+    - name: Set up node
+      uses: actions/setup-node@v2-beta
+    - name: Install @lhci/cli
+      run: npm -g i @lhci/cli
+    - name: Collect
       env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      run: |
-        bin/codecov --disable=gcov --file=coverage/coverage-final.json
-    - name: Analyze
-      env:
-        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
         LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-      run: bin/lhci autorun
-    strategy:
-      matrix:
-        node-version: [14.x]
+      run: lhci collect
+    - name: Upload
+      env:
+        LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
+        LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
+      run: lhci upload
