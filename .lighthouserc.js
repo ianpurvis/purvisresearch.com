@@ -15,7 +15,6 @@ const paths = [
 const config = {
   ci: {
     collect: {
-      numberOfRuns: 1,
       url: paths.map(path => baseUrl + path)
     },
   }
