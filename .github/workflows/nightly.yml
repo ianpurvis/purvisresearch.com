@@ -1,7 +1,7 @@
 name: nightly
 on:
   schedule:
-    - cron: '0 20 * * 1-5' # M-F 8pm
+    - cron: '0 1 * * 2-6' # M-F 8pm CST
 jobs:
   build:
     env:
