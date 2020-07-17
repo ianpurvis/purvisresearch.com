@@ -1,20 +1,24 @@
 require('dotenv').config()
 
-module.exports = {
+const baseUrl = 'https://purvisresearch.com'
+const paths = [
+  '/',
+  '/2017/sept.html',
+  '/2017/oct.html',
+  '/2017/nov.html',
+  '/2018/oct.html',
+  '/2019/apr.html',
+  '/2020/jul.html',
+  '/404.html',
+]
+
+const config = {
   ci: {
     collect: {
       numberOfRuns: 1,
-      staticDistDir: 'dist/app',
-      url: [
-        'http://localhost/index.html',
-        'http://localhost/2017/sept.html',
-        'http://localhost/2017/oct.html',
-        'http://localhost/2017/nov.html',
-        'http://localhost/2018/oct.html',
-        'http://localhost/2019/apr.html',
-        'http://localhost/2020/jul.html',
-        'http://localhost/404.html',
-      ],
+      url: paths.map(path => baseUrl + path)
     },
   }
 }
+
+module.exports = config
