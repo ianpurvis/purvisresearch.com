@@ -9,6 +9,8 @@ jobs:
       CI: true
     runs-on: ubuntu-latest
     steps:
+    - name: Check out ${{ github.sha }}
+      uses: actions/checkout@v2
     - name: Set up node
       uses: actions/setup-node@v2-beta
     - name: Install @lhci/cli
