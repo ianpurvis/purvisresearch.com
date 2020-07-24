@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const baseUrl = 'https://purvisresearch.com'
 const paths = [
   '/',
