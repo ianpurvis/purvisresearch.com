@@ -9,19 +9,15 @@ jobs:
       CI: true
     runs-on: ubuntu-latest
     steps:
-      - name: Check out ${{ github.sha }}
-        uses: actions/checkout@v2
-      - name: Set up node
-        uses: actions/setup-node@v2-beta
-      - name: Install @lhci/cli
-        run: npm i @lhci/cli
-      - name: Collect
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+      - run: rm package.json package-lock.json
+      - run: npm i @lhci/cli
+      - run: npx lhci collect
         env:
           LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
           LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-        run: npx lhci collect
-      - name: Upload
+      - run: npx lhci upload
         env:
           LHCI_SERVER_BASE_URL: ${{ secrets.LHCI_SERVER_BASE_URL }}
           LHCI_TOKEN: ${{ secrets.LHCI_TOKEN }}
-        run: npx lhci upload
