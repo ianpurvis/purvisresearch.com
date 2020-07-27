@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -sL -w "200\\n" "$LHCI_SERVER_BASE_URL" -o /dev/null
