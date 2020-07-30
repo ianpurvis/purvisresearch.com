@@ -15,6 +15,9 @@ const config = {
     collect: {
       url: paths.map(path => baseUrl + path)
     },
+    upload: {
+      ignoreDuplicateBuildFailure: true
+    }
   }
 }
 
