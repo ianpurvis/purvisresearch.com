@@ -1,15 +1,15 @@
+---
 version: 2
 updates:
-- package-ecosystem: npm
-  commit-message:
-    prefix: 'chore: '
-  directory: '/'
-  schedule:
-    interval: daily
+  - package-ecosystem: npm
+    commit-message:
+      prefix: 'chore: '
+    directory: '/'
+    schedule:
+      interval: daily
     time: '08:00'
     timezone: US/Central
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: extract-loader
-    versions:
-    - '> 2.0.1'
+    ignore:
+      - dependency-name: extract-loader
+        versions:
+          - '> 2.0.1'
