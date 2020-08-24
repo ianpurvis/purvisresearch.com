@@ -24,7 +24,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
   is a Vue component that watches the DOM to automatically scale its children
   to fit its own width.
 
-- [**app/mixins/pixi-demo.js**](app/mixins/pixi-demo.js#L42-L60)
+- [**app/mixins/pixi-demo.js**](app/mixins/pixi-demo.js#L30-L45)
   imports PixiJS dynamically upon component mount, when the necessary browser
   context has been ensured.
 
