@@ -51,7 +51,7 @@
     "jest-circus": "^26.4.2",
     "lint-staged": "^10.2.11",
     "node-sass": "^4.14.1",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.0",
     "raw-loader": "^4.0.1",
     "sass-loader": "^9.0.3",
     "stylelint": "^13.6.1",
