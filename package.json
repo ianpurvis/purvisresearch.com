@@ -14,7 +14,7 @@
     "deepmerge": "^4.2.2",
     "nuxt": "^2.14.3",
     "pixi-particles": "^4.2.1",
-    "pixi.js": "^5.3.2",
+    "pixi.js": "^5.3.3",
     "stats.js": "^0.17.0",
     "three": "^0.119.1",
     "vue-tight": "^1.0.2"
