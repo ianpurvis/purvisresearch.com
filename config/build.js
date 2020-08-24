@@ -26,7 +26,7 @@ export default ({ baseDir }) => ({
         test: /\.worker\.js$/,
         loader: 'worker-loader',
         options: {
-          name: chunk(context)
+          filename: chunk(context)
         },
         exclude: /(node_modules)/
       })
