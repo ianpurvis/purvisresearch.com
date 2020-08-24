@@ -13,7 +13,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
 
 ## Points Of Interest
 
-- [**app/pages/index.vue**](https://github.com/ianpurvis/purvisresearch.com/blob/54f389298989a38d6539e45f3e25c6e3529ae844/app/pages/index.vue#L12-L21)
+- [**app/pages/index.vue**](app/pages/index.vue#L12-L21)
   maximizes semantic value by eliminating decoration at the HTML level. To see
   this in action, visit the [live site](https://purvisresearch.com) and disable
   CSS in your browser. It also uses
@@ -24,7 +24,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
   is a Vue component that watches the DOM to automatically scale its children
   to fit its own width.
 
-- [**app/mixins/pixi-demo.js**](https://github.com/ianpurvis/purvisresearch.com/blob/54f389298989a38d6539e45f3e25c6e3529ae844/app/mixins/pixi-demo.js#L42-L60)
+- [**app/mixins/pixi-demo.js**](app/mixins/pixi-demo.js#L42-L60)
   imports PixiJS dynamically upon component mount, when the necessary browser
   context has been ensured.
 
