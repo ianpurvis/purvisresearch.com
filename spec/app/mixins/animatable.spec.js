@@ -79,7 +79,7 @@ describe('animatable', () => {
         wrapper = shallowMount(component)
         wrapper.vm.animationFrame = 'mockAnimationFrameRequestID'
       })
-      it('it cancels the current animation frame request', () => {
+      it('cancels the current animation frame request', () => {
         wrapper.vm.stopAnimating()
         expect(global.window.cancelAnimationFrame)
           .toHaveBeenCalledWith('mockAnimationFrameRequestID')
