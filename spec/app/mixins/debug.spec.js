@@ -16,7 +16,7 @@ describe('debug', () => {
     }
   })
   describe('beforeDestroy()', () => {
-    it('it removes handleKeyup from window keyup', () => {
+    it('removes handleKeyup from window keyup', () => {
       global.window.removeEventListener = jest.fn()
       wrapper = shallowMount(component, {
         mounted: jest.fn()
@@ -27,7 +27,7 @@ describe('debug', () => {
     })
   })
   describe('mounted()', () => {
-    it('it adds handleKeyup to window keyup', () => {
+    it('adds handleKeyup to window keyup', () => {
       global.window.addEventListener = jest.fn()
       wrapper = shallowMount(component)
       expect(global.window.addEventListener)
@@ -45,14 +45,14 @@ describe('debug', () => {
         wrapper = shallowMount(component)
       })
       describe('when event prevents default', () => {
-        it('it does nothing', () => {
+        it('does nothing', () => {
           event = { defaultPrevented: true }
           wrapper.vm.handleKeyup(event)
           expect(component.methods.toggleDebugMode).not.toHaveBeenCalled()
         })
       })
       describe('when event key is \'d\'', () => {
-        it('it toggles debug mode', () => {
+        it('toggles debug mode', () => {
           event = { defaultPrevented: false, key: 'd' }
           wrapper.vm.handleKeyup(event)
           expect(component.methods.toggleDebugMode).toHaveBeenCalled()

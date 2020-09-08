@@ -19,11 +19,7 @@ describe('handler(event)', () => {
       event = originRequestEvent
     })
 
-    it([
-      'creates an app with default middleware',
-      'calls the app with the event request and response',
-      'and returns the result'
-    ].join(', '), async () => {
+    it('handles the event with default middleware and returns the result', async () => {
       const { request, response } = event.Records[0].cf
       App.prototype.call.mockResolvedValue(request)
       result = handler(event)
