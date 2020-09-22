@@ -13,7 +13,7 @@
     "d3-ease": "^2.0.0",
     "deepmerge": "^4.2.2",
     "nuxt": "^2.14.6",
-    "pixi-particles": "^4.2.1",
+    "pixi-particles": "^4.3.0",
     "pixi.js": "^5.3.3",
     "stats.js": "^0.17.0",
     "three": "^0.120.1",
