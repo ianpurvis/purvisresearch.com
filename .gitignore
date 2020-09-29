@@ -23,3 +23,8 @@ static/sitemap.xml
 dist
 
 coverage
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform
