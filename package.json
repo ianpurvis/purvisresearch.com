@@ -33,7 +33,7 @@
     "@nuxt/babel-preset-app-edge": "^2.13.0-26541346.39dd866b",
     "@nuxtjs/sitemap": "^2.3.2",
     "@vue/test-utils": "^1.1.0",
-    "aws-cdk": "^1.64.1",
+    "aws-cdk": "^1.65.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
