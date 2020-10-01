@@ -82,13 +82,11 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
   CloudFront Lambda@Edge events to provide redirection and HTTP header
   management.
 
-- [**lib/stack/zone.js**](lib/stack/zone.js) and [**lib/stack/root.js**](lib/stack/root.js)
-  are [AWS CDK](https://github.com/aws/aws-cdk) stacks that deploy the cloud
-  resources for hosting this website. The zone stack creates a top-level hosted
-  zone in Route53 along with MX records for gmail. From there, the root stack
-  adds a S3 bucket and Cloudfront distribution with Lambda@Edge functions. Finally,
-  everything is tied together with a managed ACM certificate and Route53 alias
-  record for the hosted zone.
+- [**infra/**](infra/) contains the terraform configuration that manages the
+  AWS infrastructure for this site.  It orchestrates a number of AWS resources
+  including Route53, Certificate Manager, S3, Cloudfront, and Lambda@Edge.
+  Everything is organized and tagged with a human-friendly in the style of
+  heroku.
 
 - [**.github/workflows/ci.yml**](.github/workflows/ci.yml) checks the codebase
   with [ESLint](https://github.com/eslint/eslint) and
