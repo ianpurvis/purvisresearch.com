@@ -11,9 +11,6 @@ node_modules
 # logs
 npm-debug.log
 
-# CDK asset staging directory
-.cdk.staging
-cdk.out
 
 # Nuxt build
 .nuxt
@@ -23,3 +20,8 @@ static/sitemap.xml
 dist
 
 coverage
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform

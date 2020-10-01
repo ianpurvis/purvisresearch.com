@@ -28,6 +28,10 @@ jobs:
       run: |
         bin/eslint
         bin/stylelint
+    - run: |
+        terraform init -backend=false
+        terraform validate
+      working-directory: infra
     - name: Build
       run: |
         bin/build
