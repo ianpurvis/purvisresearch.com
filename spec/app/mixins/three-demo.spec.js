@@ -62,12 +62,10 @@ describe('three-demo', () => {
         it('destroys the scene', () => {
           wrapper = shallowMount(component)
           wrapper.vm.scene = {
-            dispose: jest.fn(),
             traverse: jest.fn()
           }
           wrapper.vm.dispose()
           expect(wrapper.vm.scene.traverse).toHaveBeenCalled()
-          expect(wrapper.vm.scene.dispose).toHaveBeenCalled()
         })
       })
     })

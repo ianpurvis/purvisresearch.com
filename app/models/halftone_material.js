@@ -1,9 +1,4 @@
-import {
-  ShaderChunk,
-  ShaderMaterial,
-  UniformsLib,
-  UniformsUtils,
-} from 'three'
+import { Matrix3, ShaderChunk, ShaderMaterial } from 'three'
 import halftoneFilterFragmentShader from '~/assets/shaders/halftone_filter.frag.glsl'
 
 class HalftoneMaterial extends ShaderMaterial {
@@ -12,13 +7,11 @@ class HalftoneMaterial extends ShaderMaterial {
       extensions: {
         derivatives: true,
       },
-      uniforms: UniformsUtils.merge([
-        UniformsLib.common,
-        {
-          map: { value: map },
-          opacity: { value: opacity },
-        }
-      ]),
+      uniforms: {
+        map: { value: map },
+        opacity: { value: opacity },
+        uvTransform: { value: new Matrix3() },
+      },
       fragmentShader: halftoneFilterFragmentShader,
       vertexShader: ShaderChunk.meshbasic_vert,
       transparent: transparent,
