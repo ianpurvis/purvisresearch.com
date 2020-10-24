@@ -31,7 +31,8 @@ export default {
   methods: {
     dispose() {
       if (this.scene) {
-        this.scene.traverse((node) => {
+        this.scene.traverse(node => {
+          if (node == this.scene) return
           [].concat(node.material).forEach(material => {
             if (material == null) return
             Object.values(material).forEach(safeDispose)
@@ -40,7 +41,6 @@ export default {
           safeDispose(node.geometry)
           safeDispose(node)
         })
-        safeDispose(this.scene)
       }
       if (this.renderer) {
         let renderTarget = this.renderer.getRenderTarget()
