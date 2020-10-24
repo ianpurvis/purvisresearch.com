@@ -13,5 +13,3 @@ updates:
       - dependency-name: extract-loader
         versions:
           - '> 2.0.1'
-    reviewers:
-      - ianpurvis
