@@ -10,7 +10,7 @@ import {
 import billImagePath from '../assets/images/2020/jul/tubman-twenty.jpg'
 import { PerspectiveCamera } from '../models/perspective-camera.js'
 import { ChaseCameraRig } from '../models/chase-camera-rig.js'
-import { Oscillator } from '../models/oscillator.js'
+import { cos } from '~/models/oscillators.js'
 import { TextureLoader } from '../models/texture-loader.js'
 import workerUrl from '../workers/dollar-physics-worker.js?worker&url'
 
@@ -33,18 +33,9 @@ class BanknoteInSimplexWind extends Scene {
 
   loadCamera() {
     this.camera.far = 1000
-
-    const cameraRig = new ChaseCameraRig(this.camera, this.mesh)
+    const cameraRig = this.cameraRig = new ChaseCameraRig(this.camera, this.mesh)
     cameraRig.position.z = cameraRig.offset.z = 12
     this.add(cameraRig)
-
-    const chaseOscillator = new Oscillator({
-      period: 20, // seconds
-      amplitude: 0.1,
-      yshift: 0.65,
-    })
-
-    Object.assign(this, { cameraRig, chaseOscillator })
   }
 
   async loadBill() {
@@ -101,7 +92,13 @@ class BanknoteInSimplexWind extends Scene {
     this.mesh.geometry.attributes.position.array = vertices
     this.mesh.geometry.attributes.position.needsUpdate = true
 
-    this.cameraRig.smoothing = this.chaseOscillator.cos(elapsedTime)
+    this.cameraRig.smoothing = cos(
+      elapsedTime,
+      20,   // period (seconds)
+      0.1,  // amplitude
+      0,    // xshift
+      0.65  // yshift
+    )
     this.cameraRig.update(deltaTime)
 
     if (this.camera.needsUpdate)
