@@ -1,11 +1,26 @@
 class Animator {
 
-  constructor({ animations = [], speed = 1.0 } = {}) {
+  constructor({ speed = 1.0 } = {}) {
     Object.assign(this, {
-      animations,
+      animations: [],
       elapsedTime: 0,
       speed
     })
+  }
+
+  queue(...animations) {
+    for (const { startTime = this.elapsedTime, ...props } of animations) {
+      this.animations.push({ startTime, ...props })
+    }
+  }
+
+  async resolve(...animations) {
+    const queued = []
+    for (const animation of animations) {
+      queued.push(new Promise((resolve, reject) =>
+        this.queue({ ...animation, resolve, reject })))
+    }
+    return Promise.all(queued)
   }
 
   update(deltaTime) {
@@ -16,10 +31,12 @@ class Animator {
       const animationElapsedTime = Math.min(this.elapsedTime - startTime, duration)
 
       try {
-        tick.call(animation, animationElapsedTime, duration)
-      } catch (error) {
+        tick(animationElapsedTime)
+      }
+      catch (error) {
         this.animations.splice(index, 1)
         if (reject) reject(error)
+        return
       }
       if (animationElapsedTime >= duration) {
         this.animations.splice(index, 1)
