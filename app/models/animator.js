@@ -1,10 +1,11 @@
+import { MathUtils } from 'three'
+
 class Animator {
 
-  constructor({ speed = 1.0 } = {}) {
+  constructor() {
     Object.assign(this, {
       animations: [],
       elapsedTime: 0,
-      speed
     })
   }
 
@@ -24,7 +25,7 @@ class Animator {
   }
 
   update(deltaTime) {
-    this.elapsedTime += deltaTime * this.speed
+    this.elapsedTime += deltaTime
 
     this.animations.forEach((animation, index) => {
       const { startTime, duration, tick, resolve, reject } = animation
@@ -46,4 +47,21 @@ class Animator {
   }
 }
 
-export { Animator }
+function delay(duration) {
+  return {
+    duration,
+    tick() {}
+  }
+}
+
+function transition(target, property, endValue, duration=1.0) {
+  const startValue = target[property]
+  return {
+    duration,
+    tick(t) {
+      target[property] = MathUtils.lerp(startValue, endValue, t/duration)
+    }
+  }
+}
+
+export { Animator, delay, transition }
