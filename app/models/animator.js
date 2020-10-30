@@ -35,10 +35,12 @@ class Animator {
         tick(animationElapsedTime)
       }
       catch (error) {
-        this.animations.splice(index, 1)
-        if (reject) reject(error)
-        return
+        if (reject)
+          reject(error)
+        else
+          throw error
       }
+
       if (animationElapsedTime >= duration) {
         this.animations.splice(index, 1)
         if (resolve) resolve()
@@ -54,12 +56,16 @@ function delay(duration) {
   }
 }
 
-function transition(target, property, endValue, duration=1.0) {
+function linear(t) {
+  return t
+}
+
+function transition(target, property, endValue, duration = 1.0, ease = linear) {
   const startValue = target[property]
   return {
     duration,
     tick(t) {
-      target[property] = MathUtils.lerp(startValue, endValue, t/duration)
+      target[property] = MathUtils.lerp(startValue, endValue, ease(t/duration))
     }
   }
 }
