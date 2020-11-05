@@ -22,7 +22,7 @@ class DollarPhysicsWorker {
 
   step({ deltaTime, vertices }) {
     this.world.update(deltaTime)
-    this.world.bill.extractVertices(vertices)
+    this.world.render(vertices)
     return transfer(vertices, [ vertices.buffer ])
   }
 }
