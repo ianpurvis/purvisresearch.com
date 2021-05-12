@@ -52,6 +52,6 @@
     "ttf2woff": "^2.0.2",
     "vue-jest": "^3.0.7",
     "webpack-cli": "^4.7.0",
-    "worker-loader": "^3.0.5"
+    "worker-loader": "^3.0.8"
   }
 }
