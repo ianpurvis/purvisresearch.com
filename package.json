@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
-    "@nuxtjs/sentry": "^4.3.5",
+    "@nuxtjs/sentry": "^5.1.0",
     "@pixi/unsafe-eval": "^5.3.3",
     "ammo.js": "github:ianpurvis/ammo.js#feat/dollar-build",
     "bulma": "^0.9.1",
