@@ -9,7 +9,7 @@
     "@nuxtjs/sentry": "^4.3.5",
     "@pixi/unsafe-eval": "^5.3.3",
     "ammo.js": "github:ianpurvis/ammo.js#feat/dollar-build",
-    "bulma": "^0.9.1",
+    "bulma": "^0.9.3",
     "d3-ease": "^2.0.0",
     "deepmerge": "^4.2.2",
     "nuxt": "^2.14.7",
