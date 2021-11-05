@@ -34,7 +34,7 @@
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.12.1",
     "eslint-friendly-formatter": "^4.0.1",
-    "eslint-plugin-jest": "^24.1.0",
+    "eslint-plugin-jest": "^25.2.3",
     "eslint-plugin-vue": "^7.1.0",
     "extract-loader": "^2.0.1",
     "frack-loader": "^1.0.0",
