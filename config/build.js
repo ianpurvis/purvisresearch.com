@@ -52,18 +52,6 @@ export default ({ baseDir }) => ({
       config.module.rules.push({
         test: /\.svg$/,
         loader: 'svgo-loader',
-        options: {
-          plugins: [
-            { removeViewBox: false },
-            {
-              addAttributesToSVGElement: {
-                attribute: {
-                  fill: '#363636'
-                }
-              }
-            }
-          ]
-        },
         exclude: /(node_modules)/
       })
 
