@@ -51,6 +51,9 @@ module.exports = {
       plugins: [
         'vue'
       ],
+      rules: {
+        'vue/multi-word-component-names': 'warn'
+      }
     }
   ],
   parser: 'babel-eslint',
