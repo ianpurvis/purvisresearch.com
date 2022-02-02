@@ -31,7 +31,7 @@
     "babel-jest": "^27.4.6",
     "codecov": "^3.8.0",
     "core-js": "^3.21.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^15.0.0",
     "dotenv-cli": "^4.1.1",
     "eslint": "^7.12.1",
     "eslint-friendly-formatter": "^4.0.1",
