@@ -1,4 +1,5 @@
 const transformPatterns = [
+  'd3-ease',
   'three/examples/jsm',
   'three/build/three.module'
 ]
