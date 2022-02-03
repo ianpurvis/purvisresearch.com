@@ -4,8 +4,6 @@ import {
   ENV,
   Graphics,
   Renderer,
-  RenderTexture,
-  Text,
   Ticker,
   settings,
   systems,
@@ -30,7 +28,5 @@ export {
   Container,
   Graphics,
   Renderer,
-  RenderTexture,
-  Text,
   Ticker
 }
