@@ -33,6 +33,8 @@ class PixiEngine {
   }
 
   dispose() {
+    this.pause()
+    this.stage.destroy(true)
     this.clock.destroy()
     this.renderer.destroy()
   }
@@ -41,7 +43,7 @@ class PixiEngine {
   }
 
   pause() {
-    window.cancelAnimationFrame(this.onFrame)
+    window.cancelAnimationFrame(this.animationFrame)
     this.clock.stop()
   }
 
