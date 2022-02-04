@@ -6,7 +6,7 @@ import { Random } from './random.js'
 // Alias Random.rand as rand
 const { rand } = Random
 
-class BezierTexture {
+class BezierPattern {
 
   static create(color, height, width) {
 
@@ -60,4 +60,4 @@ class BezierTexture {
   }
 }
 
-export { BezierTexture }
+export { BezierPattern }

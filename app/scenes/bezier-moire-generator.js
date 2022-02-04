@@ -1,5 +1,5 @@
 import { Animator } from '../models/animator.js'
-import { BezierTexture } from '../models/bezier_texture.js'
+import { BezierPattern } from '../models/bezier-pattern.js'
 import { SECONDS_TO_MILLISECONDS } from '../models/constants.js'
 import { Oscillator } from '../models/oscillator.js'
 import { Random } from '../models/random.js'
@@ -18,7 +18,7 @@ class BezierMoireGenerator extends Container {
     ]
 
     const textures = colors
-      .map(color => BezierTexture.create(color, height, width))
+      .map(color => BezierPattern.create(color, height, width))
       .sort(Random.comparison)
 
     this.addChild(...textures)
