@@ -1,14 +1,15 @@
 import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
-import PixiDemo from '~/mixins/pixi-demo.js'
-import { SECONDS_TO_MILLISECONDS } from '~/models/constants.js'
+import Graphix from '~/mixins/graphix.js'
 import { Organization } from '~/models/organization.js'
-import { Oscillator } from '~/models/oscillator.js'
-import { Random } from '~/models/random.js'
 
 export default {
+  beforeDestroy() {
+    this.dispose()
+  },
   created() {
     // Non-reactive data:
     this.canonicalUrl = `${Organization.default.url}/2017/oct.html`
+    this.title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
     this.description = 'A bézier moiré generator in WebGL.'
     this.jsonld = {
       '@context': 'https://schema.org',
@@ -24,10 +25,7 @@ export default {
         'name': 'oct 2017',
         'item': this.canonicalUrl
       }]
-    },
-    this.speedOfLife = 0.4 // Slow-motion
-    this.textures = []
-    this.title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
+    }
   },
   head () {
     return {
@@ -51,55 +49,28 @@ export default {
     }
   },
   methods: {
+    dispose() {
+      this.engine.dispose()
+    },
     async load() {
-      await PixiDemo.methods.load.call(this)
-      const { BezierTexture } =
-        await import(/* webpackMode: "eager" */'~/models/bezier_texture.js')
-      const { height, width } = this.frame()
-      const colors = [
-        '0xff0000',
-        '0x00ff00',
-        '0x0000ff'
-      ]
-      const textures = colors
-        .map(color => BezierTexture.create(color, height, width))
-        .sort(Random.comparison)
-
-      textures.forEach(texture => this.scene.addChild(texture))
-
-      this.textures = textures
-    },
-    async oscillatePosition(object, { amplitude, period }) {
-      return new Promise((resolve, reject) => {
-        const oscillator = new Oscillator({ amplitude, period })
-        this.animations.push({
-          startTime: this.elapsedTime,
-          duration: Number.MAX_VALUE,
-          tick: (t) => {
-            object.x = oscillator.sin(t)
-          },
-          resolve: resolve,
-          reject: reject
-        })
-      })
-    },
-    update() {
-      PixiDemo.methods.update.call(this)
+      const canvas = this.$refs.canvas
+      const { PixiEngine } = await import('../../engines/pixi-engine.js')
+      const { BezierMoireGenerator } = await import('../../scenes/bezier-moire-generator.js')
+      const engine = new PixiEngine(canvas)
+      const { clientHeight, clientWidth } = canvas
+      const scene = new BezierMoireGenerator(clientWidth, clientHeight)
+      engine.stage.addChild(scene)
+      engine.onUpdate = (deltaTime) => scene.update(deltaTime)
+      this.engine = engine
     }
   },
   mixins: [
-    PixiDemo,
+    Graphix
   ],
   async mounted() {
     try {
       await this.load()
-      const oscillations = this.textures
-        .slice(-2)
-        .map(texture => this.oscillatePosition(texture, {
-          amplitude: 50, // pixels
-          period: Random.rand({ min: 50, max: 100 }) * SECONDS_TO_MILLISECONDS
-        }))
-      await Promise.all(oscillations)
+      this.engine.play()
     }
     catch(error) {
       this.logError(error)
