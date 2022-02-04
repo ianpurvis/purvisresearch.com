@@ -1,32 +1,10 @@
-import { Graphics } from '~/shims/pixi.js'
-import { Random } from '~/models/random.js'
+import { Graphics } from '../shims/pixi.js'
+import { BezierCurve } from './bezier-curve.js'
+import { Point } from './point.js'
+import { Random } from './random.js'
 
 // Alias Random.rand as rand
 const { rand } = Random
-
-class BezierCurve {
-  constructor({
-    start = new Point(),
-    controlOne = new Point(),
-    controlTwo = new Point(),
-    end = new Point()
-  }) {
-    this.start = start
-    this.controlOne = controlOne
-    this.controlTwo = controlTwo
-    this.end = end
-  }
-
-  translate(point) {
-    return new BezierCurve({
-      start: this.start.add(point),
-      controlOne: this.controlOne.add(point),
-      controlTwo: this.controlTwo.add(point),
-      end: this.end.add(point)
-    })
-  }
-}
-
 
 class BezierTexture {
 
@@ -82,30 +60,4 @@ class BezierTexture {
   }
 }
 
-
-class Point {
-  constructor({
-    x = 0,
-    y = 0
-  } = {
-    x: 0,
-    y: 0
-  }) {
-    this.x = x
-    this.y = y
-  }
-
-  add(other) {
-    return new Point({
-      x: this.x + other.x,
-      y: this.y + other.y
-    })
-  }
-}
-
-
-export {
-  BezierCurve,
-  BezierTexture,
-  Point
-}
+export { BezierTexture }
