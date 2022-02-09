@@ -1,4 +1,4 @@
-import { Container, Renderer, Ticker } from '../shims/pixi.js'
+import { Container, Renderer } from '../shims/pixi.js'
 
 class PixiEngine {
 
@@ -20,29 +20,33 @@ class PixiEngine {
       view: canvas,
       width: clientWidth,
     })
-    this.clock = new Ticker()
     this.stage = new Container()
-    this.elapsedTime = 0
-    this.speedOfLife = 1.0
     this.canvas = canvas
-    this.onFrame = () => this.update()
+    this.deltaTime = 0
+    this.elapsedTime = 0
+    this.time = 0
+    this.paused = true
   }
 
   dispose() {
     this.pause()
     this.stage.destroy(true)
-    this.clock.destroy()
     this.renderer.destroy()
   }
 
   pause() {
-    window.cancelAnimationFrame(this.animationFrame)
-    this.clock.stop()
+    this.paused = true
   }
 
-  play() {
-    this.clock.start()
-    this.update()
+  async play() {
+    this.paused = false
+    this.time = performance.now()
+    for (let now = this.time; !this.paused; now = await this.tick()) {
+      this.deltaTime = now - this.time
+      this.elapsedTime += this.deltaTime
+      this.time = now
+      this.update()
+    }
   }
 
   render() {
@@ -67,15 +71,15 @@ class PixiEngine {
     this._scene = scene
   }
 
-  update() {
-    const deltaTime = this.clock.elapsedMS * this.speedOfLife
-    this.elapsedTime += deltaTime
-    this._scene.update(deltaTime, this.elapsedTime)
-    this.resize()
-    this.render()
-    this.animationFrame = window.requestAnimationFrame(this.onFrame)
+  async tick() {
+    return new Promise(this.canvas.ownerDocument.defaultView.requestAnimationFrame)
   }
 
+  update() {
+    this._scene.update(this.deltaTime, this.elapsedTime)
+    this.resize()
+    this.render()
+  }
 }
 
 export { PixiEngine }
