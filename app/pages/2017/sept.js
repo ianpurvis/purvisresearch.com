@@ -58,7 +58,7 @@ export default {
       WebGL.assertWebGLAvailable(canvas)
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { EmojiParticleFlowScene } = await import('../../scenes/emoji-particle-flow.js')
-      const engine = new PixiEngine(canvas)
+      const engine = new PixiEngine(canvas, { maxFPS: 30 })
       const { clientHeight, clientWidth } = canvas
       engine.scene = new EmojiParticleFlowScene(clientWidth, clientHeight)
       this.engine = engine

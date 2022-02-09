@@ -2,7 +2,7 @@ import { Container, Renderer } from '../shims/pixi.js'
 
 class PixiEngine {
 
-  constructor(canvas) {
+  constructor(canvas, { maxFPS = 0 } = {}) {
     const {
       clientHeight,
       clientWidth,
@@ -25,6 +25,7 @@ class PixiEngine {
     this.deltaTime = 0
     this.elapsedTime = 0
     this.time = 0
+    this.maxFPS = maxFPS
     this.paused = true
   }
 
@@ -39,13 +40,16 @@ class PixiEngine {
   }
 
   async play() {
+    const minMSPF = this.maxFPS == 0 ? 0 : 1000 / this.maxFPS
     this.paused = false
     this.time = performance.now()
     for (let now = this.time; !this.paused; now = await this.tick()) {
       this.deltaTime = now - this.time
-      this.elapsedTime += this.deltaTime
-      this.time = now
-      this.update()
+      if (this.deltaTime >= minMSPF) {
+        this.elapsedTime += this.deltaTime
+        this.time = now
+        this.update()
+      }
     }
   }
 
