@@ -51,11 +51,11 @@ export default {
   },
   methods: {
     dispose() {
-      this.engine.dispose()
+      if (this.engine) this.engine.dispose()
     },
     async load() {
       const canvas = this.$refs.canvas
-      if (!WebGL.isWebGLAvailable(canvas)) return
+      WebGL.assertWebGLAvailable(canvas)
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { EmojiParticleFlowScene } = await import('../../scenes/emoji-particle-flow.js')
       const engine = new PixiEngine(canvas)
@@ -64,17 +64,13 @@ export default {
       engine.stage.addChild(scene)
       engine.onUpdate = (deltaTime) => scene.update(deltaTime)
       this.engine = engine
+      await engine.play()
     }
   },
   mixins: [
     Graphix,
   ],
-  async mounted() {
-    try {
-      await this.load()
-      this.engine.play()
-    } catch (error) {
-      this.logError(error)
-    }
+  mounted() {
+    this.load().catch(Graphix.errorCaptured)
   }
 }
