@@ -1,6 +1,4 @@
 import { Container, Renderer, Ticker } from '../shims/pixi.js'
-import { WebGL } from '../models/webgl.js'
-
 
 class PixiEngine {
 
@@ -16,7 +14,6 @@ class PixiEngine {
     } = canvas
     const resolution = Math.max(devicePixelRatio, 2)
 
-    WebGL.assertWebGLAvailable(canvas)
     this.renderer = new Renderer({
       height: clientHeight,
       resolution,
