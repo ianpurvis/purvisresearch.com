@@ -61,14 +61,7 @@ export default {
       this.renderer.setSize(width, height, false)
       this.startAnimating()
     },
-    logError(error) {
-      if (error instanceof WebGL.WebGLNotAvailableError) {
-        console.warn(error.message)
-      } else {
-        this.$sentry.captureException(error)
-        console.error(error)
-      }
-    },
+    logError: Graphix.errorCaptured,
     render() {
       this.resize()
       this.renderer.render(this.scene, this.camera)
