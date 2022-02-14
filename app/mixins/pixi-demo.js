@@ -43,14 +43,6 @@ export default {
       this.scene = new Container()
       this.startAnimating()
     },
-    logError(error) {
-      if (error instanceof WebGL.WebGLNotAvailableError) {
-        console.warn(error.message)
-      } else {
-        this.$sentry.captureException(error)
-        console.error(error)
-      }
-    },
     render() {
       this.resize()
       this.renderer.render(this.scene)
