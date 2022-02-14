@@ -5,6 +5,7 @@ import tight from 'vue-tight'
 import unobfuscate from '~/directives/unobfuscate.js'
 import graphix from '~/mixins/graphix.js'
 import { shallowMount } from '@vue/test-utils'
+import { WebGL } from '~/models/webgl.js'
 
 
 describe('graphix', () => {
@@ -18,6 +19,34 @@ describe('graphix', () => {
       render: jest.fn()
     }
   })
+  describe('errorCaptured', () => {
+    let error, result
+
+    beforeEach(() => {
+      error = new Error('fake-error')
+      global.console = {
+        warn: jest.fn()
+      }
+    })
+
+    it('throws error', () => {
+      expect(() => graphix.errorCaptured(error)).toThrow(error)
+    })
+
+    describe('when error is WebGLNotAvailableError', () => {
+      beforeEach(() => {
+        error = new WebGL.WebGLNotAvailableError()
+      })
+      it('writes a warning to the console', () => {
+        graphix.errorCaptured(error)
+        expect(console.warn).toHaveBeenCalledWith(error.message)
+      })
+      it('returns false', () => {
+        result = graphix.errorCaptured(error)
+        expect(result).toBe(false)
+      })
+    })
+  }),
   describe('directives', () => {
     let directives
 
