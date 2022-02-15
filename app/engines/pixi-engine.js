@@ -12,11 +12,10 @@ class PixiEngine {
         }
       }
     } = canvas
-    const resolution = Math.max(devicePixelRatio, 2)
 
     this.renderer = new Renderer({
       height: clientHeight,
-      resolution,
+      resolution: devicePixelRatio,
       transparent: true,
       view: canvas,
       width: clientWidth,
