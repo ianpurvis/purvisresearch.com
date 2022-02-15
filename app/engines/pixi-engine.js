@@ -35,9 +35,6 @@ class PixiEngine {
     this.renderer.destroy()
   }
 
-  onUpdate() {
-  }
-
   pause() {
     window.cancelAnimationFrame(this.animationFrame)
     this.clock.stop()
@@ -57,10 +54,20 @@ class PixiEngine {
     this.renderer.resize(clientWidth, clientHeight)
   }
 
+  get scene() {
+    return this._scene
+  }
+
+  set scene(scene) {
+    this.stage.removeChildren()
+    this.stage.addChild(scene)
+    this._scene = scene
+  }
+
   update() {
     const deltaTime = this.clock.elapsedMS * this.speedOfLife
     this.elapsedTime += deltaTime
-    this.onUpdate(deltaTime, this.elapsedTime)
+    this._scene.update(deltaTime, this.elapsedTime)
     this.resize()
     this.render()
     this.animationFrame = window.requestAnimationFrame(this.onFrame)

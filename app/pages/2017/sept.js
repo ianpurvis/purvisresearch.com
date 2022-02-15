@@ -60,9 +60,7 @@ export default {
       const { EmojiParticleFlowScene } = await import('../../scenes/emoji-particle-flow.js')
       const engine = new PixiEngine(canvas)
       const { clientHeight, clientWidth } = canvas
-      const scene = new EmojiParticleFlowScene(clientWidth, clientHeight)
-      engine.stage.addChild(scene)
-      engine.onUpdate = (deltaTime) => scene.update(deltaTime)
+      engine.scene = new EmojiParticleFlowScene(clientWidth, clientHeight)
       this.engine = engine
       await engine.play()
     }

@@ -60,9 +60,7 @@ export default {
       const { BezierMoireGenerator } = await import('../../scenes/bezier-moire-generator.js')
       const engine = new PixiEngine(canvas)
       const { clientHeight, clientWidth } = canvas
-      const scene = new BezierMoireGenerator(clientWidth, clientHeight)
-      engine.stage.addChild(scene)
-      engine.onUpdate = (deltaTime) => scene.update(deltaTime)
+      engine.scene = new BezierMoireGenerator(clientWidth, clientHeight)
       this.engine = engine
       await this.engine.play()
     }
