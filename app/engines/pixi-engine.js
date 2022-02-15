@@ -50,8 +50,11 @@ class PixiEngine {
   }
 
   resize() {
-    const { clientHeight, clientWidth } = this.renderer.view
-    this.renderer.resize(clientWidth, clientHeight)
+    const { height, width } = this.renderer
+    const { clientHeight, clientWidth } = this.canvas
+    if (clientHeight != height || clientWidth != width) {
+      this.renderer.resize(clientWidth, clientHeight)
+    }
   }
 
   get scene() {
