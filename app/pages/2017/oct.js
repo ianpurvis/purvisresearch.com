@@ -1,6 +1,7 @@
 import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
 import Graphix from '~/mixins/graphix.js'
 import { Organization } from '~/models/organization.js'
+import { WebGL } from '~/models/webgl.js'
 
 export default {
   beforeDestroy() {
@@ -50,10 +51,11 @@ export default {
   },
   methods: {
     dispose() {
-      this.engine.dispose()
+      if (this.engine) this.engine.dispose()
     },
     async load() {
       const canvas = this.$refs.canvas
+      WebGL.assertWebGLAvailable(canvas)
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { BezierMoireGenerator } = await import('../../scenes/bezier-moire-generator.js')
       const engine = new PixiEngine(canvas)
@@ -62,18 +64,13 @@ export default {
       engine.stage.addChild(scene)
       engine.onUpdate = (deltaTime) => scene.update(deltaTime)
       this.engine = engine
+      await this.engine.play()
     }
   },
   mixins: [
     Graphix
   ],
-  async mounted() {
-    try {
-      await this.load()
-      this.engine.play()
-    }
-    catch(error) {
-      this.logError(error)
-    }
+  mounted() {
+    this.load().catch(Graphix.errorCaptured)
   }
 }
