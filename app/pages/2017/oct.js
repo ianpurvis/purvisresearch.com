@@ -58,11 +58,9 @@ export default {
       WebGL.assertWebGLAvailable(canvas)
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { BezierMoireGenerator } = await import('../../scenes/bezier-moire-generator.js')
-      const engine = new PixiEngine(canvas)
+      const engine = new PixiEngine(canvas, { maxFPS: 30 })
       const { clientHeight, clientWidth } = canvas
-      const scene = new BezierMoireGenerator(clientWidth, clientHeight)
-      engine.stage.addChild(scene)
-      engine.onUpdate = (deltaTime) => scene.update(deltaTime)
+      engine.scene = new BezierMoireGenerator(clientWidth, clientHeight)
       this.engine = engine
       await this.engine.play()
     }

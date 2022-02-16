@@ -1,8 +1,8 @@
-import { Container, Renderer, Ticker } from '../shims/pixi.js'
+import { Container, Renderer } from '../shims/pixi.js'
 
 class PixiEngine {
 
-  constructor(canvas) {
+  constructor(canvas, { maxFPS = 0 } = {}) {
     const {
       clientHeight,
       clientWidth,
@@ -12,41 +12,45 @@ class PixiEngine {
         }
       }
     } = canvas
-    const resolution = Math.max(devicePixelRatio, 2)
 
     this.renderer = new Renderer({
       height: clientHeight,
-      resolution,
+      resolution: devicePixelRatio,
       transparent: true,
       view: canvas,
       width: clientWidth,
     })
-    this.clock = new Ticker()
     this.stage = new Container()
-    this.elapsedTime = 0
-    this.speedOfLife = 1.0
     this.canvas = canvas
-    this.onFrame = () => this.update()
+    this.deltaTime = 0
+    this.elapsedTime = 0
+    this.time = 0
+    this.maxFPS = maxFPS
+    this.paused = true
   }
 
   dispose() {
     this.pause()
     this.stage.destroy(true)
-    this.clock.destroy()
     this.renderer.destroy()
   }
 
-  onUpdate() {
-  }
-
   pause() {
-    window.cancelAnimationFrame(this.animationFrame)
-    this.clock.stop()
+    this.paused = true
   }
 
-  play() {
-    this.clock.start()
-    this.update()
+  async play() {
+    const minMSPF = this.maxFPS == 0 ? 0 : 1000 / this.maxFPS
+    this.paused = false
+    this.time = performance.now()
+    for (let now = this.time; !this.paused; now = await this.tick()) {
+      this.deltaTime = now - this.time
+      if (this.deltaTime >= minMSPF) {
+        this.elapsedTime += this.deltaTime
+        this.time = now
+        this.update()
+      }
+    }
   }
 
   render() {
@@ -54,19 +58,32 @@ class PixiEngine {
   }
 
   resize() {
-    const { clientHeight, clientWidth } = this.renderer.view
-    this.renderer.resize(clientWidth, clientHeight)
+    const { height, width } = this.renderer
+    const { clientHeight, clientWidth } = this.canvas
+    if (clientHeight != height || clientWidth != width) {
+      this.renderer.resize(clientWidth, clientHeight)
+    }
+  }
+
+  get scene() {
+    return this._scene
+  }
+
+  set scene(scene) {
+    this.stage.removeChildren()
+    this.stage.addChild(scene)
+    this._scene = scene
+  }
+
+  async tick() {
+    return new Promise(this.canvas.ownerDocument.defaultView.requestAnimationFrame)
   }
 
   update() {
-    const deltaTime = this.clock.elapsedMS * this.speedOfLife
-    this.elapsedTime += deltaTime
-    this.onUpdate(deltaTime, this.elapsedTime)
+    this._scene.update(this.deltaTime, this.elapsedTime)
     this.resize()
     this.render()
-    this.animationFrame = window.requestAnimationFrame(this.onFrame)
   }
-
 }
 
 export { PixiEngine }
