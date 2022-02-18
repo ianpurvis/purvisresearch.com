@@ -4,9 +4,10 @@ class Particle extends Mesh {
 
   constructor(geometry, material) {
     super(geometry, material)
-    this.acceleration = new Vector3(0, 0, 0)
+    this.acceleration = new Vector3()
     this.mass = 1
-    this.velocity = new Vector3(0, 0, 0)
+    this.velocity = new Vector3()
+    this._aux = new Vector3()
   }
 
   toString() {
@@ -17,11 +18,18 @@ class Particle extends Mesh {
       + `\tr: ${this.rotation.toArray()}`
   }
 
+  applyForce(force) {
+    this._aux.copy(force).multiplyScalar(1 / this.mass)
+    this.acceleration.add(this._aux)
+  }
+
   update(deltaTime) {
-    this.acceleration.multiplyScalar(1 / this.mass)
-    this.position.add(this.velocity.clone().multiplyScalar(deltaTime))
-    this.velocity.add(this.acceleration.multiplyScalar(deltaTime))
-    this.acceleration.setScalar(0)
+    this._aux.copy(this.acceleration).multiplyScalar(deltaTime)
+    this.velocity.add(this._aux)
+    this._aux.copy(this.velocity).multiplyScalar(deltaTime)
+    this.position.add(this._aux)
+    if (deltaTime > 0)
+      this.acceleration.setScalar(0)
   }
 }
 
