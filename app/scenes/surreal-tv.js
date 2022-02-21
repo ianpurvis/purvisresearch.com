@@ -2,15 +2,13 @@ import {
   AmbientLight,
   Color,
   Mesh,
-  MeshLambertMaterial,
+  MeshBasicMaterial,
   MeshPhongMaterial,
   Object3D,
-  OrthographicCamera,
   PlaneGeometry,
   RepeatWrapping,
   Scene,
   SpotLight,
-  Vector3,
   VideoTexture
 } from 'three'
 import {
@@ -23,6 +21,7 @@ import tatamiAlphaTexturePath from '../assets/images/2019/apr/tatami-alpha.png'
 import { Animator, delay, transition } from '../models/animator.js'
 import { DEGREES_TO_RADIANS } from '../models/constants.js'
 import HalftoneMaterial from '../models/halftone-material.js'
+import { OrthographicCamera } from '../models/orthographic-camera.js'
 import { TextureLoader } from '../models/texture-loader.js'
 
 const Colors = {
@@ -80,7 +79,7 @@ class SurrealTVScene extends Scene {
     const alphaMap = await this.textureLoader.load(tatamiAlphaTexturePath)
     alphaMap.wrapS = alphaMap.wrapT = RepeatWrapping
     alphaMap.repeat.set(9, 9)
-    const material = new MeshLambertMaterial({
+    const material = new MeshBasicMaterial({
       alphaMap,
       color: Colors.black,
       opacity: 0.0,
@@ -127,7 +126,7 @@ class SurrealTVScene extends Scene {
 
   async loadNekoTV() {
     const map = await this.textureLoader.load(nekoTexturePath)
-    const material = new MeshLambertMaterial({
+    const material = new MeshPhongMaterial({
       color: Colors.whitesmoke,
       map,
       transparent: true,
@@ -193,19 +192,17 @@ class SurrealTVScene extends Scene {
     this.subfloor = subfloor
   }
 
-  resize({ width, height }) {
-    const { camera } = this
-    const aspect = width / height
-    const targetSize = new Vector3(2.25, 2.25)
-    Object.assign(camera, {
-      left: targetSize.x * aspect / -2,
-      right: targetSize.x * aspect / 2,
-      top: targetSize.y / 2,
-      bottom: targetSize.y / -2,
-      near: 0,
-      far: 1000
-    })
-    camera.updateProjectionMatrix()
+  resize(width, height) {
+    this.camera.cover(width, height, 2.25, 2.25)
+  }
+
+  async run() {
+    await this.delay(3)
+    await this.transitionToNight(8)
+    await this.transitionIntensity(this.monsterLight, 1, 5)
+    await this.delay(3)
+    await this.transitionIntensity(this.monsterLight, 0, 6)
+    await this.transitionToDay(8)
   }
 
   async transitionIntensity(target, value, duration = 1) {
@@ -251,17 +248,11 @@ class SurrealTVScene extends Scene {
     ])
   }
 
-  async run() {
-    await this.delay(3)
-    await this.transitionToNight(8)
-    await this.transitionIntensity(this.monsterLight, 1, 5)
-    await this.delay(3)
-    await this.transitionIntensity(this.monsterLight, 0, 6)
-    await this.transitionToDay(8)
-  }
-
   update(deltaTime) {
     this.animator.update(deltaTime)
+
+    if (this.camera.needsUpdate)
+      this.camera.updateProjectionMatrix()
   }
 
 }
