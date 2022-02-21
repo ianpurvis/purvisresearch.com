@@ -2,12 +2,12 @@
 
 const TWO_PI = 2 * Math.PI
 
-function sin(x, period = 1, amplitude = 1, xshift = 0, yshift = 0) {
-  return Math.sin(TWO_PI * (x + xshift) / period) * amplitude + yshift
+function sin(t) {
+  return Math.sin(TWO_PI * t)
 }
 
-function cos(x, period = 1, amplitude = 1, xshift = 0, yshift = 0) {
-  return Math.cos(TWO_PI * (x + xshift) / period) * amplitude + yshift
+function cos(t) {
+  return Math.cos(TWO_PI * t)
 }
 
 export { sin, cos }

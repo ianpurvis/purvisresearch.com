@@ -33,9 +33,14 @@ class BanknoteInSimplexWind extends Scene {
 
   loadCamera() {
     this.camera.far = 1000
+
     const cameraRig = this.cameraRig = new ChaseCameraRig(this.camera, this.mesh)
     cameraRig.position.z = cameraRig.offset.z = 12
     this.add(cameraRig)
+
+    this.cameraOscillator =
+      (t, period = 20 /* seconds */, amplitude = 0.1, yshift = 0.65) =>
+        cos(t / period) * amplitude + yshift
   }
 
   async loadBill() {
@@ -92,13 +97,7 @@ class BanknoteInSimplexWind extends Scene {
     this.mesh.geometry.attributes.position.array = vertices
     this.mesh.geometry.attributes.position.needsUpdate = true
 
-    this.cameraRig.smoothing = cos(
-      elapsedTime,
-      20,   // period (seconds)
-      0.1,  // amplitude
-      0,    // xshift
-      0.65  // yshift
-    )
+    this.cameraRig.smoothing = this.cameraOscillator.call(elapsedTime)
     this.cameraRig.update(deltaTime)
 
     if (this.camera.needsUpdate)

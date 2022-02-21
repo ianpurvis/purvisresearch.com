@@ -30,7 +30,7 @@ class BezierMoireGenerator extends Container {
       amplitude: 50, //pixels
       period: Random.rand({ min: 50, max: 100 }) * SECONDS_TO_MILLISECONDS,
       tick(t) {
-        this.target.x = sin(t, this.period, this.amplitude)
+        this.target.x = sin(t / this.period) * this.amplitude
       }
     }))
 
