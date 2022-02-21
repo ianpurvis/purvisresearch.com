@@ -3,7 +3,7 @@ on:
   push:
     branches: [$default-branch]
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     env:
