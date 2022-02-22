@@ -22,7 +22,7 @@ import tatamiAlphaTexturePath from '~/assets/images/2019/apr/tatami-alpha.png'
 import tatamiTexturePath from '~/assets/images/2019/apr/tatami-bw.png'
 import ThreeDemo from '~/mixins/three-demo.js'
 import { DEGREES_TO_RADIANS } from '~/models/constants.js'
-import HalftoneMaterial from '~/models/halftone_material.js'
+import HalftoneMaterial from '~/models/halftone-material.js'
 import { Organization } from '~/models/organization.js'
 import { TextureLoader } from '~/models/texture-loader.js'
 
