@@ -91,7 +91,7 @@ class SurrealTVScene extends Scene {
     floor.position.set(0.11, 0, 0)
     this.add(floor)
     this.floor = floor
-    await this.transitionOpacity(floor, 1.0)
+    await this.transitionOpacity(floor, 1000)
   }
 
   loadMonsterLight() {
@@ -139,7 +139,7 @@ class SurrealTVScene extends Scene {
     tv.position.lerp(this.camera.position, 0.5)
     this.add(tv)
     this.nekoTV = tv
-    await this.transitionOpacity(tv, 1.0)
+    await this.transitionOpacity(tv, 1000)
   }
 
   async loadScreen() {
@@ -155,7 +155,7 @@ class SurrealTVScene extends Scene {
     screen.position.set(0.56, 0.91, 1.00)
     this.add(screen)
     this.screen = screen
-    await this.transitionOpacity(screen, 1.0)
+    await this.transitionOpacity(screen, 1000)
     screen.transparent = false
   }
 
@@ -197,19 +197,19 @@ class SurrealTVScene extends Scene {
   }
 
   async run() {
-    await this.delay(3)
-    await this.transitionToNight(8)
-    await this.transitionIntensity(this.monsterLight, 1, 5)
-    await this.delay(3)
-    await this.transitionIntensity(this.monsterLight, 0, 6)
-    await this.transitionToDay(8)
+    await this.delay(3000)
+    await this.transitionToNight(8000)
+    await this.transitionIntensity(this.monsterLight, 1, 5000)
+    await this.delay(3000)
+    await this.transitionIntensity(this.monsterLight, 0, 6000)
+    await this.transitionToDay(8000)
   }
 
-  async transitionIntensity(target, value, duration = 1) {
+  async transitionIntensity(target, value, duration = 1000) {
     await this.animator.resolve(transition(target, 'intensity', value, duration, easeQuadIn))
   }
 
-  async transitionOpacity(target, value, duration = 1) {
+  async transitionOpacity(target, value, duration = 1000) {
     function ease(t) { return easeBackInOut(t, 0.5) }
     await this.animator.resolve(transition(target.material, 'opacity', value, duration, ease))
   }
@@ -254,7 +254,6 @@ class SurrealTVScene extends Scene {
     if (this.camera.needsUpdate)
       this.camera.updateProjectionMatrix()
   }
-
 }
 
 export { SurrealTVScene }
