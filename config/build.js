@@ -131,8 +131,9 @@ export default ({ baseDir }) => ({
 
     // Transpile npm packages lacking ES5 compatibility:
     transpile: [
-      'vue-analytics',
-      /^three\/examples\/jsm/
+      'd3-ease',
+      /^three\/examples\/jsm/,
+      'vue-analytics'
     ],
   }
 })
