@@ -16,6 +16,7 @@ import {
 } from 'd3-ease'
 import monsterTexturePath from '../assets/images/2019/apr/monster-bw.png'
 import nekoTexturePath from '../assets/images/2019/apr/neko-bw.png'
+import tvTexturePath from '../assets/images/2019/apr/tv-bw.png'
 import tatamiAlphaTexturePath from '../assets/images/2019/apr/tatami-alpha.png'
 import { Animator, delay, transition } from '../models/animator.js'
 import { DEGREES_TO_RADIANS } from '../models/constants.js'
@@ -51,10 +52,11 @@ class SurrealTVScene extends Scene {
     await this.loadSubfloor()
     await this.loadFloor()
     await Promise.all([
-      this.loadNekoTV(),
+      this.loadNeko(),
+      this.loadTV(),
       this.loadScreen(),
     ])
-    await this.loadMonsterTV()
+    await this.loadMonster()
     await this.loadScreenLight()
     await this.loadMonsterLight()
   }
@@ -90,23 +92,10 @@ class SurrealTVScene extends Scene {
     floor.position.set(0.11, 0, 0)
     this.add(floor)
     this.floor = floor
-    await this.transitionOpacity(floor, 1000)
+    await this.transitionOpacity(floor, 1, 1000)
   }
 
-  loadMonsterLight() {
-    const light = Object.assign(new SpotLight(), {
-      angle: 90 * DEGREES_TO_RADIANS,
-      color: Colors.mint,
-      distance: 1.6,
-      intensity: 0,
-      penumbra: 1,
-    })
-    light.position.set(-0.25, 0.2, 1)
-    this.monsterTV.add(light)
-    this.monsterLight = light
-  }
-
-  async loadMonsterTV() {
+  async loadMonster() {
     const map = await this.textureLoader.load(monsterTexturePath)
     const material = new MeshPhongMaterial({
       color: Colors.whitesmoke,
@@ -115,15 +104,26 @@ class SurrealTVScene extends Scene {
       opacity: 0.0,
     })
     const geometry = new PlaneGeometry(2, 2)
-    const tv = new Mesh(geometry, material)
+    const monster = this.monster = new Mesh(geometry, material)
     // Simulate sprite rendering:
-    tv.lookAt(this.camera.position)
-    tv.position.lerp(this.camera.position, 0.5)
-    this.add(tv)
-    this.monsterTV = tv
+    monster.lookAt(this.camera.position)
+    monster.position.lerp(this.camera.position, 0.5)
+    this.add(monster)
   }
 
-  async loadNekoTV() {
+  loadMonsterLight() {
+    const light = this.monsterLight = Object.assign(new SpotLight(), {
+      angle: 90 * DEGREES_TO_RADIANS,
+      color: Colors.mint,
+      distance: 1.6,
+      intensity: 0,
+      penumbra: 1,
+    })
+    light.position.set(-0.25, 0.2, 1)
+    this.monster.add(light)
+  }
+
+  async loadNeko() {
     const map = await this.textureLoader.load(nekoTexturePath)
     const material = new MeshPhongMaterial({
       color: Colors.whitesmoke,
@@ -132,13 +132,12 @@ class SurrealTVScene extends Scene {
       opacity: 0.0,
     })
     const geometry = new PlaneGeometry(2, 2)
-    const tv = new Mesh(geometry, material)
+    const neko = this.neko = new Mesh(geometry, material)
     // Simulate sprite rendering:
-    tv.lookAt(this.camera.position)
-    tv.position.lerp(this.camera.position, 0.5)
-    this.add(tv)
-    this.nekoTV = tv
-    await this.transitionOpacity(tv, 1000)
+    neko.lookAt(this.camera.position)
+    neko.position.lerp(this.camera.position, 0.5)
+    this.add(neko)
+    await this.transitionOpacity(neko, 1, 1000)
   }
 
   async loadScreen() {
@@ -154,7 +153,7 @@ class SurrealTVScene extends Scene {
     screen.position.set(0.56, 0.91, 1.00)
     this.add(screen)
     this.screen = screen
-    await this.transitionOpacity(screen, 1000)
+    await this.transitionOpacity(screen, 1, 1000)
     screen.transparent = false
   }
 
@@ -191,6 +190,23 @@ class SurrealTVScene extends Scene {
     this.subfloor = subfloor
   }
 
+  async loadTV() {
+    const map = await this.textureLoader.load(tvTexturePath)
+    const material = new MeshPhongMaterial({
+      color: Colors.whitesmoke,
+      map,
+      transparent: true,
+      opacity: 0.0,
+    })
+    const geometry = new PlaneGeometry(2, 2)
+    const tv = this.tv = new Mesh(geometry, material)
+    // Simulate sprite rendering:
+    tv.lookAt(this.camera.position)
+    tv.position.lerp(this.camera.position, 0.5)
+    this.add(tv)
+    await this.transitionOpacity(tv, 1, 1000)
+  }
+
   resize(width, height) {
     this.camera.cover(width, height, 2.25, 2.25)
   }
@@ -214,40 +230,36 @@ class SurrealTVScene extends Scene {
   }
 
   async transitionToNight(duration) {
-    const { ambientLight, monsterTV, nekoTV, screenLight, subfloor } = this
+    const { ambientLight, monster, neko, tv, screenLight, subfloor } = this
     await Promise.all([
       this.transitionOpacity(subfloor, 1, duration),
-      this.transitionIntensity(ambientLight, 0, duration)
+      this.transitionOpacity(neko, 0, duration),
+      this.transitionIntensity(ambientLight, 0, duration),
+      this.transitionIntensity(screenLight, 1, duration * 1/2),
     ])
     await Promise.all([
-      this.transitionIntensity(screenLight, 1, duration * 1/2),
-      this.transitionOpacity(nekoTV, 0, duration * 5/8),
-      this.transitionOpacity(monsterTV, 1, duration * 5/8),
+      this.transitionOpacity(tv, 0, duration * 5/8),
+      this.transitionOpacity(monster, 1, duration * 5/8),
     ])
   }
 
   async transitionToDay(duration) {
-    const { ambientLight, monsterTV, nekoTV, screenLight, subfloor } = this
+    const { ambientLight, monster, neko, tv, screenLight, subfloor } = this
     await Promise.all([
+      this.transitionOpacity(tv, 1, duration * 5/8),
+      this.transitionOpacity(monster, 0, duration * 5/8),
+    ])
+    await Promise.all([
+      this.transitionOpacity(subfloor, 0, duration),
+      this.transitionOpacity(neko, 1, duration),
+      this.transitionIntensity(ambientLight, 1, duration),
       this.transitionIntensity(screenLight, 0, duration * 1/2),
-      (async () => {
-        await this.delay(duration * 1/4)
-        await Promise.all([
-          this.transitionOpacity(nekoTV, 1, duration * 5/8),
-          this.transitionOpacity(monsterTV, 0, duration * 5/8),
-        ])
-      })(),
-      (async () => {
-        await this.delay(duration * 3/8)
-        await Promise.all([
-          this.transitionIntensity(ambientLight, 1, duration * 5/8),
-          this.transitionOpacity(subfloor, 0, duration * 5/8)
-        ])
-      })()
     ])
   }
 
   update(deltaTime) {
+    deltaTime *= 4.0
+
     this.animator.update(deltaTime)
 
     if (this.camera.needsUpdate)
