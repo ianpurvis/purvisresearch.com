@@ -214,10 +214,10 @@ class SurrealTVScene extends Scene {
   async run() {
     await this.delay(3000)
     await this.transitionToNight(8000)
-    await this.transitionIntensity(this.monsterLight, 1, 5000)
+    await this.transitionToMonster(4000)
     await this.delay(3000)
-    await this.transitionIntensity(this.monsterLight, 0, 6000)
-    await this.transitionToDay(8000)
+    await this.transitionFromMonster(6000)
+    await this.transitionToDay(10000)
   }
 
   async transitionIntensity(target, value, duration = 1000) {
@@ -230,35 +230,45 @@ class SurrealTVScene extends Scene {
   }
 
   async transitionToNight(duration) {
-    const { ambientLight, monster, neko, tv, screenLight, subfloor } = this
+    const { ambientLight, neko, screenLight, subfloor } = this
     await Promise.all([
       this.transitionOpacity(subfloor, 1, duration),
-      this.transitionOpacity(neko, 0, duration),
       this.transitionIntensity(ambientLight, 0, duration),
-      this.transitionIntensity(screenLight, 1, duration * 1/2),
     ])
-    await Promise.all([
-      this.transitionOpacity(tv, 0, duration * 5/8),
-      this.transitionOpacity(monster, 1, duration * 5/8),
-    ])
+    neko.visible = false
+    await this.transitionIntensity(screenLight, 1, duration * 1/8)
   }
 
   async transitionToDay(duration) {
-    const { ambientLight, monster, neko, tv, screenLight, subfloor } = this
-    await Promise.all([
-      this.transitionOpacity(tv, 1, duration * 5/8),
-      this.transitionOpacity(monster, 0, duration * 5/8),
-    ])
+    const { ambientLight, neko, screenLight, subfloor } = this
+    await this.transitionIntensity(screenLight, 0, duration * 1/2),
+    neko.visible = true
     await Promise.all([
       this.transitionOpacity(subfloor, 0, duration),
-      this.transitionOpacity(neko, 1, duration),
       this.transitionIntensity(ambientLight, 1, duration),
-      this.transitionIntensity(screenLight, 0, duration * 1/2),
+    ])
+  }
+
+  async transitionToMonster(duration) {
+    const { tv, monster, monsterLight } = this
+    await Promise.all([
+      this.transitionOpacity(tv, 0, duration),
+      this.transitionOpacity(monster, 1, duration),
+      this.transitionIntensity(monsterLight, 1, duration)
+    ])
+  }
+
+  async transitionFromMonster(duration) {
+    const { tv, monster, monsterLight } = this
+    await Promise.all([
+      this.transitionOpacity(tv, 1, duration),
+      this.transitionOpacity(monster, 0, duration),
+      this.transitionIntensity(monsterLight, 0, duration)
     ])
   }
 
   update(deltaTime) {
-    deltaTime *= 4.0
+    // deltaTime *= 4.0
 
     this.animator.update(deltaTime)
 
