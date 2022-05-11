@@ -65,7 +65,7 @@ class ThreeEngine {
       if (this.deltaTime >= minMSPF) {
         this.elapsedTime += this.deltaTime
         this.time = now
-        this.update()
+        await this.update()
       }
     }
   }
@@ -87,8 +87,8 @@ class ThreeEngine {
     return new Promise(this.canvas.ownerDocument.defaultView.requestAnimationFrame)
   }
 
-  update() {
-    this.scene.update(this.deltaTime, this.elapsedTime)
+  async update() {
+    await this.scene.update(this.deltaTime, this.elapsedTime)
     this.resize()
     this.render()
   }
