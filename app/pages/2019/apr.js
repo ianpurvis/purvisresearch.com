@@ -56,6 +56,10 @@ export default {
       this.engine.dispose()
       this.stopVideo()
     },
+    isDesktopSafari() {
+      let userAgent = window.navigator.userAgent
+      return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
+    },
     async load() {
       const { canvas, video } = this.$refs
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
@@ -68,18 +72,18 @@ export default {
       await playPromise
     },
     async startVideo() {
-      const constraints = {
+      let constraints = {
         audio: false,
-        video: {
-          aspect: 2,
-          frameRate: 8,
-          height: 64,
-          resizeMode: 'crop-and-scale',
-          width: 128
+        video: true,
+      }
+      if (this.isDesktopSafari()) {
+        constraints.video = {
+          aspectRatio: { ideal: 16/9 }
         }
       }
       try {
         const stream = await window.navigator.mediaDevices.getUserMedia(constraints)
+        stream.getTracks().forEach(track => console.debug(track.getSettings()))
         if (this._isDestroyed || this._isBeingDestroyed) return
         this.$refs.video.srcObject = stream
       } catch (error) {
@@ -87,7 +91,7 @@ export default {
       }
     },
     stopVideo() {
-      const stream = this.$refs.video.srcObject
+      let stream = this.$refs.video.srcObject
       if (!stream) return
       stream.getTracks().forEach(track => track.stop())
     }
