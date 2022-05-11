@@ -2,7 +2,6 @@ import {
   AmbientLight,
   Color,
   Mesh,
-  MeshBasicMaterial,
   MeshPhongMaterial,
   Object3D,
   PlaneGeometry,
@@ -18,6 +17,7 @@ import {
 import monsterTexturePath from '../assets/images/2019/apr/monster-bw.png'
 import nekoTexturePath from '../assets/images/2019/apr/neko-bw.png'
 import tatamiAlphaTexturePath from '../assets/images/2019/apr/tatami-alpha.png'
+import tatamiTexturePath from '../assets/images/2019/apr/tatami-bw.png'
 import { Animator, delay, transition } from '../models/animator.js'
 import { DEGREES_TO_RADIANS } from '../models/constants.js'
 import HalftoneMaterial from '../models/halftone-material.js'
@@ -76,12 +76,20 @@ class SurrealTVScene extends Scene {
   }
 
   async loadFloor() {
-    const alphaMap = await this.textureLoader.load(tatamiAlphaTexturePath)
-    alphaMap.wrapS = alphaMap.wrapT = RepeatWrapping
-    alphaMap.repeat.set(9, 9)
-    const material = new MeshBasicMaterial({
-      alphaMap,
-      color: Colors.black,
+    const [ map, alphaMap ] = await Promise.all([
+      this.textureLoader.load(tatamiTexturePath),
+      this.textureLoader.load(tatamiAlphaTexturePath)
+    ])
+    ;[ map, alphaMap ].forEach(m => {
+      m.wrapS = RepeatWrapping
+      m.wrapT = RepeatWrapping
+      m.repeat.set(9, 9)
+    })
+    let material = new MeshPhongMaterial({
+      alphaMap: alphaMap,
+      color: Colors.whitesmoke,
+      emissive: Colors.black,
+      map: map,
       opacity: 0.0,
       transparent: true,
     })
