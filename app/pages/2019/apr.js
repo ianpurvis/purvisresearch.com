@@ -57,10 +57,6 @@ export default {
       this.engine.dispose()
       this.stopVideo()
     },
-    isDesktopSafari() {
-      let userAgent = window.navigator.userAgent
-      return userAgent.match(/Safari/i) && !userAgent.match(/Mobile/i)
-    },
     async load() {
       const { canvas, video } = this.$refs
       WebGL.assertWebGLAvailable(canvas)
@@ -74,18 +70,18 @@ export default {
       await playPromise
     },
     async startVideo() {
-      let constraints = {
+      const constraints = {
         audio: false,
-        video: true,
-      }
-      if (this.isDesktopSafari()) {
-        constraints.video = {
-          aspectRatio: { ideal: 16/9 }
+        video: {
+          aspect: 2,
+          frameRate: 8,
+          height: 64,
+          resizeMode: 'crop-and-scale',
+          width: 128
         }
       }
       try {
         const stream = await window.navigator.mediaDevices.getUserMedia(constraints)
-        stream.getTracks().forEach(track => console.debug(track.getSettings()))
         if (this._isDestroyed || this._isBeingDestroyed) return
         this.$refs.video.srcObject = stream
       } catch (error) {
@@ -93,7 +89,7 @@ export default {
       }
     },
     stopVideo() {
-      let stream = this.$refs.video.srcObject
+      const stream = this.$refs.video.srcObject
       if (!stream) return
       stream.getTracks().forEach(track => track.stop())
     }
