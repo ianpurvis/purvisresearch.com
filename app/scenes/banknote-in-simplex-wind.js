@@ -1,0 +1,129 @@
+import {
+  DoubleSide,
+  DynamicDrawUsage,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneBufferGeometry,
+  Scene,
+} from 'three'
+import billImagePath from '../assets/images/2020/jul/tubman-twenty.jpg'
+import { Deferred } from '../models/deferred.js'
+import { PerspectiveCamera } from '../models/perspective-camera.js'
+import { ChaseCameraRig } from '../models/chase-camera-rig.js'
+import { Oscillator } from '../models/oscillator.js'
+import { TextureLoader } from '../models/texture-loader.js'
+import { DollarPhysicsWorker } from '../workers/dollar-physics-worker.js'
+
+
+class BanknoteInSimplexWind extends Scene {
+
+  constructor() {
+    super()
+    this.camera = new PerspectiveCamera()
+  }
+
+  dispose() {
+    this.physicsWorker.terminate()
+  }
+
+  async load() {
+    await this.loadBill()
+    this.loadCamera()
+    await this.loadPhysics()
+  }
+
+  loadCamera() {
+    this.camera.far = 1000
+
+    const cameraRig = new ChaseCameraRig(this.camera, this.mesh)
+    cameraRig.position.z = cameraRig.offset.z = 12
+    this.add(cameraRig)
+
+    const chaseOscillator = new Oscillator({
+      period: 20, // seconds
+      amplitude: 0.1,
+      yshift: 0.65,
+    })
+
+    Object.assign(this, { cameraRig, chaseOscillator })
+  }
+
+  async loadBill() {
+    const geometry = new PlaneBufferGeometry(
+      15.61,  // width = 156.1mm / 1000 mm per m * 100 scale
+      6.63,   // height = 66.3mm / 1000 mm per m * 100 scale
+      15,     // widthSegments
+      6,      // heightSegments
+    )
+    geometry.deleteAttribute('normal')
+    const textureLoader = new TextureLoader()
+    const billTexture = await textureLoader.load(billImagePath)
+    billTexture.repeat.y = 0.806640625 // 826px / 1024px padded height
+    const material = new MeshBasicMaterial({
+      map: billTexture,
+      side: DoubleSide,
+    })
+    const mesh = new Mesh(geometry, material)
+    mesh.frustumCulled = false
+
+    this.add(mesh)
+
+    Object.assign(this, { mesh })
+  }
+
+  async loadPhysics() {
+    const physicsWorker = new DollarPhysicsWorker()
+    physicsWorker.onload = this.onload.bind(this)
+    physicsWorker.onstep = this.onstep.bind(this)
+    physicsWorker.onerror = this.onerror.bind(this)
+    Object.assign(this, { physicsWorker })
+
+    this.deferredPhysics = new Deferred()
+    physicsWorker.load({
+      mass: 0.1, // 1g / 1000 g per kg * 100 scale
+      vertices: this.mesh.geometry.attributes.position.array,
+      triangles: this.mesh.geometry.index.array
+    })
+    await this.deferredPhysics
+  }
+
+  onerror(error) {
+    this.deferredPhysics.reject(error)
+  }
+
+  onload({ vertices, triangles }) {
+    this.mesh.geometry.index.array = triangles
+    this.mesh.geometry.attributes.position.array = vertices
+    // Optimize usage for stepped drawing:
+    this.mesh.geometry.attributes.position.usage = DynamicDrawUsage
+    this.mesh.geometry.attributes.position.needsUpdate = true
+    this.deferredPhysics.resolve()
+  }
+
+  onstep({ vertices }) {
+    this.mesh.geometry.attributes.position.array = vertices
+    this.mesh.geometry.attributes.position.needsUpdate = true
+    this.deferredPhysics.resolve()
+  }
+
+  resize(width, height) {
+    this.camera.cover(width, height, 2.25, 2.25)
+  }
+
+  async update(deltaTime, elapsedTime) {
+    deltaTime /= 1000 // use seconds for ammo and chase rig
+
+    this.deferredPhysics = new Deferred()
+    const vertices = this.mesh.geometry.attributes.position.array
+    this.physicsWorker.step({ deltaTime, vertices })
+    await this.deferredPhysics
+
+    this.cameraRig.smoothing = this.chaseOscillator.cos(elapsedTime)
+    this.cameraRig.update(deltaTime)
+
+    if (this.camera.needsUpdate)
+      this.camera.updateProjectionMatrix()
+  }
+}
+
+export { BanknoteInSimplexWind }
