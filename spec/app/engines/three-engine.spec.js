@@ -79,17 +79,24 @@ describe('ThreeEngine', () => {
   })
 
   describe('play()', () => {
+    let result
+
     beforeEach(() => {
       engine.paused = true
       engine.update = jest.fn()
+      engine.tick = jest.fn(() => performance.now())
     })
-    it('unpauses', () => {
-      engine.play()
+    it('unpauses', async () => {
+      result = engine.play()
       expect(engine.paused).toBe(false)
+      engine.pause()
+      await result
     })
-    it('calls update', () => {
-      engine.play()
+    it('calls update', async () => {
+      result = engine.play()
       expect(engine.update).toHaveBeenCalled()
+      engine.pause()
+      await result
     })
   })
 
@@ -136,17 +143,17 @@ describe('ThreeEngine', () => {
       engine.resize = jest.fn()
       engine.render = jest.fn()
     })
-    it('updates the scene with delta time and elapsed time', () => {
-      engine.update()
+    it('updates the scene with delta time and elapsed time', async () => {
+      await engine.update()
       expect(engine.scene.update)
         .toHaveBeenCalledWith(engine.deltaTime, engine.elapsedTime)
     })
-    it('resizes', () => {
-      engine.update()
+    it('resizes', async () => {
+      await engine.update()
       expect(engine.resize).toHaveBeenCalled()
     })
-    it('renders', () => {
-      engine.update()
+    it('renders', async () => {
+      await engine.update()
       expect(engine.render).toHaveBeenCalled()
     })
   })
