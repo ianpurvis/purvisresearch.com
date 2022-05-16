@@ -16,10 +16,9 @@ a {
 }
 
 video {
-  left: 0;
-  object-fit: cover;
+  background-color: #000;
+  height: 16px;
   opacity: 0;
-  pointer-events: none;
   position: absolute;
-  top: 0;
+  width: 32px;
 }
