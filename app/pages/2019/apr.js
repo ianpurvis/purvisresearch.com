@@ -74,7 +74,7 @@ export default {
         audio: false,
         video: {
           aspect: 2,
-          frameRate: 8,
+          frameRate: 20,
           height: 64,
           resizeMode: 'crop-and-scale',
           width: 128
