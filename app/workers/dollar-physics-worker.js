@@ -1,13 +1,11 @@
 import { expose, transfer } from 'comlink'
+import { World } from '../models/dollar-physics/world.js'
 import { loadAmmo } from '../shims/ammo.js'
 
 class DollarPhysicsWorker {
 
   async load({ mass, vertices, triangles }) {
     await loadAmmo()
-    const { World } =
-      await import(/* webpackMode: "eager" */'~/models/dollar-physics/world.js')
-
     this.world = new World()
     this.world.loadBill({ mass, vertices, triangles })
 
