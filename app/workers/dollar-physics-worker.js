@@ -1,48 +1,30 @@
-import _DollarPhysicsWorker from './dollar-physics-worker.worker.js'
+import { expose, transfer } from 'comlink'
+import { loadAmmo } from '../shims/ammo.js'
 
-class DollarPhysicsWorker extends _DollarPhysicsWorker {
+class DollarPhysicsWorker {
 
-  constructor() {
-    super()
+  async load({ mass, vertices, triangles }) {
+    await loadAmmo()
+    const { World } =
+      await import(/* webpackMode: "eager" */'~/models/dollar-physics/world.js')
 
-    // Inheritance for workers seems broken...
-    // As a workaround, assign instance functions and props directly:
-    Object.assign(this, {
-      isReady: false,
-      load({ mass, vertices, triangles }) {
-        this.isReady = false
-        this.postMessage({
-          name: 'load',
-          args: {
-            mass,
-            vertices,
-            triangles
-          }
-        }, [
-          vertices.buffer,
-          triangles.buffer
-        ])
-      },
-      step({ deltaTime, vertices }) {
-        this.isReady = false
-        this.postMessage({
-          name: 'step',
-          args: {
-            deltaTime,
-            vertices,
-          }
-        }, [
-          vertices.buffer,
-        ])
-      },
-      onload() {},
-      onmessage({ data: { name, args }}) {
-        this[name](args)
-        this.isReady = true
-      },
-      onstep() {}
-    })
+    this.world = new World()
+    this.world.loadBill({ mass, vertices, triangles })
+
+    return transfer({
+      triangles,
+      vertices
+    }, [
+      vertices.buffer,
+      triangles.buffer
+    ])
+  }
+
+  step({ deltaTime, vertices }) {
+    this.world.update(deltaTime)
+    this.world.bill.extractVertices(vertices)
+    return transfer(vertices, [ vertices.buffer ])
   }
 }
 
-export { DollarPhysicsWorker }
+expose(new DollarPhysicsWorker())
