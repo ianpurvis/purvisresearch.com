@@ -137,7 +137,6 @@ class SurrealTVScene extends Scene {
     neko.lookAt(this.camera.position)
     neko.position.lerp(this.camera.position, 0.5)
     this.add(neko)
-    await this.transitionOpacity(neko, 1, 1000)
   }
 
   async loadScreen() {
@@ -212,7 +211,8 @@ class SurrealTVScene extends Scene {
   }
 
   async run() {
-    await this.delay(3000)
+    await this.transitionToNeko(7000)
+    await this.transitionFromNeko(13000)
     await this.transitionToNight(8000)
     await this.transitionToMonster(4000)
     await this.delay(3000)
@@ -230,23 +230,21 @@ class SurrealTVScene extends Scene {
   }
 
   async transitionToNight(duration) {
-    const { ambientLight, neko, screenLight, subfloor } = this
+    const { ambientLight, screenLight, subfloor } = this
+    screenLight.intensity = 1
     await Promise.all([
       this.transitionOpacity(subfloor, 1, duration),
       this.transitionIntensity(ambientLight, 0, duration),
     ])
-    neko.visible = false
-    await this.transitionIntensity(screenLight, 1, duration * 1/8)
   }
 
   async transitionToDay(duration) {
-    const { ambientLight, neko, screenLight, subfloor } = this
-    await this.transitionIntensity(screenLight, 0, duration * 1/2),
-    neko.visible = true
+    const { ambientLight, screenLight, subfloor } = this
     await Promise.all([
       this.transitionOpacity(subfloor, 0, duration),
       this.transitionIntensity(ambientLight, 1, duration),
     ])
+    screenLight.intensity = 0
   }
 
   async transitionToMonster(duration) {
@@ -265,6 +263,16 @@ class SurrealTVScene extends Scene {
       this.transitionOpacity(monster, 0, duration),
       this.transitionIntensity(monsterLight, 0, duration)
     ])
+  }
+
+  async transitionToNeko(duration) {
+    const { neko } = this
+    await this.transitionOpacity(neko, 1, duration)
+  }
+
+  async transitionFromNeko(duration) {
+    const { neko } = this
+    await this.transitionOpacity(neko, 0, duration)
   }
 
   update(deltaTime) {
