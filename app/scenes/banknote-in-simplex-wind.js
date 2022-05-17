@@ -1,3 +1,4 @@
+import { transfer, wrap } from 'comlink'
 import {
   DoubleSide,
   DynamicDrawUsage,
@@ -7,12 +8,11 @@ import {
   Scene,
 } from 'three'
 import billImagePath from '../assets/images/2020/jul/tubman-twenty.jpg'
-import { Deferred } from '../models/deferred.js'
 import { PerspectiveCamera } from '../models/perspective-camera.js'
 import { ChaseCameraRig } from '../models/chase-camera-rig.js'
 import { Oscillator } from '../models/oscillator.js'
 import { TextureLoader } from '../models/texture-loader.js'
-import { DollarPhysicsWorker } from '../workers/dollar-physics-worker.js'
+import DollarPhysicsWorker from '../workers/dollar-physics-worker.js'
 
 
 class BanknoteInSimplexWind extends Scene {
@@ -72,38 +72,22 @@ class BanknoteInSimplexWind extends Scene {
   }
 
   async loadPhysics() {
-    const physicsWorker = new DollarPhysicsWorker()
-    physicsWorker.onload = this.onload.bind(this)
-    physicsWorker.onstep = this.onstep.bind(this)
-    physicsWorker.onerror = this.onerror.bind(this)
-    Object.assign(this, { physicsWorker })
+    this.physicsWorker = wrap(new DollarPhysicsWorker())
 
-    this.deferredPhysics = new Deferred()
-    physicsWorker.load({
-      mass: 0.1, // 1g / 1000 g per kg * 100 scale
-      vertices: this.mesh.geometry.attributes.position.array,
-      triangles: this.mesh.geometry.index.array
-    })
-    await this.deferredPhysics
-  }
+    const mass = 0.1 // 1g / 1000 g per kg * 100 scale
+    let vertices = this.mesh.geometry.attributes.position.array
+    let triangles = this.mesh.geometry.index.array
+    const message = transfer({ mass, vertices, triangles }, [
+      vertices.buffer,
+      triangles.buffer
+    ])
+    ;({ triangles, vertices } = await this.physicsWorker.load(message))
 
-  onerror(error) {
-    this.deferredPhysics.reject(error)
-  }
-
-  onload({ vertices, triangles }) {
     this.mesh.geometry.index.array = triangles
     this.mesh.geometry.attributes.position.array = vertices
     // Optimize usage for stepped drawing:
     this.mesh.geometry.attributes.position.usage = DynamicDrawUsage
     this.mesh.geometry.attributes.position.needsUpdate = true
-    this.deferredPhysics.resolve()
-  }
-
-  onstep({ vertices }) {
-    this.mesh.geometry.attributes.position.array = vertices
-    this.mesh.geometry.attributes.position.needsUpdate = true
-    this.deferredPhysics.resolve()
   }
 
   resize(width, height) {
@@ -113,10 +97,10 @@ class BanknoteInSimplexWind extends Scene {
   async update(deltaTime, elapsedTime) {
     deltaTime /= 1000 // use seconds for ammo and chase rig
 
-    this.deferredPhysics = new Deferred()
-    const vertices = this.mesh.geometry.attributes.position.array
-    this.physicsWorker.step({ deltaTime, vertices })
-    await this.deferredPhysics
+    let vertices = this.mesh.geometry.attributes.position.array
+    vertices = await this.physicsWorker.step({ deltaTime, vertices })
+    this.mesh.geometry.attributes.position.array = vertices
+    this.mesh.geometry.attributes.position.needsUpdate = true
 
     this.cameraRig.smoothing = this.chaseOscillator.cos(elapsedTime)
     this.cameraRig.update(deltaTime)

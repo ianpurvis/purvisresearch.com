@@ -23,7 +23,7 @@ export default ({ baseDir }) => ({
 
       // Load web-workers
       config.module.rules.push({
-        test: /\.worker\.js$/,
+        test: /app\/workers\/.*\.js$/,
         loader: 'worker-loader',
         options: {
           filename: chunk(context)
