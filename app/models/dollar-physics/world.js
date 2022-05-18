@@ -43,22 +43,26 @@ class World {
     const { physicsWorld, wind } = this
     const softBodyWorldInfo = physicsWorld.getWorldInfo()
     const bill = new Bill({ ...attributes, softBodyWorldInfo })
-    physicsWorld.addSoftBody(bill)
-    wind.bodies.push(bill)
+    physicsWorld.addSoftBody(bill.body)
+    wind.bodies.push(bill.body)
     Object.assign(this, { bill })
   }
 
   destroy() {
     // Destroy references from top down:
     this.wind.destroy()
-    this.physicsWorld.removeSoftBody(this.bill)
-    Ammo.destroy(this.bill)
+    this.physicsWorld.removeSoftBody(this.bill.body)
+    Ammo.destroy(this.bill.body)
     Ammo.destroy(this.physicsWorld)
     Ammo.destroy(this.softBodySolver)
     Ammo.destroy(this.solver)
     Ammo.destroy(this.broadphase)
     Ammo.destroy(this.dispatcher)
     Ammo.destroy(this.collisionConfiguration)
+  }
+
+  render(vertices) {
+    this.bill.render(vertices)
   }
 
   update(deltaTime) {
