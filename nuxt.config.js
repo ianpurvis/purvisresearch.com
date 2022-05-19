@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { defineNuxtConfig } from '@nuxt/bridge'
 import deepmerge from 'deepmerge'
 import base from './config/base.js'
 import build from './config/build.js'
@@ -25,5 +26,5 @@ export default async () => {
     config = deepmerge(config, await factory(env) || {})
   }
 
-  return config
+  return defineNuxtConfig(config)
 }
