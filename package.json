@@ -21,7 +21,7 @@
     "vue-tight": "^1.0.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-env": "^7.19.1",
     "@babel/runtime-corejs3": "^7.16.8",
     "@nuxt/babel-preset-app-edge": "^2.13.0-26541346.39dd866b",
     "@nuxtjs/sitemap": "^2.3.2",
