@@ -74,16 +74,6 @@ resource "aws_cloudfront_distribution" "redirect" {
       ]
       query_string = true
     }
-    lambda_function_association {
-      event_type   = "origin-request"
-      include_body = false
-      lambda_arn   = aws_lambda_function.gateway.qualified_arn
-    }
-    lambda_function_association {
-      event_type   = "origin-response"
-      include_body = false
-      lambda_arn   = aws_lambda_function.gateway.qualified_arn
-    }
     target_origin_id       = aws_s3_bucket.redirect.id
     viewer_protocol_policy = "redirect-to-https"
   }
