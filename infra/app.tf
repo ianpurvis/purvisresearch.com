@@ -7,8 +7,20 @@ resource "random_id" "app" {
 }
 
 resource "aws_s3_bucket" "app" {
-  acl    = "private"
   bucket = random_id.app.hex
+  force_destroy = true
+  tags = {
+    "app" = random_id.app.hex
+  }
+}
+
+resource "aws_s3_bucket_acl" "app" {
+  bucket = aws_s3_bucket.app.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_cors_configuration" "app" {
+  bucket = aws_s3_bucket.app.id
   cors_rule {
     allowed_headers = [
       "*"
@@ -22,13 +34,6 @@ resource "aws_s3_bucket" "app" {
     ]
     max_age_seconds = 3000
   }
-  force_destroy = true
-  versioning {
-    enabled = false
-  }
-  tags = {
-    "app" = random_id.app.hex
-  }
 }
 
 resource "aws_s3_bucket_public_access_block" "app" {
@@ -37,6 +42,13 @@ resource "aws_s3_bucket_public_access_block" "app" {
   bucket                  = aws_s3_bucket.app.id
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_versioning" "app" {
+  bucket = aws_s3_bucket.app.id
+  versioning_configuration {
+    status = "Disabled"
+  }
 }
 
 data "aws_iam_policy_document" "app" {

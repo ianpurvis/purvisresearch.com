@@ -1,5 +1,13 @@
 resource "aws_s3_bucket" "redirect" {
   bucket = "${random_id.app.hex}-redirect"
+  force_destroy = true
+  tags = {
+    "app" = random_id.app.hex
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
   cors_rule {
     allowed_headers = [
       "*"
@@ -13,15 +21,20 @@ resource "aws_s3_bucket" "redirect" {
     ]
     max_age_seconds = 3000
   }
-  force_destroy = true
-  versioning {
-    enabled = false
+}
+
+resource "aws_s3_bucket_versioning" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
+  versioning_configuration {
+    status = "Disabled"
   }
-  tags = {
-    "app" = random_id.app.hex
-  }
-  website {
-    redirect_all_requests_to = "https://${aws_route53_record.gateway.name}"
+}
+
+resource "aws_s3_bucket_website_configuration" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
+  redirect_all_requests_to {
+    host_name = aws_route53_record.gateway.name
+    protocol = "https"
   }
 }
 
@@ -87,7 +100,7 @@ resource "aws_cloudfront_distribution" "redirect" {
         "TLSv1.2"
       ]
     }
-    domain_name = aws_s3_bucket.redirect.website_endpoint
+    domain_name = aws_s3_bucket_website_configuration.redirect.website_endpoint
     origin_id   = aws_s3_bucket.redirect.id
   }
   price_class = "PriceClass_All"
