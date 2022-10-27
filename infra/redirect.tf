@@ -26,7 +26,7 @@ resource "aws_s3_bucket_cors_configuration" "redirect" {
 resource "aws_s3_bucket_versioning" "redirect" {
   bucket = aws_s3_bucket.redirect.id
   versioning_configuration {
-    status = "Disabled"
+    status = "Suspended"
   }
 }
 

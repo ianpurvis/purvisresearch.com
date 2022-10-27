@@ -47,7 +47,7 @@ resource "aws_s3_bucket_public_access_block" "app" {
 resource "aws_s3_bucket_versioning" "app" {
   bucket = aws_s3_bucket.app.id
   versioning_configuration {
-    status = "Disabled"
+    status = "Suspended"
   }
 }
 
