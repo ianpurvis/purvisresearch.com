@@ -5,7 +5,8 @@ resource "aws_cloudfront_response_headers_policy" "gateway" {
   name = "gateway-policy"
   security_headers_config {
     content_security_policy {
-      content_security_policy = <<-EOF
+      content_security_policy = trimspace(replace(
+        <<-EOF
         base-uri
           'none';
         child-src
@@ -45,7 +46,10 @@ resource "aws_cloudfront_response_headers_policy" "gateway" {
         worker-src
           'self'
           blob:;
-      EOF
+        EOF
+        ,"/\\s+/"
+        ," "
+      ))
       override = true
     }
     content_type_options {
