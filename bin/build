@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-bin/build-app && bin/build-lambda
+bin/build-app

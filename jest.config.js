@@ -44,26 +44,6 @@ module.exports = {
       testMatch: [
         '<rootDir>/spec/app/**/*.spec.js'
       ],
-    },
-    {
-      ...defaults,
-      displayName: 'lambda',
-      moduleNameMapper: {
-        '~(.*)$': '<rootDir>/$1',
-      },
-      testMatch: [
-        '<rootDir>/spec/lambda/**/*.spec.js'
-      ],
-    },
-    {
-      ...defaults,
-      displayName: 'lib',
-      moduleNameMapper: {
-        '~(.*)$': '<rootDir>/$1',
-      },
-      testMatch: [
-        '<rootDir>/spec/lib/**/*.spec.js'
-      ],
-    },
+    }
   ]
 }

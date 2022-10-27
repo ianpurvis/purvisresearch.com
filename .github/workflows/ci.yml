@@ -38,7 +38,7 @@ jobs:
         bin/build
     - name: Test
       run: |
-        bin/jest --collectCoverageFrom='{app,lambda}/**/*.js'
+        bin/jest --collectCoverageFrom='app/**/*.js'
     - name: Report to Codecov.io
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
