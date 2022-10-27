@@ -53,7 +53,6 @@
     "svgo-loader": "^2.2.2",
     "ttf2woff": "^3.0.0",
     "vue-jest": "^3.0.7",
-    "webpack-cli": "^4.9.2",
     "worker-loader": "^3.0.8"
   }
 }
