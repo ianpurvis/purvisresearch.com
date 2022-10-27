@@ -1,3 +1,43 @@
+resource "aws_cloudfront_cache_policy" "gateway" {
+  name = "${random_id.app.hex}-gateway"
+  default_ttl = 86400
+  max_ttl     = 31536000
+  min_ttl     = 1
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+    enable_accept_encoding_brotli = true
+    enable_accept_encoding_gzip = true
+    headers_config {
+      header_behavior = "whitelist"
+      headers {
+        items = [
+          "Access-Control-Request-Headers",
+          "Access-Control-Request-Method",
+          "Origin"
+        ]
+      }
+    }
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
+}
+
+resource "aws_cloudfront_origin_request_policy" "gateway" {
+  name = "${random_id.app.hex}-gateway"
+  cookies_config {
+    cookie_behavior = "all"
+  }
+  headers_config {
+    header_behavior = "allViewer"
+  }
+  query_strings_config {
+    query_string_behavior = "all"
+  }
+}
+
 resource "aws_cloudfront_response_headers_policy" "gateway" {
   name = "${random_id.app.hex}-gateway"
   security_headers_config {
@@ -84,23 +124,14 @@ resource "aws_cloudfront_distribution" "gateway" {
       "HEAD",
       "OPTIONS"
     ]
+    cache_policy_id = aws_cloudfront_cache_policy.gateway.id
     cached_methods = [
       "GET",
       "HEAD",
       "OPTIONS"
     ]
     compress = true
-    forwarded_values {
-      cookies {
-        forward = "none"
-      }
-      headers = [
-        "Access-Control-Request-Headers",
-        "Access-Control-Request-Method",
-        "Origin"
-      ]
-      query_string = true
-    }
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.gateway.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.gateway.id
     target_origin_id       = aws_s3_bucket.app.id
     viewer_protocol_policy = "redirect-to-https"

@@ -60,6 +60,10 @@ resource "aws_s3_bucket_policy" "redirect" {
   policy = data.aws_iam_policy_document.redirect.json
 }
 
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
 resource "aws_cloudfront_distribution" "redirect" {
   aliases = [
     aws_acm_certificate.www.domain_name
@@ -70,23 +74,13 @@ resource "aws_cloudfront_distribution" "redirect" {
       "HEAD",
       "OPTIONS"
     ]
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
     cached_methods = [
       "GET",
       "HEAD",
       "OPTIONS"
     ]
     compress = true
-    forwarded_values {
-      cookies {
-        forward = "none"
-      }
-      headers = [
-        "Access-Control-Request-Headers",
-        "Access-Control-Request-Method",
-        "Origin"
-      ]
-      query_string = true
-    }
     target_origin_id       = aws_s3_bucket.redirect.id
     viewer_protocol_policy = "redirect-to-https"
   }
