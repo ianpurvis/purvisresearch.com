@@ -1,6 +1,3 @@
-resource "aws_cloudfront_origin_access_identity" "gateway" {
-}
-
 resource "aws_cloudfront_response_headers_policy" "gateway" {
   name = "gateway-policy"
   security_headers_config {
@@ -110,11 +107,16 @@ resource "aws_cloudfront_distribution" "gateway" {
   default_root_object = "index.html"
   enabled             = true
   origin {
-    domain_name = aws_s3_bucket.app.bucket_regional_domain_name
-    origin_id   = aws_s3_bucket.app.id
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.gateway.cloudfront_access_identity_path
+    custom_origin_config {
+      http_port = 80
+      https_port = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols = [
+        "TLSv1.2"
+      ]
     }
+    domain_name = aws_s3_bucket_website_configuration.app.website_endpoint
+    origin_id   = aws_s3_bucket.app.id
   }
   price_class = "PriceClass_All"
   restrictions {
