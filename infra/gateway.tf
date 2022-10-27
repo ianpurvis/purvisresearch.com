@@ -1,5 +1,5 @@
 resource "aws_cloudfront_response_headers_policy" "gateway" {
-  name = "gateway-policy"
+  name = "${random_id.app.hex}-gateway"
   security_headers_config {
     content_security_policy {
       content_security_policy = trimspace(replace(
@@ -101,6 +101,7 @@ resource "aws_cloudfront_distribution" "gateway" {
       ]
       query_string = true
     }
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.gateway.id
     target_origin_id       = aws_s3_bucket.app.id
     viewer_protocol_policy = "redirect-to-https"
   }
