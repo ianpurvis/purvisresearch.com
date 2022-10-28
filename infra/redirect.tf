@@ -1,5 +1,13 @@
 resource "aws_s3_bucket" "redirect" {
   bucket = "${random_id.app.hex}-redirect"
+  force_destroy = true
+  tags = {
+    "app" = random_id.app.hex
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
   cors_rule {
     allowed_headers = [
       "*"
@@ -13,15 +21,20 @@ resource "aws_s3_bucket" "redirect" {
     ]
     max_age_seconds = 3000
   }
-  force_destroy = true
-  versioning {
-    enabled = false
+}
+
+resource "aws_s3_bucket_versioning" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
+  versioning_configuration {
+    status = "Suspended"
   }
-  tags = {
-    "app" = random_id.app.hex
-  }
-  website {
-    redirect_all_requests_to = "https://${aws_route53_record.gateway.name}"
+}
+
+resource "aws_s3_bucket_website_configuration" "redirect" {
+  bucket = aws_s3_bucket.redirect.id
+  redirect_all_requests_to {
+    host_name = aws_route53_record.gateway.name
+    protocol = "https"
   }
 }
 
@@ -47,6 +60,10 @@ resource "aws_s3_bucket_policy" "redirect" {
   policy = data.aws_iam_policy_document.redirect.json
 }
 
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
 resource "aws_cloudfront_distribution" "redirect" {
   aliases = [
     aws_acm_certificate.www.domain_name
@@ -57,33 +74,13 @@ resource "aws_cloudfront_distribution" "redirect" {
       "HEAD",
       "OPTIONS"
     ]
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
     cached_methods = [
       "GET",
       "HEAD",
       "OPTIONS"
     ]
     compress = true
-    forwarded_values {
-      cookies {
-        forward = "none"
-      }
-      headers = [
-        "Access-Control-Request-Headers",
-        "Access-Control-Request-Method",
-        "Origin"
-      ]
-      query_string = true
-    }
-    lambda_function_association {
-      event_type   = "origin-request"
-      include_body = false
-      lambda_arn   = aws_lambda_function.gateway.qualified_arn
-    }
-    lambda_function_association {
-      event_type   = "origin-response"
-      include_body = false
-      lambda_arn   = aws_lambda_function.gateway.qualified_arn
-    }
     target_origin_id       = aws_s3_bucket.redirect.id
     viewer_protocol_policy = "redirect-to-https"
   }
@@ -97,7 +94,7 @@ resource "aws_cloudfront_distribution" "redirect" {
         "TLSv1.2"
       ]
     }
-    domain_name = aws_s3_bucket.redirect.website_endpoint
+    domain_name = aws_s3_bucket_website_configuration.redirect.website_endpoint
     origin_id   = aws_s3_bucket.redirect.id
   }
   price_class = "PriceClass_All"
