@@ -31,7 +31,14 @@ resource "aws_cloudfront_origin_request_policy" "gateway" {
     cookie_behavior = "all"
   }
   headers_config {
-    header_behavior = "allViewer"
+    header_behavior = "whitelist"
+    headers {
+      items = [
+        "Access-Control-Request-Headers",
+        "Access-Control-Request-Method",
+        "Origin"
+      ]
+    }
   }
   query_strings_config {
     query_string_behavior = "all"
