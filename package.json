@@ -12,7 +12,7 @@
     "comlink": "^4.3.1",
     "d3-ease": "^3.0.1",
     "deepmerge": "^4.2.2",
-    "nuxt": "^2.14.7",
+    "nuxt-edge": "latest",
     "pixi-particles": "^4.3.1",
     "pixi.js": "^5.3.3",
     "sass": "^1.49.0",
