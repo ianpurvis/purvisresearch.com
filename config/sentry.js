@@ -8,10 +8,6 @@ export default ({ NODE_ENV }) => ({
           ExtraErrorData: {},
           ReportingObserver: {},
           RewriteFrames: {},
-          Vue: {
-            attachProps: true,
-            logErrors: true
-          }
         },
         disableServerSide: true,
         initialize: NODE_ENV === 'production',
