@@ -13,6 +13,7 @@ npm-debug.log
 
 
 # Nuxt build
+.output
 .nuxt
 static/sitemap.xml
 
