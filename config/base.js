@@ -11,5 +11,6 @@ export default () => ({
   },
   modern: 'client',
   srcDir: 'app',
+  ssr: false,
   target: 'static'
 })
