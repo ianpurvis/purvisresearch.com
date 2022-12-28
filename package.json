@@ -14,7 +14,7 @@
     "deepmerge": "^4.2.2",
     "nuxt-edge": "latest",
     "pixi-particles": "^4.3.1",
-    "pixi.js": "^5.3.3",
+    "pixi.js": "^7.0.5",
     "sass": "^1.49.0",
     "stats.js": "^0.17.0",
     "three": "^0.121.1",
