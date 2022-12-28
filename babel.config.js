@@ -5,7 +5,7 @@ module.exports = (api) => {
   switch(api.env()) {
   case 'client':
     presets = [
-      ['@nuxt/babel-preset-app', {
+      ['@nuxt/babel-preset-app-edge', {
         corejs: 3,
         targets: {
           chrome: '41',
@@ -27,7 +27,7 @@ module.exports = (api) => {
     break
   case 'server':
     presets = [
-      ['@nuxt/babel-preset-app', {
+      ['@nuxt/babel-preset-app-edge', {
         corejs: 3,
         targets: {
           node: 'current'
