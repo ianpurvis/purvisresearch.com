@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-$(npm bin)/lint-staged
+npm x lint-staged
