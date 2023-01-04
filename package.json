@@ -4,6 +4,18 @@
   "description": "PURVIS RESEARCH ONLINE",
   "author": "Ian Purvis <ian@purvisresearch.com>",
   "private": true,
+  "scripts": {
+    "build": "nuxt generate",
+    "dev": "nuxt dev",
+    "codecov": "codecov --disable=gcov --file=coverage/coverage-final.json",
+    "format": "prettier .",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint --ext \".js,.vue\" .",
+    "lint:css": "stylelint \"**/*.scss\"",
+    "start": "nuxt start",
+    "test": "jest",
+    "ttf2woff": "ttf2woff"
+  },
   "dependencies": {
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/sentry": "^7.0.0",
