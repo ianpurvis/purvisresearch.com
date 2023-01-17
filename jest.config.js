@@ -17,8 +17,8 @@ const defaults = {
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
   transform: {
-    '^.+\\.vue$': 'vue-jest',
-    '^.+\\.js$': 'babel-jest'
+    '^.+\\.js$': 'babel-jest',
+    '^.+\\.vue$': '@vue/vue2-jest'
   },
   transformIgnorePatterns: [
     `<rootDir>/node_modules/(?!(${transformPatterns.join('|')}))`
