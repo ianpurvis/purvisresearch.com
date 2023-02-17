@@ -26,6 +26,18 @@ const examples = [
     given: '<Snake class="example" data-test="example"/>',
     expected: '<div class="example snake" data-test="example"></div>'
   },
+  {
+    name: 'implicit spaces',
+    given: '<Snake>\n' +
+      '<div>element a</div>\n' +
+      '<div>element b</div>\n' +
+      '</Snake>',
+    expected: '<div class="snake">' +
+      '<div>element<span class="underscore">&nbsp;</span>a</div>' +
+      ' '  +
+      '<div>element<span class="underscore">&nbsp;</span>b</div>' +
+      '</div>'
+  },
 ]
 
 describe('Snake', () => {

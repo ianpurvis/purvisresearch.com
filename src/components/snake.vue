@@ -11,29 +11,41 @@ function underscore(replace = 1) {
   return h('span', { class: className }, content.join(''))
 }
 
-function snakeify(vnode) {
+function snakeify(vnodes) {
+  vnodes = [].concat(vnodes)
   let result
-  if (vnode.children) {
-    // TODO replace with cloneVNode once export is available in vue 3x
-    result = h(vnode.tag, vnode.children.flatMap(snakeify))
-  } else if (vnode.text) {
-    result = vnode.text.split(/\b/).map(word => {
-      switch(word) {
-      case ' ': return underscore()
-      case ': ': return underscore(2)
-      default: return word
-      }
-    })
+  if (vnodes.length > 1) {
+    result = vnodes.map(vnode => (
+      vnode.text ? vnode : snakeify(vnode)
+    ))
+  } else if (vnodes.length > 0) {
+    const vnode = vnodes[0]
+    if (vnode.children) {
+      // TODO replace with cloneVNode once export is available in vue 3x
+      // investigate if this maintains directives, etc.
+      result = h(vnode.tag, snakeify(vnode.children))
+    } else if (vnode.text) {
+      result = vnode.text.split(/\b/).map(word => {
+        switch(word) {
+        case ' ': return underscore()
+        case ': ': return underscore(2)
+        default: return word
+        }
+      })
+    } else {
+      result = vnode
+    }
   } else {
-    result = vnode
+    result = vnodes
   }
   return result
 }
 
 export default {
-  setup(_, { slots }) {
+  setup(props, context) {
+    const { slots } = context
     const children = slots.default ? slots.default() : []
-    return () => h('div', { class: 'snake' }, children.flatMap(snakeify))
+    return () => h('div', { class: 'snake' }, snakeify(children))
   }
 }
 </script>
