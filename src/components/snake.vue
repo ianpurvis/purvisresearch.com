@@ -1,6 +1,47 @@
 <script>
 import { h } from 'vue'
 
+function snakeify(vnodeOrArray) {
+  let result
+  if (Array.isArray(vnodeOrArray)) {
+    if (vnodeOrArray.length > 1) {
+      result = vnodeOrArray.map(n => n.text ? n : snakeify(n))
+    } else {
+      result = vnodeOrArray.map(snakeify)
+    }
+  } else {
+    const {
+      children,
+      data: { directives, ...data } = {},
+      tag,
+      text
+    } = vnodeOrArray
+    if (children) {
+      // TODO replace with cloneVNode once export is available in vue 3x
+      // investigate if this maintains directives, etc.
+      result = h(tag, data, snakeify(children))
+    } else if (text) {
+      // vnode.text.split(/\s/).flatMap(word => (
+      //   word.length > 0 ? [ word, 'underscore' ] : []
+      // ))
+
+      // result = [...text.matchAll(/(\S*)\s/g)]
+      //   .flatMap(([, prefix]) => [prefix, underscore()])
+
+      result = text.split(/\b/).map(word => {
+        switch(word) {
+        case ' ': return underscore()
+        case ': ': return underscore(2)
+        default: return word
+        }
+      })
+    } else {
+      result = vnodeOrArray
+    }
+  }
+  return result
+}
+
 function underscore(replace = 1) {
   const className = ['underscore']
   const content = ['\xa0']
@@ -11,39 +52,9 @@ function underscore(replace = 1) {
   return h('span', { class: className }, content.join(''))
 }
 
-function snakeify(vnodes) {
-  vnodes = [].concat(vnodes)
-  let result
-  if (vnodes.length > 1) {
-    result = vnodes.map(vnode => (
-      vnode.text ? vnode : snakeify(vnode)
-    ))
-  } else if (vnodes.length > 0) {
-    const vnode = vnodes[0]
-    if (vnode.children) {
-      // TODO replace with cloneVNode once export is available in vue 3x
-      // investigate if this maintains directives, etc.
-      result = h(vnode.tag, snakeify(vnode.children))
-    } else if (vnode.text) {
-      result = vnode.text.split(/\b/).map(word => {
-        switch(word) {
-        case ' ': return underscore()
-        case ': ': return underscore(2)
-        default: return word
-        }
-      })
-    } else {
-      result = vnode
-    }
-  } else {
-    result = vnodes
-  }
-  return result
-}
 
 export default {
-  setup(props, context) {
-    const { slots } = context
+  setup(_, { slots }) {
     const children = slots.default ? slots.default() : []
     return () => h('div', { class: 'snake' }, snakeify(children))
   }

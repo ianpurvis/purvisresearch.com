@@ -1,18 +1,18 @@
 <template>
-  <div class="snake label" v-tight>
-    <nuxt-link class="tighten inherit-color" to="/" v-tight>
-      <span class="stretch" v-html="snake('Purvis ')"></span>
+  <Snake class="label">
+    <nuxt-link class="tighten inherit-color" to="/">
+      <span class="stretch">Purvis </span>
       <span>Research</span>
     </nuxt-link>
-    <h1 v-tight>
-      <span v-html="snake($attrs.edition)"></span>
-      <span class="underscore replace-2 nomobile">: </span>
+    <h1>
+      <span>{{ $attrs.edition }}</span>
+      <span class="nomobile">: </span>
       <canvas ref="canvas">{{ $attrs.description }}</canvas>
     </h1>
     <address>
       <a v-unobfuscate:href="'mailto:ian@purvisresearch@@com'">ian@purv<span class="stretch">isresearch.c0m</span></a>
     </address>
-  </div>
+  </Snake>
 </template>
 
 <script>
@@ -41,15 +41,15 @@ export default {
 
 $mobile-width: 568px;
 
-a {
+:deep(a) {
   font-style: normal;
 }
 
-address {
+:deep(address) {
   display: inline;
 }
 
-canvas {
+:deep(canvas) {
   bottom: 0;
   height: 100%;
   left: 0;
@@ -62,7 +62,7 @@ canvas {
   width: 100%;
 }
 
-h1 {
+:deep(h1) {
   display: inline;
 
   @include from($mobile-width) {
@@ -76,7 +76,7 @@ main {
   position: relative;
 }
 
-.inherit-color {
+:deep(.inherit-color) {
   color: inherit;
 
   &:hover {
@@ -84,7 +84,7 @@ main {
   }
 }
 
-.label {
+:deep(.label) {
   font-family: 'Libre Barcode 128 Text', sans-serif;
   font-size: 96px;
   letter-spacing: 0.125ch;
@@ -97,13 +97,13 @@ main {
   }
 }
 
-.nomobile {
+:deep(.nomobile) {
   @include until($mobile-width) {
     display: none !important;
   }
 }
 
-.stretch {
+:deep(.stretch) {
   @include until($mobile-width) {
     letter-spacing: 0.33ch;
 
@@ -114,7 +114,7 @@ main {
   }
 }
 
-.tighten {
+:deep(.tighten) {
   @include from($mobile-width) {
     letter-spacing: 0.125ch;
 
