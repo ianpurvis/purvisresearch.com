@@ -10,7 +10,7 @@ export default () => ({
     color: '#3B8070'
   },
   modern: 'client',
-  srcDir: 'app',
+  srcDir: 'src',
   ssr: false,
   target: 'static'
 })

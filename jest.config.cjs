@@ -38,7 +38,7 @@ module.exports = {
         '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
         '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
         'draco/(.*)$': '<rootDir>/lib/draco/$1',
-        '~(.*)$': '<rootDir>/app/$1',
+        '~(.*)$': '<rootDir>/src/$1',
       },
       testEnvironment: 'jsdom',
       testMatch: [
