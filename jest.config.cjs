@@ -4,17 +4,26 @@ const transformPatterns = [
   'three/build/three.module'
 ]
 
-const defaults = {
-  coveragePathIgnorePatterns: [
-    'lib/draco/.*',
-    'spec/.*'
+module.exports = {
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.js'
   ],
   moduleFileExtensions: [
     'js',
     'json',
     'vue',
   ],
-  testEnvironment: 'node',
+  moduleNameMapper: {
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/spec/mocks/file-mock.js',
+    '\\.(eot|otf|ttf|woff|woff2)$': '<rootDir>/spec/mocks/file-mock.js',
+    '\\.(mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/spec/mocks/file-mock.js',
+    '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
+    '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
+    'draco/(.*)$': '<rootDir>/lib/draco/$1',
+    '~(.*)$': '<rootDir>/src/$1',
+  },
+  testEnvironment: 'jsdom',
   testRunner: 'jest-circus/runner',
   transform: {
     '^.+\\.js$': 'babel-jest',
@@ -23,27 +32,4 @@ const defaults = {
   transformIgnorePatterns: [
     `<rootDir>/node_modules/(?!(${transformPatterns.join('|')}))`
   ],
-}
-
-module.exports = {
-  collectCoverage: true,
-  projects: [
-    {
-      ...defaults,
-      displayName: 'app',
-      moduleNameMapper: {
-        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/spec/mocks/file-mock.js',
-        '\\.(eot|otf|ttf|woff|woff2)$': '<rootDir>/spec/mocks/file-mock.js',
-        '\\.(mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/spec/mocks/file-mock.js',
-        '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
-        '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
-        'draco/(.*)$': '<rootDir>/lib/draco/$1',
-        '~(.*)$': '<rootDir>/app/$1',
-      },
-      testEnvironment: 'jsdom',
-      testMatch: [
-        '<rootDir>/spec/app/**/*.spec.js'
-      ],
-    }
-  ]
 }

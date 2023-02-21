@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Compressing WebAssembly files..."
-for wasm in dist/app/_/wasm/*; do
+for wasm in dist/_/wasm/*; do
   echo "${wasm}"
   gzip --best "${wasm}"
   mv "${wasm}.gz" "${wasm}"

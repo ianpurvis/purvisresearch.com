@@ -23,7 +23,7 @@ export default ({ baseDir }) => ({
 
       // Load web-workers
       config.module.rules.push({
-        test: /app\/workers\/.*\.js$/,
+        test: /src\/workers\/.*\.js$/,
         loader: 'worker-loader',
         options: {
           filename: chunk(context)
@@ -108,7 +108,7 @@ export default ({ baseDir }) => ({
     filenames: {
       img: ({ isDev }) =>
         (resourcePath) => {
-          const nestedPath = relative('app/assets/images', dirname(resourcePath))
+          const nestedPath = relative('src/assets/images', dirname(resourcePath))
           return isDev
             ? '[path][name].[ext]'
             : join('img', nestedPath, '[name].[ext]?[contenthash:7]')
