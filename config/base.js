@@ -3,7 +3,6 @@ export default () => ({
     '~/assets/stylesheets/app.scss'
   ],
   generate: {
-    dir: 'dist/app',
     subFolders: false
   },
   loading: {
