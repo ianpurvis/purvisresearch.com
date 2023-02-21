@@ -9,6 +9,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.js'
   ],
+  coverageProvider: 'v8',
   moduleFileExtensions: [
     'js',
     'json',
