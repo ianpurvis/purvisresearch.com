@@ -1,13 +1,16 @@
 import ogImagePath from '../../assets/images/2018/oct/screenprinting-a-3d-scan-with-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
-import Graphix from '../../mixins/graphix.js'
+import Graphix from '../../components/graphix.vue'
 import { Organization } from '../../models/organization.js'
 import { ScreenPrintingA3DScan } from '../../scenes/screen-printing-a-3d-scan.js'
-import { WebGL } from '../../models/webgl.js'
+import { detectWebGL } from '../../models/webgl.js'
 
 export default {
   beforeDestroy() {
     this.dispose()
+  },
+  components: {
+    Graphix
   },
   created() {
     // Non-reactive data:
@@ -56,18 +59,15 @@ export default {
       if (this.engine) this.engine.dispose()
     },
     async load() {
-      const { canvas } = this.$refs
-      WebGL.assertWebGLAvailable(canvas)
+      const { graphix: { $refs: { canvas } } } = this.$refs
+      if(!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
       const scene = engine.scene = new ScreenPrintingA3DScan()
       await scene.load()
       await engine.play()
     },
   },
-  mixins: [
-    Graphix,
-  ],
   async mounted() {
-    this.load().catch(Graphix.errorCaptured)
+    this.load()
   }
 }
