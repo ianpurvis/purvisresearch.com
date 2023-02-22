@@ -1,13 +1,16 @@
 import ogImagePath from '~/assets/images/2017/nov/a-3d-character-exploder-in-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
-import Graphix from '../../mixins/graphix.js'
+import Graphix from '../../components/graphix.vue'
 import { Organization } from '~/models/organization.js'
 import { CharacterExploderScene } from '../../scenes/character-exploder.js'
-import { WebGL } from '~/models/webgl.js'
+import { detectWebGL } from '~/models/webgl.js'
 
 export default {
   beforeDestroy() {
     this.dispose()
+  },
+  components: {
+    Graphix
   },
   created() {
     // Non-reactive data:
@@ -56,18 +59,15 @@ export default {
       if (this.engine) this.engine.dispose()
     },
     async load() {
-      const canvas = this.$refs.canvas
-      WebGL.assertWebGLAvailable(canvas)
+      const { graphix: { $refs: { canvas } } } = this.$refs
+      if(!detectWebGL(canvas)) return
       const engine = new ThreeEngine(canvas, { maxFPS: 30 })
       engine.scene = new CharacterExploderScene()
       this.engine = engine
       await engine.play()
     }
   },
-  mixins: [
-    Graphix,
-  ],
   mounted() {
-    this.load().catch(Graphix.errorCaptured)
+    this.load()
   }
 }
