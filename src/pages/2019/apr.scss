@@ -1,11 +1,10 @@
 @charset "utf-8";
-@import '~assets/stylesheets/graphix';
 
 main {
   color: #fff;
 }
 
-a {
+:deep(a) {
   &:hover {
     color: #d3d3d3;
   }
