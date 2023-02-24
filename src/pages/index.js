@@ -3,6 +3,7 @@ import ogImagePath from '~/assets/images/startup-technology-research-design-deve
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
 import Unobfuscate from '~/directives/unobfuscate.js'
 import { Organization } from '~/models/organization.js'
+import { snake } from '~/util/snake.js'
 
 export default {
   components: {
@@ -75,9 +76,6 @@ export default {
     }
   },
   methods: {
-    snake(value) {
-      const { $options: { _scopeId } } = this
-      return value.replace(/\s/g, `<span class="underscore" ${_scopeId}>&nbsp;</span>`)
-    }
+    snake
   }
 }

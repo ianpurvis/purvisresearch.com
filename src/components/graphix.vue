@@ -15,14 +15,19 @@
   </div>
 </template>
 
-<script setup>
-import vTight from 'vue-tight'
-import vUnobfuscate from '~/directives/unobfuscate.js'
-import { getCurrentInstance } from 'vue'
+<script>
+import Tight from 'vue-tight'
+import Unobfuscate from '~/directives/unobfuscate.js'
+import { snake } from '~/util/snake.js'
 
-function snake(value) {
-  const { proxy: { $options: { _scopeId } } } = getCurrentInstance()
-  return value.replace(/\s/g, `<span class="underscore" ${_scopeId}>&nbsp;</span>`)
+export default {
+  directives: {
+    Tight,
+    Unobfuscate
+  },
+  setup() {
+    return { snake }
+  }
 }
 </script>
 
