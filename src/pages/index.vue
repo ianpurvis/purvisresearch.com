@@ -57,7 +57,7 @@
         </nav>
       </div>
       <div class="boxx">
-        <p class="snake">I love working with startups, <em>creative</em> people, and <em>interesting</em> tech. Hit me up!</p>
+        <p>I love working with startups, <em>creative</em> people, and <em>interesting</em> tech. Hit me up!</p>
         <address>
           <a v-unobfuscate:href="'mailto:ian@purvisresearch@@com'">ian@purvisresearch.c0m</a>
           <a href="https://github.com/ianpurvis">github.com/ianpurvis</a>

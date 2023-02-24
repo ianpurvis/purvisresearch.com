@@ -32,6 +32,7 @@ function snake(value) {
 @import '~bulma/sass/utilities/derived-variables';
 @import '~bulma/sass/utilities/mixins';
 @import '~assets/stylesheets/libre-barcode-128-text-regular';
+@import '~assets/stylesheets/snake';
 
 $mobile-width: 568px;
 
@@ -97,12 +98,6 @@ main {
   }
 }
 
-.snake {
-  overflow-wrap: break-word;
-  text-transform: lowercase;
-  word-break: break-all;
-}
-
 .stretch {
   @include until($mobile-width) {
     letter-spacing: 0.33ch;
@@ -125,29 +120,4 @@ main {
   }
 }
 
-.underscore {
-  // Margin equals characters replaced * -(1ch + letter spacing)
-  margin-right: 1 * -(1ch + 0.125ch);
-  visibility: hidden;
-
-  @include from($mobile-width) {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0.06ch);
-  }
-
-  &::before {
-    content: '_';
-    visibility: visible;
-  }
-
-  &.replace-2 {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 2 * -(1ch + 0.125ch);
-
-    @include from($mobile-width) {
-      // Margin equals characters replaced * -(1ch + letter spacing)
-      margin-right: 2 * -(1ch + 0.06ch);
-    }
-  }
-}
 </style>
