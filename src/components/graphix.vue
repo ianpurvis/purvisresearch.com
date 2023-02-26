@@ -1,8 +1,43 @@
+<template>
+  <div class="snake label" v-tight>
+    <nuxt-link class="tighten inherit-color" to="/" v-tight>
+      <span class="stretch" v-html="snake('Purvis ')"></span>
+      <span>Research</span>
+    </nuxt-link>
+    <h1 v-tight>
+      <span v-html="snake($attrs.edition)"></span>
+      <span class="underscore replace-2 nomobile">: </span>
+      <canvas ref="canvas">{{ $attrs.description }}</canvas>
+    </h1>
+    <address>
+      <a v-unobfuscate:href="'mailto:ian@purvisresearch@@com'">ian@purv<span class="stretch">isresearch.c0m</span></a>
+    </address>
+  </div>
+</template>
+
+<script>
+import Tight from 'vue-tight'
+import Unobfuscate from '~/directives/unobfuscate.js'
+import { snake } from '~/util/snake.js'
+
+export default {
+  directives: {
+    Tight,
+    Unobfuscate
+  },
+  setup() {
+    return { snake }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
 @charset "utf-8";
 @import '~bulma/sass/utilities/initial-variables';
 @import '~bulma/sass/utilities/derived-variables';
 @import '~bulma/sass/utilities/mixins';
 @import '~assets/stylesheets/libre-barcode-128-text-regular';
+@import '~assets/stylesheets/snake';
 
 $mobile-width: 568px;
 
@@ -68,12 +103,6 @@ main {
   }
 }
 
-.snake {
-  overflow-wrap: break-word;
-  text-transform: lowercase;
-  word-break: break-all;
-}
-
 .stretch {
   @include until($mobile-width) {
     letter-spacing: 0.33ch;
@@ -96,28 +125,4 @@ main {
   }
 }
 
-.underscore {
-  // Margin equals characters replaced * -(1ch + letter spacing)
-  margin-right: 1 * -(1ch + 0.125ch);
-  visibility: hidden;
-
-  @include from($mobile-width) {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0.06ch);
-  }
-
-  &::before {
-    content: '_';
-    visibility: visible;
-  }
-
-  &.replace-2 {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 2 * -(1ch + 0.125ch);
-
-    @include from($mobile-width) {
-      // Margin equals characters replaced * -(1ch + letter spacing)
-      margin-right: 2 * -(1ch + 0.06ch);
-    }
-  }
-}
+</style>

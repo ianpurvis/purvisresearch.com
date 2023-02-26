@@ -1,6 +1,6 @@
 import ogImagePath from '../../assets/images/2019/apr/surreal-television-with-webrtc-and-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
-import Graphix from '../../mixins/graphix.js'
+import Graphix from '../../components/graphix.vue'
 import { Organization } from '../../models/organization.js'
 import { SurrealTVScene } from '../../scenes/surreal-tv.js'
 import { detectWebGL } from '../../models/webgl.js'
@@ -8,6 +8,9 @@ import { detectWebGL } from '../../models/webgl.js'
 export default {
   beforeDestroy() {
     this.dispose()
+  },
+  components: {
+    Graphix
   },
   created() {
     // Non-reactive data:
@@ -58,7 +61,7 @@ export default {
       this.stopVideo()
     },
     async load() {
-      const { canvas, video } = this.$refs
+      const { graphix: { $refs: { canvas } }, video } = this.$refs
       if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
       const scene = engine.scene = new SurrealTVScene(video)
@@ -94,9 +97,6 @@ export default {
       stream.getTracks().forEach(track => track.stop())
     }
   },
-  mixins: [
-    Graphix
-  ],
   mounted() {
     Promise.all([
       this.load(),

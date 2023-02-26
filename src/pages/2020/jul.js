@@ -1,6 +1,6 @@
 import ogImagePath from '../../assets/images/2020/jul/a-banknote-in-simplex-wind.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
-import Graphix from '../../mixins/graphix.js'
+import Graphix from '../../components/graphix.vue'
 import { Organization } from '../../models/organization.js'
 import { BanknoteInSimplexWind } from '../../scenes/banknote-in-simplex-wind.js'
 import { detectWebGL } from '../../models/webgl.js'
@@ -8,6 +8,9 @@ import { detectWebGL } from '../../models/webgl.js'
 export default {
   beforeDestroy() {
     this.dispose()
+  },
+  components: {
+    Graphix
   },
   created() {
     // Non-reactive data:
@@ -57,7 +60,7 @@ export default {
       if (this.engine) this.engine.dispose()
     },
     async load() {
-      const { canvas } = this.$refs
+      const { graphix: { $refs: { canvas } } } = this.$refs
       if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 0 })
       const scene = engine.scene = new BanknoteInSimplexWind()

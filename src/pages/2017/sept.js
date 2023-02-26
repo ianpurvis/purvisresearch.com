@@ -1,11 +1,14 @@
 import ogImagePath from '~/assets/images/2017/sept/an-emoji-particle-flow-in-webgl.png'
-import Graphix from '~/mixins/graphix.js'
+import Graphix from '~/components/graphix.vue'
 import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
 
 export default {
   beforeDestroy() {
     this.dispose()
+  },
+  components: {
+    Graphix
   },
   created() {
     // Non-reactive data:
@@ -54,7 +57,7 @@ export default {
       if (this.engine) this.engine.dispose()
     },
     async load() {
-      const canvas = this.$refs.canvas
+      const { graphix: { $refs: { canvas } } } = this.$refs
       if (!detectWebGL(canvas)) return
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { EmojiParticleFlowScene } = await import('../../scenes/emoji-particle-flow.js')
@@ -65,9 +68,6 @@ export default {
       await engine.play()
     }
   },
-  mixins: [
-    Graphix,
-  ],
   mounted() {
     this.load()
   }

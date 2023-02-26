@@ -1,7 +1,9 @@
+import Tight from 'vue-tight'
 import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
 import AutoscaledDiv from '~/components/autoscaled-div.vue'
-import Graphix from '~/mixins/graphix.js'
+import Unobfuscate from '~/directives/unobfuscate.js'
 import { Organization } from '~/models/organization.js'
+import { snake } from '~/util/snake.js'
 
 export default {
   components: {
@@ -48,6 +50,10 @@ export default {
     }
     this.title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
   },
+  directives: {
+    Tight,
+    Unobfuscate
+  },
   head() {
     return {
       title: this.title,
@@ -69,7 +75,7 @@ export default {
       ],
     }
   },
-  mixins: [
-    Graphix
-  ],
+  methods: {
+    snake
+  }
 }

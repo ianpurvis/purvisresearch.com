@@ -1,8 +1,5 @@
 @charset "utf-8";
-@import '~assets/stylesheets/graphix';
 
-a {
-  &:not(.inherit-color):not(:hover) {
-    color: #0efab6;
-  }
+:deep(a):not(.inherit-color):not(:hover) {
+  color: #0efab6;
 }
