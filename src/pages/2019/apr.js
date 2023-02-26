@@ -62,7 +62,7 @@ export default {
     },
     async load() {
       const { graphix: { $refs: { canvas } }, video } = this.$refs
-      if(!detectWebGL(canvas)) return
+      if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
       const scene = engine.scene = new SurrealTVScene(video)
       const playPromise = engine.play()

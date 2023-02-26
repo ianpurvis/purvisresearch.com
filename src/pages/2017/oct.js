@@ -58,7 +58,7 @@ export default {
     },
     async load() {
       const { graphix: { $refs: { canvas } } } = this.$refs
-      if(!detectWebGL(canvas)) return
+      if (!detectWebGL(canvas)) return
       const { PixiEngine } = await import('../../engines/pixi-engine.js')
       const { BezierMoireGenerator } = await import('../../scenes/bezier-moire-generator.js')
       const engine = new PixiEngine(canvas, { maxFPS: 30 })

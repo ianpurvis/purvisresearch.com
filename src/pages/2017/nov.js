@@ -60,7 +60,7 @@ export default {
     },
     async load() {
       const { graphix: { $refs: { canvas } } } = this.$refs
-      if(!detectWebGL(canvas)) return
+      if (!detectWebGL(canvas)) return
       const engine = new ThreeEngine(canvas, { maxFPS: 30 })
       engine.scene = new CharacterExploderScene()
       this.engine = engine

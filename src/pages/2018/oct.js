@@ -60,7 +60,7 @@ export default {
     },
     async load() {
       const { graphix: { $refs: { canvas } } } = this.$refs
-      if(!detectWebGL(canvas)) return
+      if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
       const scene = engine.scene = new ScreenPrintingA3DScan()
       await scene.load()
