@@ -16,10 +16,6 @@ function detectWebGL(canvas, {
   return present
 }
 
-function  assertWebGLAvailable(canvas) {
-  if (!WebGL.isWebGLAvailable(canvas)) throw new WebGL.WebGLNotAvailableError()
-}
-
 function isWebGLAvailable(canvas) {
   try {
     return !! (window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
@@ -28,16 +24,4 @@ function isWebGLAvailable(canvas) {
   }
 }
 
-class WebGLNotAvailableError extends Error {
-  constructor() {
-    super(MESSAGE_NO_WEBGL)
-  }
-}
-
-export const WebGL = {
-  assertWebGLAvailable,
-  isWebGLAvailable,
-  WebGLNotAvailableError
-}
-
-export { detectWebGL }
+export { detectWebGL, isWebGLAvailable }
