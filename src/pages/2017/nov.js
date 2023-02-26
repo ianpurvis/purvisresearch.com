@@ -3,7 +3,7 @@ import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../mixins/graphix.js'
 import { Organization } from '~/models/organization.js'
 import { CharacterExploderScene } from '../../scenes/character-exploder.js'
-import { WebGL } from '~/models/webgl.js'
+import { detectWebGL } from '~/models/webgl.js'
 
 export default {
   beforeDestroy() {
@@ -57,7 +57,7 @@ export default {
     },
     async load() {
       const canvas = this.$refs.canvas
-      WebGL.assertWebGLAvailable(canvas)
+      if (!detectWebGL(canvas)) return
       const engine = new ThreeEngine(canvas, { maxFPS: 30 })
       engine.scene = new CharacterExploderScene()
       this.engine = engine
@@ -68,6 +68,6 @@ export default {
     Graphix,
   ],
   mounted() {
-    this.load().catch(Graphix.errorCaptured)
+    this.load()
   }
 }

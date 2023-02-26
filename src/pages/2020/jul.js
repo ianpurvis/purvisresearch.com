@@ -3,7 +3,7 @@ import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../mixins/graphix.js'
 import { Organization } from '../../models/organization.js'
 import { BanknoteInSimplexWind } from '../../scenes/banknote-in-simplex-wind.js'
-import { WebGL } from '../../models/webgl.js'
+import { detectWebGL } from '../../models/webgl.js'
 
 export default {
   beforeDestroy() {
@@ -58,7 +58,7 @@ export default {
     },
     async load() {
       const { canvas } = this.$refs
-      WebGL.assertWebGLAvailable(canvas)
+      if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 0 })
       const scene = engine.scene = new BanknoteInSimplexWind()
       await scene.load()
@@ -69,6 +69,6 @@ export default {
     Graphix
   ],
   mounted() {
-    this.load().catch(Graphix.errorCaptured)
+    this.load()
   }
 }

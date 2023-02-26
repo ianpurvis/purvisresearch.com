@@ -3,7 +3,7 @@ import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../mixins/graphix.js'
 import { Organization } from '../../models/organization.js'
 import { SurrealTVScene } from '../../scenes/surreal-tv.js'
-import { WebGL } from '../../models/webgl.js'
+import { detectWebGL } from '../../models/webgl.js'
 
 export default {
   beforeDestroy() {
@@ -59,7 +59,7 @@ export default {
     },
     async load() {
       const { canvas, video } = this.$refs
-      WebGL.assertWebGLAvailable(canvas)
+      if (!detectWebGL(canvas)) return
       const engine = this.engine = new ThreeEngine(canvas, { maxFPS: 20 })
       const scene = engine.scene = new SurrealTVScene(video)
       const playPromise = engine.play()
@@ -101,6 +101,6 @@ export default {
     Promise.all([
       this.load(),
       this.startVideo()
-    ]).catch(Graphix.errorCaptured)
+    ])
   }
 }

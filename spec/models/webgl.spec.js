@@ -1,36 +1,44 @@
-import { WebGL } from '~/models/webgl.js'
+import { isWebGLAvailable, detectWebGL } from '~/models/webgl.js'
 
 describe('WebGL', () => {
-  describe('WebGLNotAvailableError', () => {
-    it('extends Error', () => {
-      expect(WebGL.WebGLNotAvailableError.prototype).toBeInstanceOf(Error)
-    })
-  })
-  describe('assertWebGLAvailable(canvas)', () => {
-    let example, mockCanvas
+  describe('detectWebGL(canvas)', () => {
+    let canvas, result
 
     beforeEach(() => {
-      mockCanvas = {
+      global.console.warn = jest.fn()
+      global.window.WebGLRenderingContext = 'fake-interface'
+      canvas = {
         getContext: jest.fn()
       }
-      example = () => WebGL.assertWebGLAvailable(mockCanvas)
-      jest.spyOn(WebGL, 'isWebGLAvailable')
     })
-    afterEach(() => {
-      WebGL.isWebGLAvailable.mockRestore()
-    })
-    describe('when webgl is available', () => {
-      it('does not throw an error', () => {
-        WebGL.isWebGLAvailable.mockReturnValue(true)
-        expect(example).not.toThrow()
-        expect(WebGL.isWebGLAvailable).toHaveBeenCalledWith(mockCanvas)
+    describe('given a canvas with webgl', () => {
+      beforeEach(() => {
+        canvas.getContext.mockReturnValue(true)
+        result = detectWebGL(canvas)
+      })
+      it('tries to get a webgl context', () => {
+        expect(canvas.getContext).toHaveBeenCalled()
+      })
+      it('does not log a console warning', () => {
+        expect(global.console.warn).not.toHaveBeenCalled()
+      })
+      it('returns true', () => {
+        expect(result).toBe(true)
       })
     })
-    describe('when webgl is not available', () => {
-      it('throws WebGLNotAvailableError', () => {
-        WebGL.isWebGLAvailable.mockReturnValue(false)
-        expect(example).toThrow(WebGL.WebGLNotAvailableError)
-        expect(WebGL.isWebGLAvailable).toHaveBeenCalledWith(mockCanvas)
+    describe('given a canvas without webgl', () => {
+      beforeEach(() => {
+        canvas.getContext.mockReturnValue(false)
+        result = detectWebGL(canvas)
+      })
+      it('tries to get a webgl context', () => {
+        expect(canvas.getContext).toHaveBeenCalled()
+      })
+      it('logs a console warning', () => {
+        expect(global.console.warn).toHaveBeenCalled()
+      })
+      it('returns false', () => {
+        expect(result).toBe(false)
       })
     })
   })
@@ -41,11 +49,11 @@ describe('WebGL', () => {
       mockCanvas = {
         getContext: jest.fn()
       }
-      example = () => WebGL.isWebGLAvailable(mockCanvas)
+      example = () => isWebGLAvailable(mockCanvas)
     })
     describe('when window supports WebGLRenderingContext', () => {
       beforeEach(() => {
-        global.window.WebGLRenderingContext = 'mockClass'
+        global.window.WebGLRenderingContext = 'fake-interface'
       })
       describe('when canvas supports webgl', () => {
         it('returns true', () => {
