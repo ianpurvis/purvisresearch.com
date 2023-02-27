@@ -7,7 +7,7 @@ const transformPatterns = [
 module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.js'
+    'src/**/*.{js,vue}'
   ],
   coverageProvider: 'v8',
   moduleFileExtensions: [
