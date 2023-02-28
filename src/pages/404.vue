@@ -4,5 +4,26 @@
   </main>
 </template>
 
-<style src="./404.scss" lang="scss" scoped></style>
-<script src="./404.js"></script>
+<script>
+import Stretch from '~/components/stretch.vue'
+
+const title = 'Not Found | Purvis Research'
+
+export default {
+  components: {
+    Stretch
+  },
+  head() {
+    return {
+      title
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.error {
+  height: 100vh;
+  width: 100vw;
+}
+</style>
