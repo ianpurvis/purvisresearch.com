@@ -1,13 +1,13 @@
 import Tight from 'vue-tight'
 import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
-import AutoscaledDiv from '~/components/autoscaled-div.vue'
+import Stretch from '~/components/stretch.vue'
 import Unobfuscate from '~/directives/unobfuscate.js'
 import { Organization } from '~/models/organization.js'
 import { snake } from '~/util/snake.js'
 
 export default {
   components: {
-    AutoscaledDiv,
+    Stretch
   },
   created() {
     // Non-reactive data:
