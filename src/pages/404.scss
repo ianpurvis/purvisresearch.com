@@ -1,17 +1,4 @@
-.aspect {
-  &.fit-horizontal {
-    font-size: 100vw;
-    height: auto;
-    width: 100vw;
-  }
-
-  &.fit-vertical {
-    font-size: 100vh;
-    height: 100vh;
-    width: auto;
-  }
-}
-
 .error {
-  line-height: 1;
+  height: 100vh;
+  width: 100vw;
 }

@@ -19,7 +19,7 @@ Please take a look around and [get in touch](mailto:ian@purvisresearch.com) if y
   CSS in your browser. It also uses [**vue-tight**](https://github.com/ianpurvis/vue-tight)
   to help preserve readability while controlling whitespace at render.
 
-- [**src/components/autoscaled-div.vue**](src/components/autoscaled-div.vue)
+- [**src/components/stretch.vue**](src/components/stretch.vue)
   is a Vue component that watches the DOM to automatically scale its children
   to fit its own width.
 

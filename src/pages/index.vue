@@ -1,6 +1,6 @@
 <template>
-  <main v-once>
-    <autoscaled-div :max-scale=2.8>
+  <main>
+    <Stretch :max-scale=2.8>
       <div class="boxx">
         <h1>
           <nuxt-link to="/" class="inline-block">
@@ -66,7 +66,7 @@
       <div class="boxx">
         <div class="kaomoji">ヾ(⌐■_■)ノ</div>
       </div>
-    </autoscaled-div>
+    </Stretch>
   </main>
 </template>
 

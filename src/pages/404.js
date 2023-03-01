@@ -1,6 +1,8 @@
+import Stretch from '~/components/stretch.vue'
+
 export default {
-  beforeDestroy() {
-    window.removeEventListener('resize', this.layoutAspects)
+  components: {
+    Stretch
   },
   data() {
     return {
@@ -11,28 +13,5 @@ export default {
     return {
       title: this.title,
     }
-  },
-  methods: {
-    fitHorizontal(element) {
-      element.classList.remove('fit-vertical')
-      element.classList.add('fit-horizontal')
-    },
-    fitVertical(element) {
-      element.classList.remove('fit-horizontal')
-      element.classList.add('fit-vertical')
-    },
-    layoutAspects() {
-      let aspectFunc
-      if (window.innerHeight > window.innerWidth) {
-        aspectFunc = this.fitHorizontal
-      } else {
-        aspectFunc = this.fitVertical
-      }
-      document.querySelectorAll('.aspect').forEach(aspectFunc)
-    }
-  },
-  mounted() {
-    this.layoutAspects()
-    window.addEventListener('resize', this.layoutAspects)
   }
 }
