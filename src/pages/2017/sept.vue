@@ -12,10 +12,11 @@ import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
 
 const org = Organization.default
-const canonicalUrl = `${org.url}/2017/sept.html`
-const title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
-const description = 'An emoji particle flow in WebGL.'
-const jsonld = JSON.stringify({
+export const canonicalUrl = `${org.url}/2017/sept.html`
+export const title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
+export const description = 'An emoji particle flow in WebGL.'
+export const ogImageUrl = `${org.url}${ogImagePath}`
+export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   'itemListElement': [{
@@ -41,7 +42,7 @@ export default {
       meta: [
         { name: 'description', content: description, hid: 'description' },
         { property:'og:description', content: description },
-        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
+        { property:'og:image', content: ogImageUrl },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
         { property:'og:title', content:'Sept 2017' },
