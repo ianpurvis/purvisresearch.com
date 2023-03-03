@@ -24,43 +24,43 @@ describe('Sept', () => {
     expect(wrapper.vm.$metaInfo.title).toBe(title)
   })
   it('renders description', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ name: 'description', content: description }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ name: 'description', content: description })
   })
   it('renders og:description', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:description', content: description }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:description', content: description })
   })
   it('renders og:image', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:image', content: ogImageUrl }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:image', content: ogImageUrl })
   })
   it('renders og:image:height', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:image:height', content: '859' }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:image:height', content: '859' })
   })
   it('renders og:image:width', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:image:width', content: '1646' }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:image:width', content: '1646' })
   })
   it('renders og:title', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:title', content: 'Sept 2017' }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:title', content: 'Sept 2017' })
   })
   it('renders og:url', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ property: 'og:url', content: canonicalUrl }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ property: 'og:url', content: canonicalUrl })
   })
   it('renders twitter:card', () => {
-    expect(wrapper.vm.$metaInfo.meta).toContainEqual(
-      expect.objectContaining({ name: 'twitter:card', content: 'summary_large_image' }))
+    expect(wrapper.vm.$metaInfo.meta)
+      .toContainMatch({ name: 'twitter:card', content: 'summary_large_image' })
   })
   it('renders canonicalUrl', () => {
-    expect(wrapper.vm.$metaInfo.link).toContainEqual(
-      expect.objectContaining({ rel: 'canonical', href: canonicalUrl }))
+    expect(wrapper.vm.$metaInfo.link)
+      .toContainMatch({ rel: 'canonical', href: canonicalUrl })
   })
   it('renders jsonld', () => {
-    expect(wrapper.vm.$metaInfo.script).toContainEqual(
-      expect.objectContaining({ type: 'application/ld+json', json: jsonld }))
+    expect(wrapper.vm.$metaInfo.script)
+      .toContainMatch({ type: 'application/ld+json', json: jsonld })
   })
 })
