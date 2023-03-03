@@ -24,6 +24,9 @@ module.exports = {
     'draco/(.*)$': '<rootDir>/lib/draco/$1',
     '~(.*)$': '<rootDir>/src/$1',
   },
+  setupFilesAfterEnv: [
+    '<rootDir>/spec/setup.js'
+  ],
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.js$': 'babel-jest',
