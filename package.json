@@ -56,7 +56,7 @@
     "frack-loader": "^1.0.0",
     "jest": "^27.4.7",
     "jest-circus": "^27.4.6",
-    "jest-globals-ctx": "file:../jest-context",
+    "jest-ctx": "github:ianpurvis/jest-ctx",
     "lint-staged": "^12.3.3",
     "postcss": "^8.4.6",
     "postcss-scss": "^4.0.3",

@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { beforeAll, beforeEach, describe, expect, it } from 'jest-globals-ctx'
+import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
 import { MESSAGE_NO_WEBGL } from '~/models/webgl.js'
 import { mockConsole } from './console.js'
 import { describeVueMetaBehavior } from './vue-meta.js'

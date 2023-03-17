@@ -1,5 +1,6 @@
 const transformPatterns = [
   'd3-ease',
+  'jest-ctx',
   'three/examples/jsm',
   'three/build/three.module'
 ]

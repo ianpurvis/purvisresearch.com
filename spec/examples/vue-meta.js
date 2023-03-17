@@ -1,5 +1,5 @@
 import { createLocalVue } from '@vue/test-utils'
-import { beforeAll, beforeEach, describe, expect, it } from 'jest-globals-ctx'
+import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
 import VueMeta from 'vue-meta'
 
 export function describeVueMetaBehavior({
