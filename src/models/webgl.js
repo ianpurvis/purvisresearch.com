@@ -3,7 +3,7 @@
  *  https://github.com/mrdoob/three.js/blob/dev/examples/jsm/WebGL.js
  */
 
-const MESSAGE_NO_WEBGL =
+export const MESSAGE_NO_WEBGL =
   'Your device does not seem to support WebGL.\n' +
   'Learn more at http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation'
 
