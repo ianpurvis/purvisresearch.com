@@ -6,6 +6,7 @@ module.exports = {
   extends: 'eslint:recommended',
   globals: {
     fetch: 'off',
+    globalThis: 'readonly',
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
   },
