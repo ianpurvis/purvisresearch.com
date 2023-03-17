@@ -16,6 +16,7 @@ export const canonicalUrl = `${org.url}/2017/sept.html`
 export const title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
 export const description = 'An emoji particle flow in WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogTitle = 'Sept 2017'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -45,7 +46,7 @@ export default {
         { property:'og:image', content: ogImageUrl },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
-        { property:'og:title', content:'Sept 2017' },
+        { property:'og:title', content: ogTitle },
         { property:'og:url', content: canonicalUrl },
         { name:'twitter:card', content:'summary_large_image' },
       ],
