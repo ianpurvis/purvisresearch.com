@@ -10,6 +10,7 @@ module.exports = {
     'src/**/*.{js,vue}'
   ],
   coverageProvider: 'v8',
+  injectGlobals: false,
   moduleFileExtensions: [
     'js',
     'json',
