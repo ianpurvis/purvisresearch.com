@@ -1,6 +1,5 @@
 const transformPatterns = [
   'd3-ease',
-  'jest-ctx',
   'three/examples/jsm',
   'three/build/three.module'
 ]
@@ -11,6 +10,7 @@ module.exports = {
     'src/**/*.{js,vue}'
   ],
   coverageProvider: 'v8',
+  injectGlobals: false,
   moduleFileExtensions: [
     'js',
     'json',
