@@ -25,7 +25,6 @@ module.exports = {
     '~(.*)$': '<rootDir>/src/$1',
   },
   testEnvironment: 'jsdom',
-  testRunner: 'jest-circus/runner',
   transform: {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.vue$': '@vue/vue2-jest'
