@@ -24,6 +24,7 @@ jobs:
         working-directory: infra
       - run: npm run build
       - run: npm run test
-      - env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: npm run codecov
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
