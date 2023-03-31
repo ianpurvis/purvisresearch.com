@@ -17,16 +17,8 @@ jobs:
           node-version-file: '.node-version'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - id: cache
-        name: Fetch cached node modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: node-modules-
       - name: Install npm packages
         run: npm ci
-        if: steps.cache.outputs.cache-hit != 'true'
       - run: npm run lint
       - run: |
           terraform init -backend=false
