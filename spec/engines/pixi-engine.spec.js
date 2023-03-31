@@ -1,3 +1,8 @@
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
+import { PixiEngine } from '~/engines/pixi-engine.js'
+import { Container, Renderer } from '~/shims/pixi.js'
+
 jest.mock('~/shims/pixi.js', () => ({
   Container: jest.fn(function() {
     this.addChild = jest.fn(),
@@ -10,9 +15,6 @@ jest.mock('~/shims/pixi.js', () => ({
     this.resize = jest.fn()
   }),
 }))
-
-import { PixiEngine } from '~/engines/pixi-engine.js'
-import { Container, Renderer } from '~/shims/pixi.js'
 
 describe('PixiEngine', () => {
   let canvas, engine, scene

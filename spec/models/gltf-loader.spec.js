@@ -1,6 +1,9 @@
-jest.mock('three/examples/jsm/loaders/GLTFLoader.js')
+import { jest } from '@jest/globals'
+import { afterEach, beforeEach, describe, expect, it } from 'jest-ctx'
 import { GLTFLoader as THREEGLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { GLTFLoader } from '~/models/gltf-loader.js'
+
+jest.mock('three/examples/jsm/loaders/GLTFLoader.js')
 
 describe('GLTFLoader', () => {
   let loader

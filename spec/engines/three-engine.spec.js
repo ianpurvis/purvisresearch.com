@@ -1,3 +1,8 @@
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
+import { ThreeEngine } from '~/engines/three-engine.js'
+import { WebGLRenderer } from 'three'
+
 jest.mock('three', () => ({
   Scene: jest.fn(),
   WebGLRenderer: jest.fn(function() {
@@ -8,9 +13,6 @@ jest.mock('three', () => ({
     this.getRenderTarget = jest.fn()
   })
 }))
-
-import { ThreeEngine } from '~/engines/three-engine.js'
-import { WebGLRenderer } from 'three'
 
 describe('ThreeEngine', () => {
   let canvas, engine, scene

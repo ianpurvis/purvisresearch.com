@@ -1,6 +1,9 @@
-jest.mock('three')
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
 import { Mesh, Vector3 } from 'three'
 import { Particle } from '~/models/particle.js'
+
+jest.mock('three')
 
 describe('Particle', () => {
   let particle, geometry, material

@@ -1,5 +1,7 @@
-import Animatable from '~/mixins/animatable.js'
 import { shallowMount } from '@vue/test-utils'
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
+import Animatable from '~/mixins/animatable.js'
 
 
 describe('animatable', () => {

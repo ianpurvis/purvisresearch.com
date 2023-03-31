@@ -1,3 +1,15 @@
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
+import {
+  BatchRenderer,
+  ENV,
+  Renderer,
+  Ticker,
+  settings,
+  systems,
+} from 'pixi.js'
+import { install } from '@pixi/unsafe-eval'
+
 jest.mock('pixi.js', () => ({
   BatchRenderer: jest.fn(),
   ENV: {
@@ -20,16 +32,6 @@ jest.mock('pixi.js', () => ({
   systems: jest.fn(),
 }))
 jest.mock('@pixi/unsafe-eval')
-
-import {
-  BatchRenderer,
-  ENV,
-  Renderer,
-  Ticker,
-  settings,
-  systems,
-} from 'pixi.js'
-import { install } from '@pixi/unsafe-eval'
 
 
 describe('shims/pixi', () => {

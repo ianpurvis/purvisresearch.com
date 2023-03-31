@@ -1,4 +1,5 @@
-import { afterAll, beforeAll, jest } from '@jest/globals'
+import { jest } from '@jest/globals'
+import { afterAll, beforeAll } from 'jest-ctx'
 
 export function mockConsole() {
   let real
