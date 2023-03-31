@@ -15,6 +15,7 @@
     "start": "nuxi preview",
     "test": "jest",
     "test:debug": "node inspect node_modules/.bin/jest -- --runInBand",
+    "terraform": "terraform -chdir=infra",
     "ttf2woff": "ttf2woff"
   },
   "dependencies": {
