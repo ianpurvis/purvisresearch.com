@@ -16,13 +16,11 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
       - run: npm run lint
-      - run: |
-          terraform init -backend=false
-          terraform validate
-        working-directory: infra
       - run: npm run build
       - run: npm run test
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+      - run: npm run terraform init
+      - run: npm run terraform validate
