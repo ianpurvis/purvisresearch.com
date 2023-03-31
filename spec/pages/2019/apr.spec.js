@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, jest } from '@jest/globals'
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
 import Component from '~/pages/2019/apr.vue'
 
 describe('apr.vue', () => {

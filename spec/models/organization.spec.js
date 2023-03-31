@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
 import { Organization } from '~/models/organization.js'
 
 describe('Organization', () => {
