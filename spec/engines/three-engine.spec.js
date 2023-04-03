@@ -9,6 +9,7 @@ jest.mock('three', () => ({
   })
 }))
 
+import { beforeEach, describe, expect, it, jest } from '@jest/globals'
 import { ThreeEngine } from '~/engines/three-engine.js'
 import { WebGLRenderer } from 'three'
 

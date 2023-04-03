@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from '@jest/globals'
 import { isWebGLAvailable, detectWebGL } from '~/models/webgl.js'
 
 describe('WebGL', () => {

@@ -11,6 +11,7 @@ jest.mock('~/shims/pixi.js', () => ({
   }),
 }))
 
+import { beforeEach, describe, expect, it, jest } from '@jest/globals'
 import { PixiEngine } from '~/engines/pixi-engine.js'
 import { Container, Renderer } from '~/shims/pixi.js'
 

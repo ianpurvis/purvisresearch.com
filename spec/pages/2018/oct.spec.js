@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, jest } from '@jest/globals'
 import Component from '~/pages/2018/oct.vue'
 
 describe('oct.vue', () => {
