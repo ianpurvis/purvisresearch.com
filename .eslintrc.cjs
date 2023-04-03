@@ -26,6 +26,7 @@ module.exports = {
         '**/*.spec.js'
       ],
       env: {
+        'jest/globals': false,
         node: true
       },
       extends: [
