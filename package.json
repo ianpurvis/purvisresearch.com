@@ -44,7 +44,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^29.5.0",
-    "core-js": "^3.21.0",
+    "core-js": "^3.29.1",
     "dotenv": "^16.0.3",
     "dotenv-cli": "^4.1.1",
     "eslint": "^7.32.0",
