@@ -1,5 +1,5 @@
 import { mount, RouterLinkStub } from '@vue/test-utils'
-import { describe, it, expect } from '@jest/globals'
+import { describe, it, expect } from 'jest-ctx'
 import Graphix from '~/components/graphix.vue'
 
 describe('Graphix', () => {

@@ -1,8 +1,10 @@
 jest.mock('~/assets/stylesheets/debug.scss', () => {}, { virtual: true })
 
 import { shallowMount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, jest } from '@jest/globals'
+import { jest } from '@jest/globals'
+import { beforeEach, describe, expect, it } from 'jest-ctx'
 import debug from '~/mixins/debug.js'
+
 
 describe('debug', () => {
   let component, wrapper

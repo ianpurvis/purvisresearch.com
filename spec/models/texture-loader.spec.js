@@ -1,6 +1,7 @@
 jest.mock('three')
 
-import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals'
+import { jest } from '@jest/globals'
+import { afterEach, beforeEach, describe, expect, it } from 'jest-ctx'
 import { TextureLoader as THREETextureLoader } from 'three'
 import { TextureLoader, TextureLoaderError } from '~/models/texture-loader.js'
 

@@ -7,9 +7,10 @@ const transformPatterns = [
 module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.js'
+    'src/**/*.{js,vue}'
   ],
   coverageProvider: 'v8',
+  injectGlobals: false,
   moduleFileExtensions: [
     'js',
     'json',
@@ -24,6 +25,9 @@ module.exports = {
     'draco/(.*)$': '<rootDir>/lib/draco/$1',
     '~(.*)$': '<rootDir>/src/$1',
   },
+  setupFilesAfterEnv: [
+    '<rootDir>/spec/setup.js'
+  ],
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.js$': 'babel-jest',
