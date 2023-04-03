@@ -21,6 +21,7 @@ jest.mock('pixi.js', () => ({
 }))
 jest.mock('@pixi/unsafe-eval')
 
+import { beforeEach, describe, expect, it, jest } from '@jest/globals'
 import {
   BatchRenderer,
   ENV,
