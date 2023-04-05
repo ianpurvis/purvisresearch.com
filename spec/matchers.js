@@ -1,6 +1,14 @@
-import { expect } from '@jest/globals'
+import { diff } from 'jest-diff'
 
-export function toContainMatch(actual, expected) {
-  expect(actual).toContainEqual(expect.objectContaining(expected))
-  return { pass: true }
+const { keys } = Object
+const { stringify } = JSON
+
+function isMatch(a, b) {
+  return keys(a).every(key => stringify(a[key]) == stringify(b[key]))
+}
+
+export function toContainMatch(received, expected) {
+  const pass = received.some(element => isMatch(expected, element))
+  const message = () => diff([expected], received)
+  return { message, pass }
 }
