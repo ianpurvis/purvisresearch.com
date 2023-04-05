@@ -3,6 +3,28 @@ import Graphix from '~/components/graphix.vue'
 import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
 
+const org = Organization.default
+export const canonicalUrl = `${org.url}/2017/oct.html`
+export const title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
+export const description = 'A bézier moiré generator in WebGL.'
+export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogTitle = 'Oct 2017'
+export const jsonld = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [{
+    '@type': 'ListItem',
+    'position': 1,
+    'name': 'purvis research',
+    'item': org.url
+  },{
+    '@type': 'ListItem',
+    'position': 2,
+    'name': 'oct 2017',
+    'item': canonicalUrl
+  }]
+})
+
 export default {
   beforeDestroy() {
     this.dispose()
@@ -10,45 +32,24 @@ export default {
   components: {
     Graphix
   },
-  created() {
-    // Non-reactive data:
-    this.canonicalUrl = `${Organization.default.url}/2017/oct.html`
-    this.title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
-    this.description = 'A bézier moiré generator in WebGL.'
-    this.jsonld = {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      'itemListElement': [{
-        '@type': 'ListItem',
-        'position': 1,
-        'name': 'purvis research',
-        'item': Organization.default.url
-      },{
-        '@type': 'ListItem',
-        'position': 2,
-        'name': 'oct 2017',
-        'item': this.canonicalUrl
-      }]
-    }
-  },
   head () {
     return {
-      title: this.title,
+      title,
       meta: [
-        { name: 'description', content: this.description, hid: 'description' },
-        { property:'og:description', content: this.description },
-        { property:'og:image', content: `${Organization.default.url}${ogImagePath}` },
+        { name: 'description', content: description, hid: 'description' },
+        { property:'og:description', content: description },
+        { property:'og:image', content: ogImageUrl },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
-        { property:'og:title', content:'Oct 2017' },
-        { property:'og:url', content: this.canonicalUrl },
+        { property:'og:title', content: ogTitle },
+        { property:'og:url', content: canonicalUrl },
         { name:'twitter:card', content:'summary_large_image' },
       ],
       link: [
-        { rel: 'canonical', href: this.canonicalUrl }
+        { rel: 'canonical', href: canonicalUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: this.jsonld }
+        { type: 'application/ld+json', json: jsonld }
       ],
     }
   },
