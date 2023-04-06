@@ -79,10 +79,12 @@ import { Organization } from '~/models/organization.js'
 import { snake } from '~/util/snake.js'
 
 const org = Organization.default
-const canonicalUrl = org.url
-const title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
-const description = org.description
-const jsonld = {
+export const canonicalUrl = org.url
+export const title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
+export const description = org.description
+export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogTitle = title
+export const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   'itemListElement': [{
@@ -132,10 +134,10 @@ export default {
       meta: [
         { name: 'description', content: description, hid: 'description' },
         { property:'og:description', content: description },
-        { property:'og:image', content: `${org.url}${ogImagePath}` },
+        { property:'og:image', content: ogImageUrl },
         { property:'og:image:height', content:'859' },
         { property:'og:image:width', content:'1646' },
-        { property:'og:title', content: title },
+        { property:'og:title', content: ogTitle },
         { property:'og:url', content: canonicalUrl },
         { name:'twitter:card', content:'summary_large_image' },
       ],
