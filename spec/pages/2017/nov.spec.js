@@ -1,21 +1,5 @@
-import { shallowMount } from '@vue/test-utils'
-import { jest } from '@jest/globals'
-import { beforeEach, describe, expect, it } from 'jest-ctx'
-import Component from '~/pages/2017/nov.vue'
+import Page from '~/pages/2017/nov.vue'
+import * as metadata from '~/pages/2017/nov.js'
+import { describePage } from '../../examples/page.js'
 
-describe('nov.vue', () => {
-  let wrapper
-
-  beforeEach(() => {
-    global.console = {
-      error: jest.fn(),
-      warn: jest.fn()
-    }
-  })
-  it('is a Vue instance', () => {
-    wrapper = shallowMount(Component, {
-      stubs: ['nuxt-link']
-    })
-    expect(wrapper.exists()).toBeTruthy()
-  })
-})
+describePage('Nov 2017', Page, metadata)
