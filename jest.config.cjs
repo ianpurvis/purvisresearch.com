@@ -30,7 +30,7 @@ module.exports = {
   ],
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    '^.+\\.(js|cjs|mjs)$': 'babel-jest',
     '^.+\\.vue$': '@vue/vue2-jest'
   },
   transformIgnorePatterns: [
