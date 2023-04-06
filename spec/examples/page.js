@@ -6,18 +6,18 @@ import { describeVueMetaBehavior } from './vue-meta.js'
 
 export function describePage(name, Page, metadata) {
   describe(name, () => {
-    mockConsole()
+    mockConsole(() => {
 
-    beforeAll(() => ({ stubs: ['nuxt-link'] }))
-    beforeEach(() => { console.warn.mockClear() })
-    beforeEach((options) => shallowMount(Page, options))
+      beforeAll(() => ({ stubs: ['nuxt-link'] }))
+      beforeEach((options) => shallowMount(Page, options))
 
-    it('mounts', (wrapper) => {
-      expect(wrapper.exists()).toBeTruthy()
-    })
+      it('mounts', (wrapper) => {
+        expect(wrapper.exists()).toBeTruthy()
+      })
 
-    it('warns if webgl is not available', () => {
-      expect(console.warn).toHaveBeenCalledWith(MESSAGE_NO_WEBGL)
+      it('warns if webgl is not available', () => {
+        expect(console.warn).toHaveBeenCalledWith(MESSAGE_NO_WEBGL)
+      })
     })
 
     describeVueMetaBehavior(metadata)
