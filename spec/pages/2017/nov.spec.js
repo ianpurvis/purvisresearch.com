@@ -1,4 +1,4 @@
 import Page, * as metadata from '~/pages/2017/nov.vue'
-import { describePage } from '../../examples/page.js'
+import { describeGraphixPage } from '../../examples/graphix-page.js'
 
-describePage('Nov 2017', Page, metadata)
+describeGraphixPage(Page, metadata, 'nov.vue')

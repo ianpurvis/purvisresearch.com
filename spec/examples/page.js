@@ -1,10 +1,14 @@
 import { shallowMount } from '@vue/test-utils'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
-import { MESSAGE_NO_WEBGL } from '~/models/webgl.js'
 import { mockConsole } from './console.js'
 import { describeVueMetaBehavior } from './vue-meta.js'
 
-export function describePage(name, Page, metadata) {
+export function describePage(
+  Page,
+  metadata,
+  name = 'as a page',
+  fn = () => {}
+) {
   describe(name, () => {
     mockConsole(() => {
 
@@ -15,11 +19,9 @@ export function describePage(name, Page, metadata) {
         expect(wrapper.exists()).toBeTruthy()
       })
 
-      it('warns if webgl is not available', () => {
-        expect(console.warn).toHaveBeenCalledWith(MESSAGE_NO_WEBGL)
-      })
-    })
+      describeVueMetaBehavior(metadata)
 
-    describeVueMetaBehavior(metadata)
+      fn()
+    })
   })
 }
