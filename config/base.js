@@ -23,6 +23,9 @@ export default () => ({
   ssr: false,
   target: 'static',
   vite: {
+    assetsInclude: [
+      'lib/draco/*',
+    ],
     build: {
       assetsInlineLimit: 0,
     }
