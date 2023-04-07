@@ -1,6 +1,7 @@
 export default () => ({
   bridge: {
-    meta: true
+    meta: true,
+    vite: true
   },
   css: [
     '~/assets/stylesheets/app.scss'
