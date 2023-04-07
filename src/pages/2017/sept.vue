@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import ogImagePath from '~/assets/images/2017/sept/an-emoji-particle-flow-in-webgl.png'
 import Graphix from '~/components/graphix.vue'
@@ -37,8 +38,8 @@ export default {
   components: {
     Graphix
   },
-  head() {
-    return {
+  setup() {
+    useHead({
       title,
       meta: [
         { name: 'description', content: description, hid: 'description' },
@@ -56,9 +57,8 @@ export default {
       script: [
         { type: 'application/ld+json', json: jsonld }
       ],
-    }
-  },
-  setup() {
+    })
+
     const graphix = ref(null)
     let engine
 

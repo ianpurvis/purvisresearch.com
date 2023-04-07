@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { useHead } from '#imports'
 import Tight from 'vue-tight'
 import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
 import Stretch from '~/components/stretch.vue'
@@ -94,6 +95,7 @@ export const jsonld = {
     'item': org.url
   }]
 }
+
 const experiments = [{
   title: '2020 Jul',
   description: 'A Banknote In Simplex Wind',
@@ -128,8 +130,8 @@ export default {
     Tight,
     Unobfuscate
   },
-  head() {
-    return {
+  setup() {
+    useHead({
       title,
       meta: [
         { name: 'description', content: description, hid: 'description' },
@@ -147,9 +149,8 @@ export default {
       script: [
         { type: 'application/ld+json', json: jsonld }
       ],
-    }
-  },
-  setup() {
+    })
+
     return { experiments, snake }
   }
 }

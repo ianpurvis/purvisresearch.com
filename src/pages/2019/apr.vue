@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import ogImagePath from '../../assets/images/2019/apr/surreal-television-with-webrtc-and-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
@@ -40,8 +41,8 @@ export default {
   components: {
     Graphix
   },
-  head() {
-    return {
+  setup() {
+    useHead({
       title,
       meta: [
         { name: 'description', content: description, hid: 'description' },
@@ -59,9 +60,8 @@ export default {
       script: [
         { type: 'application/ld+json', json: jsonld }
       ],
-    }
-  },
-  setup() {
+    })
+
     const video = ref(null)
 
     onMounted(async () => {
