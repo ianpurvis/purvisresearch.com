@@ -70,5 +70,259 @@
   </main>
 </template>
 
-<style src="./index.scss" lang="scss" scoped></style>
-<script src="./index.js"></script>
+<script>
+import Tight from 'vue-tight'
+import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
+import Stretch from '~/components/stretch.vue'
+import Unobfuscate from '~/directives/unobfuscate.js'
+import { Organization } from '~/models/organization.js'
+import { snake } from '~/util/snake.js'
+
+const org = Organization.default
+export const canonicalUrl = org.url
+export const title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
+export const description = org.description
+export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogTitle = title
+export const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [{
+    '@type': 'ListItem',
+    'position': 1,
+    'name': 'purvis research',
+    'item': org.url
+  }]
+}
+const experiments = [{
+  title: '2020 Jul',
+  description: 'A Banknote In Simplex Wind',
+  route: '2020/jul.html'
+},{
+  title: '2019 Apr',
+  description: 'Surreal WebRTC Television',
+  route: '2019/apr.html'
+}, {
+  title: '2018 Oct',
+  description: 'Screen Printing A 3D Scan',
+  route: '2018/oct.html'
+}, {
+  title: '2017 Nov',
+  description: 'A 3D Character Exploder',
+  route: '2017/nov.html'
+}, {
+  title: '2017 Oct',
+  description: 'A Bézier Moiré Generator',
+  route: '2017/oct.html'
+}, {
+  title: '2017 Sep',
+  description: 'An Emoji Particle Flow',
+  route: '2017/sept.html'
+}]
+
+export default {
+  components: {
+    Stretch
+  },
+  directives: {
+    Tight,
+    Unobfuscate
+  },
+  head() {
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description, hid: 'description' },
+        { property:'og:description', content: description },
+        { property:'og:image', content: ogImageUrl },
+        { property:'og:image:height', content:'859' },
+        { property:'og:image:width', content:'1646' },
+        { property:'og:title', content: ogTitle },
+        { property:'og:url', content: canonicalUrl },
+        { name:'twitter:card', content:'summary_large_image' },
+      ],
+      link: [
+        { rel: 'canonical', href: canonicalUrl }
+      ],
+      script: [
+        { type: 'application/ld+json', json: jsonld }
+      ],
+    }
+  },
+  setup() {
+    return { experiments, snake }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '~assets/stylesheets/courier-prime-code';
+@import '~assets/stylesheets/noto-sans-jp';
+@import '~assets/stylesheets/snake';
+
+$font-family-en: 'Courier Prime Code', sans-serif;
+$font-family-jp: 'Noto Sans JP', sans-serif;
+
+address {
+  font-style: inherit;
+
+  a {
+    display: block;
+  }
+}
+
+main {
+  font-family: $font-family-en;
+  letter-spacing: 0.2ch;
+}
+
+em {
+  font-style: normal;
+  letter-spacing: 0.06ch;
+}
+
+h2 {
+  font-size: 2.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1ch;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+p {
+  margin-bottom: 0.3rem;
+}
+
+.boxx {
+  margin: 1rem;
+  width: 22rem;
+}
+
+.experiments {
+  font-size: 1.1rem;
+  letter-spacing: 0.3ch;
+  line-height: 1.5;
+  max-width: 21.1rem;
+  text-transform: uppercase;
+
+  h2 {
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+  }
+
+  .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0.3ch);
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.kaomoji {
+  font-size: 2.5rem;
+}
+
+.no-break {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.qr-logo {
+  margin: 0.25rem;
+  width: 8rem;
+}
+
+.skills {
+  font-size: 2rem;
+  letter-spacing: 0.08ch;
+  line-height: 1;
+  text-transform: uppercase;
+  width: 21rem;
+}
+
+.snake-list {
+  list-style: none;
+  overflow-wrap: break-word;
+  padding-left: 0;
+  word-break: break-all;
+
+  >* {
+    display: inline;
+  }
+
+  >:not(:first-child)::before {
+    content: '_';
+  }
+
+  >.no-underscore::before {
+    content: none;
+  }
+}
+
+.stretch {
+  letter-spacing: 0.15ch;
+}
+
+.underscore {
+  // Margin equals characters replaced * -(1ch + letter spacing)
+  margin-right: 1 * -(1ch + 0.08ch);
+
+  &::before {
+    content: '_';
+  }
+}
+
+[lang='ja'] {
+  font-family: $font-family-jp;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-align: justify;
+
+  .skills {
+    font-size: 1.7rem;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    letter-spacing: -0.05ch;
+    margin-bottom: 1rem;
+  }
+
+  .snake-list {
+    /* stylelint-disable-next-line max-nesting-depth */
+    >:not(:first-child)::before {
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08ch;
+      line-height: 0;
+    }
+  }
+
+  .romaji {
+    font-family: $font-family-en;
+    font-size: 2rem;
+    letter-spacing: 0.08ch;
+    line-height: 0;
+  }
+
+  .underscore {
+    // Margin equals characters replaced * -(1ch + letter spacing)
+    margin-right: 1 * -(1ch + 0);
+
+    /* stylelint-disable-next-line max-nesting-depth */
+    &::before {
+      font-family: $font-family-en;
+      font-size: 2rem;
+      letter-spacing: 0.08ch;
+      line-height: 0;
+    }
+  }
+}
+</style>
