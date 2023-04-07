@@ -12,6 +12,19 @@ import maskIconUrl from '~/assets/images/logo-bw-16x16.svg'
 import Debug from '~/mixins/debug.js'
 import { Organization } from '~/models/organization.js'
 
+const org = Organization.default
+export const title = 'Purvis Research'
+export const description = org.description
+export const jsonld = org
+export {
+  appleTouchIconUrl,
+  browserConfigUrl,
+  favicon16Url,
+  favicon32Url,
+  manifestUrl,
+  maskIconUrl
+}
+
 export default {
   head() {
     return {
@@ -28,13 +41,13 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: Organization.default.description },
+        { hid: 'description', name: 'description', content: description },
         { name: 'msapplication-config', content: browserConfigUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: Organization.default }
+        { type: 'application/ld+json', json: jsonld }
       ],
-      title: 'Purvis Research',
+      title,
     }
   },
   mixins: [
