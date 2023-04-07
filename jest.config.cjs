@@ -17,10 +17,12 @@ module.exports = {
     'vue',
   ],
   moduleNameMapper: {
+    '\\.(css|scss)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(eot|otf|ttf|woff|woff2)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
+    '\\.(xml)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
     'draco/(.*)$': '<rootDir>/lib/draco/$1',
     '~(.*)$': '<rootDir>/src/$1',
