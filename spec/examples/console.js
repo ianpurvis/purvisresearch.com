@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals'
-import { afterAll, beforeAll } from 'jest-ctx'
+import { afterAll, beforeAll, beforeEach } from 'jest-ctx'
 
-export function mockConsole() {
+export function mockConsole(fn = () => {}) {
   let real
   let mock
 
@@ -15,6 +15,12 @@ export function mockConsole() {
 
     globalThis.console = mock
   })
+
+  beforeEach(() => {
+    console.warn.mockClear()
+  })
+
+  fn()
 
   afterAll(() => {
     globalThis.console = real
