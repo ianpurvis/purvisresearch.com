@@ -7,7 +7,7 @@
 <script>
 import Stretch from '~/components/stretch.vue'
 
-const title = 'Not Found | Purvis Research'
+export const title = 'Not Found | Purvis Research'
 
 export default {
   components: {
