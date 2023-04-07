@@ -1,5 +1,5 @@
 import Ammo from '../../lib/ammo/ammo-worker-soft-body.mjs'
-import ammoWasmBinaryPath from '../../lib/ammo/ammo-worker-soft-body.wasm'
+import ammoWasmBinaryPath from '../../lib/ammo/ammo-worker-soft-body.wasm?url'
 
 async function loadAmmo() {
   const moduleConfig = {

@@ -12,8 +12,7 @@ import { PerspectiveCamera } from '../models/perspective-camera.js'
 import { ChaseCameraRig } from '../models/chase-camera-rig.js'
 import { Oscillator } from '../models/oscillator.js'
 import { TextureLoader } from '../models/texture-loader.js'
-import DollarPhysicsWorker from '../workers/dollar-physics-worker.js'
-
+import workerUrl from '../workers/dollar-physics-worker.js?url'
 
 class BanknoteInSimplexWind extends Scene {
 
@@ -72,7 +71,7 @@ class BanknoteInSimplexWind extends Scene {
   }
 
   async loadPhysics() {
-    this.physicsWorker = wrap(new DollarPhysicsWorker())
+    this.physicsWorker = wrap(new Worker(workerUrl, { type: 'module' }))
 
     const mass = 0.1 // 1g / 1000 g per kg * 100 scale
     let vertices = this.mesh.geometry.attributes.position.array
