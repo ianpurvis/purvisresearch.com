@@ -2,6 +2,9 @@ export default () => ({
   css: [
     '~/assets/stylesheets/app.scss'
   ],
+  dir: {
+    static: '../public'
+  },
   generate: {
     subFolders: false
   },
