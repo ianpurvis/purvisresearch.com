@@ -6,7 +6,6 @@ import build from './config/build.js'
 import googleAnalytics from './config/google-analytics.js'
 import router from './config/router.js'
 import sentry from './config/sentry.js'
-import sitemap from './config/sitemap.js'
 
 export default async () => {
 
@@ -18,7 +17,6 @@ export default async () => {
     router,
     googleAnalytics,
     sentry,
-    sitemap,
   ]
 
   let config = {}

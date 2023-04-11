@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+  <url>
+    <loc>https://purvisresearch.com/</loc>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/startup-technology-research-design-development-testing-devops-and-project-management.png</image:loc>
+      <image:title><![CDATA[Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2017/sept.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2017/sept/an-emoji-particle-flow-in-webgl.png</image:loc>
+      <image:title><![CDATA[Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2017/oct.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2017/oct/a-bezier-moire-generator-in-webgl.png</image:loc>
+      <image:title><![CDATA[Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2017/nov.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2017/nov/a-3d-character-exploder-in-webgl.png</image:loc>
+      <image:title><![CDATA[Nov 2017: A 3D Character Exploder in WebGL | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2018/oct.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2018/oct/screenprinting-a-3d-scan-with-webgl.png</image:loc>
+      <image:title><![CDATA[Oct 2018: Screen Printing a 3D Scan With WebGL | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2019/apr.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2019/apr/surreal-television-with-webrtc-and-webgl.png</image:loc>
+      <image:title><![CDATA[Apr 2019: Surreal Television With WebRTC and WebGL | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://purvisresearch.com/2020/jul.html</loc>
+    <image:image>
+      <image:loc>https://purvisresearch.com/_/img/2020/jul/a-banknote-in-simplex-wind.png</image:loc>
+      <image:title><![CDATA[Jul 2020: A Banknote in Simplex Wind | Purvis Research]]></image:title>
+    </image:image>
+  </url>
+</urlset>
