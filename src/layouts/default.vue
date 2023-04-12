@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { useHead } from '#imports'
 import appleTouchIconUrl from '~/assets/images/logo-128x128.png'
 import browserConfigUrl from '~/assets/browserconfig.xml'
 import favicon16Url from '~/assets/images/logo-bw-16x16.png'
@@ -26,8 +27,8 @@ export {
 }
 
 export default {
-  head() {
-    return {
+  setup() {
+    useHead({
       htmlAttrs: {
         lang: 'en'
       },
@@ -48,7 +49,7 @@ export default {
         { type: 'application/ld+json', json: jsonld }
       ],
       title,
-    }
+    })
   },
   mixins: [
     Debug

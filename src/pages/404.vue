@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { useHead } from '#imports'
 import Stretch from '~/components/stretch.vue'
 
 export const title = 'Not Found | Purvis Research'
@@ -13,10 +14,10 @@ export default {
   components: {
     Stretch
   },
-  head() {
-    return {
+  setup() {
+    useHead({
       title
-    }
+    })
   }
 }
 </script>

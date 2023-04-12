@@ -26,6 +26,7 @@ module.exports = {
     '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
     'draco/(.*)$': '<rootDir>/lib/draco/$1',
     '~(.*)$': '<rootDir>/src/$1',
+    '#imports': '<rootDir>/node_modules/@nuxt/bridge/dist/runtime/head/composables.mjs'
   },
   setupFilesAfterEnv: [
     '<rootDir>/spec/setup.js'
