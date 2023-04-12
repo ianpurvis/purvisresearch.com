@@ -48,7 +48,7 @@
     "lint-staged": "^12.3.3",
     "nuxt": "^2.16.3",
     "pixi-particles": "^4.3.1",
-    "pixi.js": "^5.3.3",
+    "pixi.js": "^7.2.4",
     "postcss": "^8.4.6",
     "postcss-scss": "^4.0.3",
     "prettier": "^2.5.1",
