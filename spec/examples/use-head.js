@@ -1,8 +1,7 @@
-import { createLocalVue } from '@vue/test-utils'
+import { useHead } from '#imports'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
-import VueMeta from 'vue-meta'
 
-export function describeVueMetaBehavior({
+export function describeUseHeadBehavior({
   canonicalUrl,
   description,
   jsonld,
@@ -13,17 +12,15 @@ export function describeVueMetaBehavior({
   title,
   twitterCard = 'summary_large_image'
 }) {
-  describe('when using vue-meta', () => {
+  describe('when calling useHead', () => {
 
-    beforeAll((options) => {
-      const localVue = createLocalVue()
-      localVue.use(VueMeta, { keyName: 'head' })
-      return { ...options, localVue }
+    beforeAll(() => {
+      useHead.mockClear()
     })
 
-    beforeEach((wrapper) => {
-      return wrapper.vm.$metaInfo
-    })
+    beforeEach(() => (
+      useHead.mock.calls[0][0]
+    ))
 
     it('provides title', ({ title: actual }) => {
       expect(actual).toBe(title)

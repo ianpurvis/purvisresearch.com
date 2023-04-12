@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { useHead } from '#imports'
+import { shallowMount } from '@vue/test-utils'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
-import VueMeta from 'vue-meta'
 import Layout, * as metadata from '~/layouts/default.vue'
 
 describe('default.vue', () => {
@@ -12,17 +12,15 @@ describe('default.vue', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
-  describe('when using vue-meta', () => {
+  describe('when calling useHead', () => {
 
-    beforeAll((options) => {
-      const localVue = createLocalVue()
-      localVue.use(VueMeta, { keyName: 'head' })
-      return { ...options, localVue }
+    beforeAll(() => {
+      useHead.mockClear()
     })
 
-    beforeEach((wrapper) => {
-      return wrapper.vm.$metaInfo
-    })
+    beforeEach(() => (
+      useHead.mock.calls[0][0]
+    ))
 
     it('provides html lang attribute', ({ htmlAttrs: { lang } }) => {
       expect(lang).toBe('en')
