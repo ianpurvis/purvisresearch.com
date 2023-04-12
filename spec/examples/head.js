@@ -1,7 +1,7 @@
 import { useHead } from '#imports'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
 
-export function describeUseHeadBehavior({
+export function describeHeadBehavior({
   canonicalUrl,
   description,
   jsonld,

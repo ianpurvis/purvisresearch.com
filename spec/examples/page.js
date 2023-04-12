@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
 import { mockConsole } from './console.js'
-import { describeUseHeadBehavior } from './use-head.js'
+import { describeHeadBehavior } from './head.js'
 
 export function describePage(
   Page,
@@ -19,7 +19,7 @@ export function describePage(
         expect(wrapper.exists()).toBeTruthy()
       })
 
-      describeUseHeadBehavior(metadata)
+      describeHeadBehavior(metadata)
 
       fn()
     })
