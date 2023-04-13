@@ -24,6 +24,7 @@ export default () => ({
   target: 'static',
   vite: {
     assetsInclude: [
+      '**/*.glb',
       'lib/draco/*',
     ],
     build: {
