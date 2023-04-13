@@ -26,6 +26,7 @@ export default () => ({
     assetsInclude: [
       '**/*.glb',
       '**/*.glsl',
+      '**/*.xml',
       'lib/draco/*',
     ],
     build: {
