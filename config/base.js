@@ -6,6 +6,7 @@ export default () => ({
     meta: true,
     vite: true
   },
+  buildDir: 'src/.nuxt/',
   css: [
     '~/assets/stylesheets/app.scss'
   ],
