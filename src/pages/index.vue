@@ -156,9 +156,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/stylesheets/courier-prime-code';
-@import '~assets/stylesheets/noto-sans-jp';
-@import '~assets/stylesheets/snake';
+@import '~/assets/stylesheets/courier-prime-code';
+@import '~/assets/stylesheets/noto-sans-jp';
+@import '~/assets/stylesheets/snake';
 
 $font-family-en: 'Courier Prime Code', sans-serif;
 $font-family-jp: 'Noto Sans JP', sans-serif;
