@@ -21,5 +21,10 @@ export default () => ({
   modern: 'client',
   srcDir: 'src',
   ssr: false,
-  target: 'static'
+  target: 'static',
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    }
+  }
 })
