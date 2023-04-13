@@ -1,4 +1,7 @@
 export default () => ({
+  app: {
+    buildAssetsDir: '_'
+  },
   bridge: {
     meta: true,
     vite: true
