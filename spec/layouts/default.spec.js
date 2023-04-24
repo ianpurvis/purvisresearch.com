@@ -68,7 +68,7 @@ describe('default.vue', () => {
 
     it('provides jsonld script', ({ script }) => {
       expect(typeof metadata.jsonld).toBe('string')
-      expect(script).toContainMatch({ type: 'application/ld+json', json: metadata.jsonld })
+      expect(script).toContainMatch({ type: 'application/ld+json', textContent: metadata.jsonld })
     })
   })
 })
