@@ -46,7 +46,7 @@ export default {
         { name: 'msapplication-config', content: browserConfigUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: jsonld }
+        { type: 'application/ld+json', textContent: jsonld }
       ],
       title,
     })

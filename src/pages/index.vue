@@ -147,7 +147,7 @@ export default {
         { rel: 'canonical', href: canonicalUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: jsonld }
+        { type: 'application/ld+json', textContent: jsonld }
       ],
     })
 
