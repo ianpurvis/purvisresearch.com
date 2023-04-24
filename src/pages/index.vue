@@ -236,6 +236,14 @@ p {
 .qr-logo {
   margin: 0.25rem;
   width: 8rem;
+  /* filter == svg fill color #363636
+   * transform prevents blur
+   * See following for css filter color technique:
+   * https://stackoverflow.com/questions/24933430/img-src-svg-changing-the-styles-with-css
+   * https://codepen.io/sosuke/pen/Pjoqqp
+   */
+  filter: brightness(0) saturate(100%) invert(14%) sepia(6%) saturate(29%) hue-rotate(315deg) brightness(97%) contrast(80%);
+  transform: translateZ(0);
 }
 
 .skills {
