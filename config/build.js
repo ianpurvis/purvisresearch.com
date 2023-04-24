@@ -48,25 +48,6 @@ export default ({ baseDir }) => ({
         exclude: /(node_modules)/
       })
 
-      // Optimize svg files
-      config.module.rules.push({
-        test: /\.svg$/,
-        loader: 'svgo-loader',
-        options: {
-          plugins: [
-            { removeViewBox: false },
-            {
-              addAttributesToSVGElement: {
-                attribute: {
-                  fill: '#363636'
-                }
-              }
-            }
-          ]
-        },
-        exclude: /(node_modules)/
-      })
-
       config.module.rules.push({
         test: [
           /manifest\.json$/,
