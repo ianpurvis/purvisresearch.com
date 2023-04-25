@@ -22,25 +22,27 @@ export default {
     const scale = ref(1.0)
     const height = ref('unset')
 
-    const observer = new ResizeObserver(async () => {
-      const { value: content } = contentRef
-      const { value: mask } = maskRef
+    let observer
+    onMounted(() => {
+      observer = new ResizeObserver(async () => {
+        const { value: content } = contentRef
+        const { value: mask } = maskRef
 
-      scale.value = 1.0
-      await nextTick()
-      let maskBounds = mask.getBoundingClientRect()
-      let contentBounds = content.getBoundingClientRect()
+        scale.value = 1.0
+        await nextTick()
+        let maskBounds = mask.getBoundingClientRect()
+        let contentBounds = content.getBoundingClientRect()
 
-      // TODO Calculate scale based on orientation and aspect fit / aspect fill
-      scale.value = Math.min(props.maxScale, maskBounds.right / contentBounds.right)
+        // TODO Calculate scale based on orientation and aspect fit / aspect fill
+        scale.value = Math.min(props.maxScale, maskBounds.right / contentBounds.right)
 
-      // TODO Revise height workaround to avoid observer recursion
-      // await nextTick()
-      // contentBounds = content.getBoundingClientRect()
-      // height.value = `${contentBounds.height}px`
+        // TODO Revise height workaround to avoid observer recursion
+        // await nextTick()
+        // contentBounds = content.getBoundingClientRect()
+        // height.value = `${contentBounds.height}px`
+      })
+      observer.observe(maskRef.value)
     })
-
-    onMounted(() => observer.observe(maskRef.value))
     onBeforeUnmount(() => observer.unobserve(maskRef.value))
 
     return { contentRef, height, maskRef, scale }
