@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { defineNuxtConfig } from '@nuxt/bridge'
+import { defineNuxtConfig } from 'nuxt/config'
 import deepmerge from 'deepmerge'
 import base from './config/base.js'
 import googleAnalytics from './config/google-analytics.js'
