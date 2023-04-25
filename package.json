@@ -44,7 +44,7 @@
     "jest-ctx": "^1.0.1",
     "jest-environment-jsdom": "^29.5.0",
     "lint-staged": "^12.3.3",
-    "nuxt": "^2.16.3",
+    "nuxt": "^3.4.2",
     "pixi-particles": "^4.3.1",
     "pixi.js": "^5.3.3",
     "prettier": "^2.5.1",
