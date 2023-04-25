@@ -16,7 +16,7 @@ import { Organization } from '~/models/organization.js'
 const org = Organization.default
 export const title = 'Purvis Research'
 export const description = org.description
-export const jsonld = org
+export const jsonld = JSON.stringify(org)
 export {
   appleTouchIconUrl,
   browserConfigUrl,
@@ -46,7 +46,7 @@ export default {
         { name: 'msapplication-config', content: browserConfigUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: jsonld }
+        { type: 'application/ld+json', textContent: jsonld }
       ],
       title,
     })

@@ -85,7 +85,7 @@ export const title = 'Startup Technology Research, Design, Development, Testing,
 export const description = org.description
 export const ogImageUrl = `${org.url}${ogImagePath}`
 export const ogTitle = title
-export const jsonld = {
+export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   'itemListElement': [{
@@ -94,7 +94,7 @@ export const jsonld = {
     'name': 'purvis research',
     'item': org.url
   }]
-}
+})
 
 const experiments = [{
   title: '2020 Jul',
@@ -147,7 +147,7 @@ export default {
         { rel: 'canonical', href: canonicalUrl }
       ],
       script: [
-        { type: 'application/ld+json', json: jsonld }
+        { type: 'application/ld+json', textContent: jsonld }
       ],
     })
 
