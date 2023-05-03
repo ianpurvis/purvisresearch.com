@@ -13,7 +13,7 @@ import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
 
 const org = Organization.default
-export const canonicalUrl = `${org.url}/2017/sept.html`
+export const canonicalUrl = `${org.url}/2017/sept/`
 export const title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
 export const description = 'An emoji particle flow in WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`

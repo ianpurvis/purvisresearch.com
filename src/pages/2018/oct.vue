@@ -15,7 +15,7 @@ import { ScreenPrintingA3DScan } from '../../scenes/screen-printing-a-3d-scan.js
 import { detectWebGL } from '../../models/webgl.js'
 
 const org = Organization.default
-export const canonicalUrl = `${org.url}/2018/oct.html`
+export const canonicalUrl = `${org.url}/2018/oct/`
 export const title = 'Oct 2018: Screen Printing a 3D Scan With WebGL | Purvis Research'
 export const description = 'Screen printing a 3D scan with WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`

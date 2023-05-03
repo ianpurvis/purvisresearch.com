@@ -4,7 +4,6 @@ import deepmerge from 'deepmerge'
 import base from './config/base.js'
 import build from './config/build.js'
 import googleAnalytics from './config/google-analytics.js'
-import router from './config/router.js'
 import sentry from './config/sentry.js'
 
 export default async () => {
@@ -14,7 +13,6 @@ export default async () => {
   const factories = [
     base,
     build,
-    router,
     googleAnalytics,
     sentry,
   ]

@@ -16,7 +16,7 @@ import { SurrealTVScene } from '../../scenes/surreal-tv.js'
 import { detectWebGL } from '../../models/webgl.js'
 
 const org = Organization.default
-export const canonicalUrl = `${org.url}/2019/apr.html`
+export const canonicalUrl = `${org.url}/2019/apr/`
 export const title = 'Apr 2019: Surreal Television With WebRTC and WebGL | Purvis Research'
 export const description = 'Surreal television with WebRTC and WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`

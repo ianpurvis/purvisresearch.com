@@ -15,7 +15,7 @@ import { BanknoteInSimplexWind } from '../../scenes/banknote-in-simplex-wind.js'
 import { detectWebGL } from '../../models/webgl.js'
 
 const org = Organization.default
-export const canonicalUrl = `${org.url}/2020/jul.html`
+export const canonicalUrl = `${org.url}/2020/jul/`
 export const title = 'Jul 2020: A Banknote in Simplex Wind | Purvis Research'
 export const description = 'A Banknote In Simplex Wind'
 export const ogImageUrl = `${org.url}${ogImagePath}`
