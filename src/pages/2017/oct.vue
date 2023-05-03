@@ -13,7 +13,7 @@ import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
 
 const org = Organization.default
-export const canonicalUrl = `${org.url}/2017/oct.html`
+export const canonicalUrl = `${org.url}/2017/oct/`
 export const title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
 export const description = 'A bézier moiré generator in WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`

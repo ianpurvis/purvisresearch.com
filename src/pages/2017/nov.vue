@@ -15,7 +15,7 @@ import { CharacterExploderScene } from '../../scenes/character-exploder.js'
 import { detectWebGL } from '~/models/webgl.js'
 
 export const org = Organization.default
-export const canonicalUrl = `${org.url}/2017/nov.html`
+export const canonicalUrl = `${org.url}/2017/nov/`
 export const title = 'Nov 2017: A 3D Character Exploder in WebGL | Purvis Research'
 export const description = 'A 3d character exploder in WebGL.'
 export const ogImageUrl = `${org.url}${ogImagePath}`
