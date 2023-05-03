@@ -1,3 +1,5 @@
+import unskipVite from '../src/modules/unskip-vite.js'
+
 export default () => ({
   app: {
     buildAssetsDir: '_'
@@ -20,6 +22,9 @@ export default () => ({
     color: '#3B8070'
   },
   modern: 'client',
+  modules: [
+    unskipVite
+  ],
   srcDir: 'src',
   target: 'static',
   vite: {
