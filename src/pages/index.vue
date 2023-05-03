@@ -99,27 +99,27 @@ export const jsonld = JSON.stringify({
 const experiments = [{
   title: '2020 Jul',
   description: 'A Banknote In Simplex Wind',
-  route: '2020/jul.html'
+  route: '2020/jul/'
 },{
   title: '2019 Apr',
   description: 'Surreal WebRTC Television',
-  route: '2019/apr.html'
+  route: '2019/apr/'
 }, {
   title: '2018 Oct',
   description: 'Screen Printing A 3D Scan',
-  route: '2018/oct.html'
+  route: '2018/oct/'
 }, {
   title: '2017 Nov',
   description: 'A 3D Character Exploder',
-  route: '2017/nov.html'
+  route: '2017/nov/'
 }, {
   title: '2017 Oct',
   description: 'A Bézier Moiré Generator',
-  route: '2017/oct.html'
+  route: '2017/oct/'
 }, {
   title: '2017 Sep',
   description: 'An Emoji Particle Flow',
-  route: '2017/sept.html'
+  route: '2017/sept/'
 }]
 
 export default {
