@@ -4,7 +4,7 @@
       <div class="boxx">
         <h1>
           <nuxt-link to="/" class="inline-block">
-            <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
+            <img src="../assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
           </nuxt-link>
         </h1>
       </div>
