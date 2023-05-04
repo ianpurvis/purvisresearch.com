@@ -36,6 +36,13 @@ export default () => ({
     ],
     build: {
       assetsInlineLimit: 0,
+      rollupOptions: {
+        output: {
+          // Workaround for nuxt-bridge issue where asset urls
+          // are not correctly built in vue templates:
+          assetFileNames: '_/[name].[hash][extname]'
+        }
+      }
     }
   }
 })
