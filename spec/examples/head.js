@@ -64,7 +64,7 @@ export function describeHeadBehavior({
 
     it('provides jsonld script', ({ script }) => {
       expect(typeof jsonld).toBe('string')
-      expect(script).toContainMatch({ type: 'application/ld+json', textContent: jsonld })
+      expect(script).toContainMatch({ type: 'application/ld+json', innerHTML: jsonld })
     })
   })
 }

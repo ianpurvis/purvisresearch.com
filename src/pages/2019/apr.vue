@@ -58,7 +58,7 @@ export default {
         { rel: 'canonical', href: canonicalUrl }
       ],
       script: [
-        { type: 'application/ld+json', textContent: jsonld }
+        { type: 'application/ld+json', innerHTML: jsonld }
       ],
     })
 
