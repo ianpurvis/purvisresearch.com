@@ -8,7 +8,6 @@
 <script>
 import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ogImagePath from '../../assets/images/2019/apr/surreal-television-with-webrtc-and-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../components/graphix.vue'
 import { Organization } from '../../models/organization.js'
@@ -19,7 +18,7 @@ const org = Organization.default
 export const canonicalUrl = `${org.url}/2019/apr/`
 export const title = 'Apr 2019: Surreal Television With WebRTC and WebGL | Purvis Research'
 export const description = 'Surreal television with WebRTC and WebGL.'
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/surreal-television-with-webrtc-and-webgl.97139405.png`
 export const ogTitle = 'Apr 2019'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
