@@ -73,7 +73,6 @@
 <script>
 import { useHead } from '#imports'
 import Tight from 'vue-tight'
-import ogImagePath from '~/assets/images/startup-technology-research-design-development-testing-devops-and-project-management.png'
 import Stretch from '~/components/stretch.vue'
 import Unobfuscate from '~/directives/unobfuscate.js'
 import { Organization } from '~/models/organization.js'
@@ -83,7 +82,7 @@ const org = Organization.default
 export const canonicalUrl = org.url
 export const title = 'Startup Technology Research, Design, Development, Testing, DevOps, and Project Management | Purvis Research'
 export const description = org.description
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/startup-technology-research-design-development-testing-devops-and-project-management.b47a0a17.png`
 export const ogTitle = title
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',

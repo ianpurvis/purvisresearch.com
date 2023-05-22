@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+shasum -a 256 $1 | cut -c -8

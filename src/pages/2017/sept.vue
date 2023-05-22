@@ -7,7 +7,6 @@
 <script>
 import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ogImagePath from '~/assets/images/2017/sept/an-emoji-particle-flow-in-webgl.png'
 import Graphix from '~/components/graphix.vue'
 import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
@@ -16,7 +15,7 @@ const org = Organization.default
 export const canonicalUrl = `${org.url}/2017/sept/`
 export const title = 'Sep 2017: An Emoji Particle Flow in WebGL | Purvis Research'
 export const description = 'An emoji particle flow in WebGL.'
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/an-emoji-particle-flow-in-webgl.f8474418.png`
 export const ogTitle = 'Sept 2017'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',

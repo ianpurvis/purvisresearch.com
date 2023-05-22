@@ -7,7 +7,6 @@
 <script>
 import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ogImagePath from '~/assets/images/2017/oct/a-bezier-moire-generator-in-webgl.png'
 import Graphix from '~/components/graphix.vue'
 import { Organization } from '~/models/organization.js'
 import { detectWebGL } from '~/models/webgl.js'
@@ -16,7 +15,7 @@ const org = Organization.default
 export const canonicalUrl = `${org.url}/2017/oct/`
 export const title = 'Oct 2017: A Bézier Moiré Generator in WebGL | Purvis Research'
 export const description = 'A bézier moiré generator in WebGL.'
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/a-bezier-moire-generator-in-webgl.e87ed2f5.png`
 export const ogTitle = 'Oct 2017'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
