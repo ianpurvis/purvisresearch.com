@@ -62,8 +62,6 @@ export default ({ baseDir }) => ({
             }
           },{
             loader: 'extract-loader'
-          },{
-            loader: 'frack-loader'
           }
         ],
         exclude: /(node_modules)/
