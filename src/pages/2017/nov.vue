@@ -7,7 +7,6 @@
 <script>
 import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ogImagePath from '~/assets/images/2017/nov/a-3d-character-exploder-in-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../components/graphix.vue'
 import { Organization } from '~/models/organization.js'
@@ -18,7 +17,7 @@ export const org = Organization.default
 export const canonicalUrl = `${org.url}/2017/nov/`
 export const title = 'Nov 2017: A 3D Character Exploder in WebGL | Purvis Research'
 export const description = 'A 3d character exploder in WebGL.'
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/a-3d-character-exploder-in-webgl.857f3845.png`
 export const ogTitle = 'Nov 2017'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
