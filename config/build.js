@@ -31,16 +31,6 @@ export default ({ baseDir }) => ({
         exclude: /(node_modules)/
       })
 
-      // Load glb models as arraybuffer
-      config.module.rules.push({
-        test: /\.glb$/,
-        loader: 'file-loader',
-        options: {
-          name: other(context)
-        },
-        exclude: /(node_modules)/
-      })
-
       // Load glsl models as string
       config.module.rules.push({
         test: /\.glsl$/,
@@ -50,6 +40,7 @@ export default ({ baseDir }) => ({
 
       config.module.rules.push({
         test: [
+          /\.glb$/,
           /manifest\.json$/,
           /browserconfig\.xml$/,
         ],
