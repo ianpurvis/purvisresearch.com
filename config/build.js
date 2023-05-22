@@ -54,16 +54,10 @@ export default ({ baseDir }) => ({
           /browserconfig\.xml$/,
         ],
         type: 'javascript/auto',
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: other(context)
-            }
-          },{
-            loader: 'extract-loader'
-          }
-        ],
+        loader: 'file-loader',
+        options: {
+          name: other(context)
+        },
         exclude: /(node_modules)/
       })
 
