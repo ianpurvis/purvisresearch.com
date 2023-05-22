@@ -7,7 +7,6 @@
 <script>
 import { useHead } from '#imports'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import ogImagePath from '../../assets/images/2018/oct/screenprinting-a-3d-scan-with-webgl.png'
 import { ThreeEngine } from '../../engines/three-engine.js'
 import Graphix from '../../components/graphix.vue'
 import { Organization } from '../../models/organization.js'
@@ -18,7 +17,7 @@ const org = Organization.default
 export const canonicalUrl = `${org.url}/2018/oct/`
 export const title = 'Oct 2018: Screen Printing a 3D Scan With WebGL | Purvis Research'
 export const description = 'Screen printing a 3D scan with WebGL.'
-export const ogImageUrl = `${org.url}${ogImagePath}`
+export const ogImageUrl = `${org.url}/_/screenprinting-a-3d-scan-with-webgl.70422ea8.png`
 export const ogTitle = 'Oct 2018'
 export const jsonld = JSON.stringify({
   '@context': 'https://schema.org',
