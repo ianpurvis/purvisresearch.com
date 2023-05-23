@@ -20,6 +20,7 @@ export default () => ({
   },
   modern: 'client',
   srcDir: 'src',
+  ssr: false,
   target: 'static',
   vite: {
     assetsInclude: [
