@@ -19,6 +19,7 @@
     "ttf2woff": "ttf2woff"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.8",
     "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-28071266.dab55db",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/sentry": "^7.0.0",
