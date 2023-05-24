@@ -49,12 +49,8 @@
     "nuxt": "^2.16.3",
     "pixi-particles": "^4.3.1",
     "pixi.js": "^5.3.3",
-    "postcss": "^8.4.6",
-    "postcss-scss": "^4.0.3",
     "prettier": "^2.5.1",
-    "raw-loader": "^4.0.2",
     "sass": "^1.49.0",
-    "sass-loader": "^10.2.1",
     "serve": "^14.1.2",
     "stats.js": "^0.17.0",
     "stylelint": "^14.3.0",
@@ -62,7 +58,6 @@
     "svgo": "^3.0.2",
     "three": "^0.121.1",
     "ttf2woff": "^3.0.0",
-    "vue-tight": "^2.0.0",
-    "worker-loader": "^3.0.8"
+    "vue-tight": "^2.0.0"
   }
 }
