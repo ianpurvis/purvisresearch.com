@@ -12,7 +12,7 @@ import { PerspectiveCamera } from '../models/perspective-camera.js'
 import { ChaseCameraRig } from '../models/chase-camera-rig.js'
 import { Oscillator } from '../models/oscillator.js'
 import { TextureLoader } from '../models/texture-loader.js'
-import workerUrl from '../workers/dollar-physics-worker.js?url'
+import workerUrl from '../workers/dollar-physics-worker.js?worker&url'
 
 class BanknoteInSimplexWind extends Scene {
 
