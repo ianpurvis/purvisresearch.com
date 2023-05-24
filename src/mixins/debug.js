@@ -1,21 +1,19 @@
+import { onMounted, onUnmounted } from 'vue'
 import '~/assets/stylesheets/debug.scss'
 
-export default {
-  beforeDestroy() {
-    window.removeEventListener('keyup', this.handleKeyup)
-  },
-  methods: {
-    handleKeyup(event) {
-      if (event.defaultPrevented) return
-      switch (event.key) {
-      case 'd': this.toggleDebugMode()
-      }
-    },
-    toggleDebugMode() {
+export function useDebug() {
+
+  function handleKeyup({ defaultPrevented, key }) {
+    if (!defaultPrevented && key === 'd') {
       document.documentElement.toggleAttribute('debug')
     }
-  },
-  mounted() {
-    window.addEventListener('keyup', this.handleKeyup)
   }
+
+  onMounted(() => {
+    window.addEventListener('keyup', handleKeyup)
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('keyup', handleKeyup)
+  })
 }

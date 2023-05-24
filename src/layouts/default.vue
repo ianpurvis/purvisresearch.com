@@ -10,7 +10,7 @@ import favicon16Url from '~/assets/images/logo-bw-16x16.png'
 import favicon32Url from '~/assets/images/logo-bw-32x32.png'
 import manifestUrl from '~/assets/manifest.json?url'
 import maskIconUrl from '~/assets/images/logo-bw-16x16.svg'
-import Debug from '~/mixins/debug.js'
+import { useDebug } from '~/mixins/debug.js'
 import { Organization } from '~/models/organization.js'
 
 const org = Organization.default
@@ -50,9 +50,8 @@ export default {
       ],
       title,
     })
-  },
-  mixins: [
-    Debug
-  ],
+
+    useDebug()
+  }
 }
 </script>
