@@ -4,7 +4,7 @@
       <div class="boxx">
         <h1>
           <nuxt-link to="/" class="inline-block">
-            <img src="~/assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
+            <img src="../assets/images/qr-logo-200x280.svg" alt="Purvis Research" class="qr-logo"/>
           </nuxt-link>
         </h1>
       </div>
@@ -156,9 +156,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/stylesheets/courier-prime-code';
-@import '~assets/stylesheets/noto-sans-jp';
-@import '~assets/stylesheets/snake';
+@import '~/assets/stylesheets/courier-prime-code';
+@import '~/assets/stylesheets/noto-sans-jp';
+@import '~/assets/stylesheets/snake';
 
 $font-family-en: 'Courier Prime Code', sans-serif;
 $font-family-jp: 'Noto Sans JP', sans-serif;

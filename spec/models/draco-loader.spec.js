@@ -1,9 +1,9 @@
-jest.mock('draco/decoder-worker-fixed16mb.js', () => 'mock-source')
+jest.mock('draco/decoder-worker-fixed16mb.js?raw', () => 'mock-source')
 jest.mock('three/examples/jsm/loaders/DRACOLoader.js')
 
 import { jest } from '@jest/globals'
 import { beforeEach, describe, expect, it } from 'jest-ctx'
-import decoderModuleSource from 'draco/decoder-worker-fixed16mb.js'
+import decoderModuleSource from 'draco/decoder-worker-fixed16mb.js?raw'
 import decoderWasmPath from 'draco/decoder-worker-fixed16mb.wasm'
 import { DRACOLoader as THREEDRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { DRACOLoader } from '~/models/draco-loader.js'

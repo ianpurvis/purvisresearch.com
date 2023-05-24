@@ -17,6 +17,7 @@ module.exports = {
     'vue',
   ],
   moduleNameMapper: {
+    '\\?.*(raw|url).*$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(css|scss)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(eot|otf|ttf|woff|woff2)$': '<rootDir>/spec/mocks/file-mock.js',
@@ -24,7 +25,6 @@ module.exports = {
     '\\.(gltf|glb|glsl)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(xml)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
-    'draco/(.*)$': '<rootDir>/lib/draco/$1',
     '~(.*)$': '<rootDir>/src/$1',
     '#imports': '<rootDir>/node_modules/@nuxt/bridge/dist/runtime/head/composables.mjs'
   },

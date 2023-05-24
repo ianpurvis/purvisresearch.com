@@ -1,13 +1,13 @@
 @charset "utf-8";
-@import '~bulma/sass/utilities/initial-variables';
+@import 'bulma/sass/utilities/initial-variables';
 
 $body-background-color: $white-ter;
 $link: $turquoise;
 $text: $grey-darker;
 
-@import '~bulma/sass/utilities/functions';
-@import '~bulma/sass/utilities/derived-variables';
-@import '~bulma/sass/utilities/mixins';
-@import '~bulma/sass/base/minireset';
-@import '~bulma/sass/base/generic';
+@import 'bulma/sass/utilities/functions';
+@import 'bulma/sass/utilities/derived-variables';
+@import 'bulma/sass/utilities/mixins';
+@import 'bulma/sass/base/minireset';
+@import 'bulma/sass/base/generic';
 

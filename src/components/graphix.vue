@@ -33,11 +33,11 @@ export default {
 
 <style lang="scss" scoped>
 @charset "utf-8";
-@import '~bulma/sass/utilities/initial-variables';
-@import '~bulma/sass/utilities/derived-variables';
-@import '~bulma/sass/utilities/mixins';
-@import '~assets/stylesheets/libre-barcode-128-text-regular';
-@import '~assets/stylesheets/snake';
+@import 'bulma/sass/utilities/initial-variables';
+@import 'bulma/sass/utilities/derived-variables';
+@import 'bulma/sass/utilities/mixins';
+@import '~/assets/stylesheets/libre-barcode-128-text-regular';
+@import '~/assets/stylesheets/snake';
 
 $mobile-width: 568px;
 

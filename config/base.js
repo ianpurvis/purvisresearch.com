@@ -1,6 +1,10 @@
 export default () => ({
+  app: {
+    buildAssetsDir: '_'
+  },
   bridge: {
-    meta: true
+    meta: true,
+    vite: true
   },
   css: [
     '~/assets/stylesheets/app.scss'
@@ -17,5 +21,16 @@ export default () => ({
   modern: 'client',
   srcDir: 'src',
   ssr: false,
-  target: 'static'
+  target: 'static',
+  vite: {
+    assetsInclude: [
+      '**/*.glb',
+      '**/*.glsl',
+      '**/*.xml',
+      'lib/draco/*',
+    ],
+    build: {
+      assetsInlineLimit: 0
+    }
+  }
 })

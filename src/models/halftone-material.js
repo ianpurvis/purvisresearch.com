@@ -1,5 +1,5 @@
 import { Matrix3, ShaderChunk, ShaderMaterial } from 'three'
-import halftoneFilterFragmentShader from '~/assets/shaders/halftone_filter.frag.glsl'
+import halftoneFilterFragmentShader from '~/assets/shaders/halftone_filter.frag.glsl?raw'
 
 class HalftoneMaterial extends ShaderMaterial {
   constructor({map, opacity=1.0, transparent=false}) {
