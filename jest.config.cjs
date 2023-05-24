@@ -26,12 +26,18 @@ module.exports = {
     '\\.(xml)$': '<rootDir>/spec/mocks/file-mock.js',
     '\\.(wasm)$': '<rootDir>/spec/mocks/file-mock.js',
     '~(.*)$': '<rootDir>/src/$1',
-    '#imports': '<rootDir>/node_modules/@nuxt/bridge/dist/runtime/head/composables.mjs'
+    '#imports': '<rootDir>/node_modules//nuxt/dist/app/composables/index.js'
   },
   setupFilesAfterEnv: [
     '<rootDir>/spec/setup.js'
   ],
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    customExportConditions: [
+      'node',
+      'node-addons'
+    ]
+  },
   transform: {
     '^.+\\.(js|cjs|mjs)$': 'babel-jest',
     '^.+\\.vue$': '@vue/vue3-jest'
