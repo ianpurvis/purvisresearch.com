@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
-import { Animator } from '~/models/animator.js'
+import { Animator, delay, transition } from '~/models/animator.js'
 
 
 describe('Animator', () => {
@@ -119,5 +119,29 @@ describe('Animator', () => {
         })
       })
     })
+  })
+})
+
+describe('delay(duration)', () => {
+  it('creates an animation that does nothing', () => {
+    const duration = Math.random()
+    const result = delay(duration)
+
+    expect(result.duration).toBe(duration)
+    expect(() => result.tick(duration)).not.toThrow()
+  })
+})
+
+describe('transition(target, property, endValue, duration)', () => {
+  it('creates an animation which transitions a target property', () => {
+    const target = { 'key': 0 }
+    const property = 'key'
+    const endValue = 1
+    const duration = Math.random()
+    const result = transition(target, property, endValue, duration)
+
+    expect(result.duration).toBe(duration)
+    result.tick(duration)
+    expect(target[property]).toBe(endValue)
   })
 })
