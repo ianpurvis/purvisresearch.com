@@ -12,7 +12,6 @@ export default async () => {
   const factories = [
     base,
     gtag,
-    // googleAnalytics,
     // sentry,
   ]
 
