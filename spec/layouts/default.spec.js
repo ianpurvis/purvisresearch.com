@@ -5,7 +5,15 @@ import Layout, * as metadata from '~/layouts/default.vue'
 
 describe('default.vue', () => {
 
-  beforeAll(() => ({ stubs: ['nuxt', 'nuxt-link'] }))
+  beforeAll(() => ({
+    global: {
+      stubs: {
+        Nuxt: true,
+        NuxtLink: true
+      }
+    }
+  }))
+
   beforeEach((options) => shallowMount(Layout, options))
 
   it('mounts', (wrapper) => {

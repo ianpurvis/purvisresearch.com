@@ -5,7 +5,14 @@ import Page, * as metadata from '~/pages/404.vue'
 
 describe('404.vue', () => {
 
-  beforeAll(() => ({ stubs: ['nuxt-link'] }))
+  beforeAll(() => ({
+    global: {
+      stubs: {
+        NuxtLink: true
+      }
+    }
+  }))
+
   beforeEach((options) => shallowMount(Page, options))
 
   it('mounts', (wrapper) => {

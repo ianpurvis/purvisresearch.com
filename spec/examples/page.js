@@ -12,7 +12,14 @@ export function describePage(
   describe(name, () => {
     mockConsole(() => {
 
-      beforeAll(() => ({ stubs: ['nuxt-link'] }))
+      beforeAll(() => ({
+        global: {
+          stubs: {
+            NuxtLink: true
+          }
+        }
+      }))
+
       beforeEach((options) => shallowMount(Page, options))
 
       it('mounts', (wrapper) => {
