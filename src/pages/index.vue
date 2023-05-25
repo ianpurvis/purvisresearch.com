@@ -51,7 +51,9 @@
             <li v-for="(experiment, index) in experiments" :key="index" v-tight>
               <span v-html="snake(experiment.title)"></span>
               <span class="underscore">&nbsp;</span>
-              <nuxt-link :to="experiment.route" v-html="snake(experiment.description)"></nuxt-link>
+              <nuxt-link :to="experiment.route">
+                <span v-html="snake(experiment.description)"></span>
+              </nuxt-link>
             </li>
           </ul>
         </nav>

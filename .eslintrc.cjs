@@ -54,13 +54,12 @@ module.exports = {
         'vue'
       ],
       rules: {
-        'vue/multi-word-component-names': 'warn'
+        'vue/multi-word-component-names': 'off'
       }
     }
   ],
-  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module'
   },
   root: true,
