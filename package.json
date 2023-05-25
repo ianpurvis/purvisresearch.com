@@ -29,7 +29,6 @@
     "@vue/vue2-jest": "^29.2.3",
     "@vueuse/head": "^1.1.23",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.1.0",
     "babel-jest": "^29.5.0",
     "bulma": "^0.9.3",
     "comlink": "^4.3.1",
