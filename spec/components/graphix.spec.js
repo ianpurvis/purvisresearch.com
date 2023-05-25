@@ -12,7 +12,7 @@ describe('Graphix', () => {
       const template = `<Graphix description="${description}" edition="${edition}" />`
       const components = { Graphix }
       const stubs = { NuxtLink: RouterLinkStub }
-      const wrapper = mount({ template, components }, { stubs })
+      const wrapper = mount({ template, components }, { global: { stubs } })
       const { element: { outerHTML } } = wrapper
       expect(outerHTML).toMatch(/.+/)
     })

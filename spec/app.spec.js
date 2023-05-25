@@ -1,12 +1,20 @@
 import { useHead } from '#imports'
 import { shallowMount } from '@vue/test-utils'
 import { beforeAll, beforeEach, describe, expect, it } from 'jest-ctx'
-import Layout, * as metadata from '~/layouts/default.vue'
+import App, * as metadata from '~/app.vue'
 
 describe('default.vue', () => {
 
-  beforeAll(() => ({ stubs: ['nuxt', 'nuxt-link'] }))
-  beforeEach((options) => shallowMount(Layout, options))
+  beforeAll(() => ({
+    global: {
+      stubs: {
+        NuxtLayout: true,
+        NuxtPage: true
+      }
+    }
+  }))
+
+  beforeEach((options) => shallowMount(App, options))
 
   it('mounts', (wrapper) => {
     expect(wrapper.exists()).toBeTruthy()
