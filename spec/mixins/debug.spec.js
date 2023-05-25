@@ -68,7 +68,7 @@ describe('useDebug()', () => {
 
       beforeEach(() => {
         removeEventListener = jest.spyOn(window, 'removeEventListener')
-        wrapper.destroy()
+        wrapper.unmount()
       })
 
       it('stops listening for window keyup events', () => {
