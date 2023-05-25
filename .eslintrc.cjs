@@ -54,7 +54,7 @@ module.exports = {
         'vue'
       ],
       rules: {
-        'vue/multi-word-component-names': 'warn'
+        'vue/multi-word-component-names': 'off'
       }
     }
   ],
