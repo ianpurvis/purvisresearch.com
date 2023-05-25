@@ -19,7 +19,8 @@
     "ttf2woff": "ttf2woff"
   },
   "devDependencies": {
-    "@babel/runtime-corejs3": "^7.16.8",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
     "@nuxt/bridge": "npm:@nuxt/bridge-edge@^3.0.0-28071266.dab55db",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/sentry": "^7.0.0",
@@ -32,7 +33,6 @@
     "babel-jest": "^29.5.0",
     "bulma": "^0.9.3",
     "comlink": "^4.3.1",
-    "core-js": "^3.21.0",
     "d3-ease": "^3.0.1",
     "deepmerge": "^4.2.2",
     "dotenv": "^16.0.3",
