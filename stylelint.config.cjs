@@ -1,6 +1,3 @@
 module.exports = {
-  extends: 'stylelint-config-sass-guidelines',
-  rules: {
-    'indentation': 2
-  }
+  extends: 'stylelint-config-sass-guidelines'
 }
