@@ -30,7 +30,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.5.0",
     "bulma": "^0.9.3",
-    "comlink": "^4.3.1",
+    "comlink": "^4.4.1",
     "d3-ease": "^3.0.1",
     "deepmerge": "^4.3.1",
     "dotenv": "^16.0.3",
