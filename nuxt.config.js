@@ -3,7 +3,6 @@ import { defineNuxtConfig } from 'nuxt/config'
 import deepmerge from 'deepmerge'
 import base from './config/base.js'
 import gtag from './config/gtag.js'
-// import sentry from './config/sentry.js'
 
 export default async () => {
 
@@ -12,7 +11,6 @@ export default async () => {
   const factories = [
     base,
     gtag,
-    // sentry,
   ]
 
   let config = {}
