@@ -8,6 +8,11 @@ export default () => ({
   dir: {
     public: '../public'
   },
+  runtimeConfig: {
+    public: {
+      SENTRY_DSN: undefined,
+    }
+  },
   srcDir: 'src',
   ssr: false,
   target: 'static',
