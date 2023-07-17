@@ -19,7 +19,7 @@
     "ttf2woff": "ttf2woff"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.5",
+    "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.5",
     "@pixi/unsafe-eval": "^5.3.11",
     "@sentry/vue": "^7.57.0",
