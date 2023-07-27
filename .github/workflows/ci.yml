@@ -1,9 +1,13 @@
 name: CI
 on:
-  push:
-    branches: [trunk]
   pull_request:
-    types: [opened, synchronize, reopened]
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches:
+      - trunk
 permissions:
   contents: write
   pull-requests: write
