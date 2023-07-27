@@ -1,12 +1,10 @@
 <template>
-  <div class="snake label" v-tight>
-    <nuxt-link class="tighten inherit-color" to="/" v-tight>
-      <span class="stretch" v-html="snake('Purvis ')"></span>
-      <span>Research</span>
+  <div class="snake label">
+    <nuxt-link class="tighten inherit-color" to="/">
+      <span class="stretch">Purvis</span> Research
     </nuxt-link>
-    <h1 v-tight>
-      <span v-html="snake($attrs.edition)"></span>
-      <span class="underscore replace-2 nomobile">: </span>
+    <h1>
+      {{ $attrs.edition }}<span class="nomobile">: </span>
       <canvas ref="canvas">{{ $attrs.description }}</canvas>
     </h1>
     <address>
@@ -16,18 +14,12 @@
 </template>
 
 <script>
-import Tight from 'vue-tight'
 import Unobfuscate from '~/directives/unobfuscate.js'
-import { snake } from '~/util/snake.js'
 
 export default {
   directives: {
-    Tight,
     Unobfuscate
   },
-  setup() {
-    return { snake }
-  }
 }
 </script>
 
@@ -67,7 +59,8 @@ h1 {
 
   @include from($mobile-width) {
     &::before {
-      content: '_';
+      content: ' ';
+      white-space: pre;
     }
   }
 }

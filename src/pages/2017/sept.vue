@@ -69,7 +69,7 @@ export default {
       engine = new PixiEngine(canvas, { maxFPS: 30 })
       const { clientHeight, clientWidth } = canvas
       engine.scene = new EmojiParticleFlowScene(clientWidth, clientHeight)
-      await engine.play()
+      // await engine.play()
     })
 
     onBeforeUnmount(() => {

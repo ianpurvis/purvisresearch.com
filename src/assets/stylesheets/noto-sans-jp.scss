@@ -6,19 +6,17 @@
  */
 
 @font-face {
-  font-family: 'Noto Sans JP';
+  font-family: 'Noto Sans JP Snake';
   font-style: normal;
   font-weight: 400;
-  src: local('Noto Sans Japanese Regular'),
-    local('NotoSansJapanese-Regular'),
-    url('~/assets/fonts/noto-sans-jp-regular.woff') format('woff');
+  // src: url('~/../fonts/NotoSansJPSnake-Regular.MERGED.woff2') format('woff2');
+  src: url('~/../fonts/PSans-Regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Noto Sans JP';
+  font-family: 'Noto Sans JP Snake';
   font-style: normal;
   font-weight: 500;
-  src: local('Noto Sans Japanese Medium'),
-    local('NotoSansJapanese-Medium'),
-    url('~/assets/fonts/noto-sans-jp-medium.woff') format('woff');
+  // src: url('~/../fonts/NotoSansJPSnake-Regular.MERGED.woff2') format('woff2');
+  src: url('~/assets/fonts/noto-sans-jp-medium.woff') format('woff');
 }

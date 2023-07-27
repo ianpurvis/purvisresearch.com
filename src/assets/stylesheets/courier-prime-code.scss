@@ -1,17 +1,8 @@
-/*
- * Courier Prime Code
- * Courier Prime Code.ttf
- * Copyright (c) 2015
- * Quote-Unquote Apps (http://quoteunquoteapps.com)
- * with Reserved Font Name Courier Prime Code.
- * SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
- */
 @font-face {
-  font-family: 'Courier Prime Code';
+  font-family: 'Courier Prime Code Snake';
   font-style: normal;
   font-weight: 400;
-  src: local('Courier Prime Code'),
-    local('CourierPrimeCode-Regular'),
-    url('~/assets/fonts/courier-prime-code.woff') format('woff');
+  // src: url('~/../fonts/CourierPrimeCodeSnake-Regular.woff2') format('woff2');
+  src: url('~/../fonts/PSans-Regular.ttf') format('ttf');
 }
 

@@ -23,7 +23,7 @@ export default {
     const height = ref('unset')
 
     let observer
-    onMounted(() => {
+    onMounted(async () => {
       observer = new ResizeObserver(async () => {
         const { value: content } = contentRef
         const { value: mask } = maskRef

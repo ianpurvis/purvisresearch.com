@@ -11,49 +11,35 @@
       <div class="boxx">
         <h2>Ian Purvis</h2>
         <ul class="snake-list skills" v-tight>
-          <li v-html="snake('Startup Technology')"></li>
+          <li>Startup Technology</li>
           <li>Research</li>
           <li>Design</li>
           <li>Development</li>
           <li>Testing</li>
           <li>DevOps</li>
-          <li v-html="snake('Project Management')"></li>
+          <li>Project Management</li>
         </ul>
       </div>
       <div class="boxx" lang="ja">
         <!-- eslint-disable-next-line no-irregular-whitespace -->
-        <h2>イアン　パービス</h2>
+        <h2>イアン&#x3000;パービス</h2>
         <ul class="snake-list skills" v-tight>
-          <li>スタートアップ<span class="underscore">&#x3000;</span>テクノロジー</li>
+          <li>スタートアップテクノロジー</li>
           <li>リサーチ</li>
           <li>デザイン</li>
-          <li class="no-underscore">デベロップメント</li>
-          <li v-tight>
-            <span class="no-break">テス</span>
-            <wbr>
-            <span class="no-break">ティ</span>
-            <span>ング</span>
-          </li>
-          <li class="romaji">DevOps</li>
-          <li v-tight>
-            <span class="no-break">プロ</span>
-            <wbr>
-            <span class="stretch">ジェクト</span>
-            <span class="underscore">&#x3000;</span>
-            <span class="stretch">マネジメント</span>
-          </li>
+          <li>デベロップメント</li>
+          <li>テスティング</li>
+          <li>DevOps</li>
+          <li>プロジェクトマネジメント</li>
         </ul>
       </div>
       <div class="boxx">
         <nav class="experiments snake-list" v-tight>
-          <h2 v-html="snake('Digital Art Experiments')"></h2>
+          <h2>Digital Art Experiments</h2>
           <ul class="snake-list" v-tight>
-            <li v-for="(experiment, index) in experiments" :key="index" v-tight>
-              <span v-html="snake(experiment.title)"></span>
-              <span class="underscore">&nbsp;</span>
-              <nuxt-link :to="experiment.route">
-                <span v-html="snake(experiment.description)"></span>
-              </nuxt-link>
+            <li v-for="(experiment, index) in experiments" :key="index">
+              <span>{{ experiment.title }}&nbsp;</span>
+              <nuxt-link :to="experiment.route">{{ experiment.description }}</nuxt-link>
             </li>
           </ul>
         </nav>
@@ -162,8 +148,8 @@ export default {
 @import '~/assets/stylesheets/noto-sans-jp';
 @import '~/assets/stylesheets/snake';
 
-$font-family-en: 'Courier Prime Code', sans-serif;
-$font-family-jp: 'Noto Sans JP', sans-serif;
+$font-family-en: 'Courier Prime Code Snake', sans-serif;
+$font-family-jp: 'Noto Sans JP Snake', sans-serif;
 
 address {
   font-style: inherit;
@@ -174,7 +160,7 @@ address {
 }
 
 main {
-  font-family: $font-family-en;
+  font-family: $font-family-jp;
   letter-spacing: 0.2ch;
 }
 
@@ -214,11 +200,6 @@ p {
     letter-spacing: inherit;
     line-height: inherit;
   }
-
-  .underscore {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0.3ch);
-  }
 }
 
 .inline-block {
@@ -256,35 +237,23 @@ p {
 }
 
 .snake-list {
+  font-feature-settings: 'salt', 'dlig';
   list-style: none;
   overflow-wrap: break-word;
   padding-left: 0;
   word-break: break-all;
 
-  >* {
+  >li {
     display: inline;
   }
 
-  >:not(:first-child)::before {
+  >li:not(:first-child):not(.no-underscore)::before {
     content: '_';
-  }
-
-  >.no-underscore::before {
-    content: none;
   }
 }
 
 .stretch {
   letter-spacing: 0.15ch;
-}
-
-.underscore {
-  // Margin equals characters replaced * -(1ch + letter spacing)
-  margin-right: 1 * -(1ch + 0.08ch);
-
-  &::before {
-    content: '_';
-  }
 }
 
 [lang='ja'] {
@@ -294,9 +263,9 @@ p {
   text-align: justify;
 
   .skills {
-    font-size: 1.7rem;
+    /* font-size: 1.7rem; */
     letter-spacing: 0;
-    line-height: 1.5;
+    line-height: 1.25;
   }
 
   h2 {
@@ -306,32 +275,9 @@ p {
   }
 
   .snake-list {
-    /* stylelint-disable-next-line max-nesting-depth */
-    >:not(:first-child)::before {
-      font-family: $font-family-en;
-      font-size: 2rem;
-      letter-spacing: 0.08ch;
-      line-height: 0;
-    }
-  }
-
-  .romaji {
-    font-family: $font-family-en;
-    font-size: 2rem;
-    letter-spacing: 0.08ch;
-    line-height: 0;
-  }
-
-  .underscore {
-    // Margin equals characters replaced * -(1ch + letter spacing)
-    margin-right: 1 * -(1ch + 0);
-
-    /* stylelint-disable-next-line max-nesting-depth */
-    &::before {
-      font-family: $font-family-en;
-      font-size: 2rem;
-      letter-spacing: 0.08ch;
-      line-height: 0;
+    >li:not(:first-child):not(.no-underscore)::before {
+      content: '_';
+      content: '＿';
     }
   }
 }
