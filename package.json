@@ -47,7 +47,7 @@
     "nuxt-gtag": "^0.5.4",
     "pixi-particles": "^4.3.1",
     "pixi.js": "^5.3.3",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
     "sass": "^1.64.2",
     "serve": "^14.2.0",
     "stats.js": "^0.17.0",
