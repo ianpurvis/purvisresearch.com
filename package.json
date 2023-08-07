@@ -25,7 +25,7 @@
     "@sentry/vue": "^7.61.1",
     "@vue/shared": "^3.2.47",
     "@vue/test-utils": "^2.4.1",
-    "@vue/vue3-jest": "^29.2.3",
+    "@vue/vue3-jest": "^29.2.5",
     "@vueuse/head": "^1.1.26",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.5.0",
