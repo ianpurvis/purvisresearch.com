@@ -37,7 +37,7 @@
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.41.0",
     "eslint-friendly-formatter": "^4.0.1",
-    "eslint-plugin-jest": "^27.4.0",
+    "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-vue": "^9.17.0",
     "jest": "^29.7.0",
     "jest-ctx": "^1.0.1",
