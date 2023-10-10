@@ -48,7 +48,7 @@
     "pixi-particles": "^4.3.1",
     "pixi.js": "^5.3.3",
     "prettier": "^3.0.3",
-    "sass": "^1.69.0",
+    "sass": "^1.69.1",
     "serve": "^14.2.1",
     "stats.js": "^0.17.0",
     "stylelint": "^15.10.3",
