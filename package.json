@@ -51,7 +51,7 @@
     "sass": "^1.69.3",
     "serve": "^14.2.1",
     "stats.js": "^0.17.0",
-    "stylelint": "^15.10.3",
+    "stylelint": "^15.11.0",
     "stylelint-config-sass-guidelines": "^10.0.0",
     "svgo": "^3.0.2",
     "three": "^0.121.1",
