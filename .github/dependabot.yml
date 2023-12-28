@@ -9,7 +9,3 @@ updates:
       interval: daily
       time: '08:00'
       timezone: US/Central
-    ignore:
-      - dependency-name: extract-loader
-        versions:
-          - '> 2.0.1'
