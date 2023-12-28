@@ -10,10 +10,12 @@ import appleTouchIconUrl from '~/assets/images/logo-128x128.png'
 import browserConfigUrl from '~/assets/browserconfig.xml?url'
 import favicon16Url from '~/assets/images/logo-bw-16x16.png'
 import favicon32Url from '~/assets/images/logo-bw-32x32.png'
-import manifestUrl from '~/assets/manifest.json?url'
 import maskIconUrl from '~/assets/images/logo-bw-16x16.svg'
 import { useDebug } from '~/mixins/debug.js'
 import { Organization } from '~/models/organization.js'
+
+// TODO restore manifest import if nuxt issues can be resolved:
+const manifestUrl = '/_/manifest.Ofv98nhG.json'
 
 const org = Organization.default
 export const title = 'Purvis Research'
