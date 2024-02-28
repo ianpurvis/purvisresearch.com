@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@babel/preset-env": "^7.23.9",
+    "@babel/preset-env": "^7.24.0",
     "@pixi/unsafe-eval": "^5.3.11",
     "@sentry/vue": "^7.103.0",
     "@vue/shared": "^3.4.21",
