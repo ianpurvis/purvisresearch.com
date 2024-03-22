@@ -22,7 +22,7 @@
     "@babel/core": "^7.24.3",
     "@babel/preset-env": "^7.24.3",
     "@pixi/unsafe-eval": "^5.3.11",
-    "@sentry/vue": "^7.107.0",
+    "@sentry/vue": "^7.108.0",
     "@vue/shared": "^3.4.21",
     "@vue/test-utils": "^2.4.5",
     "@vue/vue3-jest": "^29.2.6",
